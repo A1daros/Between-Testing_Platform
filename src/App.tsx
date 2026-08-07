@@ -1,41 +1,15 @@
-import { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import type { Test } from './types/database';
-import { getTests } from './services/quiz';
+import { HomePage } from './modules/home/HomePage';
+import { QuizPage } from './modules/quiz';
 
 export const App = () => {
-  const [tests, setTests] = useState<Test[]>([]);
-
-  useEffect(() => {
-    const loadTests = async () => {
-      try {
-        const data = await getTests();
-
-        setTests(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    loadTests();
-  }, []);
-
   return (
-    <>
-      <section id='center'>
-        {tests.map((test) => (
-          <div key={test.id}>
-            <h2>
-              {test.title} {test.level}
-            </h2>
-
-            <p>{test.description}</p>
-          </div>
-        ))}
-      </section>
-
-      <div className='ticks'></div>
-      <section id='spacer'></section>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/tests/:testId' element={<QuizPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
