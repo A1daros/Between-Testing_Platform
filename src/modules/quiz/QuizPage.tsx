@@ -4,16 +4,17 @@ import {
   getAnswersByQuestionId,
   getQuestionsByTestId,
 } from '../../services/quiz';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuiz } from '../../hooks/useQuiz';
 
 export const QuizPage = () => {
+  const { testId } = useParams<{ testId: string }>();
+  const navigate = useNavigate();
+
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answersByQuestion, setAnswersByQuestion] = useState<
     Record<number, Answer[]>
   >({});
-
-  const { testId } = useParams();
 
   const allAnswersFlattened = Object.values(answersByQuestion).flat();
 
@@ -28,10 +29,6 @@ export const QuizPage = () => {
     handleNextQuestion,
   } = useQuiz(questions, allAnswersFlattened);
 
-  const currentAnswers = currentQuestion
-    ? answersByQuestion[currentQuestion.id] || []
-    : [];
-
   useEffect(() => {
     const loadQuestions = async () => {
       if (!testId) {
@@ -43,7 +40,7 @@ export const QuizPage = () => {
 
         setQuestions(data);
       } catch (error) {
-        console.log(error);
+        console.error('Failed to load questions:', error);
       }
     };
 
@@ -75,19 +72,32 @@ export const QuizPage = () => {
     loadAnswers();
   }, [currentQuestion, answersByQuestion]);
 
+  useEffect(() => {
+    if (!testId || total === 0) {
+      return;
+    }
+
+    if (currentQuestionIndex === total) {
+      navigate(`/tests/${testId}/results`, {
+        state: {
+          score,
+          total,
+        },
+        replace: true,
+      });
+    }
+  }, [currentQuestionIndex, total, testId, navigate, score]);
+
   if (!questions.length) {
     return <p>Loading quiz questions...</p>;
   }
 
+  const currentAnswers = currentQuestion
+    ? answersByQuestion[currentQuestion.id] || []
+    : [];
+
   if (currentQuestionIndex === total) {
-    return (
-      <div>
-        <h2>Quiz completed!</h2>
-        <p>
-          Your score is {score} out of {total}!
-        </p>
-      </div>
-    );
+    return <p>Redirecting to results...</p>;
   }
 
   return (

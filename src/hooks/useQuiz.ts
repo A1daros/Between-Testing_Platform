@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { Answer, Question } from '../types/database';
 
 export const useQuiz = (questions: Question[], answers: Answer[]) => {
@@ -12,40 +12,55 @@ export const useQuiz = (questions: Question[], answers: Answer[]) => {
     ? (userAnswers[currentQuestion.id] ?? null)
     : null;
 
-  const handleChooseAnswer = (answer: Answer) => {
-    if (!currentQuestion) {
-      return;
+  const handleChooseAnswer = useCallback(
+    (answer: Answer) => {
+      if (!currentQuestion) {
+        return;
+      }
+
+      setUserAnswers((prev) => ({
+        ...prev,
+        [currentQuestion.id]: answer.id,
+      }));
+    },
+    [currentQuestion],
+  );
+
+  const handlePrevQuestion = useCallback(() => {
+    setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
+  }, []);
+
+  const handleNextQuestion = useCallback(() => {
+    setCurrentQuestionIndex((prev) => Math.min(prev + 1, total));
+  }, [total]);
+
+  const calculateScore = useMemo(() => {
+    if (questions.length === 0) {
+      return 0;
     }
 
-    setUserAnswers((prev) => ({
-      ...prev,
-      [currentQuestion.id]: answer.id,
-    }));
-  };
+    const answersMap = new Map<number, Answer>(
+      answers.map((answer) => [answer.id, answer]),
+    );
 
-  const handlePrevQuestion = () => {
-    setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
-  };
-
-  const handleNextQuestion = () => {
-    setCurrentQuestionIndex((prev) => Math.min(prev + 1, total));
-  };
-
-  const calculateScore = (): number => {
     return questions.reduce((acc, question) => {
-      const savedAnswers = userAnswers[question.id];
-      if (!savedAnswers) return acc;
+      const savedAnswerId = userAnswers[question.id];
 
-      const answer = answers.find((answer) => answer.id === savedAnswers);
+      if (!savedAnswerId) {
+        return acc;
+      }
+
+      const answer = answersMap.get(savedAnswerId);
+
       return answer?.is_correct ? acc + 1 : acc;
     }, 0);
-  };
+  }, [answers, questions, userAnswers]);
 
   return {
     currentQuestion,
     currentQuestionIndex,
     selectedAnswerId,
-    score: calculateScore(),
+    score: calculateScore,
     total,
     handleChooseAnswer,
     handlePrevQuestion,

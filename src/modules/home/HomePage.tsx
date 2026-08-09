@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Test } from '../../types/database';
-import { getTestById } from '../../services/quiz';
+import { getTest } from '../../services/quiz';
 import { Link } from 'react-router-dom';
 
 export const HomePage = () => {
@@ -9,7 +9,7 @@ export const HomePage = () => {
   useEffect(() => {
     const loadTests = async () => {
       try {
-        const data = await getTestById();
+        const data = await getTest();
 
         setTests(data);
       } catch (error) {

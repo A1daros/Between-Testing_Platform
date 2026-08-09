@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase';
 import type { Answer, Question, Test } from '../types/database';
 
-export const getTestById = async (): Promise<Test[]> => {
+export const getTest = async (): Promise<Test[]> => {
   const { data, error } = await supabase.from('tests').select('*');
 
   if (error) {
