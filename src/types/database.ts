@@ -17,3 +17,18 @@ export interface Answer {
   answer_text: string;
   is_correct: boolean;
 }
+
+export interface ResultInput {
+  test_id: number;
+  student_name: string;
+  score: number;
+  total: number;
+}
+
+export interface Results {
+  id: number;
+  test_id: number;
+  student_name: string;
+  score: number;
+  total: number;
+}

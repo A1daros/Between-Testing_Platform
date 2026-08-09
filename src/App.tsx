@@ -3,6 +3,7 @@ import { HomePage } from './modules/home/HomePage';
 import { QuizPage } from './modules/quiz';
 import { ResultPage } from './modules/results';
 import './App.css';
+import { AdminPage } from './modules/admin';
 
 export const App = () => {
   return (
@@ -11,6 +12,7 @@ export const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/tests/:testId' element={<QuizPage />} />
         <Route path='/tests/:testId/results' element={<ResultPage />} />
+        <Route path='/admin/results/:testId' element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   );
