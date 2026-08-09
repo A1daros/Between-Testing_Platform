@@ -60,6 +60,7 @@ export const useQuiz = (questions: Question[], answers: Answer[]) => {
     currentQuestion,
     currentQuestionIndex,
     selectedAnswerId,
+    userAnswers,
     score: calculateScore,
     total,
     handleChooseAnswer,

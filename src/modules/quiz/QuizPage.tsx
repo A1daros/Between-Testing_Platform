@@ -22,6 +22,7 @@ export const QuizPage = () => {
     currentQuestion,
     currentQuestionIndex,
     selectedAnswerId,
+    userAnswers,
     score,
     total,
     handleChooseAnswer,
@@ -82,11 +83,12 @@ export const QuizPage = () => {
         state: {
           score,
           total,
+          userAnswers,
         },
         replace: true,
       });
     }
-  }, [currentQuestionIndex, total, testId, navigate, score]);
+  }, [currentQuestionIndex, total, testId, userAnswers, navigate, score]);
 
   if (!questions.length) {
     return <p>Loading quiz questions...</p>;

@@ -2,6 +2,9 @@ import { supabase } from '../lib/supabase';
 import type {
   Answer,
   Question,
+  ResultAnswers,
+  ResultAnswersInput,
+  ResultDetails,
   ResultInput,
   Results,
   Test,
@@ -47,19 +50,67 @@ export const getAnswersByQuestionId = async (
   return data;
 };
 
-export const SaveResult = async (result: ResultInput): Promise<void> => {
-  const { error } = await supabase.from('results').insert(result);
+export const SaveResult = async (result: ResultInput): Promise<Results> => {
+  const { data, error } = await supabase
+    .from('results')
+    .insert(result)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getResultsByTestId = async (
+  testId: number,
+): Promise<Results[]> => {
+  const { data, error } = await supabase
+    .from('results')
+    .select('*')
+    .eq('test_id', testId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getResultAnswersByResultId = async (
+  resultId: number,
+): Promise<ResultAnswers[]> => {
+  const { data, error } = await supabase
+    .from('result_answers')
+    .select('*')
+    .eq('result_id', resultId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const saveResultAnswers = async (
+  resultAnswers: ResultAnswersInput[],
+) => {
+  const { error } = await supabase.from('result_answers').insert(resultAnswers);
 
   if (error) {
     throw new Error(error.message);
   }
 };
 
-export const getResultsByTestId = async (testId: number): Promise<Results[]> => {
+export const getResultDetails = async (
+  resultId: number,
+): Promise<ResultDetails[]> => {
   const { data, error } = await supabase
-    .from('results')
-    .select('*')
-    .eq('test_id', testId);
+    .from('result_answers')
+    .select(`*, questions(*, answers(*)), answers(*)`)
+    .eq('result_id', resultId);
 
   if (error) {
     throw new Error(error.message);

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { getResultsByTestId } from '../../services/quiz';
 import type { Results } from '../../types/database';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const AdminPage = () => {
   const [results, setResults] = useState<Results[]>([]);
 
   const { testId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadResults = async () => {
@@ -26,8 +27,6 @@ export const AdminPage = () => {
     return <p>Loading student results...</p>;
   }
 
-  console.log('testId', testId);
-
   return (
     <div>
       {results.map((result) => (
@@ -37,6 +36,10 @@ export const AdminPage = () => {
           <p>
             {result.score} / {result.total}
           </p>
+
+          <button onClick={() => navigate(`/admin/result-details/${result.id}`)}>
+            Show details
+          </button>
         </div>
       ))}
     </div>

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { SaveResult } from '../../services/quiz';
+import { SaveResult, saveResultAnswers } from '../../services/quiz';
 import { useState } from 'react';
 
 export const ResultPage = () => {
@@ -13,16 +13,30 @@ export const ResultPage = () => {
     return <p>No result data found</p>;
   }
 
-  const { score, total } = location.state;
+  const { score, total, userAnswers } = location.state;
+
+  console.log(userAnswers);
 
   const handleSaveResult = async () => {
     try {
-      await SaveResult({
+      const result = await SaveResult({
         test_id: Number(testId),
         student_name: query,
         score,
         total,
       });
+
+      console.log(result.id);
+
+      const resultAnswers = Object.entries(userAnswers).map(
+        ([questionId, answerId]) => ({
+          result_id: result.id,
+          question_id: Number(questionId),
+          answer_id: Number(answerId),
+        }),
+      );
+
+      saveResultAnswers(resultAnswers);
 
       navigate('/');
     } catch (error) {

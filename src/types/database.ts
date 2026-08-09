@@ -32,3 +32,30 @@ export interface Results {
   score: number;
   total: number;
 }
+
+export interface ResultAnswers {
+  id: number;
+  result_id: number;
+  question_id: number;
+  answer_id: number;
+}
+
+export interface ResultAnswersInput {
+  result_id: number;
+  question_id: number;
+  answer_id: number;
+}
+
+export interface QuestionWithAnswers extends Question {
+  answers: Answer[];
+}
+
+export interface ResultDetails {
+  id: number;
+  result_id: number;
+  question_id: number;
+  answer_id: number;
+
+  questions: QuestionWithAnswers;
+  answers: Answer;
+}
