@@ -5,6 +5,7 @@ export const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSignUp = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -16,12 +17,14 @@ export const Register = () => {
     });
 
     if (error) {
-      throw error;
+      setErrorMessage(error.message);
     }
   };
 
   return (
     <form onSubmit={handleSignUp} className='registerForm'>
+      {errorMessage && <p>{errorMessage}</p>}
+
       <h2 className='title'>Registration Form</h2>
 
       <div className='inputContainer'>

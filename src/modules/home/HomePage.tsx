@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import type { Test } from '../../types/database';
 import { getTest } from '../../services/quiz';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 
 export const HomePage = () => {
   const [tests, setTests] = useState<Test[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadTests = async () => {
@@ -20,8 +23,29 @@ export const HomePage = () => {
     loadTests();
   }, []);
 
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      console.log(session?.user.email);
+    };
+
+    getSession();
+  }, []);
+
   return (
     <section id='center'>
+      <button
+        onClick={async () => {
+          await supabase.auth.signOut();
+
+          navigate('/login');
+        }}
+      >
+        Log out
+      </button>
+
       <ul>
         {tests.map((test) => (
           <li key={test.id} style={{ cursor: 'pointer' }}>

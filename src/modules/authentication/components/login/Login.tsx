@@ -1,10 +1,13 @@
 import { useState, type FormEvent } from 'react';
 import { supabase } from '../../../../lib/supabase';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate();
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -18,24 +21,14 @@ export const Login = () => {
 
       return;
     }
+
+    navigate('/');
   };
-
-  const handleGetSession = async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    console.log(session);
-  };
-
-  console.log(handleGetSession);
-
-  if (errorMessage) {
-    return <p>{errorMessage}</p>;
-  }
 
   return (
     <div className='login-container'>
+      {errorMessage && <p>{errorMessage}</p>}
+
       <h2>Login</h2>
 
       <form onSubmit={handleLogin}>
@@ -69,7 +62,7 @@ export const Login = () => {
           <label>
             <input type='checkbox' name='remember' /> Remember me
           </label>
-          <a href='/forgot-password'>Forgot a password?</a>
+          <Link to='/forgot-password'>Forgot a password?</Link>
         </div>
 
         <button type='submit' className='submit-btn'>
@@ -78,7 +71,7 @@ export const Login = () => {
       </form>
 
       <div className='signup-link'>
-        Haven't account? <a href='/signup'>Create account</a>
+        Haven't account? <Link to='/register'>Create account</Link>
       </div>
     </div>
   );
