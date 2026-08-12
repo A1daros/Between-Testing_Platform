@@ -3,6 +3,7 @@ import type { Test } from '../../types/database';
 import { getTest } from '../../services/quiz';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../hooks/useAuth';
 
 export const HomePage = () => {
   const [tests, setTests] = useState<Test[]>([]);
@@ -34,6 +35,11 @@ export const HomePage = () => {
     getSession();
   }, []);
 
+  const { user, session, loading, signOut } = useAuth();
+  console.log('User:', user);
+  console.log('Session:', session);
+  console.log('Loading:', loading);
+
   return (
     <section id='center'>
       <button
@@ -45,6 +51,8 @@ export const HomePage = () => {
       >
         Log out
       </button>
+
+      <button onClick={() => navigate('/login')}>Log in</button>
 
       <ul>
         {tests.map((test) => (
