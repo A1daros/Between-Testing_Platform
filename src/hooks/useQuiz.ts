@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
-import type { Answer, Question } from '../types/database';
+import type { Answer, QuestionWithAnswers } from '../types/database';
 
-export const useQuiz = (questions: Question[], answers: Answer[]) => {
+export const useQuiz = (questions: QuestionWithAnswers[]) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
 
@@ -34,34 +34,28 @@ export const useQuiz = (questions: Question[], answers: Answer[]) => {
     setCurrentQuestionIndex((prev) => Math.min(prev + 1, total));
   }, [total]);
 
-  const calculateScore = useMemo(() => {
-    if (questions.length === 0) {
-      return 0;
-    }
-
-    const answersMap = new Map<number, Answer>(
-      answers.map((answer) => [answer.id, answer]),
-    );
-
-    return questions.reduce((acc, question) => {
+  const score = useMemo(() => {
+    return questions.reduce((score, question) => {
       const savedAnswerId = userAnswers[question.id];
 
       if (!savedAnswerId) {
-        return acc;
+        return score;
       }
 
-      const answer = answersMap.get(savedAnswerId);
+      const selectedAnswer = question.answers.find(
+        (answer) => answer.id === savedAnswerId,
+      );
 
-      return answer?.is_correct ? acc + 1 : acc;
+      return selectedAnswer?.is_correct ? score + 1 : score;
     }, 0);
-  }, [answers, questions, userAnswers]);
+  }, [questions, userAnswers]);
 
   return {
     currentQuestion,
     currentQuestionIndex,
     selectedAnswerId,
     userAnswers,
-    score: calculateScore,
+    score,
     total,
     handleChooseAnswer,
     handlePrevQuestion,

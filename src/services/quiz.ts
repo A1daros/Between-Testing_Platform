@@ -1,7 +1,6 @@
 import { supabase } from '../lib/supabase';
 import type {
-  Answer,
-  Question,
+  QuestionWithAnswers,
   ResultAnswers,
   ResultAnswersInput,
   ResultDetails,
@@ -20,37 +19,22 @@ export const getTest = async (): Promise<Test[]> => {
   return data;
 };
 
-export const getQuestionsByTestId = async (
+export const getQuestionsWithAnswersByTestId = async (
   testId: number,
-): Promise<Question[]> => {
+): Promise<QuestionWithAnswers[]> => {
   const { data, error } = await supabase
     .from('questions')
-    .select('*')
+    .select(`*, answers(*)`)
     .eq('test_id', testId);
 
   if (error) {
-    throw error;
+    throw new Error(error.message);
   }
 
   return data;
 };
 
-export const getAnswersByQuestionId = async (
-  questionId: number,
-): Promise<Answer[]> => {
-  const { data, error } = await supabase
-    .from('answers')
-    .select('*')
-    .eq('question_id', questionId);
-
-  if (error) {
-    throw error;
-  }
-
-  return data;
-};
-
-export const SaveResult = async (result: ResultInput): Promise<Results> => {
+export const saveResult = async (result: ResultInput): Promise<Results> => {
   const { data, error } = await supabase
     .from('results')
     .insert(result)

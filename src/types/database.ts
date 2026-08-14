@@ -20,7 +20,7 @@ export interface Answer {
 
 export interface ResultInput {
   test_id: number;
-  student_name: string;
+  user_id: string;
   score: number;
   total: number;
 }
@@ -28,7 +28,7 @@ export interface ResultInput {
 export interface Results {
   id: number;
   test_id: number;
-  student_name: string;
+  user_id: string;
   score: number;
   total: number;
 }

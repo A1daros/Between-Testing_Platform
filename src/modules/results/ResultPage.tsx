@@ -1,13 +1,13 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { SaveResult, saveResultAnswers } from '../../services/quiz';
-import { useState } from 'react';
+import { saveResult, saveResultAnswers } from '../../services/quiz';
+import { useAuth } from '../../hooks/useAuth';
 
 export const ResultPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { testId } = useParams<{ testId: string }>();
 
-  const [query, setQuery] = useState('');
+  const { user } = useAuth();
 
   if (!location.state) {
     return <p>No result data found</p>;
@@ -15,13 +15,15 @@ export const ResultPage = () => {
 
   const { score, total, userAnswers } = location.state;
 
-  console.log(userAnswers);
-
   const handleSaveResult = async () => {
+    if (!user) {
+      return;
+    }
+
     try {
-      const result = await SaveResult({
+      const result = await saveResult({
         test_id: Number(testId),
-        student_name: query,
+        user_id: user.id,
         score,
         total,
       });
@@ -36,7 +38,7 @@ export const ResultPage = () => {
         }),
       );
 
-      saveResultAnswers(resultAnswers);
+      await saveResultAnswers(resultAnswers);
 
       navigate('/');
     } catch (error) {
@@ -48,16 +50,7 @@ export const ResultPage = () => {
     <div>
       <h2>Quiz completed!</h2>
 
-      <input
-        type='text'
-        placeholder='Enter your name'
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
-      />
-
-      <button onClick={handleSaveResult} disabled={!query.trim()}>
-        Save results
-      </button>
+      <button onClick={handleSaveResult}>Save results</button>
 
       <p>
         Your score is {score} out of {total}!

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import type { Test } from '../../types/database';
 import { getTest } from '../../services/quiz';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
 
 export const HomePage = () => {
@@ -24,33 +23,16 @@ export const HomePage = () => {
     loadTests();
   }, []);
 
-  useEffect(() => {
-    const getSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      console.log(session?.user.email);
-    };
+  const { signOut } = useAuth();
 
-    getSession();
-  }, []);
-
-  const { user, session, loading, signOut } = useAuth();
-  console.log('User:', user);
-  console.log('Session:', session);
-  console.log('Loading:', loading);
+  const handleSignOut = () => {
+    signOut();
+    navigate('/');
+  };
 
   return (
     <section id='center'>
-      <button
-        onClick={async () => {
-          await supabase.auth.signOut();
-
-          navigate('/login');
-        }}
-      >
-        Log out
-      </button>
+      <button onClick={handleSignOut}>Log out</button>
 
       <button onClick={() => navigate('/login')}>Log in</button>
 

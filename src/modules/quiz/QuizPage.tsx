@@ -1,22 +1,14 @@
 import { useEffect, useState } from 'react';
-import type { Answer, Question } from '../../types/database';
-import {
-  getAnswersByQuestionId,
-  getQuestionsByTestId,
-} from '../../services/quiz';
 import { useNavigate, useParams } from 'react-router-dom';
+import type { QuestionWithAnswers } from '../../types/database';
 import { useQuiz } from '../../hooks/useQuiz';
+import { getQuestionsWithAnswersByTestId } from '../../services/quiz';
 
 export const QuizPage = () => {
   const { testId } = useParams<{ testId: string }>();
   const navigate = useNavigate();
 
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [answersByQuestion, setAnswersByQuestion] = useState<
-    Record<number, Answer[]>
-  >({});
-
-  const allAnswersFlattened = Object.values(answersByQuestion).flat();
+  const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
 
   const {
     currentQuestion,
@@ -28,7 +20,7 @@ export const QuizPage = () => {
     handleChooseAnswer,
     handlePrevQuestion,
     handleNextQuestion,
-  } = useQuiz(questions, allAnswersFlattened);
+  } = useQuiz(questions);
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -37,7 +29,7 @@ export const QuizPage = () => {
       }
 
       try {
-        const data = await getQuestionsByTestId(Number(testId));
+        const data = await getQuestionsWithAnswersByTestId(Number(testId));
 
         setQuestions(data);
       } catch (error) {
@@ -47,31 +39,6 @@ export const QuizPage = () => {
 
     loadQuestions();
   }, [testId]);
-
-  useEffect(() => {
-    if (!currentQuestion) {
-      return;
-    }
-
-    if (answersByQuestion[currentQuestion.id]) {
-      return;
-    }
-
-    const loadAnswers = async () => {
-      try {
-        const data = await getAnswersByQuestionId(Number(currentQuestion.id));
-
-        setAnswersByQuestion((prev) => ({
-          ...prev,
-          [currentQuestion.id]: data,
-        }));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    loadAnswers();
-  }, [currentQuestion, answersByQuestion]);
 
   useEffect(() => {
     if (!testId || total === 0) {
@@ -94,13 +61,11 @@ export const QuizPage = () => {
     return <p>Loading quiz questions...</p>;
   }
 
-  const currentAnswers = currentQuestion
-    ? answersByQuestion[currentQuestion.id] || []
-    : [];
-
   if (currentQuestionIndex === total) {
     return <p>Redirecting to results...</p>;
   }
+
+  const currentAnswers = currentQuestion?.answers ?? [];
 
   return (
     <div>
