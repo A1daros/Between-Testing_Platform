@@ -31,6 +31,11 @@ export interface Results {
   user_id: string;
   score: number;
   total: number;
+  created_at: string;
+
+  test: {
+    title: string;
+  };
 }
 
 export interface ResultAnswers {

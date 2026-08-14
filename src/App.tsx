@@ -8,6 +8,7 @@ import { UserAnswersDetails } from './modules/admin/components';
 import { HomePage } from './modules/home';
 import { Login } from './modules/authentication/components/login';
 import { Register } from './modules/authentication/components/register';
+import { MyResults } from './modules/results/myResults';
 
 export const App = () => {
   return (
@@ -18,6 +19,7 @@ export const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/tests/:testId' element={<QuizPage />} />
         <Route path='/tests/:testId/results' element={<ResultPage />} />
+        <Route path='/user/results' element={<MyResults />} />
         <Route path='/admin/results/:testId' element={<AdminPage />} />
         <Route
           path='/admin/result-details/:resultId'

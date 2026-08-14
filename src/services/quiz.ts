@@ -102,3 +102,19 @@ export const getResultDetails = async (
 
   return data;
 };
+
+export const getResultsByUserId = async (
+  userId: string,
+): Promise<Results[]> => {
+  const { data, error } = await supabase
+    .from('results')
+    .select(`*, test:tests(title)`)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
