@@ -118,3 +118,19 @@ export const getResultsByUserId = async (
 
   return data;
 };
+
+export const getResultById = async (
+  resultId: number,
+): Promise<Results[]> => {
+  const { data, error } = await supabase
+    .from('results')
+    .select('*')
+    .eq('id', resultId)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};

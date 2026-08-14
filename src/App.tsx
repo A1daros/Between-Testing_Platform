@@ -9,6 +9,7 @@ import { Register } from './modules/authentication/components/register';
 import { MyResults } from './modules/results/myResults';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { HomePage } from './modules/home';
+import { ResultDetailsPage } from './modules/results/components/resultDetails/ResultDetailsPage';
 
 export const App = () => {
   return (
@@ -28,6 +29,8 @@ export const App = () => {
             path='/admin/result-details/:resultId'
             element={<UserAnswersDetails />}
           />
+
+          <Route path='/my-results/:resultId' element={<ResultDetailsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

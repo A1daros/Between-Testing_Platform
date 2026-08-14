@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { getResultsByTestId } from '../../services/quiz';
 import type { Results } from '../../types/database';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 export const AdminPage = () => {
   const [results, setResults] = useState<Results[]>([]);
 
   const { testId } = useParams();
-  const navigate = useNavigate();
 
   const { user } = useAuth();
 
@@ -36,21 +35,25 @@ export const AdminPage = () => {
 
   return (
     <div>
-      {results.map((result) => (
-        <div key={result.id}>
-          <h3>{user?.user_metadata.display_name}</h3>
+      {results.map((result) => {
+        const date = new Date(result.created_at);
 
-          <p>
-            {result.score} / {result.total}
-          </p>
+        return (
+          <div key={result.id}>
+            <h3>{user?.user_metadata.display_name}</h3>
 
-          <button
-            onClick={() => navigate(`/admin/result-details/${result.id}`)}
-          >
-            Show details
-          </button>
-        </div>
-      ))}
+            <p>
+              {result.score} / {result.total}
+            </p>
+
+            <p>
+              {date.toLocaleDateString()} {date.toLocaleTimeString()}
+            </p>
+
+            <Link to={`/admin/result-details/${result.id}`}>View details</Link>
+          </div>
+        );
+      })}
     </div>
   );
 };
