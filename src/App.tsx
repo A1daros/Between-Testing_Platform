@@ -3,7 +3,6 @@ import { QuizPage } from './modules/quiz';
 import { ResultPage } from './modules/results';
 import './App.css';
 import { AdminPage } from './modules/admin';
-import { UserAnswersDetails } from './modules/admin/components';
 import { Login } from './modules/authentication/components/login';
 import { Register } from './modules/authentication/components/register';
 import { MyResults } from './modules/results/myResults';
@@ -27,7 +26,7 @@ export const App = () => {
           <Route path='/admin/results/:testId' element={<AdminPage />} />
           <Route
             path='/admin/result-details/:resultId'
-            element={<UserAnswersDetails />}
+            element={<ResultDetailsPage />}
           />
 
           <Route path='/my-results/:resultId' element={<ResultDetailsPage />} />

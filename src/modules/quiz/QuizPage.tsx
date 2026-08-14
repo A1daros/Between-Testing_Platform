@@ -1,14 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import type { QuestionWithAnswers } from '../../types/database';
 import { useQuiz } from '../../hooks/useQuiz';
-import { getQuestionsWithAnswersByTestId } from '../../services/quiz';
+import {
+  getQuestionsWithAnswersByTestId,
+  saveQuizResult,
+} from '../../services/quiz';
+import { useAuth } from '../../hooks/useAuth';
 
 export const QuizPage = () => {
   const { testId } = useParams<{ testId: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
+  const isSavingRef = useRef<boolean>(false);
 
   const {
     currentQuestion,
@@ -46,16 +52,42 @@ export const QuizPage = () => {
     }
 
     if (currentQuestionIndex === total) {
-      navigate(`/tests/${testId}/results`, {
-        state: {
-          score,
-          total,
-          userAnswers,
-        },
-        replace: true,
-      });
+      if (
+        !testId ||
+        !user?.id ||
+        total === 0 ||
+        currentQuestionIndex !== total ||
+        isSavingRef.current
+      ) {
+        return;
+      }
+
+      const sendResults = async () => {
+        isSavingRef.current = true;
+
+        try {
+          await saveQuizResult({
+            testId: Number(testId),
+            userId: user.id,
+            score,
+            total,
+            userAnswers: userAnswers,
+          });
+
+          navigate(`/tests/${testId}/results`, {
+            state: { score, total, userAnswers },
+            replace: true,
+          });
+        } catch (error) {
+          console.error('Failed to save quiz results:', error);
+
+          isSavingRef.current = false;
+        }
+      };
+
+      sendResults();
     }
-  }, [currentQuestionIndex, total, testId, userAnswers, navigate, score]);
+  }, [currentQuestionIndex, total, testId, userAnswers, navigate, score, user]);
 
   if (!questions.length) {
     return <p>Loading quiz questions...</p>;

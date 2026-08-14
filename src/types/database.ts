@@ -64,3 +64,11 @@ export interface ResultDetails {
   questions: QuestionWithAnswers;
   answers: Answer;
 }
+
+export interface SaveQuizResultInput {
+  testId: number;
+  userId: string;
+  score: number;
+  total: number;
+  userAnswers: Record<number, number>;
+}

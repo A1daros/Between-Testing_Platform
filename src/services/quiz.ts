@@ -6,6 +6,7 @@ import type {
   ResultDetails,
   ResultInput,
   Results,
+  SaveQuizResultInput,
   Test,
 } from '../types/database';
 
@@ -119,9 +120,7 @@ export const getResultsByUserId = async (
   return data;
 };
 
-export const getResultById = async (
-  resultId: number,
-): Promise<Results[]> => {
+export const getResultById = async (resultId: number): Promise<Results[]> => {
   const { data, error } = await supabase
     .from('results')
     .select('*')
@@ -133,4 +132,31 @@ export const getResultById = async (
   }
 
   return data;
+};
+
+export const saveQuizResult = async ({
+  testId,
+  userId,
+  score,
+  total,
+  userAnswers,
+}: SaveQuizResultInput) => {
+  const result = await saveResult({
+    test_id: testId,
+    user_id: userId,
+    score,
+    total,
+  });
+
+  const resultAnswers = Object.entries(userAnswers).map(
+    ([questionId, answerId]) => ({
+      result_id: result.id,
+      question_id: Number(questionId),
+      answer_id: Number(answerId),
+    }),
+  );
+
+  await saveResultAnswers(resultAnswers);
+
+  return result;
 };
