@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { type Session, type User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { AuthContext } from './AuthContext';
+import type { Profile } from '../types/database';
+import { getProfile } from '../services/quiz';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -13,8 +16,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
+
       setSession(session);
       setUser(session?.user ?? null);
+
+      if (session?.user) {
+        const profile = await getProfile(session.user?.id);
+
+        setProfile(profile);
+      }
+
       setLoading(false);
     };
 
@@ -25,6 +36,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+
+      if (!session) {
+        setProfile(null);
+      }
+
       setLoading(false);
     });
 
@@ -38,7 +54,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        profile,
+        session,
+        loading,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

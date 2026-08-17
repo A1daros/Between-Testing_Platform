@@ -72,3 +72,9 @@ export interface SaveQuizResultInput {
   total: number;
   userAnswers: Record<number, number>;
 }
+
+export interface Profile {
+  id: string;
+  role: 'student' | 'admin';
+  display_name: string;
+}

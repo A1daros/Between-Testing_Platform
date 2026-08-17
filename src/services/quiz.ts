@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import type {
+  Profile,
   QuestionWithAnswers,
   ResultAnswers,
   ResultAnswersInput,
@@ -159,4 +160,18 @@ export const saveQuizResult = async ({
   await saveResultAnswers(resultAnswers);
 
   return result;
+};
+
+export const getProfile = async (userId: string): Promise<Profile | null> => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 };

@@ -9,6 +9,7 @@ import { MyResults } from './modules/results/myResults';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { HomePage } from './modules/home';
 import { ResultDetailsPage } from './modules/results/components/resultDetails/ResultDetailsPage';
+import { AdminRoute } from './routes/AdminRoute';
 
 export const App = () => {
   return (
@@ -21,15 +22,17 @@ export const App = () => {
           <Route path='/' element={<HomePage />} />
           <Route path='/tests/:testId' element={<QuizPage />} />
           <Route path='/my-results' element={<MyResults />} />
+          <Route path='/my-results/:resultId' element={<ResultDetailsPage />} />
+
+          <Route element={<AdminRoute />}>
+            <Route path='/admin/results/:testId' element={<AdminPage />} />
+            <Route
+              path='/admin/result-details/:resultId'
+              element={<ResultDetailsPage />}
+            />
+          </Route>
 
           <Route path='/tests/:testId/results' element={<ResultPage />} />
-          <Route path='/admin/results/:testId' element={<AdminPage />} />
-          <Route
-            path='/admin/result-details/:resultId'
-            element={<ResultDetailsPage />}
-          />
-
-          <Route path='/my-results/:resultId' element={<ResultDetailsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
