@@ -3,9 +3,13 @@ import { useAuth } from '../../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import type { Results } from '../../../types/database';
 import { getResultsByUserId } from '../../../services/quiz';
+import { Loader } from '../../Loader';
 
 export const MyResults = () => {
   const [results, setResults] = useState<Results[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -15,16 +19,31 @@ export const MyResults = () => {
         return;
       }
 
+      setLoading(true);
+      setErrorMessage('');
+
       try {
         const data = await getResultsByUserId(user.id);
+
         setResults(data);
       } catch (error) {
         console.error('Failed to load results', error);
+        setErrorMessage('Failed to load results!');
+      } finally {
+        setLoading(false);
       }
     };
 
     loadResults();
   }, [user]);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (errorMessage) {
+    return <p>{errorMessage}</p>;
+  }
 
   return (
     <div>

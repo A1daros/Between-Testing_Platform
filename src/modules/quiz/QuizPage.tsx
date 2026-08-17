@@ -7,13 +7,19 @@ import {
   saveQuizResult,
 } from '../../services/quiz';
 import { useAuth } from '../../hooks/useAuth';
+import { Loader } from '../Loader';
 
 export const QuizPage = () => {
+  const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const { testId } = useParams<{ testId: string }>();
-  const navigate = useNavigate();
   const { user } = useAuth();
 
-  const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
+  const navigate = useNavigate();
+
   const isSavingRef = useRef<boolean>(false);
 
   const {
@@ -34,12 +40,18 @@ export const QuizPage = () => {
         return;
       }
 
+      setLoading(true);
+      setErrorMessage('');
+
       try {
         const data = await getQuestionsWithAnswersByTestId(Number(testId));
 
         setQuestions(data);
       } catch (error) {
         console.error('Failed to load questions:', error);
+        setErrorMessage('Failed to load quiz!');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -51,53 +63,63 @@ export const QuizPage = () => {
       return;
     }
 
-    if (currentQuestionIndex === total) {
-      if (
-        !testId ||
-        !user?.id ||
-        total === 0 ||
-        currentQuestionIndex !== total ||
-        isSavingRef.current
-      ) {
-        return;
-      }
-
-      const sendResults = async () => {
-        isSavingRef.current = true;
-
-        try {
-          await saveQuizResult({
-            testId: Number(testId),
-            userId: user.id,
-            score,
-            total,
-            userAnswers: userAnswers,
-          });
-
-          navigate(`/tests/${testId}/results`, {
-            state: { score, total, userAnswers },
-            replace: true,
-          });
-        } catch (error) {
-          console.error('Failed to save quiz results:', error);
-
-          isSavingRef.current = false;
-        }
-      };
-
-      sendResults();
+    if (currentQuestionIndex !== total) {
+      return;
     }
+
+    if (!user?.id || isSavingRef.current) {
+      return;
+    }
+
+    const sendResults = async () => {
+      isSavingRef.current = true;
+
+      setIsSaving(true);
+      setErrorMessage('');
+
+      try {
+        await saveQuizResult({
+          testId: Number(testId),
+          userId: user.id,
+          score,
+          total,
+          userAnswers,
+        });
+
+        navigate(`/tests/${testId}/results`, {
+          state: { score, total, userAnswers },
+          replace: true,
+        });
+      } catch (error) {
+        console.error('Failed to save quiz results:', error);
+        setErrorMessage('Failed to save results!');
+
+        isSavingRef.current = false;
+
+        setIsSaving(false);
+      }
+    };
+
+    sendResults();
   }, [currentQuestionIndex, total, testId, userAnswers, navigate, score, user]);
 
-  if (!questions.length) {
-    return <p>Loading quiz questions...</p>;
-  }
-
-  if (currentQuestionIndex === total) {
-    return <p>Redirecting to results...</p>;
-  }
-
   const currentAnswers = currentQuestion?.answers ?? [];
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (errorMessage) {
+    return <p>{errorMessage}</p>;
+  }
+
+  if (!questions.length) {
+    return <p>No questions found!</p>;
+  }
+
+  if (isSaving) {
+    return <Loader />;
+  }
 
   return (
     <div>

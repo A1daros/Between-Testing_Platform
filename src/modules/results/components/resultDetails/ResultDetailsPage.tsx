@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getResultDetails } from '../../../../services/quiz';
 import type { ResultDetails } from '../../../../types/database';
+import { Loader } from '../../../Loader';
 
 export const ResultDetailsPage = () => {
   const [resultDetails, setResultDetails] = useState<ResultDetails[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { resultId } = useParams();
 
@@ -12,12 +15,18 @@ export const ResultDetailsPage = () => {
 
   useEffect(() => {
     const loadResultDetails = async () => {
+      setLoading(true);
+      setErrorMessage('');
+
       try {
         const data = await getResultDetails(Number(resultId));
 
         setResultDetails(data);
       } catch (error) {
-        console.error('Failed to load result answers', error);
+        console.error('Failed to load result answers:', error);
+        setErrorMessage('Failed to load result details!');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -28,8 +37,12 @@ export const ResultDetailsPage = () => {
     return;
   }
 
-  if (!resultDetails.length) {
-    return <p>Loading student result answers...</p>;
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (errorMessage) {
+    return <p>{errorMessage}</p>;
   }
 
   return (

@@ -10,7 +10,7 @@ import type {
   Test,
 } from '../types/database';
 
-export const getTest = async (): Promise<Test[]> => {
+export const getTests = async (): Promise<Test[]> => {
   const { data, error } = await supabase.from('tests').select('*');
 
   if (error) {

@@ -3,22 +3,30 @@ import { getResultsByTestId } from '../../services/quiz';
 import type { Results } from '../../types/database';
 import { Link, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { Loader } from '../Loader';
 
 export const AdminPage = () => {
   const [results, setResults] = useState<Results[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { testId } = useParams();
-
   const { user } = useAuth();
 
   useEffect(() => {
     const loadResults = async () => {
+      setLoading(true);
+      setErrorMessage('');
+
       try {
         const data = await getResultsByTestId(Number(testId));
 
         setResults(data);
       } catch (error) {
         console.error('Failed to load student results', error);
+        setErrorMessage('Failed to load student results!');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -29,8 +37,12 @@ export const AdminPage = () => {
     return;
   }
 
-  if (!results.length) {
-    return <p>Loading student results...</p>;
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (errorMessage) {
+    return <p>{errorMessage}</p>;
   }
 
   return (
