@@ -32,9 +32,11 @@ export const HomePage = () => {
     loadTests();
   }, []);
 
-  const { signOut, user } = useAuth();
+  const { signOut, user, profile } = useAuth();
 
   console.log(user?.email);
+  console.log(user?.role);
+  console.log(profile?.role)
 
   const handleSignOut = () => {
     signOut();

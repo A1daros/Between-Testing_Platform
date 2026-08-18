@@ -169,6 +169,12 @@ export const getProfile = async (userId: string): Promise<Profile | null> => {
     .eq('id', userId)
     .single();
 
+  console.log('GET PROFILE:', {
+    userId,
+    data,
+    error,
+  });
+
   if (error) {
     throw new Error(error.message);
   }
