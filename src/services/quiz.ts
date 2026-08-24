@@ -99,14 +99,18 @@ export const getResultDetails = async (
 ): Promise<ResultDetails[]> => {
   const { data, error } = await supabase
     .from('result_answers')
-    .select(`*, questions(*, answers(*)), answers(*)`)
+    .select(
+      `*, questions(*, answers(*), tests(title, description), test_parts(title, instruction)), answers(*)`,
+    )
     .eq('result_id', resultId);
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
+  return (data as ResultDetails[]).sort(
+    (a, b) => a.questions.sort_order - b.questions.sort_order,
+  );
 };
 
 export const getResultsByUserId = async (

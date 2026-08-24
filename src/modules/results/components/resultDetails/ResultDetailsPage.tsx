@@ -49,13 +49,31 @@ export const ResultDetailsPage = () => {
     <div>
       <button onClick={() => navigate(-1)}>Go back</button>
 
-      {resultDetails.map((item) => {
+      {resultDetails.length > 0 && (
+        <div>
+          <h1>{resultDetails[0].questions.tests.title}</h1>
+          <h2>{resultDetails[0].questions.tests.description}</h2>
+        </div>
+      )}
+
+      {resultDetails.map((item, index) => {
         const correctAnswer = item.questions.answers?.find(
           (answer) => answer.is_correct,
         );
 
+        const prevItem = resultDetails[index - 1];
+        const isNewPart =
+          item.questions.part_id !== prevItem?.questions.part_id;
+
         return (
           <div key={item.id}>
+            {isNewPart && item.questions.test_parts && (
+              <div>
+                <h3>{item.questions.test_parts.title}</h3>
+                <p>{item.questions.test_parts.instruction}</p>
+              </div>
+            )}
+
             <div>
               <h4>Question: {item.questions.question}</h4>
             </div>

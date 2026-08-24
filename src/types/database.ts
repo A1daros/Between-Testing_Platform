@@ -14,6 +14,7 @@ export interface Question {
   title: string;
   description: string;
   sort_order: number;
+  part_id: number;
 }
 
 export interface QuestionWithAnswers extends Question {
@@ -27,6 +28,7 @@ export interface QuestionWithAnswers extends Question {
   test_parts: {
     title: string;
     instruction: string;
+    part_id: number;
   } | null;
 }
 
