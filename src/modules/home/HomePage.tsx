@@ -36,7 +36,7 @@ export const HomePage = () => {
 
   console.log(user?.email);
   console.log(user?.role);
-  console.log(profile?.role)
+  console.log(profile?.role);
 
   const handleSignOut = () => {
     signOut();

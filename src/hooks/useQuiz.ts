@@ -6,6 +6,7 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
   const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
 
   const currentQuestion = questions[currentQuestionIndex];
+
   const total = questions.length;
 
   const selectedAnswerId = currentQuestion

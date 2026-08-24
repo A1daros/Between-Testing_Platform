@@ -9,6 +9,7 @@ import type {
   Results,
   SaveQuizResultInput,
   Test,
+  TheorySection,
 } from '../types/database';
 
 export const getTests = async (): Promise<Test[]> => {
@@ -26,8 +27,11 @@ export const getQuestionsWithAnswersByTestId = async (
 ): Promise<QuestionWithAnswers[]> => {
   const { data, error } = await supabase
     .from('questions')
-    .select(`*, answers(*)`)
-    .eq('test_id', testId);
+    .select(
+      `*, answers(*), tests(title, description), test_parts(title, instruction)`,
+    )
+    .eq('test_id', testId)
+    .order('sort_order', { ascending: true });
 
   if (error) {
     throw new Error(error.message);
@@ -55,7 +59,7 @@ export const getResultsByTestId = async (
 ): Promise<Results[]> => {
   const { data, error } = await supabase
     .from('results')
-    .select('*')
+    .select(`*, profiles(display_name)`)
     .eq('test_id', testId);
 
   if (error) {
@@ -174,6 +178,16 @@ export const getProfile = async (userId: string): Promise<Profile | null> => {
     data,
     error,
   });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getTheory = async (): Promise<TheorySection[]> => {
+  const { data, error } = await supabase.from('theory_sections').select('*');
 
   if (error) {
     throw new Error(error.message);

@@ -52,7 +52,7 @@ export const AdminPage = () => {
 
         return (
           <div key={result.id}>
-            <h3>{user?.user_metadata.display_name}</h3>
+            <h3>{result.profiles?.display_name}</h3>
 
             <p>
               {result.score} / {result.total}

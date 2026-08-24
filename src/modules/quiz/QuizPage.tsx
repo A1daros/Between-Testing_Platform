@@ -11,6 +11,7 @@ import { Loader } from '../Loader';
 
 export const QuizPage = () => {
   const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -125,11 +126,29 @@ export const QuizPage = () => {
     <div>
       {currentQuestion && (
         <div>
-          <p>
-            {currentQuestionIndex + 1} of {total}
-          </p>
+          <div>
+            <h1>{currentQuestion.tests.title}</h1>
+            <h2>{currentQuestion.tests.description}</h2>
 
-          <h2>{currentQuestion.question}</h2>
+            <h3>{currentQuestion.test_parts?.title}</h3>
+            <p>{currentQuestion.test_parts?.instruction}</p>
+          </div>
+
+          <div>
+            <h2>{currentQuestion.title}</h2>
+
+            <p>
+              {currentQuestionIndex + 1} / {total}
+            </p>
+          </div>
+
+          <div>
+            {currentQuestion.description !== null && (
+              <p>{currentQuestion.description}</p>
+            )}
+
+            <h3>{currentQuestion.question}</h3>
+          </div>
 
           <div>
             {currentAnswers.map((answer) => (
