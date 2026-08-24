@@ -105,7 +105,7 @@ export interface Submodule {
 }
 
 export interface Level {
-  if: number;
+  id: number;
   code: string;
   title: string;
 }

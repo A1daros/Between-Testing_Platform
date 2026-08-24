@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import type {
+  Level,
   Profile,
   QuestionWithAnswers,
   ResultAnswers,
@@ -190,8 +191,21 @@ export const getProfile = async (userId: string): Promise<Profile | null> => {
   return data;
 };
 
-export const getTheory = async (): Promise<TheorySection[]> => {
+export const getTheorys = async (): Promise<TheorySection[]> => {
   const { data, error } = await supabase.from('theory_sections').select('*');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getLevelsById = async (): Promise<Level[]> => {
+  const { data, error } = await supabase
+    .from('levels')
+    .select('*')
+    .order('sort_order', { ascending: true });
 
   if (error) {
     throw new Error(error.message);

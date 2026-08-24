@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import type { Results } from '../../../types/database';
@@ -10,7 +10,6 @@ export const MyResults = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const navigate = useNavigate();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -47,8 +46,6 @@ export const MyResults = () => {
 
   return (
     <div>
-      <button onClick={() => navigate('/')}>Go home</button>
-
       {results.map((result) => {
         const date = new Date(result.created_at);
 
