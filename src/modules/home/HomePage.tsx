@@ -17,7 +17,7 @@ export const HomePage = () => {
 
   return (
     <section id='center'>
-      <h1 className={styles.title}>Wellcome to Beetwen English Hub!</h1>
+      <h1 className={styles.title}>Wellcome to Between English Hub!</h1>
 
       <ChooseLevel title='Select your level' />
     </section>

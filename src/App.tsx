@@ -12,7 +12,8 @@ import { ResultDetailsPage } from './modules/results/components/resultDetails/Re
 import { AdminRoute } from './routes/AdminRoute';
 import { Header } from './modules/shared/components/Layuot/Header';
 import { Footer } from './modules/shared/components/Layuot/Footer';
-import { TextsPage } from './modules/tests';
+import { TestsPage } from './modules/tests';
+import { TestsByLevel } from './modules/tests/TestsByLevel';
 
 export const App = () => {
   return (
@@ -24,8 +25,9 @@ export const App = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route path='/' element={<HomePage />} />
-          <Route path='/tests' element={<TextsPage />} />
-          <Route path='/tests/:testId' element={<QuizPage />} />
+          <Route path='/tests' element={<TestsPage />} />
+          <Route path='/tests/level/:levelId' element={<TestsByLevel />} />
+          <Route path='/levels/:testId' element={<QuizPage />} />
           <Route path='/my-results' element={<MyResults />} />
           <Route path='/my-results/:resultId' element={<ResultDetailsPage />} />
 

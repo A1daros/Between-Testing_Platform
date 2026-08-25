@@ -1,24 +1,23 @@
 import { useEffect, useState } from 'react';
-import styles from './TestsPage.module.scss';
-import type { Test } from '../../types/database';
-import { getTests } from '../../services/quiz';
-import { Loader } from '../Loader';
-import { Link } from 'react-router-dom';
+import styles from './TestsByLevel.module.scss';
+import type { Test } from '../../../types/database';
+import { getTestsByLevelId } from '../../../services/quiz';
+import { Loader } from '../../Loader';
+import { Link, useParams } from 'react-router-dom';
 
-export const TestsPage = () => {
-  const [tests, setTests] = useState<Test[]>([]);
+export const TestsByLevel = () => {
+  const [testsByLevel, setTestsByLevel] = useState<Test[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const { levelId } = useParams();
+
   useEffect(() => {
     const loadTests = async () => {
-      setLoading(true);
-      setErrorMessage('');
-
       try {
-        const data = await getTests();
+        const data = await getTestsByLevelId(Number(levelId));
 
-        setTests(data);
+        setTestsByLevel(data);
       } catch (error) {
         console.error('Failed to load tests:', error);
         setErrorMessage('Failed to load Home Page!');
@@ -28,7 +27,7 @@ export const TestsPage = () => {
     };
 
     loadTests();
-  }, []);
+  }, [levelId]);
 
   if (loading) {
     return <Loader />;
@@ -42,9 +41,9 @@ export const TestsPage = () => {
     <div className={styles.page}>
       <div className={styles.container}>
         <ul>
-          {tests.map((test) => (
+          {testsByLevel.map((test) => (
             <li key={test.id} style={{ cursor: 'pointer' }}>
-              <Link to={`/tests/${test.id}`}>{test.title}</Link>
+              <Link to={`/tests/level/${test.level_id}`}>{test.title}</Link>
             </li>
           ))}
         </ul>

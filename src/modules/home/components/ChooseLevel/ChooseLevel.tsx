@@ -33,7 +33,7 @@ export const ChooseLevel: React.FC<Props> = ({ title }) => {
       <div>
         {levels.slice(0, 3).map((level) => (
           <ul key={level.id}>
-            <Link to={`/tests/levels/${level.id}`}>
+            <Link to={`/tests/level/${level.id}`}>
               <div>
                 <h3>{level.code}</h3>
                 <h3>{level.title}</h3>

@@ -213,3 +213,16 @@ export const getLevelsById = async (): Promise<Level[]> => {
 
   return data;
 };
+
+export const getTestsByLevelId = async (levelId: number): Promise<Test[]> => {
+  const { data, error } = await supabase
+    .from('tests')
+    .select(`*, levels(id)`)
+    .eq('level_id', levelId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
