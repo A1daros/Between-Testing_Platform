@@ -20,7 +20,7 @@ export const TestsByLevel = () => {
         setTestsByLevel(data);
       } catch (error) {
         console.error('Failed to load tests:', error);
-        setErrorMessage('Failed to load Home Page!');
+        setErrorMessage('Failed to load test');
       } finally {
         setLoading(false);
       }
@@ -43,7 +43,7 @@ export const TestsByLevel = () => {
         <ul>
           {testsByLevel.map((test) => (
             <li key={test.id} style={{ cursor: 'pointer' }}>
-              <Link to={`/tests/level/${test.level_id}`}>{test.title}</Link>
+              <Link to={`/tests/${test.id}`}>{test.title}</Link>
             </li>
           ))}
         </ul>

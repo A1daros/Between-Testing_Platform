@@ -1,0 +1,104 @@
+$background: #fff;
+$surface-1: #fafbfc;
+$surface-2: #e4e6eb;
+$elements: #e2e6e9;
+$text-main: #313237;
+$text-secondary: #89939a;
+$text-icons: #b4bdc3;
+$accent: #313237;
+$accent-hover: #4b4d54;
+$text-on-accent: #fff;
+$card-border: 1px solid #e2e6e9;
+$shadow: 0 8px 32px rgba(49, 50, 55, 0.08);
+$filter: brightness(0) invert(0.2);
+
+$green: #27ae60;
+$red: #eb5757;
+
+@mixin h1-font {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: -0.01em;
+}
+
+@mixin h2-font {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 41px;
+  letter-spacing: -0.01em;
+}
+
+@mixin h3-font {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 31px;
+}
+
+@mixin h4-font {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+@mixin uppercase {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 11px;
+  letter-spacing: 0.04em;
+}
+
+@mixin buttons {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+@mixin body-font {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+@mixin small-text {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+@mixin h1-font-mobile {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 41px;
+  letter-spacing: -0.01em;
+}
+
+@mixin h2-font-mobile {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 31px;
+}
+
+@mixin h3-font-mobile {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+@mixin h4-font-mobile {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+}

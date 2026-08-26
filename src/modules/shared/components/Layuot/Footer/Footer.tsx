@@ -9,7 +9,7 @@ export const Footer = () => {
       <div className={styles.container}>
         <div className={styles.footerContent}>
           <Link to='/'>
-            <img src='' alt='Page Logo' />
+            <img src='./img/icons/logo.svg' alt='Page Logo' className={styles.logo} />
           </Link>
         </div>
 
@@ -18,6 +18,7 @@ export const Footer = () => {
             <NavLink
               to='/www.linkedin.com/in/anatolii-lutai-dev'
               className={styles.link}
+              target="_blank"
             >
               LinkedIn
             </NavLink>
@@ -25,7 +26,7 @@ export const Footer = () => {
               Contacts
             </NavLink>
             <NavLink to='/' className={styles.link}>
-              All rights are reserved!
+              Rights
             </NavLink>
           </ul>
         </nav>

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { QuizPage } from './modules/quiz';
 import { ResultPage } from './modules/results';
-import './App.css';
+import './styles/App.module.scss';
 import { AdminPage } from './modules/admin';
 import { Login } from './modules/authentication/components/login';
 import { Register } from './modules/authentication/components/register';
@@ -18,16 +18,20 @@ import { TestsByLevel } from './modules/tests/TestsByLevel';
 export const App = () => {
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+      </Routes>
+
+      <Header />
+
+      <Routes>
+        <Route path='/' element={<HomePage />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path='/' element={<HomePage />} />
           <Route path='/tests' element={<TestsPage />} />
           <Route path='/tests/level/:levelId' element={<TestsByLevel />} />
-          <Route path='/levels/:testId' element={<QuizPage />} />
+          <Route path='/tests/:testId' element={<QuizPage />} />
           <Route path='/my-results' element={<MyResults />} />
           <Route path='/my-results/:resultId' element={<ResultDetailsPage />} />
 
@@ -42,6 +46,7 @@ export const App = () => {
           <Route path='/tests/:testId/results' element={<ResultPage />} />
         </Route>
       </Routes>
+
       <Footer />
     </BrowserRouter>
   );

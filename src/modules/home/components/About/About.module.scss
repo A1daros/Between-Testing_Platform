@@ -1,0 +1,124 @@
+@import '../../../../styles/variables.scss';
+
+.page {
+  width: 100%;
+  margin: 0 auto 56px;
+
+  @media (min-width: 768px) {
+    margin: 0 auto 64px;
+  }
+
+  @media (min-width: 1024px) {
+    margin: 0 auto 80px;
+  }
+}
+
+.title {
+  color: $text-main;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  text-align: center;
+  @include h2-font;
+
+  @media (max-width: 768px) {
+    @include h2-font-mobile;
+  }
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.sectionCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  background-color: $surface-1;
+  border: $card-border;
+  border-radius: 8px;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: $text-main;
+  @include h3-font;
+
+  @media (max-width: 768px) {
+    @include h3-font-mobile;
+  }
+}
+
+.sectionDescription {
+  margin: 0;
+  color: $text-secondary;
+  @include small-text;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 20px auto 0;
+  text-align: center;
+  padding: 24px;
+  gap: 24px;
+  background: radial-gradient(
+    ellipse at center,
+    #fafbfc 0%,
+    #f6eeec 70%,
+    #e7dbd7 100%
+  );
+
+  border: 1px solid #E7DBD7;
+  border-radius: 8px;
+}
+
+.aboutTitle {
+  color: $text-main;
+  margin: 0;
+  padding: 0;
+
+  @include h3-font;
+}
+
+.aboutDescription {
+  margin: 0;
+  padding: 0;
+  color: $text-main;
+
+  @include body-font;
+}
+
+.buttonBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto 0;
+}
+
+.ctaButton {
+  background-color: $accent;
+  color: $text-on-accent;
+  padding: 12px 32px;
+
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  @include buttons;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: $accent-hover;
+    scale: 1.05;
+    box-shadow: 0 6px 16px rgba(49, 50, 55, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

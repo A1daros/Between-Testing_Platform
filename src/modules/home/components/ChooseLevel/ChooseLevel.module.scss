@@ -1,0 +1,71 @@
+@import '../../../../styles/variables.scss';
+
+.page {
+  width: 100%;
+  margin: 0 auto 56px;
+
+  @media (min-width: 768px) {
+    margin: 0 auto 64px;
+  }
+
+  @media (min-width: 1024px) {
+    margin: 0 auto 80px;
+  }
+}
+
+.title {
+  color: $text-main;
+  margin-bottom: 30px;
+  text-align: center;
+  @include h2-font;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.levelItem {
+  background-color: $surface-1;
+  border: $card-border;
+  border-radius: 8px;
+  box-shadow: $shadow;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(49, 50, 55, 0.15);
+  }
+}
+
+.link {
+  display: block;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.itemWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itemLevel {
+  margin: 0;
+  color: $red;
+  text-transform: uppercase;
+  @include h3-font;
+}
+
+.itemTitle {
+  margin: 0;
+  color: $text-main;
+  @include h3-font;
+}

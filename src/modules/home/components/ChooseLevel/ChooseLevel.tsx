@@ -15,33 +15,29 @@ export const ChooseLevel: React.FC<Props> = ({ title }) => {
     const loadLevels = async () => {
       try {
         const data = await getLevelsById();
-
         setLevels(data);
       } catch (error) {
-        console.error('Failed to load leveles:', error);
+        console.error('Failed to load levels:', error);
       }
     };
-
     loadLevels();
   }, []);
 
-  console.log(levels, setLevels);
-
   return (
-    <div>
+    <div className={styles.page}>
       <h2 className={styles.title}>{title}</h2>
-      <div>
+      <ul className={styles.wrapper}>
         {levels.slice(0, 3).map((level) => (
-          <ul key={level.id}>
-            <Link to={`/tests/level/${level.id}`}>
-              <div>
-                <h3>{level.code}</h3>
-                <h3>{level.title}</h3>
+          <li key={level.id} className={styles.levelItem}>
+            <Link to={`/tests/level/${level.id}`} className={styles.link}>
+              <div className={styles.itemWrapper}>
+                <h3 className={styles.itemLevel}>{level.code}</h3>
+                <h3 className={styles.itemTitle}>{level.title}</h3>
               </div>
             </Link>
-          </ul>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
