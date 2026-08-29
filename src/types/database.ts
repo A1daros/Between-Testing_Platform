@@ -30,6 +30,10 @@ export interface QuestionWithAnswers extends Question {
     instruction: string;
     part_id: number;
   } | null;
+
+  levels: {
+    code: string;
+  } | null;
 }
 
 export interface Answer {

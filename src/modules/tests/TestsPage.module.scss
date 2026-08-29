@@ -1,0 +1,218 @@
+@import '../../styles/variables';
+
+.page {
+  min-height: 100vh;
+
+  background-color: $background;
+}
+
+.container {
+  max-width: 1440px;
+
+  margin: 0 auto;
+
+  padding: 0 16px;
+
+  @media (min-width: 768px) {
+    padding: 0 32px;
+  }
+
+  @media (min-width: 1200px) {
+    padding: 0 120px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  gap: 80px;
+
+  padding: 72px 0;
+
+  @media (max-width: 767px) {
+    gap: 56px;
+
+    padding: 48px 0;
+  }
+}
+
+/* =========================
+   HERO
+========================= */
+
+.heroSection {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  max-width: 720px;
+}
+
+.sectionLabel {
+  color: $accent;
+
+  @include uppercase;
+}
+
+.pageTitle {
+  margin: 16px 0 0;
+
+  color: $text-main;
+
+  @include h1-font;
+
+  @media (max-width: 767px) {
+    @include h1-font-mobile;
+  }
+}
+
+.pageDescription {
+  max-width: 520px;
+
+  margin: 20px 0 0;
+
+  color: $text-secondary;
+
+  @include body-font;
+
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* =========================
+   TESTS
+========================= */
+
+.testsSection {
+  width: 100%;
+}
+
+.testsHeader {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 16px;
+
+  border-bottom: $card-border;
+}
+
+.testsLabel {
+  color: $text-secondary;
+
+  @include uppercase;
+}
+
+.testsCount {
+  color: $accent;
+
+  @include h3-font;
+}
+
+.testsList {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.testItem {
+  border-bottom: $card-border;
+}
+
+.testLink {
+  display: grid;
+
+  grid-template-columns: 80px 1fr auto;
+
+  align-items: center;
+
+  gap: 24px;
+
+  min-height: 120px;
+
+  padding: 24px 0;
+
+  color: $text-main;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    padding 0.2s ease;
+
+  &:hover {
+    padding-left: 24px;
+
+    color: $accent;
+
+    .testArrow {
+      transform: translateX(8px);
+    }
+
+    .testNumber {
+      color: $accent;
+    }
+  }
+
+  @media (max-width: 767px) {
+    grid-template-columns: 48px 1fr auto;
+
+    gap: 12px;
+
+    min-height: 88px;
+
+    padding: 16px 0;
+
+    &:hover {
+      padding-left: 12px;
+    }
+  }
+}
+
+.testNumber {
+  color: $text-icons;
+
+  @include uppercase;
+
+  transition: color 0.2s ease;
+}
+
+.testTitle {
+  @include h2-font;
+
+  @media (max-width: 767px) {
+    @include h3-font-mobile;
+  }
+}
+
+.testArrow {
+  color: $accent;
+
+  font-size: 32px;
+
+  line-height: 1;
+
+  transition: transform 0.2s ease;
+
+  @media (max-width: 767px) {
+    font-size: 24px;
+  }
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.error {
+  padding: 32px;
+
+  color: $red;
+
+  border: 1px solid $red;
+
+  @include body-font;
+}

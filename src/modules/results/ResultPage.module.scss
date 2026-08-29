@@ -1,0 +1,372 @@
+@import '../../styles/variables';
+
+.page {
+  min-height: 100vh;
+  background-color: $background;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px;
+
+  @media (min-width: 768px) {
+    padding: 0 32px;
+  }
+
+  @media (min-width: 1200px) {
+    padding: 0 120px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  padding: 72px 0;
+
+  @media (max-width: 767px) {
+    padding: 48px 0;
+  }
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.resultSection {
+  display: flex;
+  flex-direction: column;
+
+  border-top: $card-border;
+  border-bottom: $card-border;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.resultHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 0;
+
+  border-bottom: $card-border;
+
+  @media (max-width: 767px) {
+    gap: 16px;
+  }
+}
+
+.sectionLabel {
+  color: $accent;
+
+  @include uppercase;
+}
+
+.resultStatus {
+  color: $text-secondary;
+
+  @include uppercase;
+
+  @media (max-width: 767px) {
+    text-align: right;
+  }
+}
+
+/* =========================
+   INTRO
+========================= */
+
+.resultIntro {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+
+  gap: 32px;
+
+  padding: 64px 0 48px;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+
+    padding: 40px 0 32px;
+  }
+}
+
+.resultNumber {
+  color: $text-icons;
+
+  @include uppercase;
+}
+
+.introContent {
+  max-width: 800px;
+}
+
+.title {
+  margin: 0;
+
+  color: $text-main;
+
+  @include h1-font;
+
+  @media (max-width: 767px) {
+    @include h1-font-mobile;
+  }
+}
+
+.description {
+  max-width: 600px;
+
+  margin: 20px 0 0;
+
+  color: $text-secondary;
+
+  @include body-font;
+
+  line-height: 1.8;
+}
+
+/* =========================
+   SCORE
+========================= */
+
+.scoreSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 64px 24px;
+
+  background-color: $surface-1;
+
+  border-top: $card-border;
+  border-bottom: $card-border;
+
+  text-align: center;
+}
+
+.scoreLabel {
+  color: $text-secondary;
+
+  @include uppercase;
+}
+
+.scoreValue {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+
+  margin-top: 24px;
+
+  color: $text-main;
+
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+.score {
+  font-size: 96px;
+
+  @media (max-width: 767px) {
+    font-size: 64px;
+  }
+}
+
+.divider {
+  margin: 0 12px;
+
+  color: $text-icons;
+
+  font-size: 48px;
+
+  @media (max-width: 767px) {
+    font-size: 32px;
+  }
+}
+
+.total {
+  color: $text-secondary;
+
+  font-size: 48px;
+
+  @media (max-width: 767px) {
+    font-size: 32px;
+  }
+}
+
+.percentage {
+  margin-top: 20px;
+
+  color: $accent;
+
+  @include h3-font;
+
+  @media (max-width: 767px) {
+    @include h3-font-mobile;
+  }
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.resultMessage {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 700px);
+
+  gap: 32px;
+
+  padding: 64px 0;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+
+    padding: 40px 0;
+  }
+}
+
+.messageNumber {
+  color: $text-icons;
+
+  @include uppercase;
+}
+
+.resultMessage p {
+  margin: 0;
+
+  color: $text-secondary;
+
+  @include body-font;
+
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 24px 0;
+
+  border-top: $card-border;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.button,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 52px;
+
+  padding: 14px 32px;
+
+  cursor: pointer;
+
+  @include buttons;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:focus-visible {
+    outline: 2px solid $accent;
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+
+    cursor: not-allowed;
+
+    transform: none;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+}
+
+.button {
+  color: $text-on-accent;
+
+  background-color: $accent;
+
+  border: 1px solid $accent;
+
+  &:not(:disabled):hover {
+    background-color: $accent-hover;
+
+    transform: translate(-4px, -4px);
+
+    box-shadow: 4px 4px 0 $text-main;
+  }
+
+  &:active {
+    transform: translate(0, 0);
+
+    box-shadow: none;
+  }
+}
+
+.secondaryButton {
+  color: $text-main;
+
+  background-color: transparent;
+
+  border: 1px solid $accent;
+
+  &:hover {
+    color: $text-on-accent;
+
+    background-color: $accent;
+  }
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 64px 0;
+
+  border-top: $card-border;
+  border-bottom: $card-border;
+}
+
+.errorTitle {
+  margin: 24px 0 32px;
+
+  color: $text-main;
+
+  @include h2-font;
+
+  @media (max-width: 767px) {
+    @include h2-font-mobile;
+  }
+}

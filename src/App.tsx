@@ -14,16 +14,23 @@ import { Header } from './modules/shared/components/Layuot/Header';
 import { Footer } from './modules/shared/components/Layuot/Footer';
 import { TestsPage } from './modules/tests';
 import { TestsByLevel } from './modules/tests/TestsByLevel';
+import { PlacementTest } from './modules/tests/PlacementTest';
+import { AboutSchool } from './modules/about-school';
+import { ScrollToTop } from './utils/ScrollToTop';
 
 export const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-      </Routes>
+      <ScrollToTop />
 
       <Header />
+
+      <Routes>
+        <Route path='/placement-test' element={<PlacementTest />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/about-school' element={<AboutSchool />} />
+      </Routes>
 
       <Routes>
         <Route path='/' element={<HomePage />} />
@@ -32,11 +39,13 @@ export const App = () => {
           <Route path='/tests' element={<TestsPage />} />
           <Route path='/tests/level/:levelId' element={<TestsByLevel />} />
           <Route path='/tests/:testId' element={<QuizPage />} />
+
           <Route path='/my-results' element={<MyResults />} />
           <Route path='/my-results/:resultId' element={<ResultDetailsPage />} />
 
           <Route element={<AdminRoute />}>
             <Route path='/admin/results/:testId' element={<AdminPage />} />
+
             <Route
               path='/admin/result-details/:resultId'
               element={<ResultDetailsPage />}

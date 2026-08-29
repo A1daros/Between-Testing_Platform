@@ -1,3 +1,4 @@
+import styles from './QuizPage.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import type { QuestionWithAnswers } from '../../types/database';
@@ -106,83 +107,152 @@ export const QuizPage = () => {
 
   const currentAnswers = currentQuestion?.answers ?? [];
 
-  if (loading) {
+  if (loading || isSaving) {
     return <Loader />;
   }
 
   if (errorMessage) {
-    return <p>{errorMessage}</p>;
+    return (
+      <main className={styles.page}>
+        <div className={styles.container}>
+          <div className={styles.error}>{errorMessage}</div>
+        </div>
+      </main>
+    );
   }
 
   if (!questions.length) {
-    return <p>No questions found!</p>;
+    return (
+      <main className={styles.page}>
+        <div className={styles.container}>
+          <div className={styles.emptyState}>
+            <p>No questions found.</p>
+          </div>
+        </div>
+      </main>
+    );
   }
 
-  if (isSaving) {
-    return <Loader />;
-  }
+  const progress = ((currentQuestionIndex + 1) / total) * 100;
 
   return (
-    <div>
-      {currentQuestion && (
-        <div>
-          <div>
-            <h1>{currentQuestion.tests.title}</h1>
-            <h2>{currentQuestion.tests.description}</h2>
+    <main className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <header className={styles.quizHeader}>
+            <div className={styles.headerTop}>
+              <span className={styles.sectionLabel}>BETWEEN / TEST</span>
 
-            <h3>{currentQuestion.test_parts?.title}</h3>
-            <p>{currentQuestion.test_parts?.instruction}</p>
-          </div>
+              <span className={styles.questionCounter}>
+                {String(currentQuestionIndex + 1).padStart(2, '0')} /{' '}
+                {String(total).padStart(2, '0')}
+              </span>
+            </div>
 
-          <div>
-            <h2>{currentQuestion.title}</h2>
+            <div className={styles.headerContent}>
+              <div>
+                <h1 className={styles.testTitle}>
+                  {currentQuestion.tests.title}
+                </h1>
 
-            <p>
-              {currentQuestionIndex + 1} / {total}
-            </p>
-          </div>
+                {currentQuestion.tests.description && (
+                  <p className={styles.testDescription}>
+                    {currentQuestion.tests.description}
+                  </p>
+                )}
+              </div>
 
-          <div>
-            {currentQuestion.description !== null && (
-              <p>{currentQuestion.description}</p>
+              <div className={styles.progressWrapper}>
+                <div className={styles.progressTrack}>
+                  <div
+                    className={styles.progressBar}
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <section className={styles.questionSection}>
+            <div className={styles.partHeader}>
+              <span className={styles.partNumber}>QUESTION</span>
+
+              {currentQuestion.test_parts?.title && (
+                <span className={styles.partTitle}>
+                  {currentQuestion.test_parts.title}
+                </span>
+              )}
+            </div>
+
+            {currentQuestion.test_parts?.instruction && (
+              <p className={styles.instruction}>
+                {currentQuestion.test_parts.instruction}
+              </p>
             )}
 
-            <h3>{currentQuestion.question}</h3>
-          </div>
+            <div className={styles.questionContent}>
+              {currentQuestion.description !== null && (
+                <p className={styles.questionDescription}>
+                  {currentQuestion.description}
+                </p>
+              )}
 
-          <div>
-            {currentAnswers.map((answer) => (
-              <button
-                key={answer.id}
-                className={selectedAnswerId === answer.id ? 'selected' : ''}
-                style={
-                  selectedAnswerId === answer.id
-                    ? { backgroundColor: 'aquamarine' }
-                    : undefined
-                }
-                onClick={() => handleChooseAnswer(answer)}
-              >
-                {answer.answer_text}
-              </button>
-            ))}
-          </div>
+              <h2 className={styles.question}>{currentQuestion.question}</h2>
+            </div>
 
-          <div className='buttons'>
+            <div className={styles.answers}>
+              {currentAnswers.map((answer, index) => {
+                const isSelected = selectedAnswerId === answer.id;
+
+                return (
+                  <button
+                    key={answer.id}
+                    type='button'
+                    className={`${styles.answer} ${
+                      isSelected ? styles.answerSelected : ''
+                    }`}
+                    onClick={() => handleChooseAnswer(answer)}
+                  >
+                    <span className={styles.answerNumber}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    <span className={styles.answerText}>
+                      {answer.answer_text}
+                    </span>
+
+                    <span className={styles.answerIndicator}>
+                      {isSelected ? '×' : '→'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          <footer className={styles.navigation}>
             <button
+              type='button'
+              className={styles.backButton}
               disabled={currentQuestionIndex === 0}
               onClick={handlePrevQuestion}
             >
-              Go back
+              ← Go back
             </button>
 
-            <button disabled={!selectedAnswerId} onClick={handleNextQuestion}>
+            <button
+              type='button'
+              className={styles.nextButton}
+              disabled={!selectedAnswerId}
+              onClick={handleNextQuestion}
+            >
               {currentQuestionIndex === total - 1
                 ? 'Finish quiz'
-                : 'Next question'}
+                : 'Next question →'}
             </button>
-          </div>
+          </footer>
         </div>
-      )}
-    </div>
+      </div>
+    </main>
   );
 };

@@ -19,16 +19,16 @@ export const Header = () => {
     return null;
   }
 
-  console.log(user?.email);
-  console.log(user?.role);
-  console.log(profile?.role);
-
   return (
     <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.headerContent}>
           <Link to='/'>
-            <img className={styles.logo} src='./img/icons/logo.svg' alt='Page Logo' />
+            <img
+              className={styles.logo}
+              src='./img/icons/logo.svg'
+              alt='Page Logo'
+            />
           </Link>
         </div>
 
@@ -58,10 +58,16 @@ export const Header = () => {
               </NavLink>
             </li>
             <li>
+              <NavLink to='/about-school' className={getLinkClass}>
+                About school
+              </NavLink>
+            </li>
+            <li>
               <NavLink to='/tests' className={getLinkClass}>
                 Tests
               </NavLink>
             </li>
+
             {profile?.role === 'student' ? (
               <li>
                 <NavLink to='/my-results' className={getLinkClass}>

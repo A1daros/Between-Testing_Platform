@@ -1,4 +1,5 @@
 import styles from './FindLevel.module.scss';
+import { Link } from 'react-router-dom';
 
 export const FindLevel = () => {
   return (
@@ -13,7 +14,9 @@ export const FindLevel = () => {
         </div>
 
         <div className={styles.buttonWrapper}>
-          <button className={styles.button}>Let&rsquo;s try!</button>
+          <Link className={styles.button} to='/placement-test'>
+            Let&rsquo;s try!
+          </Link>
         </div>
       </div>
     </section>

@@ -41,6 +41,20 @@ export const getQuestionsWithAnswersByTestId = async (
   return data;
 };
 
+export const getPlacementTest = async (): Promise<QuestionWithAnswers[]> => {
+  const { data, error } = await supabase
+    .from('questions')
+    .select(`*, answers(*), tests:test_id!inner(*), levels(code)`)
+    .eq('tests.test_type', 'placement_test')
+    .order('sort_order', { ascending: true });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data || [];
+};
+
 export const saveResult = async (result: ResultInput): Promise<Results> => {
   const { data, error } = await supabase
     .from('results')

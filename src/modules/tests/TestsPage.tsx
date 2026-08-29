@@ -35,20 +35,56 @@ export const TestsPage = () => {
   }
 
   if (errorMessage) {
-    return <p>{errorMessage}</p>;
+    return (
+      <main className={styles.page}>
+        <div className={styles.container}>
+          <div className={styles.error}>{errorMessage}</div>
+        </div>
+      </main>
+    );
   }
 
   return (
-    <div className={styles.page}>
+    <main className={styles.page}>
       <div className={styles.container}>
-        <ul>
-          {tests.map((test) => (
-            <li key={test.id} style={{ cursor: 'pointer' }}>
-              <Link to={`/tests/${test.id}`}>{test.title}</Link>
-            </li>
-          ))}
-        </ul>
+        <div className={styles.wrapper}>
+          <header className={styles.heroSection}>
+            <span className={styles.sectionLabel}>BETWEEN / TESTS</span>
+
+            <h1 className={styles.pageTitle}>Find your Test</h1>
+
+            <p className={styles.pageDescription}>
+              Choose a test and discover your current level of English.
+            </p>
+          </header>
+
+          <section className={styles.testsSection}>
+            <div className={styles.testsHeader}>
+              <span className={styles.testsLabel}>AVAILABLE TESTS</span>
+
+              <span className={styles.testsCount}>
+                {String(tests.length).padStart(2, '0')}
+              </span>
+            </div>
+
+            <ul className={styles.testsList}>
+              {tests.map((test, index) => (
+                <li key={test.id} className={styles.testItem}>
+                  <Link to={`/tests/${test.id}`} className={styles.testLink}>
+                    <span className={styles.testNumber}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    <span className={styles.testTitle}>{test.title}</span>
+
+                    <span className={styles.testArrow}>→</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
