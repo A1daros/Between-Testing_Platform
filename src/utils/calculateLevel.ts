@@ -1,13 +1,13 @@
 import type { QuestionWithAnswers } from '../types/database';
 
-const LEVEL_ORDER = ['A1', 'A2', 'B1'];
+const LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2'];
 const PASS_THRESHOLD = 3;
 
 export function calculateLevel(
   questions: QuestionWithAnswers[],
   userAnswers: Record<number, number>,
 ): string {
-  let result = 'below A1';
+  let result = 'Begineer A1';
 
   for (const levelCode of LEVEL_ORDER) {
     const levelQuestions = questions.filter(

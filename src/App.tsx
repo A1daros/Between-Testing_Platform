@@ -17,6 +17,9 @@ import { TestsByLevel } from './modules/tests/TestsByLevel';
 import { PlacementTest } from './modules/tests/PlacementTest';
 import { AboutSchool } from './modules/about-school';
 import { ScrollToTop } from './utils/ScrollToTop';
+import { ForgotPassword } from './modules/authentication/components/forgot-password';
+import { UpdatePassword } from './modules/authentication/components/update-password';
+import { ProfilePage } from './modules/profile';
 
 export const App = () => {
   return (
@@ -29,6 +32,8 @@ export const App = () => {
         <Route path='/placement-test' element={<PlacementTest />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/update-password' element={<UpdatePassword />} />
         <Route path='/about-school' element={<AboutSchool />} />
       </Routes>
 
@@ -42,6 +47,8 @@ export const App = () => {
 
           <Route path='/my-results' element={<MyResults />} />
           <Route path='/my-results/:resultId' element={<ResultDetailsPage />} />
+
+          <Route path='/profile/:userId' element={<ProfilePage />} />
 
           <Route element={<AdminRoute />}>
             <Route path='/admin/results/:testId' element={<AdminPage />} />

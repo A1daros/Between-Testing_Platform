@@ -16,15 +16,22 @@ export const Login = () => {
     setErrorMessage('');
     setIsLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
 
-    if (error) {
-      setErrorMessage(error.message);
+      if (error) {
+        setErrorMessage(error.message);
+        return;
+      }
+    } catch (error) {
+      console.error('Failed to sign in:', error);
+
+      setErrorMessage('Something went wrong while creating your account.');
+    } finally {
       setIsLoading(false);
-      return;
     }
 
     navigate('/');

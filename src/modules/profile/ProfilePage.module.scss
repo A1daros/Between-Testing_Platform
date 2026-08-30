@@ -1,0 +1,43 @@
+@import '../../styles/variables.scss';
+
+$bg-page: #f8fafc;
+
+.page {
+  min-height: 100vh;
+  background-color: $bg-page;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.formsContainer {
+  display: flex;
+  flex-direction: row; // Стаємо в ряд
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem; // Гарний простір між двома картками
+  width: 100%;
+  max-width: 960px; // Ширина під дві форми (460px + 460px + gap)
+  animation: pageAppear 0.3s ease-out;
+}
+
+@keyframes pageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Коли екран стає малим (планшети/телефони) — перелаштовуємо в одну колонку
+@media (max-width: 940px) {
+  .formsContainer {
+    flex-direction: column;
+    align-items: center;
+    max-width: 460px;
+  }
+}

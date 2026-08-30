@@ -100,6 +100,8 @@ export interface Profile {
   id: string;
   role: 'student' | 'admin';
   display_name: string;
+  avatar_url: string;
+  birth_date: string;
 }
 
 export interface Submodule {

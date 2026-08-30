@@ -8,35 +8,54 @@ export const Register = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   const handleSignUp = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     setErrorMessage('');
     setIsLoading(true);
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { display_name: name } },
-    });
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            display_name: name,
+          },
+        },
+      });
 
-    if (error) {
-      setErrorMessage(error.message);
+      if (error) {
+        setErrorMessage(error.message);
+        return;
+      }
+
+      setIsConfirmationModalOpen(true);
+
+      setName('');
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+      console.error('Failed to sign up:', error);
+
+      setErrorMessage('Something went wrong while creating your account.');
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
     <div className={styles.wrapper}>
       <form onSubmit={handleSignUp} className={styles.registerForm}>
         <div className={styles.header}>
-          <h2 className={styles.title}>Create an account</h2>
+          <h2 className={styles.title}>CREATE AN ACCOUNT</h2>
           <p className={styles.subtitle}>Enter your details below to sign up</p>
         </div>
 
         {errorMessage && (
-          <div className={styles.errorCard}>
-            <span className={styles.errorIcon}>Paragraph/Alert Sign</span>
+          <div className={styles.errorCard} role='alert' aria-live='assertive'>
             <p className={styles.errorText}>{errorMessage}</p>
           </div>
         )}
@@ -97,6 +116,36 @@ export const Register = () => {
           {isLoading ? 'Creating account...' : 'Get Started'}
         </button>
       </form>
+
+      {isConfirmationModalOpen && (
+        <div className={styles.modalOverlay} role='presentation'>
+          <div
+            className={styles.modal}
+            role='dialog'
+            aria-modal='true'
+            aria-labelledby='confirmation-title'
+          >
+            <span className={styles.modalLabel}>BETWEEN / ACCOUNT</span>
+
+            <h2 id='confirmation-title' className={styles.modalTitle}>
+              Check your email
+            </h2>
+
+            <p className={styles.modalDescription}>
+              We sent a confirmation link to your email address. Please confirm
+              your account before signing in.
+            </p>
+
+            <button
+              type='button'
+              className={styles.modalButton}
+              onClick={() => setIsConfirmationModalOpen(false)}
+            >
+              Got it →
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

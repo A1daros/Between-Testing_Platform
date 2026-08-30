@@ -81,6 +81,12 @@ export const Header = () => {
                 </NavLink>
               </li>
             ) : null}
+
+            <li>
+              <NavLink to={`/profile/${user?.id}`} className={getLinkClass}>
+                Profile
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </div>
