@@ -1,6 +1,7 @@
 import styles from './Register.module.scss';
 import { useState, type FormEvent } from 'react';
 import { supabase } from '../../../../lib/supabase';
+import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
   const [name, setName] = useState('');
@@ -9,6 +10,8 @@ export const Register = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSignUp = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,6 +47,8 @@ export const Register = () => {
     } finally {
       setIsLoading(false);
     }
+
+    navigate('/login');
   };
 
   return (

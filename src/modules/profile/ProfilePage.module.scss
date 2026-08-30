@@ -1,6 +1,7 @@
 @import '../../styles/variables.scss';
 
 $bg-page: #f8fafc;
+$text-muted: #71717a;
 
 .page {
   min-height: 100vh;
@@ -8,36 +9,56 @@ $bg-page: #f8fafc;
   padding: 4rem 2rem;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  place-items: start center;
 }
 
 .formsContainer {
   display: flex;
-  flex-direction: row; // Стаємо в ряд
   justify-content: center;
-  align-items: flex-start;
-  gap: 2rem; // Гарний простір між двома картками
+  gap: 2rem;
   width: 100%;
-  max-width: 960px; // Ширина під дві форми (460px + 460px + gap)
-  animation: pageAppear 0.3s ease-out;
-}
+  max-width: 1160px;
 
-@keyframes pageAppear {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  // Равномерно распределяем колонки, чтобы левая форма и правый блок имели одинаковый приоритет
+  & > div,
+  .rightColumn {
+    flex: 1;
+    width: 100%;
   }
 }
 
-// Коли екран стає малим (планшети/телефони) — перелаштовуємо в одну колонку
-@media (max-width: 940px) {
+// Права колонка: вибудовує дві малі форми вертикально одна під одною
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.infoMessage {
+  font-size: 0.95rem;
+  color: $text-muted;
+  text-align: center;
+  margin-top: 4rem;
+  font-weight: 500;
+}
+
+.errorMessage {
+  composes: infoMessage;
+  color: #ef4444;
+}
+
+// Мобільна адаптивність: усе стає в один суцільний стовпчик
+@media (max-width: 1160px) {
+  .page {
+    padding: 2rem 1rem;
+  }
+
   .formsContainer {
     flex-direction: column;
     align-items: center;
-    max-width: 460px;
+    gap: 1.5rem;
+    max-width: 460px; // Ограничиваем на мобильных, чтобы формы не растягивались на весь экран
   }
 }

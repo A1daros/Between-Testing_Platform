@@ -1,6 +1,5 @@
 @import '../../../../styles/variables.scss';
 
-// Тотожна колірна палітра для консистентності дизайну
 $bg-form: #ffffff;
 $text-main: #09090b;
 $text-muted: #71717a;
@@ -45,11 +44,6 @@ $btn-hover: #27272a;
   line-height: 1.4;
 }
 
-.avatarSection {
-  padding-bottom: 0.5rem;
-  border-bottom: 1px dashed $border-color;
-}
-
 .form {
   display: flex;
   flex-direction: column;
@@ -85,19 +79,14 @@ $btn-hover: #27272a;
     box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.08);
   }
 
-  // Специфічне правило для інпутів дати, щоб мітка не налізала на вбудовану іконку календаря
-  &[type='date'] {
-    color-scheme: light; // Консистентне відображення іконки календаря
-  }
-
-  &:focus ~ .label,
-  &:not(:placeholder-shown) ~ .label {
-    transform: translateY(-10px) scale(0.8);
+  &:focus ~ .inputLabel,
+  &:not(:placeholder-shown) ~ .inputLabel {
+    transform: translateY(-8px) scale(0.8);
     color: $text-muted;
   }
 }
 
-.label {
+.inputLabel {
   position: absolute;
   left: 0.75rem;
   top: 1rem;
@@ -108,7 +97,6 @@ $btn-hover: #27272a;
   transition: all 0.2s ease;
 }
 
-// Картки статусів
 .errorCard,
 .successCard {
   display: flex;

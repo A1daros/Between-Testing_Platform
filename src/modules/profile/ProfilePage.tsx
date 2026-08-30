@@ -7,6 +7,7 @@ import { getProfile } from '../../services/profile';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../Loader';
 import { useAuth } from '../../hooks/useAuth';
+import { ChangeEmailForm } from './components/ChangeEmailForm';
 
 export const ProfilePage = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -68,7 +69,10 @@ export const ProfilePage = () => {
             onSaveSuccess={(updatedProfile) => setProfile(updatedProfile)}
           />
 
-          <ChangePasswordForm />
+          <div className={styles.rightColumn}>
+            <ChangePasswordForm />
+            <ChangeEmailForm />
+          </div>
         </div>
       )}
     </main>

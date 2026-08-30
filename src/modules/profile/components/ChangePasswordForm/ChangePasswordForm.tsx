@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import styles from './ChangePasswordForm.module.scss';
-import { supabase } from '../../../../lib/supabase';
+import { updatePassword } from '../../../../services/profile';
 
 export const ChangePasswordForm = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -27,22 +27,18 @@ export const ChangePasswordForm = () => {
     setIsLoading(true);
 
     try {
-      // Оновлення пароля для поточної авторизованої сесії
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword,
-      });
-
-      if (error) {
-        setErrorMessage(error.message);
-        return;
-      }
+      await updatePassword(newPassword);
 
       setSuccessMessage('Your password has been successfully changed.');
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
-      console.error('Failed to change password:', error);
-      setErrorMessage('Something went wrong. Please try again later.');
+      console.error('Failed to change password::', error);
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again later.',
+      );
     } finally {
       setIsLoading(false);
     }
