@@ -3,7 +3,7 @@
 An English learning platform with CEFR level testing (A1–B2),
 personal student profiles, and an administrative panel for teachers.
 
-🔗 **Demo:** [between-etp.vercel.app](#)
+🔗 **Demo:** [between-etp.vercel.app](https://between-testing-platform.vercel.app/)
 
 ## 📸 Screenshots
 
