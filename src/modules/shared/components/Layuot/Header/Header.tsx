@@ -1,19 +1,48 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Header.module.scss';
 import { useAuth } from '../../../../../hooks/useAuth';
+import { useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
 
 export const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const getLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `${styles.link} ${isActive ? styles.isActive : ''} `;
+    `${styles.link} ${isActive ? styles.isActive : ''} `.trim();
 
   const { signOut, user, profile, loading } = useAuth();
 
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
+  const handleSignOut = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     signOut();
+    setIsMenuOpen(false);
     navigate('/');
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
 
   if (loading) {
     return null;
@@ -23,7 +52,11 @@ export const Header = () => {
     <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.headerContent}>
-          <Link to='/'>
+          <Link
+            to='/'
+            aria-label='Home page'
+            onClick={() => setIsMenuOpen(false)}
+          >
             <img
               className={styles.logo}
               src='./img/icons/logo.svg'
@@ -32,28 +65,14 @@ export const Header = () => {
           </Link>
         </div>
 
-        <nav className={styles.nav}>
-          <ul className={styles.list}>
-            {!user ? (
-              <li>
-                <NavLink to='/login' className={getLinkClass}>
-                  Sign in
-                </NavLink>
-              </li>
-            ) : (
-              <li>
-                <NavLink
-                  to='/'
-                  onClick={handleSignOut}
-                  className={getLinkClass}
-                >
-                  Log out
-                </NavLink>
-              </li>
-            )}
-
+        <nav
+          id='primary-nav'
+          className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}
+          aria-controls='primary-nav'
+        >
+          <ul className={styles.list} onClick={() => setIsMenuOpen(false)}>
             <li>
-              <NavLink to='/' className={getLinkClass}>
+              <NavLink to='/' end className={getLinkClass}>
                 Home
               </NavLink>
             </li>
@@ -82,13 +101,38 @@ export const Header = () => {
               </li>
             ) : null}
 
-            <li>
-              <NavLink to={`/profile/${user?.id}`} className={getLinkClass}>
-                Profile
-              </NavLink>
-            </li>
+            {user && (
+              <li>
+                <NavLink to={`/profile/${user?.id}`} className={getLinkClass}>
+                  Profile
+                </NavLink>
+              </li>
+            )}
+
+            {!user ? (
+              <li>
+                <NavLink to='/login' className={getLinkClass}>
+                  Sign in
+                </NavLink>
+              </li>
+            ) : (
+              <li>
+                <button onClick={handleSignOut} className={styles.logoutBtn}>
+                  Log out
+                </button>
+              </li>
+            )}
           </ul>
         </nav>
+
+        <button
+          className={`${styles.burger} ${isMenuOpen ? styles.burgerActive : ''}`}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label='Toggle menu'
+          aria-expanded={isMenuOpen}
+        >
+          <span></span>
+        </button>
       </div>
     </header>
   );

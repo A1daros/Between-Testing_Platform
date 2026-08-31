@@ -25,7 +25,7 @@
   }
 
   @media (min-width: 1024px) {
-    height: 64px;
+    min-height: 64px;
     padding: 0 152px;
     flex-wrap: nowrap;
   }
@@ -128,7 +128,8 @@
   cursor: pointer;
   outline: none;
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     .iconWrapper {
       background-color: $text-icons;
     }

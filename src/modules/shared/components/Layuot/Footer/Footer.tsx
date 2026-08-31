@@ -2,32 +2,47 @@ import { Link, NavLink } from 'react-router-dom';
 import styles from './Footer.module.scss';
 
 export const Footer = () => {
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollTop = () =>
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
 
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.footerContent}>
-          <Link to='/'>
-            <img src='./img/icons/logo.svg' alt='Page Logo' className={styles.logo} />
+          <Link to='/' aria-label='Go to home page'>
+            <img
+              src='./img/icons/logo.svg'
+              alt='Page Logo'
+              className={styles.logo}
+            />
           </Link>
         </div>
 
         <nav className={styles.nav}>
           <ul className={styles.list}>
-            <NavLink
-              to='/www.linkedin.com/in/anatolii-lutai-dev'
-              className={styles.link}
-              target="_blank"
-            >
-              LinkedIn
-            </NavLink>
-            <NavLink to='/contacts' className={styles.link}>
-              Contacts
-            </NavLink>
-            <NavLink to='/' className={styles.link}>
-              Rights
-            </NavLink>
+            <li>
+              <a
+                href='https://linkedin.com'
+                className={styles.link}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                LinkedIn
+              </a>
+            </li>
+            <li>
+              <NavLink to='/contacts' className={styles.link}>
+                Contacts
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to='/' className={styles.link}>
+                Rights
+              </NavLink>
+            </li>
           </ul>
         </nav>
 

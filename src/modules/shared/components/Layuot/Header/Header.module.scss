@@ -2,14 +2,11 @@
 
 .header {
   position: sticky;
+  top: 0;
   width: 100%;
-    background-color: $background;
-    border-bottom: 1px solid $surface-2;
-    box-shadow: $shadow;
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+  background-color: $background;
+  border-bottom: 1px solid $surface-2;
+  box-shadow: $shadow;
   z-index: 100;
 }
 
@@ -26,7 +23,6 @@
   @media (min-width: 1024px) {
     height: 64px;
     padding: 0 32px;
-    flex-wrap: nowrap;
   }
 }
 
@@ -37,22 +33,18 @@
 }
 
 .logo {
-  width: 64px;
-  height: 64px;
+  width: 40px;
+  height: 40px;
   display: block;
-  transition:
-    transform 0.2s ease-in-out,
-    opacity 0.3s ease,
-    filter 0.3s ease;
+  transition: transform 0.2s ease-in-out;
 
-  &:hover,
-  &:focus-visible {
-    opacity: 0.7;
-    transform: scale(1.1);
+  &:hover {
+    transform: scale(1.05);
   }
 
   @media (min-width: 1024px) {
-    width: 80px;
+    width: 64px;
+    height: 64px;
   }
 }
 
@@ -61,9 +53,9 @@
   top: 48px;
   right: -100%;
   width: 100%;
-  height: calc(50vh - 24px);
+  height: calc(100vh - 48px);
   background-color: $background;
-  padding: 24px;
+  padding: 32px 24px;
   box-sizing: border-box;
   z-index: 99;
   overflow-y: auto;
@@ -79,7 +71,7 @@
     height: 100%;
     background-color: transparent;
     padding: 0;
-    margin: 0 24px;
+    margin-left: auto;
     overflow: visible;
   }
 }
@@ -95,11 +87,12 @@
   @media (min-width: 768px) {
     flex-direction: row;
     height: 100%;
+    align-items: center;
     gap: 32px;
   }
 
   @media (min-width: 1024px) {
-    gap: 64px;
+    gap: 48px;
   }
 }
 
@@ -107,28 +100,107 @@
   display: flex;
   align-items: center;
   width: fit-content;
-  height: 100%;
-  padding-bottom: 8px;
   text-decoration: none;
-  text-transform: uppercase;
-    color: black;
-  border-bottom: 3px solid transparent;
-  transition:
-    color 0.3s ease,
-    border-color 0.3s ease;
+  color: $text-main;
+  transition: color 0.2s ease;
+
+  @include buttons;
 
   &:hover {
-    color: gray;
+    color: $text-secondary;
   }
 
-  @include uppercase;
-
   @media (min-width: 768px) {
-    padding: 0;
+    height: 64px;
+    border-bottom: 3px solid transparent;
+    padding: 0 4px;
   }
 }
 
 .isActive {
+  color: $accent;
+
+  @media (min-width: 768px) {
+    border-bottom-color: $accent;
+  }
+}
+
+.logoutBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
   color: $text-main;
-  border-bottom-color: $accent;
+  transition: color 0.2s ease;
+
+  @include buttons;
+
+  &:hover {
+    color: $red;
+  }
+
+  @media (min-width: 768px) {
+    height: 64px;
+    border-bottom: 3px solid transparent;
+    padding: 0 4px;
+  }
+}
+
+.burger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 101;
+
+  span,
+  span::before,
+  span::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background-color: $text-main;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  span {
+    left: calc(50% - 10px);
+  }
+  span::before {
+    top: -6px;
+    left: 0;
+  }
+  span::after {
+    top: 6px;
+    left: 0;
+  }
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.burgerActive {
+  span {
+    background-color: transparent;
+  }
+  span::before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+  span::after {
+    transform: rotate(-45deg);
+    top: 0;
+  }
 }
