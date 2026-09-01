@@ -3,6 +3,7 @@
 .header {
   position: sticky;
   width: 100%;
+  max-width: 1440px;
   background-color: variables.$background;
   border-bottom: 1px solid variables.$surface-2;
   box-shadow: variables.$shadow;
@@ -17,7 +18,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1440px;
   width: 100%;
   height: 48px;
   padding: 0 16px;
