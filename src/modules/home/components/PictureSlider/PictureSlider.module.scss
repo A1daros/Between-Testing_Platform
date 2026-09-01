@@ -27,7 +27,7 @@
   flex: 1;
   height: 320px;
   overflow: hidden;
-    background-color: variables.$surface-1;
+  background-color: variables.$surface-1;
 
   @media (min-width: 768px) {
     height: 200px;
@@ -116,7 +116,7 @@
   padding: 0;
   border: none;
   cursor: pointer;
-    background: variables.$elements;
+  background: variables.$elements;
   transition:
     background-color 0.3s ease,
     transform 0.3s ease;

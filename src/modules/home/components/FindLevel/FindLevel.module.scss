@@ -1,4 +1,4 @@
-@use '../../../../styles/variables.scss';
+@use '../../../../styles/variables';
 
 .page {
   width: 100%;
@@ -40,25 +40,28 @@
 .title {
   margin: 0;
   color: variables.$text-main;
-  @include variables.h3-font;
 
-  @media (max-width: 768px) {
-    @include variables.h3-font-mobile;
+  @include variables.h3-font-mobile;
+
+  @media (min-width: 768px) {
+    @include variables.h3-font;
   }
 }
 
 .description {
   margin: 0;
   color: variables.$text-secondary;
+
   @include variables.body-font;
 }
 
 .buttonWrapper {
   display: flex;
   flex-shrink: 0;
+  width: 100%;
 
-  @media (max-width: 768px) {
-    width: 100%;
+  @media (min-width: 768px) {
+    width: auto;
   }
 }
 
@@ -70,14 +73,16 @@
   border-radius: 8px;
   cursor: pointer;
   white-space: nowrap;
-  @include variables.buttons;
+  width: 100%;
   transition: background-color 0.2s ease;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
 
   &:hover {
     background-color: variables.$accent-hover;
+  }
+
+  @include variables.buttons;
+
+  @media (min-width: 768px) {
+    width: auto;
   }
 }

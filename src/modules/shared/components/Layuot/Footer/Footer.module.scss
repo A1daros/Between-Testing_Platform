@@ -19,15 +19,19 @@
   padding: 0 16px;
 
   @media (min-width: 768px) {
-    padding: 0 32px;
+    padding: 0 24px;
     align-items: center;
     flex-direction: row;
   }
 
   @media (min-width: 1024px) {
     min-height: 64px;
-    padding: 0 152px;
+    padding: 0 32px;
     flex-wrap: nowrap;
+  }
+
+  @media (min-width: 1200px) {
+    padding: 0 152px;
   }
 }
 

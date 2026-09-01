@@ -58,18 +58,19 @@
 .nav {
   position: fixed;
   top: 48px;
-  right: -100%;
+  right: 0;
   width: 100%;
-  height: calc(50vh - 24px);
+  height: calc(50vh - 48px);
   background-color: variables.$background;
   padding: 24px;
   box-sizing: border-box;
   z-index: 99;
   overflow-y: auto;
-  transition: right 0.3s ease;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
 
   &.navOpen {
-    right: 0;
+    transform: translateX(0);
   }
 
   @media (min-width: 768px) {
@@ -80,6 +81,7 @@
     padding: 0;
     margin: 0 24px;
     overflow: visible;
+    transform: none;
   }
 }
 
@@ -146,11 +148,11 @@
   color: variables.$text-main;
   transition: color 0.2s ease;
 
-  @include variables.buttons;
-
   &:hover {
     color: variables.$red;
   }
+
+  @include variables.buttons;
 
   @media (min-width: 768px) {
     height: 64px;

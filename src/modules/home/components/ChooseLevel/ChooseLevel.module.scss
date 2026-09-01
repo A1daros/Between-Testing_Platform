@@ -1,4 +1,4 @@
-@use '../../../../styles/variables.scss';
+@use '../../../../styles/variables';
 
 .page {
   width: 100%;
@@ -17,7 +17,11 @@
   color: variables.$text-main;
   margin-bottom: 30px;
   text-align: center;
-  @include variables.h2-font;
+  @include variables.h2-font-mobile;
+
+  @media (min-width: 768px) {
+    @include variables.h2-font;
+  }
 }
 
 .wrapper {
@@ -25,8 +29,12 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   list-style: none;
-  padding: 0;
+  padding: 0 16px;
   margin: 0;
+
+  @media (min-width: 768px) {
+    padding: 0;
+  }
 }
 
 .levelItem {
@@ -61,11 +69,21 @@
   margin: 0;
   color: variables.$red;
   text-transform: uppercase;
-  @include variables.h3-font;
+
+  @include variables.h3-font-mobile;
+
+  @media (min-width: 768px) {
+    @include variables.h3-font;
+  }
 }
 
 .itemTitle {
   margin: 0;
   color: variables.$text-main;
-  @include variables.h3-font;
+
+  @include variables.h3-font-mobile;
+
+  @media (min-width: 768px) {
+    @include variables.h3-font;
+  }
 }
