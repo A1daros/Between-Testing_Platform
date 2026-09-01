@@ -1,8 +1,8 @@
-@import '../../../../styles/variables.scss';
+@use '../../../../styles/variables.scss';
 
 // Тотожна колірна палітра для консистентності дизайну
 $bg-form: #ffffff;
-$text-main: #09090b;
+variables.$text-main: #09090b;
 $text-muted: #71717a;
 $border-color: #e4e4e7;
 $btn-bg: #18181b;
@@ -40,7 +40,7 @@ $btn-hover: #27272a;
 
 .title {
   margin: 0;
-  color: $text-main;
+  color: variables.$text-main;
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.025em;
@@ -76,7 +76,7 @@ $btn-hover: #27272a;
   padding: 1rem 0.75rem 0.5rem 0.75rem;
   height: 52px;
   font-size: 0.95rem;
-  color: $text-main;
+  color: variables.$text-main;
   background-color: transparent;
   border: 1px solid $border-color;
   border-radius: 8px;
@@ -137,7 +137,7 @@ $btn-hover: #27272a;
   transition: color 0.2s;
 
   &:hover {
-    color: $text-main;
+    color: variables.$text-main;
   }
 }
 
@@ -145,7 +145,7 @@ $btn-hover: #27272a;
   width: 100%;
   height: 44px;
   background-color: $btn-bg;
-  color: $surface-1;
+  color: variables.$surface-1;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -162,21 +162,21 @@ $btn-hover: #27272a;
     cursor: not-allowed;
   }
 
-  @include buttons;
+  @include variables.buttons;
 }
 
 .errorCard {
   padding: 0.75rem 1rem;
-  background-color: $background;
+  background-color: variables.$background;
   border: 1px solid $border-color;
   border-radius: 8px;
 }
 
 .errorText {
   margin: 0;
-  color: $red;
+  color: variables.$red;
 
-  @include h4-font;
+  @include variables.h4-font;
 }
 
 .signupLink {
@@ -186,7 +186,7 @@ $btn-hover: #27272a;
 }
 
 .linkAccent {
-  color: $text-main;
+  color: variables.$text-main;
   font-weight: 500;
   text-decoration: none;
 

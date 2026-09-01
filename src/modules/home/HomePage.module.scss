@@ -1,7 +1,7 @@
-@import '../../styles/variables';
+@use '../../styles/variables';
 
 .page {
-  background-color: $background;
+  background-color: variables.$background;
   transition: background-color 0.3s ease;
 }
 
@@ -32,25 +32,25 @@
   margin: -1px;
   padding: 0;
   border: 0;
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h1-font-mobile;
+  @include variables.h1-font-mobile;
 
   @media (min-width: 768px) {
-    @include h1-font;
+    @include variables.h1-font;
   }
 }
 
 .title {
   margin: 24px 0;
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h1-font-mobile;
+  @include variables.h1-font-mobile;
 
   @media (min-width: 768px) {
     margin: 32px 0;
 
-    @include h1-font;
+    @include variables.h1-font;
   }
 
   @media (min-width: 1024px) {

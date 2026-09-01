@@ -1,9 +1,9 @@
-@import '../../styles/variables';
+@use '../../styles/variables';
 
 .page {
   min-height: 100vh;
 
-  background-color: $background;
+  background-color: variables.$background;
 }
 
 .container {
@@ -51,20 +51,20 @@
 }
 
 .sectionLabel {
-  color: $accent;
+  color: variables.$accent;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .pageTitle {
   margin: 16px 0 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h1-font;
+  @include variables.h1-font;
 
   @media (max-width: 767px) {
-    @include h1-font-mobile;
+    @include variables.h1-font-mobile;
   }
 }
 
@@ -73,9 +73,9 @@
 
   margin: 20px 0 0;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include body-font;
+  @include variables.body-font;
 
   font-size: 16px;
   line-height: 1.7;
@@ -97,19 +97,19 @@
 
   padding-bottom: 16px;
 
-  border-bottom: $card-border;
+  border-bottom: variables.$card-border;
 }
 
 .testsLabel {
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .testsCount {
-  color: $accent;
+  color: variables.$accent;
 
-  @include h3-font;
+  @include variables.h3-font;
 }
 
 .testsList {
@@ -120,7 +120,7 @@
 }
 
 .testItem {
-  border-bottom: $card-border;
+  border-bottom: variables.$card-border;
 }
 
 .testLink {
@@ -136,7 +136,7 @@
 
   padding: 24px 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
   text-decoration: none;
 
@@ -147,14 +147,14 @@
   &:hover {
     padding-left: 24px;
 
-    color: $accent;
+    color: variables.$accent;
 
     .testArrow {
       transform: translateX(8px);
     }
 
     .testNumber {
-      color: $accent;
+      color: variables.$accent;
     }
   }
 
@@ -174,23 +174,23 @@
 }
 
 .testNumber {
-  color: $text-icons;
+  color: variables.$text-icons;
 
-  @include uppercase;
+  @include variables.uppercase;
 
   transition: color 0.2s ease;
 }
 
 .testTitle {
-  @include h2-font;
+  @include variables.h2-font;
 
   @media (max-width: 767px) {
-    @include h3-font-mobile;
+    @include variables.h3-font-mobile;
   }
 }
 
 .testArrow {
-  color: $accent;
+  color: variables.$accent;
 
   font-size: 32px;
 
@@ -210,9 +210,9 @@
 .error {
   padding: 32px;
 
-  color: $red;
+  color: variables.$red;
 
-  border: 1px solid $red;
+  border: 1px solid variables.$red;
 
-  @include body-font;
+  @include variables.body-font;
 }

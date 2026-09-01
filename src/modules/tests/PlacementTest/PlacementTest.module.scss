@@ -1,8 +1,8 @@
-@import '../../../styles/variables';
+@use '../../../styles/variables';
 
 .page {
   min-height: 100vh;
-  background-color: $background;
+  background-color: variables.$background;
 }
 
 .container {
@@ -35,15 +35,15 @@
 ========================= */
 
 .sectionLabel {
-  color: $accent;
+  color: variables.$accent;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .questionCounter {
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 /* =========================
@@ -51,7 +51,7 @@
 ========================= */
 
 .quizHeader {
-  border-bottom: $card-border;
+  border-bottom: variables.$card-border;
 }
 
 .headerTop {
@@ -61,7 +61,7 @@
 
   padding-bottom: 16px;
 
-  border-bottom: $card-border;
+  border-bottom: variables.$card-border;
 }
 
 .headerContent {
@@ -82,12 +82,12 @@
 .testTitle {
   margin: 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h2-font;
+  @include variables.h2-font;
 
   @media (max-width: 767px) {
-    @include h2-font-mobile;
+    @include variables.h2-font-mobile;
   }
 }
 
@@ -96,9 +96,9 @@
 
   margin: 16px 0 0;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include body-font;
+  @include variables.body-font;
 
   line-height: 1.7;
 }
@@ -118,13 +118,13 @@
 
   overflow: hidden;
 
-  background-color: $elements;
+  background-color: variables.$elements;
 }
 
 .progressBar {
   height: 100%;
 
-  background-color: $accent;
+  background-color: variables.$accent;
 
   transition: width 0.3s ease;
 }
@@ -150,22 +150,22 @@
 }
 
 .partNumber {
-  color: $text-icons;
+  color: variables.$text-icons;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .partTitle {
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include small-text;
+  @include variables.small-text;
 
   &::before {
     content: '/';
 
     margin-right: 16px;
 
-    color: $text-icons;
+    color: variables.$text-icons;
   }
 }
 
@@ -176,23 +176,23 @@
 .questionDescription {
   margin: 0 0 16px;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include small-text;
+  @include variables.small-text;
 }
 
 .question {
   margin: 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h2-font;
+  @include variables.h2-font;
 
   font-size: 30px;
   line-height: 1.35;
 
   @media (max-width: 767px) {
-    @include h2-font-mobile;
+    @include variables.h2-font-mobile;
   }
 }
 
@@ -221,17 +221,17 @@
 
   padding: 16px 20px;
 
-  color: $text-main;
+  color: variables.$text-main;
   background-color: transparent;
 
   border: none;
-  border-top: $card-border;
+  border-top: variables.$card-border;
 
   cursor: pointer;
 
   text-align: left;
 
-  @include body-font;
+  @include variables.body-font;
 
   transition:
     background-color 0.2s ease,
@@ -239,17 +239,17 @@
     color 0.2s ease;
 
   &:last-child {
-    border-bottom: $card-border;
+    border-bottom: variables.$card-border;
   }
 
   &:hover {
     padding-left: 28px;
 
-    background-color: $surface-1;
+    background-color: variables.$surface-1;
   }
 
   &:focus-visible {
-    outline: 2px solid $accent;
+    outline: 2px solid variables.$accent;
     outline-offset: -2px;
   }
 
@@ -269,9 +269,9 @@
 }
 
 .answerNumber {
-  color: $text-icons;
+  color: variables.$text-icons;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .answerText {
@@ -281,7 +281,7 @@
 }
 
 .answerIndicator {
-  color: $text-icons;
+  color: variables.$text-icons;
 
   font-size: 22px;
 
@@ -294,28 +294,28 @@
 
 .answer:hover {
   .answerIndicator {
-    color: $accent;
+    color: variables.$accent;
 
     transform: translateX(4px);
   }
 }
 
 .answerSelected {
-  color: $text-on-accent;
+  color: variables.$text-on-accent;
 
-  background-color: $accent;
+  background-color: variables.$accent;
 
-  border-color: $accent;
+  border-color: variables.$accent;
 
   &:hover {
     padding-left: 28px;
 
-    background-color: $accent;
+    background-color: variables.$accent;
   }
 
   .answerNumber,
   .answerIndicator {
-    color: $text-on-accent;
+    color: variables.$text-on-accent;
   }
 
   .answerIndicator {
@@ -323,7 +323,7 @@
   }
 
   & + .answer {
-    border-top-color: $accent;
+    border-top-color: variables.$accent;
   }
 }
 
@@ -340,7 +340,7 @@
 
   padding-top: 24px;
 
-  border-top: $card-border;
+  border-top: variables.$card-border;
 
   @media (max-width: 767px) {
     flex-direction: column-reverse;
@@ -354,11 +354,11 @@
 
   padding: 12px 24px;
 
-  border: 1px solid $accent;
+  border: 1px solid variables.$accent;
 
   cursor: pointer;
 
-  @include buttons;
+  @include variables.buttons;
 
   transition:
     background-color 0.2s ease,
@@ -374,30 +374,30 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $accent;
+    outline: 2px solid variables.$accent;
     outline-offset: 3px;
   }
 }
 
 .backButton {
-  color: $text-main;
+  color: variables.$text-main;
 
   background-color: transparent;
 
   &:not(:disabled):hover {
-    color: $text-on-accent;
+    color: variables.$text-on-accent;
 
-    background-color: $accent;
+    background-color: variables.$accent;
   }
 }
 
 .nextButton {
-  color: $text-on-accent;
+  color: variables.$text-on-accent;
 
-  background-color: $accent;
+  background-color: variables.$accent;
 
   &:not(:disabled):hover {
-    background-color: $accent-hover;
+    background-color: variables.$accent-hover;
 
     transform: translateY(-2px);
   }
@@ -411,8 +411,8 @@
   display: flex;
   flex-direction: column;
 
-  border-top: $card-border;
-  border-bottom: $card-border;
+  border-top: variables.$card-border;
+  border-bottom: variables.$card-border;
 }
 
 .resultHeader {
@@ -422,13 +422,13 @@
 
   padding: 16px 0;
 
-  border-bottom: $card-border;
+  border-bottom: variables.$card-border;
 }
 
 .resultStatus {
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .resultContent {
@@ -449,9 +449,9 @@
 }
 
 .resultNumber {
-  color: $text-icons;
+  color: variables.$text-icons;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .resultTitle {
@@ -459,12 +459,12 @@
 
   margin: 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h1-font;
+  @include variables.h1-font;
 
   @media (max-width: 767px) {
-    @include h1-font-mobile;
+    @include variables.h1-font-mobile;
   }
 }
 
@@ -475,9 +475,9 @@
 
   margin: 20px 0 0;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include body-font;
+  @include variables.body-font;
 
   line-height: 1.8;
 
@@ -497,18 +497,18 @@
 
   padding: 64px 24px;
 
-  background-color: $surface-1;
+  background-color: variables.$surface-1;
 
-  border-top: $card-border;
-  border-bottom: $card-border;
+  border-top: variables.$card-border;
+  border-bottom: variables.$card-border;
 
   text-align: center;
 }
 
 .levelLabel {
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .levelBadge {
@@ -521,7 +521,7 @@
 
   margin-top: 24px;
 
-  background-color: $accent;
+  background-color: variables.$accent;
 
   border-radius: 50%;
 
@@ -532,7 +532,7 @@
 }
 
 .levelCode {
-  color: $text-on-accent;
+  color: variables.$text-on-accent;
 
   font-family: 'Montserrat', sans-serif;
   font-size: 48px;
@@ -547,12 +547,12 @@
 .levelName {
   margin: 24px 0 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h3-font;
+  @include variables.h3-font;
 
   @media (max-width: 767px) {
-    @include h3-font-mobile;
+    @include variables.h3-font-mobile;
   }
 }
 
@@ -578,9 +578,9 @@
 }
 
 .philosophyNumber {
-  color: $text-icons;
+  color: variables.$text-icons;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .philosophyContent {
@@ -592,15 +592,15 @@
   p {
     margin: 0;
 
-    color: $text-secondary;
+    color: variables.$text-secondary;
 
-    @include body-font;
+    @include variables.body-font;
 
     line-height: 1.8;
   }
 
   strong {
-    color: $text-main;
+    color: variables.$text-main;
   }
 }
 
@@ -614,7 +614,7 @@
 
   padding: 24px 0;
 
-  border-top: $card-border;
+  border-top: variables.$card-border;
 }
 
 .button {
@@ -626,14 +626,14 @@
 
   padding: 14px 32px;
 
-  color: $text-on-accent;
-  background-color: $accent;
+  color: variables.$text-on-accent;
+  background-color: variables.$accent;
 
-  border: 1px solid $accent;
+  border: 1px solid variables.$accent;
 
   cursor: pointer;
 
-  @include buttons;
+  @include variables.buttons;
 
   transition:
     background-color 0.2s ease,
@@ -641,11 +641,11 @@
     box-shadow 0.2s ease;
 
   &:hover {
-    background-color: $accent-hover;
+    background-color: variables.$accent-hover;
 
     transform: translate(-4px, -4px);
 
-    box-shadow: 4px 4px 0 $text-main;
+    box-shadow: 4px 4px 0 variables.$text-main;
   }
 
   &:active {
@@ -655,7 +655,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $accent;
+    outline: 2px solid variables.$accent;
     outline-offset: 3px;
   }
 
@@ -671,17 +671,17 @@
 .error {
   padding: 32px;
 
-  color: $red;
+  color: variables.$red;
 
-  border: 1px solid $red;
+  border: 1px solid variables.$red;
 
-  @include body-font;
+  @include variables.body-font;
 }
 
 .emptyState {
   padding: 64px 0;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include body-font;
+  @include variables.body-font;
 }

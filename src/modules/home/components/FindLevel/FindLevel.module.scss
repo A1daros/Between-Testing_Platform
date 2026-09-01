@@ -1,4 +1,4 @@
-@import '../../../../styles/variables.scss';
+@use '../../../../styles/variables.scss';
 
 .page {
   width: 100%;
@@ -18,8 +18,8 @@
   flex-direction: column;
   gap: 24px;
   padding: 24px;
-  background-color: $surface-1;
-  border: $card-border;
+  background-color: variables.$surface-1;
+  border: variables.$card-border;
   border-radius: 8px;
 
   @media (min-width: 768px) {
@@ -39,18 +39,18 @@
 
 .title {
   margin: 0;
-  color: $text-main;
-  @include h3-font;
+  color: variables.$text-main;
+  @include variables.h3-font;
 
   @media (max-width: 768px) {
-    @include h3-font-mobile;
+    @include variables.h3-font-mobile;
   }
 }
 
 .description {
   margin: 0;
-  color: $text-secondary;
-  @include body-font;
+  color: variables.$text-secondary;
+  @include variables.body-font;
 }
 
 .buttonWrapper {
@@ -63,14 +63,14 @@
 }
 
 .button {
-  background-color: $accent;
-  color: $text-on-accent;
+  background-color: variables.$accent;
+  color: variables.$text-on-accent;
   padding: 12px 32px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   white-space: nowrap;
-  @include buttons;
+  @include variables.buttons;
   transition: background-color 0.2s ease;
 
   @media (max-width: 768px) {
@@ -78,6 +78,6 @@
   }
 
   &:hover {
-    background-color: $accent-hover;
+    background-color: variables.$accent-hover;
   }
 }

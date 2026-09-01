@@ -1,8 +1,8 @@
-@import '../../styles/variables';
+@use '../../styles/variables';
 
 .page {
   min-height: 100vh;
-  background-color: $background;
+  background-color: variables.$background;
 }
 
 .container {
@@ -38,8 +38,8 @@
   display: flex;
   flex-direction: column;
 
-  border-top: $card-border;
-  border-bottom: $card-border;
+  border-top: variables.$card-border;
+  border-bottom: variables.$card-border;
 }
 
 /* =========================
@@ -53,7 +53,7 @@
 
   padding: 16px 0;
 
-  border-bottom: $card-border;
+  border-bottom: variables.$card-border;
 
   @media (max-width: 767px) {
     gap: 16px;
@@ -61,15 +61,15 @@
 }
 
 .sectionLabel {
-  color: $accent;
+  color: variables.$accent;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .resultStatus {
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include uppercase;
+  @include variables.uppercase;
 
   @media (max-width: 767px) {
     text-align: right;
@@ -98,9 +98,9 @@
 }
 
 .resultNumber {
-  color: $text-icons;
+  color: variables.$text-icons;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .introContent {
@@ -110,12 +110,12 @@
 .title {
   margin: 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h1-font;
+  @include variables.h1-font;
 
   @media (max-width: 767px) {
-    @include h1-font-mobile;
+    @include variables.h1-font-mobile;
   }
 }
 
@@ -124,9 +124,9 @@
 
   margin: 20px 0 0;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include body-font;
+  @include variables.body-font;
 
   line-height: 1.8;
 }
@@ -142,18 +142,18 @@
 
   padding: 64px 24px;
 
-  background-color: $surface-1;
+  background-color: variables.$surface-1;
 
-  border-top: $card-border;
-  border-bottom: $card-border;
+  border-top: variables.$card-border;
+  border-bottom: variables.$card-border;
 
   text-align: center;
 }
 
 .scoreLabel {
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .scoreValue {
@@ -163,7 +163,7 @@
 
   margin-top: 24px;
 
-  color: $text-main;
+  color: variables.$text-main;
 
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
@@ -182,7 +182,7 @@
 .divider {
   margin: 0 12px;
 
-  color: $text-icons;
+  color: variables.$text-icons;
 
   font-size: 48px;
 
@@ -192,7 +192,7 @@
 }
 
 .total {
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
   font-size: 48px;
 
@@ -204,12 +204,12 @@
 .percentage {
   margin-top: 20px;
 
-  color: $accent;
+  color: variables.$accent;
 
-  @include h3-font;
+  @include variables.h3-font;
 
   @media (max-width: 767px) {
-    @include h3-font-mobile;
+    @include variables.h3-font-mobile;
   }
 }
 
@@ -235,17 +235,17 @@
 }
 
 .messageNumber {
-  color: $text-icons;
+  color: variables.$text-icons;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .resultMessage p {
   margin: 0;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include body-font;
+  @include variables.body-font;
 
   font-size: 16px;
   line-height: 1.8;
@@ -262,7 +262,7 @@
 
   padding: 24px 0;
 
-  border-top: $card-border;
+  border-top: variables.$card-border;
 
   @media (max-width: 767px) {
     flex-direction: column;
@@ -282,7 +282,7 @@
 
   cursor: pointer;
 
-  @include buttons;
+  @include variables.buttons;
 
   transition:
     background-color 0.2s ease,
@@ -291,7 +291,7 @@
     box-shadow 0.2s ease;
 
   &:focus-visible {
-    outline: 2px solid $accent;
+    outline: 2px solid variables.$accent;
     outline-offset: 3px;
   }
 
@@ -309,18 +309,18 @@
 }
 
 .button {
-  color: $text-on-accent;
+  color: variables.$text-on-accent;
 
-  background-color: $accent;
+  background-color: variables.$accent;
 
-  border: 1px solid $accent;
+  border: 1px solid variables.$accent;
 
   &:not(:disabled):hover {
-    background-color: $accent-hover;
+    background-color: variables.$accent-hover;
 
     transform: translate(-4px, -4px);
 
-    box-shadow: 4px 4px 0 $text-main;
+    box-shadow: 4px 4px 0 variables.$text-main;
   }
 
   &:active {
@@ -331,16 +331,16 @@
 }
 
 .secondaryButton {
-  color: $text-main;
+  color: variables.$text-main;
 
   background-color: transparent;
 
-  border: 1px solid $accent;
+  border: 1px solid variables.$accent;
 
   &:hover {
-    color: $text-on-accent;
+    color: variables.$text-on-accent;
 
-    background-color: $accent;
+    background-color: variables.$accent;
   }
 }
 
@@ -355,18 +355,18 @@
 
   padding: 64px 0;
 
-  border-top: $card-border;
-  border-bottom: $card-border;
+  border-top: variables.$card-border;
+  border-bottom: variables.$card-border;
 }
 
 .errorTitle {
   margin: 24px 0 32px;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h2-font;
+  @include variables.h2-font;
 
   @media (max-width: 767px) {
-    @include h2-font-mobile;
+    @include variables.h2-font-mobile;
   }
 }

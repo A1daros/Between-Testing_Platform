@@ -1,4 +1,4 @@
-@import '../../../../styles/variables.scss';
+@use '../../../../styles/variables.scss';
 
 .page {
   width: 100%;
@@ -14,10 +14,10 @@
 }
 
 .title {
-  color: $text-main;
+  color: variables.$text-main;
   margin-bottom: 30px;
   text-align: center;
-  @include h2-font;
+  @include variables.h2-font;
 }
 
 .wrapper {
@@ -30,10 +30,10 @@
 }
 
 .levelItem {
-  background-color: $surface-1;
-  border: $card-border;
+  background-color: variables.$surface-1;
+  border: variables.$card-border;
   border-radius: 8px;
-  box-shadow: $shadow;
+  box-shadow: variables.$shadow;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -59,13 +59,13 @@
 
 .itemLevel {
   margin: 0;
-  color: $red;
+  color: variables.$red;
   text-transform: uppercase;
-  @include h3-font;
+  @include variables.h3-font;
 }
 
 .itemTitle {
   margin: 0;
-  color: $text-main;
-  @include h3-font;
+  color: variables.$text-main;
+  @include variables.h3-font;
 }

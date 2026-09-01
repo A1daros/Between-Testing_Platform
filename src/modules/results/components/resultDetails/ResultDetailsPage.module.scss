@@ -1,9 +1,9 @@
-@import '../../../../styles/variables';
+@use '../../../../styles/variables';
 
 .page {
   min-height: 100vh;
 
-  background-color: $background;
+  background-color: variables.$background;
 }
 
 .container {
@@ -38,8 +38,8 @@
 ========================= */
 
 .heroSection {
-  border-top: $card-border;
-  border-bottom: $card-border;
+  border-top: variables.$card-border;
+  border-bottom: variables.$card-border;
 }
 
 .heroTop {
@@ -50,7 +50,7 @@
 
   padding: 16px 0;
 
-  border-bottom: $card-border;
+  border-bottom: variables.$card-border;
 
   @media (max-width: 767px) {
     align-items: flex-start;
@@ -60,15 +60,15 @@
 }
 
 .sectionLabel {
-  color: $accent;
+  color: variables.$accent;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .backButton {
   padding: 0;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
   background: none;
 
@@ -76,12 +76,12 @@
 
   cursor: pointer;
 
-  @include buttons;
+  @include variables.buttons;
 
   transition: color 0.2s ease;
 
   &:hover {
-    color: $text-main;
+    color: variables.$text-main;
   }
 }
 
@@ -104,20 +104,20 @@
 }
 
 .resultNumber {
-  color: $text-icons;
+  color: variables.$text-icons;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .pageTitle {
   margin: 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h1-font;
+  @include variables.h1-font;
 
   @media (max-width: 767px) {
-    @include h1-font-mobile;
+    @include variables.h1-font-mobile;
   }
 }
 
@@ -126,9 +126,9 @@
 
   margin: 20px 0 0;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include body-font;
+  @include variables.body-font;
 
   line-height: 1.8;
 }
@@ -158,7 +158,7 @@
 
   padding: 40px 0;
 
-  border-top: 2px solid $text-main;
+  border-top: 2px solid variables.$text-main;
 
   @media (max-width: 767px) {
     grid-template-columns: 1fr;
@@ -170,20 +170,20 @@
 }
 
 .partNumber {
-  color: $accent;
+  color: variables.$accent;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .partTitle {
   margin: 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h2-font;
+  @include variables.h2-font;
 
   @media (max-width: 767px) {
-    @include h2-font-mobile;
+    @include variables.h2-font-mobile;
   }
 }
 
@@ -192,9 +192,9 @@
 
   margin: 12px 0 0;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include body-font;
+  @include variables.body-font;
 
   line-height: 1.7;
 }
@@ -206,10 +206,10 @@
 .questionBlock {
   padding: 40px 0;
 
-  border-top: $card-border;
+  border-top: variables.$card-border;
 
   &:last-child {
-    border-bottom: $card-border;
+    border-bottom: variables.$card-border;
   }
 
   @media (max-width: 767px) {
@@ -225,9 +225,9 @@
 
   margin-bottom: 20px;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .question {
@@ -235,12 +235,12 @@
 
   margin: 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h3-font;
+  @include variables.h3-font;
 
   @media (max-width: 767px) {
-    @include h3-font-mobile;
+    @include variables.h3-font-mobile;
   }
 }
 
@@ -269,9 +269,9 @@
 
   padding: 24px;
 
-  background-color: $surface-1;
+  background-color: variables.$surface-1;
 
-  border: $card-border;
+  border: variables.$card-border;
 
   @media (max-width: 767px) {
     min-height: 0;
@@ -281,31 +281,31 @@
 }
 
 .answerCorrect {
-  border-left: 3px solid $green;
+  border-left: 3px solid variables.$green;
 }
 
 .answerIncorrect {
-  border-left: 3px solid $red;
+  border-left: 3px solid variables.$red;
 }
 
 .correctAnswer {
-  border-left: 3px solid $green;
+  border-left: 3px solid variables.$green;
 }
 
 .answerLabel {
   display: block;
 
-  color: $text-secondary;
+  color: variables.$text-secondary;
 
-  @include uppercase;
+  @include variables.uppercase;
 }
 
 .answerText {
   margin: 20px 0 0;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include body-font;
+  @include variables.body-font;
 
   font-size: 16px;
   line-height: 1.7;
@@ -337,15 +337,15 @@
 
   padding: 14px 32px;
 
-  color: $text-on-accent;
+  color: variables.$text-on-accent;
 
-  background-color: $accent;
+  background-color: variables.$accent;
 
-  border: 1px solid $accent;
+  border: 1px solid variables.$accent;
 
   cursor: pointer;
 
-  @include buttons;
+  @include variables.buttons;
 
   transition:
     background-color 0.2s ease,
@@ -353,11 +353,11 @@
     box-shadow 0.2s ease;
 
   &:hover {
-    background-color: $accent-hover;
+    background-color: variables.$accent-hover;
 
     transform: translate(-4px, -4px);
 
-    box-shadow: 4px 4px 0 $text-main;
+    box-shadow: 4px 4px 0 variables.$text-main;
   }
 
   &:active {
@@ -381,19 +381,19 @@
 
   padding: 64px 0;
 
-  border-top: $card-border;
-  border-bottom: $card-border;
+  border-top: variables.$card-border;
+  border-bottom: variables.$card-border;
 }
 
 .errorTitle,
 .emptyTitle {
   margin: 24px 0 32px;
 
-  color: $text-main;
+  color: variables.$text-main;
 
-  @include h2-font;
+  @include variables.h2-font;
 
   @media (max-width: 767px) {
-    @include h2-font-mobile;
+    @include variables.h2-font-mobile;
   }
 }

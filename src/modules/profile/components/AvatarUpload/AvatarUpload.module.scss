@@ -1,7 +1,7 @@
-@import '../../../../styles/variables.scss';
+@use '../../../../styles/variables.scss';
 
 $bg-form: #ffffff;
-$text-main: #09090b;
+variables.$text-main: #09090b;
 $text-muted: #71717a;
 $border-color: #e4e4e7;
 $btn-bg: #18181b;
@@ -72,7 +72,7 @@ $btn-hover: #27272a;
   height: 36px;
   padding: 0 1rem;
   background-color: transparent;
-  color: $text-main;
+  color: variables.$text-main;
   border: 1px solid $border-color;
   border-radius: 8px;
   font-size: 0.875rem;

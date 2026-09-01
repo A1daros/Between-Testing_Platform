@@ -1,12 +1,12 @@
-@import '../../../../styles/variables.scss';
+@use '../../../../styles/variables.scss';
 
 .card {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: $surface-1;
-  border: $card-border;
+  background-color: variables.$surface-1;
+  border: variables.$card-border;
   overflow: hidden;
 
   transition:
