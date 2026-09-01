@@ -2,11 +2,14 @@
 
 .header {
   position: sticky;
-  top: 0;
   width: 100%;
   background-color: variables.$background;
   border-bottom: 1px solid variables.$surface-2;
   box-shadow: variables.$shadow;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
   z-index: 100;
 }
 
@@ -23,6 +26,7 @@
   @media (min-width: 1024px) {
     height: 64px;
     padding: 0 32px;
+    flex-wrap: nowrap;
   }
 }
 
@@ -36,7 +40,10 @@
   width: 40px;
   height: 40px;
   display: block;
-  transition: transform 0.2s ease-in-out;
+  transition:
+    transform 0.2s ease-in-out,
+    opacity 0.3s ease,
+    filter 0.3s ease;
 
   &:hover {
     transform: scale(1.05);
@@ -53,9 +60,9 @@
   top: 48px;
   right: -100%;
   width: 100%;
-  height: calc(100vh - 48px);
+  height: calc(50vh - 24px);
   background-color: variables.$background;
-  padding: 32px 24px;
+  padding: 24px;
   box-sizing: border-box;
   z-index: 99;
   overflow-y: auto;
@@ -71,7 +78,7 @@
     height: 100%;
     background-color: transparent;
     padding: 0;
-    margin-left: auto;
+    margin: 0 24px;
     overflow: visible;
   }
 }
@@ -87,7 +94,6 @@
   @media (min-width: 768px) {
     flex-direction: row;
     height: 100%;
-    align-items: center;
     gap: 32px;
   }
 
@@ -100,24 +106,29 @@
   display: flex;
   align-items: center;
   width: fit-content;
+  height: 100%;
+  padding-bottom: 8px;
   text-decoration: none;
+  text-transform: uppercase;
   color: variables.$text-main;
-  transition: color 0.2s ease;
-
-  @include variables.buttons;
+  border-bottom: 3px solid transparent;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
 
   &:hover {
     color: variables.$text-secondary;
   }
 
+  @include variables.buttons;
+
   @media (min-width: 768px) {
-    height: 64px;
-    border-bottom: 3px solid transparent;
-    padding: 0 4px;
+    padding: 0;
   }
 }
 
 .isActive {
+  color: variables.$text-main;
   color: variables.$accent;
 
   @media (min-width: 768px) {
