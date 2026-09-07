@@ -1,3 +1,95 @@
+import { useEffect, useState } from 'react';
 import styles from './Overview.module.scss';
+import type { Results, Test } from '../../../../../types/database';
+import {
+  loadCountStudents,
+  loadRecentResults,
+} from '../../../../../services/profile';
+import { getTests } from '../../../../../services/quiz';
 
-export const Overview = () => {};
+export const Overview = () => {
+  const [tests, setTests] = useState<Test[]>([]);
+  const [totalStudents, setTotalStudents] = useState<number | null>(null);
+  const [recentResults, setRecentResults] = useState<Results[]>([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [testsData, totalStudentsData, recentResultsData] =
+          await Promise.all([
+            getTests(),
+            loadCountStudents(),
+            loadRecentResults(),
+          ]);
+
+        setTests(testsData);
+        setTotalStudents(totalStudentsData);
+        setRecentResults(recentResultsData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  return (
+    <div className={styles.page}>
+      <h2 className={styles.title}>BETWEEN/ADMIN</h2>
+
+      <div className={styles.container}>
+        <ul className={styles.list}>
+          <li className={styles.item}>
+            <h3 className={styles.subtitle}>Tests</h3>
+            <p>{tests.length}</p>
+          </li>
+          <li className={styles.item}>
+            <h3 className={styles.subtitle}>Students</h3>
+            <p>{totalStudents}</p>
+          </li>
+          <li className={styles.item}>
+            <h3 className={styles.subtitle}>Attempts</h3>
+            <p>{recentResults.length}</p>
+          </li>
+          <li className={styles.item}>
+            <h3 className={styles.subtitle}>Pending</h3>
+            <p>{0}</p>
+          </li>
+        </ul>
+
+        <div className={styles.recent}>
+          <h3 className={styles.recentTitle}>Recent results</h3>
+
+          <ul className={styles.recentList}>
+            {recentResults.map((student) => {
+              return (
+                <li key={student.id} className={styles.recentItem}>
+                  <div className={styles.studentInfo}>
+                    <div>
+                      <span className={styles.label}>Student Name:</span>
+                      <p className={styles.studentName}>
+                        {student.profiles?.display_name || student.id}
+                      </p>
+                    </div>
+
+                    <div>
+                      <span className={styles.label}>Test title:</span>
+                      <p>{student.tests.title || 'Not valid'}</p>
+                    </div>
+
+                    <div>
+                      <span className={styles.label}>Student Score:</span>
+                      <p>
+                        {student.score} / {student.total}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};

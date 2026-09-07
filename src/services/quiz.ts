@@ -10,6 +10,7 @@ import type {
   Results,
   SaveQuizResultInput,
   Test,
+  TestWithLevels,
   TheorySection,
 } from '../types/database';
 
@@ -19,6 +20,20 @@ export const getTests = async (): Promise<Test[]> => {
   if (error) {
     throw error;
   }
+
+  return data;
+};
+
+export const getTestsWithLevel = async (): Promise<TestWithLevels[]> => {
+  const { data, error } = await supabase
+    .from('tests')
+    .select(`*, levels(code), questions(count)`);
+
+  if (error) {
+    throw error;
+  }
+
+  console.log(data);
 
   return data;
 };

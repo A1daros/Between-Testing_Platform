@@ -5,6 +5,18 @@ export interface Test {
   level_id: number;
   submodule_id: number;
   test_type: string;
+
+  level: Level[];
+}
+
+export interface TestWithLevels extends Test {
+  levels: {
+    code: string;
+  } | null;
+
+  questions: {
+    count: number;
+  } | null;
 }
 
 export interface Question {
@@ -58,7 +70,7 @@ export interface Results {
   total: number;
   created_at: string;
 
-  test: {
+  tests: {
     title: string;
   };
 
@@ -102,6 +114,8 @@ export interface Profile {
   display_name: string;
   avatar_url: string;
   birth_date: string;
+
+  results: Results[];
 }
 
 export interface Submodule {

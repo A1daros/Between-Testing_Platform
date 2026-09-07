@@ -31,9 +31,11 @@ export const QuizPage = () => {
     userAnswers,
     score,
     total,
+    isFinished,
     handleChooseAnswer,
     handlePrevQuestion,
     handleNextQuestion,
+    handleFinishQuiz,
   } = useQuiz(questions);
 
   useEffect(() => {
@@ -65,7 +67,7 @@ export const QuizPage = () => {
       return;
     }
 
-    if (currentQuestionIndex !== total) {
+    if (!isFinished) {
       return;
     }
 
@@ -103,7 +105,7 @@ export const QuizPage = () => {
     };
 
     sendResults();
-  }, [currentQuestionIndex, total, testId, userAnswers, navigate, score, user]);
+  }, [isFinished, total, testId, userAnswers, navigate, score, user]);
 
   const currentAnswers = currentQuestion?.answers ?? [];
 
@@ -131,6 +133,10 @@ export const QuizPage = () => {
         </div>
       </main>
     );
+  }
+
+  if (!currentQuestion) {
+    return <Loader />;
   }
 
   const progress = ((currentQuestionIndex + 1) / total) * 100;
@@ -244,7 +250,11 @@ export const QuizPage = () => {
               type='button'
               className={styles.nextButton}
               disabled={!selectedAnswerId}
-              onClick={handleNextQuestion}
+              onClick={
+                currentQuestionIndex === total - 1
+                  ? handleFinishQuiz
+                  : handleNextQuestion
+              }
             >
               {currentQuestionIndex === total - 1
                 ? 'Finish quiz'

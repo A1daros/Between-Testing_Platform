@@ -26,17 +26,7 @@ interface UIQuestion {
   answers: { text: string; isCorrect: boolean }[];
 }
 
-const levelCode = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-const levelTitle = [
-  'Beginner',
-  'Elementary',
-  'Intermediate',
-  'Upper Intermediate',
-  'Advanced',
-  'Proficient',
-];
-
-export const TestForm = () => {
+export const TestForm01 = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [levelId, setLevelId] = useState('');
@@ -68,13 +58,13 @@ export const TestForm = () => {
     setParts(parts.filter((part) => part.uiId !== uiId));
 
     setQuestions(
-      questions.map((question) =>
-        question.partUiId === uiId
+      questions.map((qusetion) =>
+        qusetion.partUiId === uiId
           ? {
-              ...question,
+              ...qusetion,
               partUiId: null,
             }
-          : question,
+          : qusetion,
       ),
     );
   };
@@ -91,8 +81,15 @@ export const TestForm = () => {
         { text: '', isCorrect: false },
       ],
     };
-
     setQuestions([...questions, newQuestion]);
+  };
+
+  const handleUpdateQuestionText = (uiId: string, text: string) => {
+    setQuestions(
+      questions.map((question) =>
+        question.uiId === uiId ? { ...question, text } : question,
+      ),
+    );
   };
 
   const handleUpdateQuestionPart = (uiId: string, partUiId: string) => {
@@ -105,30 +102,18 @@ export const TestForm = () => {
     );
   };
 
-  const handleUpdateQuestionText = (uiId: string, text: string) => {
-    setQuestions(
-      questions.map((question) =>
-        question.uiId === uiId ? { ...question, text } : question,
-      ),
-    );
-  };
-
   const handleUpdateAnswerText = (
-    questionUiId: string,
-    answerIndex: number,
+    qUiId: string,
+    ansIndex: number,
     text: string,
   ) => {
     setQuestions(
       questions.map((question) => {
-        if (question.uiId !== questionUiId) {
-          return question;
-        }
-
+        if (question.uiId !== qUiId) return question;
         const updatedAnswers = question.answers.map((answer, index) =>
-          index === answerIndex ? { ...answer, text } : answer,
+          index === ansIndex ? { ...answer, text } : answer,
         );
-
-        return { ...question, answer: updatedAnswers };
+        return { ...question, answers: updatedAnswers };
       }),
     );
   };
@@ -139,15 +124,11 @@ export const TestForm = () => {
   ) => {
     setQuestions(
       questions.map((question) => {
-        if (question.uiId !== questionUiId) {
-          return question;
-        }
-
+        if (question.uiId !== questionUiId) return question;
         const updatedAnswers = question.answers.map((answer, index) => ({
           ...answer,
           isCorrect: index === correctIndex,
         }));
-
         return { ...question, answers: updatedAnswers };
       }),
     );
@@ -167,11 +148,11 @@ export const TestForm = () => {
       parts: parts.map(({ title, instruction, points }) => ({
         title,
         instruction,
-        points,
+        points: Number(points),
       })),
       questions: questions.map(({ partUiId, text, answers }) => {
+        // Знаходимо title обраної частини за її тимчасовим uiId
         const linkedPart = parts.find((part) => part.uiId === partUiId);
-
         return {
           partId: linkedPart ? linkedPart.title : null,
           text,
@@ -221,11 +202,7 @@ export const TestForm = () => {
               required
             >
               <option value=''>Select code...</option>
-              {levelCode.map((code) => (
-                <option key={code} value={code}>
-                  {code}
-                </option>
-              ))}
+              {/* .map() по levels з БД: A1...C2 */}
             </select>
           </div>
 
@@ -238,11 +215,7 @@ export const TestForm = () => {
               required
             >
               <option value=''>Select title...</option>
-              {levelTitle.map((title) => (
-                <option key={title} value={title}>
-                  {title}
-                </option>
-              ))}
+              {/* .map() по levels з БД: Beginner...Proficient */}
             </select>
           </div>
         </div>

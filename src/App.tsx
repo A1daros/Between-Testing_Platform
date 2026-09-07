@@ -1,7 +1,7 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import styles from './styles/App.module.scss';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QuizPage } from './modules/quiz';
 import { ResultPage } from './modules/results';
-import styles from './styles/App.module.scss';
 import { AdminPage } from './modules/admin';
 import { Login } from './modules/authentication/components/login';
 import { Register } from './modules/authentication/components/register';
@@ -20,6 +20,12 @@ import { ScrollToTop } from './utils/ScrollToTop';
 import { ForgotPassword } from './modules/authentication/components/forgot-password';
 import { UpdatePassword } from './modules/authentication/components/update-password';
 import { ProfilePage } from './modules/profile';
+import { Overview } from './modules/admin/AdminDashboard/components/Overview';
+import { Results } from './modules/admin/AdminDashboard/components/Results/Results';
+import { Tests } from './modules/admin/AdminDashboard/components/Tests/Tests';
+import { Students } from './modules/admin/AdminDashboard/components/Students/Students';
+import { EditTest } from './modules/admin/AdminDashboard/components/Tests/components/EditTest/EditTest';
+import { CreateTest } from './modules/admin/AdminDashboard/components/Tests/components/CreateTest/CreateTest';
 
 export const App = () => {
   return (
@@ -56,7 +62,15 @@ export const App = () => {
               <Route path='/profile/:userId' element={<ProfilePage />} />
 
               <Route element={<AdminRoute />}>
-                <Route path='/admin/results/:testId' element={<AdminPage />} />
+                <Route path='/admin' element={<AdminPage />}>
+                  <Route index element={<Navigate to='overview' replace />} />
+                  <Route path='overview' element={<Overview />} />
+                  <Route path='tests' element={<Tests />} />
+                  <Route path='tests/:testId/edit' element={<EditTest />} />
+                  <Route path='tests/create' element={<CreateTest />} />
+                  <Route path='results' element={<Results />} />
+                  <Route path='students' element={<Students />} />
+                </Route>
 
                 <Route
                   path='/admin/result-details/:resultId'

@@ -44,7 +44,7 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
   }, []);
 
   const handleNextQuestion = useCallback(() => {
-    setCurrentQuestionIndex((prev) => Math.min(prev + 1, total));
+    setCurrentQuestionIndex((prev) => Math.min(prev + 1, total - 1));
   }, [total]);
 
   const handleFinishQuiz = useCallback(() => {
