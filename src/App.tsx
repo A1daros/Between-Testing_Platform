@@ -21,7 +21,7 @@ import { ForgotPassword } from './modules/authentication/components/forgot-passw
 import { UpdatePassword } from './modules/authentication/components/update-password';
 import { ProfilePage } from './modules/profile';
 import { Overview } from './modules/admin/AdminDashboard/components/Overview';
-import { Results } from './modules/admin/AdminDashboard/components/Results/Results';
+import { ResultsOverview } from './modules/admin/AdminDashboard/components/Results/Results';
 import { Tests } from './modules/admin/AdminDashboard/components/Tests/Tests';
 import { Students } from './modules/admin/AdminDashboard/components/Students/Students';
 import { EditTest } from './modules/admin/AdminDashboard/components/Tests/components/EditTest/EditTest';
@@ -68,12 +68,12 @@ export const App = () => {
                   <Route path='tests' element={<Tests />} />
                   <Route path='tests/:testId/edit' element={<EditTest />} />
                   <Route path='tests/create' element={<CreateTest />} />
-                  <Route path='results' element={<Results />} />
+                  <Route path='results' element={<ResultsOverview />} />
                   <Route path='students' element={<Students />} />
                 </Route>
 
                 <Route
-                  path='/admin/result-details/:resultId'
+                  path='/admin/results/result-details/:resultId'
                   element={<ResultDetailsPage />}
                 />
               </Route>

@@ -98,11 +98,11 @@ export const MyResults = () => {
 
                       <div className={styles.testInfo}>
                         <h2 className={styles.testTitle}>
-                          {result.test?.title ?? 'Unknown test'}
+                          {result.tests.title ?? 'Unknown test'}
                         </h2>
 
                         <span className={styles.testType}>
-                          {result.test?.title ?? 'TEST'}
+                          {result.tests.title ?? 'TEST'}
                         </span>
                       </div>
 

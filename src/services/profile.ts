@@ -131,3 +131,15 @@ export const loadRecentResults = async (): Promise<Results[]> => {
 
   return data;
 };
+
+export const loadAllStudentsResults = async (): Promise<Results[]> => {
+  const { data, error } = await supabase
+    .from('results')
+    .select(`*, tests(title), profiles(display_name)`);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};

@@ -115,6 +115,10 @@ export interface Profile {
   avatar_url: string;
   birth_date: string;
 
+  tests: {
+    title: string;
+  };
+
   results: Results[];
 }
 
