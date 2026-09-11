@@ -1,0 +1,212 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.registerForm {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e4e4e7;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  margin: 0;
+  color: #313237;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  margin: 0;
+  color: #71717a;
+  font-size: 0.875rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.inputContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 100%;
+  padding: 1rem 0.75rem 0.5rem 0.75rem;
+  height: 52px;
+  font-size: 0.95rem;
+  color: #313237;
+  background-color: transparent;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+.input:focus {
+  border-color: #18181b;
+  box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.08);
+}
+.input:not(:-moz-placeholder) ~ .label {
+  transform: translateY(-8px) scale(0.8);
+  color: #71717a;
+}
+.input:focus ~ .label, .input:not(:placeholder-shown) ~ .label {
+  transform: translateY(-8px) scale(0.8);
+  color: #71717a;
+}
+
+.label {
+  position: absolute;
+  left: 0.75rem;
+  top: 1rem;
+  font-size: 0.95rem;
+  color: #71717a;
+  pointer-events: none;
+  transform-origin: top left;
+  transition: all 0.2s ease;
+}
+
+.errorCard {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+}
+
+.errorText {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.btnSubmit {
+  width: 100%;
+  height: 44px;
+  background-color: #18181b;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+.btnSubmit:hover {
+  background-color: #27272a;
+}
+.btnSubmit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================
+   CONFIRMATION MODAL
+========================= */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: rgba(9, 9, 11, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  background-color: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: modalAppear 0.2s ease-out;
+}
+
+.modalLabel {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #71717a;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.modalTitle {
+  margin: 0;
+  color: #313237;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.modalDescription {
+  margin: 1rem 0 0;
+  color: #71717a;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.modalButton {
+  width: 100%;
+  height: 44px;
+  margin-top: 2rem;
+  color: #ffffff;
+  background-color: #18181b;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+.modalButton:hover {
+  background-color: #27272a;
+}
+.modalButton:active {
+  opacity: 0.9;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@media (max-width: 480px) {
+  .modal {
+    padding: 2rem 1.5rem;
+  }
+}/*# sourceMappingURL=Register.module.css.map */

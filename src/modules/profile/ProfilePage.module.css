@@ -1,0 +1,54 @@
+.page {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  place-items: start center;
+}
+
+.formsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1160px;
+}
+.formsContainer > div,
+.formsContainer .rightColumn {
+  flex: 1;
+  width: 100%;
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.infoMessage {
+  font-size: 0.95rem;
+  color: #71717a;
+  text-align: center;
+  margin-top: 4rem;
+  font-weight: 500;
+}
+
+.errorMessage {
+  composes: infoMessage;
+  color: #ef4444;
+}
+
+@media (max-width: 1160px) {
+  .page {
+    padding: 2rem 1rem;
+  }
+  .formsContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 460px;
+  }
+}/*# sourceMappingURL=ProfilePage.module.css.map */

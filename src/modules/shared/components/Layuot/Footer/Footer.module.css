@@ -1,0 +1,150 @@
+.footer {
+  padding: 24px 0;
+  background-color: #fff;
+  border-top: 1px solid #e4e6eb;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+@media (min-width: 768px) {
+  .container {
+    padding: 0 24px;
+    align-items: center;
+    flex-direction: row;
+  }
+}
+@media (min-width: 1024px) {
+  .container {
+    min-height: 64px;
+    padding: 0 32px;
+    flex-wrap: nowrap;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 152px;
+  }
+}
+
+.footerContent {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.logo {
+  width: 96px;
+  height: 96px;
+  transition: transform 0.2s ease-in-out, opacity 0.3s ease, filter 0.3s ease;
+}
+.logo:hover, .logo:focus-visible {
+  opacity: 0.7;
+  transform: scale(1.1);
+}
+
+.nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin: 32px 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+@media (min-width: 768px) {
+  .list {
+    flex-direction: row;
+    gap: 96px;
+  }
+}
+
+.link {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #313237;
+  transition: color 0.3s ease;
+}
+.link:hover {
+  color: #4b4d54;
+}
+.link {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 11px;
+  letter-spacing: 0.04em;
+}
+
+.backTop {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 32px;
+}
+@media (min-width: 768px) {
+  .backTop {
+    justify-content: flex-end;
+  }
+}
+
+.buttonTopText {
+  color: #89939a;
+  white-space: nowrap;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+  background-color: #e4e6eb;
+  transition: background-color 0.3s ease;
+}
+
+.backTopButton {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  margin-left: 16px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+.backTopButton:hover .iconWrapper, .backTopButton:focus-visible .iconWrapper {
+  background-color: #b4bdc3;
+}
+.backTopButton:focus-visible {
+  outline: 2px solid #313237;
+}
+
+.icon {
+  width: 16px;
+  height: auto;
+  display: block;
+  transition: filter 0.3s ease;
+  filter: brightness(0) invert(0.2);
+}/*# sourceMappingURL=Footer.module.css.map */

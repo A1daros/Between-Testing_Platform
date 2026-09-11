@@ -1,0 +1,102 @@
+.page {
+  width: 100%;
+  margin: 0 auto 56px;
+}
+@media (min-width: 768px) {
+  .page {
+    margin: 0 auto 64px;
+  }
+}
+@media (min-width: 1024px) {
+  .page {
+    margin: 0 auto 80px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background-color: #fafbfc;
+  border: 1px solid #e2e6e9;
+  border-radius: 8px;
+}
+@media (min-width: 768px) {
+  .wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+  }
+}
+
+.descriptionWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.title {
+  margin: 0;
+  color: #313237;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+}
+@media (min-width: 768px) {
+  .title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 31px;
+  }
+}
+
+.description {
+  margin: 0;
+  color: #89939a;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.buttonWrapper {
+  display: flex;
+  flex-shrink: 0;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .buttonWrapper {
+    width: auto;
+  }
+}
+
+.button {
+  background-color: #313237;
+  color: #fff;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+.button:hover {
+  background-color: #4b4d54;
+}
+.button {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+}
+@media (min-width: 768px) {
+  .button {
+    width: auto;
+  }
+}/*# sourceMappingURL=FindLevel.module.css.map */

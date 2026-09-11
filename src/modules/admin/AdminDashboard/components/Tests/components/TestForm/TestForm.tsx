@@ -1,13 +1,22 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
+import type { Level } from '../../../../../../../types/database';
+import { getLevelsById } from '../../../../../../../services/quiz';
+import { createTest } from '../../../../../../../services/tests';
+import { useNavigate } from 'react-router-dom';
 
-type NewTestPayload = {
+export type NewTestPayload = {
   title: string;
   description: string;
   levelId: string;
-  parts: { title: string; instruction: string; points: number }[];
+  parts: {
+    uiId: string;
+    title: string;
+    instruction: string;
+    points: number;
+  }[];
   questions: {
     partId: string | null;
-    text: string;
+    question: string;
     answers: { text: string; isCorrect: boolean }[];
   }[];
 };
@@ -22,19 +31,9 @@ interface UIPart {
 interface UIQuestion {
   uiId: string;
   partUiId: string | null;
-  text: string;
+  question: string;
   answers: { text: string; isCorrect: boolean }[];
 }
-
-const levelCode = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-const levelTitle = [
-  'Beginner',
-  'Elementary',
-  'Intermediate',
-  'Upper Intermediate',
-  'Advanced',
-  'Proficient',
-];
 
 export const TestForm = () => {
   const [title, setTitle] = useState('');
@@ -43,6 +42,24 @@ export const TestForm = () => {
 
   const [parts, setParts] = useState<UIPart[]>([]);
   const [questions, setQuestions] = useState<UIQuestion[]>([]);
+
+  const [levels, setLevels] = useState<Level[]>([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadLevels = async () => {
+      try {
+        const data = await getLevelsById();
+
+        setLevels(data);
+      } catch (error) {
+        console.error('Failed to load level data', error);
+      }
+    };
+
+    loadLevels();
+  }, []);
 
   const handleAddPart = () => {
     const newPart: UIPart = {
@@ -83,7 +100,7 @@ export const TestForm = () => {
     const newQuestion: UIQuestion = {
       uiId: Date.now().toString(),
       partUiId: null,
-      text: '',
+      question: '',
       answers: [
         { text: '', isCorrect: true },
         { text: '', isCorrect: false },
@@ -108,7 +125,7 @@ export const TestForm = () => {
   const handleUpdateQuestionText = (uiId: string, text: string) => {
     setQuestions(
       questions.map((question) =>
-        question.uiId === uiId ? { ...question, text } : question,
+        question.uiId === uiId ? { ...question, question: text } : question,
       ),
     );
   };
@@ -128,7 +145,7 @@ export const TestForm = () => {
           index === answerIndex ? { ...answer, text } : answer,
         );
 
-        return { ...question, answer: updatedAnswers };
+        return { ...question, answers: updatedAnswers };
       }),
     );
   };
@@ -157,28 +174,37 @@ export const TestForm = () => {
     setQuestions(questions.filter((question) => question.uiId !== uiId));
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     const payload: NewTestPayload = {
       title,
       description,
       levelId,
-      parts: parts.map(({ title, instruction, points }) => ({
+      parts: parts.map(({ uiId, title, instruction, points }) => ({
+        uiId,
         title,
         instruction,
         points,
       })),
-      questions: questions.map(({ partUiId, text, answers }) => {
-        const linkedPart = parts.find((part) => part.uiId === partUiId);
-
+      questions: questions.map(({ partUiId, question, answers }) => {
         return {
-          partId: linkedPart ? linkedPart.title : null,
-          text,
+          partId: partUiId,
+          question,
           answers,
         };
       }),
     };
+
+    try {
+      console.log('Sending payload:', payload);
+
+      await createTest(payload);
+
+      navigate('/admin/tests');
+    } catch (error) {
+      console.error('Failed to create test:', error);
+    }
 
     console.log(payload);
   };
@@ -213,7 +239,7 @@ export const TestForm = () => {
 
           {/* Level: два select-и, значення підтягуються з таблиці levels, не хардкодяться */}
           <div>
-            <label htmlFor='levelCode'>Level code *</label>
+            <label htmlFor='levelCode'>Select level *</label>
             <select
               id='levelCode'
               value={levelId}
@@ -221,26 +247,9 @@ export const TestForm = () => {
               required
             >
               <option value=''>Select code...</option>
-              {levelCode.map((code) => (
-                <option key={code} value={code}>
-                  {code}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor='levelTitle'>Level title *</label>
-            <select
-              id='levelTitle'
-              value={levelId}
-              onChange={(event) => setLevelId(event.target.value)}
-              required
-            >
-              <option value=''>Select title...</option>
-              {levelTitle.map((title) => (
-                <option key={title} value={title}>
-                  {title}
+              {levels.map((level) => (
+                <option key={level.id} value={level.id}>
+                  {level.code} - {level.title}
                 </option>
               ))}
             </select>
@@ -327,7 +336,7 @@ export const TestForm = () => {
               </label>
               <input
                 id={`questionText-${question.uiId}`}
-                value={question.text}
+                value={question.question}
                 onChange={(event) =>
                   handleUpdateQuestionText(question.uiId, event.target.value)
                 }

@@ -1,0 +1,525 @@
+.page {
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+@media (min-width: 768px) {
+  .container {
+    padding: 0 24px;
+  }
+}
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 32px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 152px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
+  padding: 72px 0;
+}
+@media (max-width: 1024px) {
+  .wrapper {
+    gap: 72px;
+  }
+}
+@media (max-width: 768px) {
+  .wrapper {
+    gap: 56px;
+    padding: 48px 0;
+  }
+}
+
+/* =========================
+   HERO
+========================= */
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sectionLabel {
+  color: #313237;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 11px;
+  letter-spacing: 0.04em;
+}
+
+.pageTitle {
+  margin: 16px 0 24px;
+  color: #313237;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: -0.01em;
+}
+@media (max-width: 768px) {
+  .pageTitle {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 41px;
+    letter-spacing: -0.01em;
+  }
+}
+
+.heroLine {
+  width: 100%;
+  height: 1px;
+  background-color: #e2e6e9;
+}
+
+/* =========================
+   SECTION HEADERS
+========================= */
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  max-width: 700px;
+  margin: 0;
+  color: #313237;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 41px;
+  letter-spacing: -0.01em;
+}
+@media (max-width: 768px) {
+  .sectionTitle {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 31px;
+  }
+}
+
+/* =========================
+   INTRO STORY
+========================= */
+.introSection {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 1024px) {
+  .introSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+.storyBlock {
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  padding: 32px;
+  background-color: #fafbfc;
+  border: 1px solid #e2e6e9;
+}
+.storyBlock:nth-child(2) {
+  background-color: #ead8dc;
+}
+@media (max-width: 1024px) {
+  .storyBlock:nth-child(2) {
+    transform: none;
+  }
+}
+.storyBlock:nth-child(3) {
+  background-color: #e4e6eb;
+}
+@media (max-width: 768px) {
+  .storyBlock {
+    min-height: 300px;
+    padding: 24px;
+  }
+}
+
+.sectionNumber {
+  display: block;
+  margin-bottom: auto;
+  color: #313237;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 11px;
+  letter-spacing: 0.04em;
+}
+
+/* =========================
+   TEXT
+========================= */
+.description {
+  margin: 32px 0 0;
+  color: #89939a;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+@media (max-width: 767px) {
+  .description {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.ctaSection {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 14px 32px;
+  color: #fff;
+  background-color: #313237;
+  border: 1px solid #313237;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.button:hover {
+  background-color: #4b4d54;
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 #313237;
+}
+.button:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+/* =========================
+   POSTS
+========================= */
+.postsSection {
+  width: 100%;
+}
+
+/* =========================
+   INFORMATION BLOCKS
+========================= */
+.infoSection {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid #e2e6e9;
+  border-bottom: 1px solid #e2e6e9;
+}
+@media (max-width: 1024px) {
+  .infoSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+  padding: 32px;
+  border-right: 1px solid #e2e6e9;
+}
+.infoBlock:last-child {
+  border-right: none;
+}
+.infoBlock:nth-child(2) {
+  background-color: #e4e6eb;
+}
+@media (max-width: 1024px) {
+  .infoBlock {
+    min-height: 280px;
+    border-right: none;
+    border-bottom: 1px solid #e2e6e9;
+  }
+  .infoBlock:last-child {
+    border-bottom: none;
+  }
+}
+@media (max-width: 768px) {
+  .infoBlock {
+    padding: 24px;
+  }
+}
+
+.blockTitle {
+  margin: 48px 0 0;
+  color: #313237;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 31px;
+}
+@media (max-width: 768px) {
+  .blockTitle {
+    margin-top: 32px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 26px;
+  }
+}
+
+/* =========================
+   PROGRESS
+========================= */
+.progressSection {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 48px;
+  padding: 48px;
+  background-color: #fafbfc;
+  border: 1px solid #e2e6e9;
+}
+@media (max-width: 768px) {
+  .progressSection {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 32px 24px;
+  }
+}
+
+.statBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.statLabel {
+  color: #89939a;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 11px;
+  letter-spacing: 0.04em;
+}
+
+.statCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 160px;
+  background-color: #fff;
+  border: 2px solid #313237;
+  border-radius: 50%;
+}
+@media (max-width: 768px) {
+  .statCircle {
+    width: 130px;
+    height: 130px;
+  }
+}
+
+.statLevel {
+  color: #313237;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 41px;
+  letter-spacing: -0.01em;
+}
+@media (max-width: 768px) {
+  .statLevel {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 31px;
+  }
+}
+
+.statCaption {
+  max-width: 220px;
+  margin: 0;
+  color: #89939a;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.statArrow {
+  color: #313237;
+  font-size: 48px;
+  line-height: 1;
+}
+@media (max-width: 768px) {
+  .statArrow {
+    transform: rotate(90deg);
+  }
+}
+
+.statBlockAccent .statCircle {
+  background-color: #313237;
+  border-color: #313237;
+}
+.statBlockAccent .statLevel {
+  color: #fff;
+}
+
+/* =========================
+   TEACHERS
+========================= */
+.teachersSection {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
+  gap: 16px;
+}
+@media (max-width: 767px) {
+  .teachersSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+.teacherCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  background-color: #fafbfc;
+  border: 1px solid #e2e6e9;
+}
+.teacherCard:nth-child(2) {
+  background-color: #e4e6eb;
+}
+@media (max-width: 767px) {
+  .teacherCard:nth-child(2) {
+    margin-top: 0;
+  }
+}
+@media (max-width: 767px) {
+  .teacherCard {
+    padding: 24px;
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background-color: #e2e6e9;
+}
+.imageWrapper img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.teacherNumber {
+  margin-top: 24px;
+  color: #313237;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 11px;
+  letter-spacing: 0.04em;
+}
+
+.personName {
+  margin: 12px 0 0;
+  color: #313237;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 41px;
+  letter-spacing: -0.01em;
+}
+@media (max-width: 767px) {
+  .personName {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 31px;
+  }
+}
+
+.teacherInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.characteristics {
+  margin: 0;
+  color: #89939a;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+/* =========================
+   FINAL CTA
+========================= */
+.finalSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 64px;
+  background-color: #313237;
+}
+.finalSection .sectionLabel {
+  color: #ead8dc;
+}
+.finalSection .button {
+  margin-top: 32px;
+}
+@media (max-width: 767px) {
+  .finalSection {
+    padding: 40px 24px;
+  }
+}
+
+.finalTitle {
+  max-width: 650px;
+  margin: 20px 0 0;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: -0.01em;
+}
+@media (max-width: 767px) {
+  .finalTitle {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 41px;
+    letter-spacing: -0.01em;
+  }
+}/*# sourceMappingURL=AboutSchool.module.css.map */

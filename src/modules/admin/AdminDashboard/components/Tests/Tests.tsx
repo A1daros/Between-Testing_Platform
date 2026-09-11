@@ -3,8 +3,8 @@ import styles from './Tests.module.scss';
 
 export const Tests = () => {
   return (
-    <div>
-      <div>
+    <div className={styles.page}>
+      <div className={styles.container}>
         <TestsList />
       </div>
     </div>
