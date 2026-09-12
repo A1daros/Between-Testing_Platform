@@ -27,6 +27,7 @@ import { Students } from './modules/admin/AdminDashboard/components/Students/Stu
 import { EditTest } from './modules/admin/AdminDashboard/components/Tests/components/EditTest/EditTest';
 import { CreateTest } from './modules/admin/AdminDashboard/components/Tests/components/CreateTest/CreateTest';
 import { ResultDetailsOverview } from './modules/admin/AdminDashboard/components/Results/components/ResultDetails/ResultDetails';
+import { StudentDetailsOverview } from './modules/admin/AdminDashboard/components/Students/components/StudentDetails/StudentDetails';
 
 export const App = () => {
   return (
@@ -69,12 +70,15 @@ export const App = () => {
                   <Route path='tests/create' element={<CreateTest />} />
                   <Route path='results' element={<ResultsOverview />} />
                   <Route path='students' element={<Students />} />
+                  <Route
+                    path='/admin/results/result-details/:resultId'
+                    element={<ResultDetailsOverview />}
+                  />
+                  <Route
+                    path='/admin/students/student-details/:studentId'
+                    element={<StudentDetailsOverview />}
+                  />
                 </Route>
-
-                <Route
-                  path='/admin/results/result-details/:resultId'
-                  element={<ResultDetailsOverview />}
-                />
               </Route>
 
               <Route path='/tests/:testId/results' element={<ResultPage />} />

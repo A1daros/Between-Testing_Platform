@@ -27,7 +27,7 @@ export const ChooseLevel: React.FC<Props> = ({ title }) => {
     <div className={styles.page}>
       <h2 className={styles.title}>{title}</h2>
       <ul className={styles.wrapper}>
-        {levels.slice(0, 3).map((level) => (
+        {levels.map((level) => (
           <li key={level.id} className={styles.levelItem}>
             <Link to={`/tests/level/${level.id}`} className={styles.link}>
               <div className={styles.itemWrapper}>

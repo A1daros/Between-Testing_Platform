@@ -75,7 +75,9 @@ export interface Results {
     title: string;
   };
 
-  profiles: { display_name: string } | null;
+  profiles: {
+    display_name: string;
+  } | null;
 }
 
 export interface ResultAnswers {
@@ -101,6 +103,25 @@ export interface ResultDetails {
   answers: Answer;
 }
 
+export interface StudentDetails {
+  id: string;
+  name: string;
+  surname: string;
+  email: string;
+  birth_date: string;
+
+  results: {
+    id: number;
+    score: number;
+    total: number;
+    created_at: string;
+    tests: {
+      id: number;
+      title: string;
+    } | null;
+  }[];
+}
+
 export interface SaveQuizResultInput {
   testId: number;
   userId: string;
@@ -113,6 +134,8 @@ export interface Profile {
   id: string;
   role: 'student' | 'admin';
   display_name: string;
+  name: string;
+  surname: string;
   email: string;
   avatar_url: string;
   birth_date: string;

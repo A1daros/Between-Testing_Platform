@@ -16,7 +16,6 @@ export const StudentList: React.FC<Props> = ({ students, checkDetails }) => {
             <th>Fullname</th>
             <th>Email</th>
             <th>Tests taken</th>
-            {/* <th>Date</th> */}
           </tr>
         </thead>
 
@@ -27,7 +26,6 @@ export const StudentList: React.FC<Props> = ({ students, checkDetails }) => {
                 <td>{student.display_name}</td>
                 <td>{student.email}</td>
                 <td>{student.results?.[0]?.count ?? 0}</td>
-                {/* <td>{student.birth_date}</td> */}
               </tr>
             );
           })}

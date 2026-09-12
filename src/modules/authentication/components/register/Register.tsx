@@ -4,7 +4,9 @@ import { supabase } from '../../../../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
+  const [fullname, setFullname] = useState('');
   const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -25,7 +27,9 @@ export const Register = () => {
         password,
         options: {
           data: {
-            display_name: name,
+            display_name: fullname,
+            name,
+            surname,
             email,
           },
         },
@@ -38,7 +42,7 @@ export const Register = () => {
 
       setIsConfirmationModalOpen(true);
 
-      setName('');
+      setFullname('');
       setEmail('');
       setPassword('');
     } catch (error) {
@@ -70,6 +74,22 @@ export const Register = () => {
               id='reg-name'
               type='text'
               name='name'
+              value={fullname}
+              placeholder=' '
+              required
+              className={styles.input}
+              onChange={(event) => setFullname(event.target.value)}
+            />
+            <label htmlFor='reg-name' className={styles.label}>
+              Full Name
+            </label>
+          </div>
+
+          <div className={styles.inputContainer}>
+            <input
+              id='reg-name'
+              type='text'
+              name='name'
               value={name}
               placeholder=' '
               required
@@ -77,7 +97,23 @@ export const Register = () => {
               onChange={(event) => setName(event.target.value)}
             />
             <label htmlFor='reg-name' className={styles.label}>
-              Full Name
+              Name
+            </label>
+          </div>
+
+          <div className={styles.inputContainer}>
+            <input
+              id='reg-name'
+              type='text'
+              name='name'
+              value={surname}
+              placeholder=' '
+              required
+              className={styles.input}
+              onChange={(event) => setSurname(event.target.value)}
+            />
+            <label htmlFor='reg-name' className={styles.label}>
+               Surname
             </label>
           </div>
 

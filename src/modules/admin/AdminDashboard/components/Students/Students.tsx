@@ -3,10 +3,16 @@ import { SearchInput } from '../common/SearchInput/SearchInput';
 import type { StudentProfile } from '../../../../../types/database';
 import { loadStudents } from '../../../../../services/profile';
 import { StudentList } from './components/StudentsList/StudentsList';
+import { useNavigate } from 'react-router-dom';
 
 export const Students = () => {
   const [students, setStudents] = useState<StudentProfile[]>([]);
   const [query, setQuery] = useState('');
+
+  const navigate = useNavigate();
+  const handleCheckDetails = (id: string) => {
+    navigate(`/admin/students/student-details/${id}`);
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -40,7 +46,10 @@ export const Students = () => {
           onChange={setQuery}
         />
 
-        <StudentList students={filteredSudents} checkDetails={() => {}} />
+        <StudentList
+          students={filteredSudents}
+          checkDetails={handleCheckDetails}
+        />
       </div>
     </div>
   );

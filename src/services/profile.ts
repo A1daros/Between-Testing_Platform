@@ -1,5 +1,10 @@
 import { supabase } from '../lib/supabase';
-import type { Profile, Results, StudentProfile } from '../types/database';
+import type {
+  Profile,
+  Results,
+  StudentDetails,
+  StudentProfile,
+} from '../types/database';
 
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
@@ -149,6 +154,21 @@ export const loadAllStudentsResults = async (): Promise<Results[]> => {
   const { data, error } = await supabase
     .from('results')
     .select(`*, tests(title), profiles(display_name)`);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const loadStudentDetails = async (
+  studentId: string,
+): Promise<StudentDetails[]> => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select(`*,  results(score, total, created_at, tests(title))`)
+    .eq('id', studentId);
 
   if (error) {
     throw new Error(error.message);
