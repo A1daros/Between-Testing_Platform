@@ -28,9 +28,9 @@ export const ResultPage = () => {
     );
   }
 
-  const { score, total } = location.state;
+  const { score, totalScore } = location.state;
 
-  const percentage = Math.round((score / total) * 100);
+  const percentage = Math.round((score / totalScore) * 100);
 
   return (
     <main className={styles.page}>
@@ -63,7 +63,7 @@ export const ResultPage = () => {
 
                 <span className={styles.divider}>/</span>
 
-                <span className={styles.total}>{total}</span>
+                <span className={styles.total}>{totalScore}</span>
               </div>
 
               <span className={styles.percentage}>{percentage}%</span>

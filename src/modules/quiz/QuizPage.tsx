@@ -29,8 +29,9 @@ export const QuizPage = () => {
     currentQuestionIndex,
     selectedAnswerId,
     userAnswers,
-    score,
     total,
+    score,
+    totalScore,
     isFinished,
     handleChooseAnswer,
     handlePrevQuestion,
@@ -86,12 +87,12 @@ export const QuizPage = () => {
           testId: Number(testId),
           userId: user.id,
           score,
-          total,
+          total: totalScore,
           userAnswers,
         });
 
         navigate(`/tests/${testId}/results`, {
-          state: { score, total, userAnswers },
+          state: { score, totalScore, userAnswers },
           replace: true,
         });
       } catch (error) {
@@ -105,7 +106,16 @@ export const QuizPage = () => {
     };
 
     sendResults();
-  }, [isFinished, total, testId, userAnswers, navigate, score, user]);
+  }, [
+    isFinished,
+    total,
+    totalScore,
+    testId,
+    userAnswers,
+    navigate,
+    score,
+    user,
+  ]);
 
   const currentAnswers = currentQuestion?.answers ?? [];
 

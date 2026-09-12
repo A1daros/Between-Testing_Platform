@@ -43,9 +43,7 @@ export const App = () => {
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/update-password' element={<UpdatePassword />} />
             <Route path='/about-school' element={<AboutSchool />} />
-          </Routes>
 
-          <Routes>
             <Route path='/' element={<HomePage />} />
 
             <Route element={<ProtectedRoute />}>

@@ -135,7 +135,7 @@ export const loadRecentResults = async (): Promise<Results[]> => {
   const { data, error } = await supabase
     .from('results')
     .select(`*, tests(title), profiles(display_name)`)
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
     .limit(5);
 
   if (error) {

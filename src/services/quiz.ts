@@ -15,7 +15,10 @@ import type {
 } from '../types/database';
 
 export const getTests = async (): Promise<Test[]> => {
-  const { data, error } = await supabase.from('tests').select('*');
+  const { data, error } = await supabase
+    .from('tests')
+    .select('*')
+    .neq('test_type', 'placement_test');
 
   if (error) {
     throw error;
@@ -44,7 +47,7 @@ export const getQuestionsWithAnswersByTestId = async (
   const { data, error } = await supabase
     .from('questions')
     .select(
-      `*, answers(*), tests(title, description), test_parts(title, instruction)`,
+      `*, answers(*), tests(title, description), test_parts(title, instruction, points)`,
     )
     .eq('test_id', testId)
     .order('sort_order', { ascending: true });
@@ -148,7 +151,7 @@ export const getResultsByUserId = async (
 ): Promise<Results[]> => {
   const { data, error } = await supabase
     .from('results')
-    .select(`*, test:tests(title)`)
+    .select(`*, tests(title)`)
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
 

@@ -37,7 +37,6 @@ export const Register = () => {
       }
 
       setIsConfirmationModalOpen(true);
-      navigate('/login');
 
       setName('');
       setEmail('');
@@ -144,7 +143,7 @@ export const Register = () => {
             <button
               type='button'
               className={styles.modalButton}
-              onClick={() => setIsConfirmationModalOpen(false)}
+              onClick={() => navigate('/login')}
             >
               Got it →
             </button>

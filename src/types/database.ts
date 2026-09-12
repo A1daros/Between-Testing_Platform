@@ -41,6 +41,7 @@ export interface QuestionWithAnswers extends Question {
     title: string;
     instruction: string;
     part_id: number;
+    points: number;
   } | null;
 
   levels: {
@@ -131,9 +132,11 @@ export interface StudentProfile {
   avatar_url: string;
   birth_date: string;
 
-  results: {
-    count: number;
-  }[] | null;
+  results:
+    | {
+        count: number;
+      }[]
+    | null;
 }
 
 export interface Submodule {
@@ -146,6 +149,7 @@ export interface Level {
   id: number;
   code: string;
   title: string;
+  sort_order: number;
 }
 
 export interface TheorySection {

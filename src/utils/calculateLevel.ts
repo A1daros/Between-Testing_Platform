@@ -7,7 +7,7 @@ export function calculateLevel(
   questions: QuestionWithAnswers[],
   userAnswers: Record<number, number>,
 ): string {
-  let result = 'Begineer A1';
+  let result = 'A1';
 
   for (const levelCode of LEVEL_ORDER) {
     const levelQuestions = questions.filter(

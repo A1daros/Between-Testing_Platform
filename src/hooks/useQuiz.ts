@@ -10,6 +10,10 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
   const currentQuestion = questions[currentQuestionIndex];
 
   const total = questions.length;
+  const totalScore = questions.reduce(
+    (sum, question) => sum + (question.test_parts?.points ?? 1),
+    0,
+  );
 
   const selectedAnswerId = currentQuestion
     ? (userAnswers[currentQuestion.id] ?? null)
@@ -52,18 +56,19 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
   }, []);
 
   const score = useMemo(() => {
-    return questions.reduce((score, question) => {
+    return questions.reduce((sum, question) => {
       const savedAnswerId = userAnswers[question.id];
+      const points = question.test_parts?.points ?? 1;
 
       if (!savedAnswerId) {
-        return score;
+        return sum;
       }
 
       const selectedAnswer = question.answers.find(
         (answer) => answer.id === savedAnswerId,
       );
 
-      return selectedAnswer?.is_correct ? score + 1 : score;
+      return selectedAnswer?.is_correct ? sum + points : sum;
     }, 0);
   }, [questions, userAnswers]);
 
@@ -73,8 +78,9 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
     selectedAnswerId,
     userAnswers,
     isFinished,
-    score,
     total,
+    score,
+    totalScore,
     handleChooseAnswer,
     handleChoosePlacementAnswer,
     handlePrevQuestion,
