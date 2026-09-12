@@ -73,7 +73,7 @@ export const ResultsOverview = () => {
         const latestDate = a.created_at ?? null;
         const oldDate = b.created_at ?? null;
 
-        return latestDate.localeCompare(oldDate);
+        return oldDate.localeCompare(latestDate);
       }),
     );
   };
@@ -83,7 +83,11 @@ export const ResultsOverview = () => {
       <h2 className={styles.title}>BETWEEN/RESULTS</h2>
       <div className={styles.container}>
         <div className={styles.serchSystems}>
-          <SearchInput value={query} onChange={setQuery} />
+          <SearchInput
+            title='Search by Student name or Test title'
+            value={query}
+            onChange={setQuery}
+          />
           <button className={styles.searchInfo} onClick={handleSearchByTest}>
             Search by test
           </button>

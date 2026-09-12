@@ -26,6 +26,7 @@ import { Tests } from './modules/admin/AdminDashboard/components/Tests/Tests';
 import { Students } from './modules/admin/AdminDashboard/components/Students/Students';
 import { EditTest } from './modules/admin/AdminDashboard/components/Tests/components/EditTest/EditTest';
 import { CreateTest } from './modules/admin/AdminDashboard/components/Tests/components/CreateTest/CreateTest';
+import { ResultDetailsOverview } from './modules/admin/AdminDashboard/components/Results/components/ResultDetails/ResultDetails';
 
 export const App = () => {
   return (
@@ -72,7 +73,7 @@ export const App = () => {
 
                 <Route
                   path='/admin/results/result-details/:resultId'
-                  element={<ResultDetailsPage />}
+                  element={<ResultDetailsOverview />}
                 />
               </Route>
 

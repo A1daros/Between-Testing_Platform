@@ -34,7 +34,11 @@ export const Students = () => {
     <div>
       <h2>BETWEEN/STUDENTS</h2>
       <div>
-        <SearchInput value={query} onChange={setQuery} />
+        <SearchInput
+          title='Search by Student name'
+          value={query}
+          onChange={setQuery}
+        />
 
         <StudentList students={filteredSudents} checkDetails={() => {}} />
       </div>
