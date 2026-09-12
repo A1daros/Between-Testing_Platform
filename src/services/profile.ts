@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { Profile, Results } from '../types/database';
+import type { Profile, Results, StudentProfile } from '../types/database';
 
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
@@ -116,6 +116,19 @@ export const loadCountStudents = async (): Promise<number> => {
   }
 
   return count ?? 0;
+};
+
+export const loadStudents = async (): Promise<StudentProfile[]> => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select(`*, results(count)`)
+    .eq('role', 'student');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 };
 
 export const loadRecentResults = async (): Promise<Results[]> => {

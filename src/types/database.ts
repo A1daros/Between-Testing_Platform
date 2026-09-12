@@ -112,6 +112,7 @@ export interface Profile {
   id: string;
   role: 'student' | 'admin';
   display_name: string;
+  email: string;
   avatar_url: string;
   birth_date: string;
 
@@ -120,6 +121,19 @@ export interface Profile {
   };
 
   results: Results[];
+}
+
+export interface StudentProfile {
+  id: string;
+  role: 'student';
+  display_name: string;
+  email: string;
+  avatar_url: string;
+  birth_date: string;
+
+  results: {
+    count: number;
+  }[] | null;
 }
 
 export interface Submodule {

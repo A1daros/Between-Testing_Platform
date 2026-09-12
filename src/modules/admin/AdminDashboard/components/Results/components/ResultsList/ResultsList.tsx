@@ -19,7 +19,6 @@ export const ResultsList: React.FC<Props> = ({
             <th>Student</th>
             <th>Test</th>
             <th>Score</th>
-            <th>Status</th>
             <th>Date</th>
           </tr>
         </thead>
@@ -33,7 +32,6 @@ export const ResultsList: React.FC<Props> = ({
                 <td>
                   {student.score} / {student.total}
                 </td>
-                <td></td>
                 <td>{student.created_at}</td>
               </tr>
             );

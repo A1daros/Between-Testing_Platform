@@ -45,11 +45,55 @@ export const ResultsOverview = () => {
     });
   }, [allStudentResults, query]);
 
+  const handleSearchByTest = () => {
+    setAllStudentResults((result) =>
+      [...result].sort((a, b) => {
+        const testA = a.tests.title ?? '';
+        const testB = b.tests.title ?? '';
+
+        return testA.localeCompare(testB);
+      }),
+    );
+  };
+
+  const handleSearchByStudent = () => {
+    setAllStudentResults((results) =>
+      [...results].sort((a, b) => {
+        const studentA = a.profiles?.display_name ?? '';
+        const studentB = b.profiles?.display_name ?? '';
+
+        return studentA.localeCompare(studentB);
+      }),
+    );
+  };
+
+  const handleSearchByDate = () => {
+    setAllStudentResults((result) =>
+      [...result].sort((a, b) => {
+        const latestDate = a.created_at ?? null;
+        const oldDate = b.created_at ?? null;
+
+        return latestDate.localeCompare(oldDate);
+      }),
+    );
+  };
+
   return (
     <div className={styles.page}>
       <h2 className={styles.title}>BETWEEN/RESULTS</h2>
       <div className={styles.container}>
-        <SearchInput value={query} onChange={setQuery} />
+        <div className={styles.serchSystems}>
+          <SearchInput value={query} onChange={setQuery} />
+          <button className={styles.searchInfo} onClick={handleSearchByTest}>
+            Search by test
+          </button>
+          <button className={styles.searchInfo} onClick={handleSearchByStudent}>
+            Search by student
+          </button>
+          <button className={styles.searchInfo} onClick={handleSearchByDate}>
+            Search by date
+          </button>
+        </div>
 
         <ResultsList
           allStudentResults={filteredSudents}

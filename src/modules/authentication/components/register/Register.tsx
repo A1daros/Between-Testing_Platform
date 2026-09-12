@@ -26,6 +26,7 @@ export const Register = () => {
         options: {
           data: {
             display_name: name,
+            email,
           },
         },
       });
@@ -36,6 +37,7 @@ export const Register = () => {
       }
 
       setIsConfirmationModalOpen(true);
+      navigate('/login');
 
       setName('');
       setEmail('');
@@ -47,8 +49,6 @@ export const Register = () => {
     } finally {
       setIsLoading(false);
     }
-
-    navigate('/login');
   };
 
   return (
