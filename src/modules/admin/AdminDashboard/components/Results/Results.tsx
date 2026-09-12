@@ -19,8 +19,6 @@ export const ResultsOverview = () => {
         const data = await loadAllStudentsResults();
 
         setAllStudentResults(data);
-
-        console.log(data);
       } catch (error) {
         console.error('Failed to load all student results', error);
       }
@@ -70,10 +68,10 @@ export const ResultsOverview = () => {
   const handleSearchByDate = () => {
     setAllStudentResults((result) =>
       [...result].sort((a, b) => {
-        const latestDate = a.created_at ?? null;
-        const oldDate = b.created_at ?? null;
+        const oldDate = a.created_at ?? null;
+        const latestDate = b.created_at ?? null;
 
-        return oldDate.localeCompare(latestDate);
+        return latestDate.localeCompare(oldDate);
       }),
     );
   };

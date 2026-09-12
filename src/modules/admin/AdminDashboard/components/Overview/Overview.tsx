@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './Overview.module.scss';
 import type { Results, Test } from '../../../../../types/database';
 import {
+  loadAttemptResults,
   loadCountStudents,
   loadRecentResults,
 } from '../../../../../services/profile';
@@ -10,20 +11,27 @@ import { getTests } from '../../../../../services/quiz';
 export const Overview = () => {
   const [tests, setTests] = useState<Test[]>([]);
   const [totalStudents, setTotalStudents] = useState<number | null>(null);
+  const [attemptResults, setAttemptResults] = useState<number>(0);
   const [recentResults, setRecentResults] = useState<Results[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [testsData, totalStudentsData, recentResultsData] =
-          await Promise.all([
-            getTests(),
-            loadCountStudents(),
-            loadRecentResults(),
-          ]);
+        const [
+          testsData,
+          totalStudentsData,
+          attemptResultsData,
+          recentResultsData,
+        ] = await Promise.all([
+          getTests(),
+          loadCountStudents(),
+          loadAttemptResults(),
+          loadRecentResults(),
+        ]);
 
         setTests(testsData);
         setTotalStudents(totalStudentsData);
+        setAttemptResults(attemptResultsData);
         setRecentResults(recentResultsData);
       } catch (error) {
         console.error(error);
@@ -49,7 +57,7 @@ export const Overview = () => {
           </li>
           <li className={styles.item}>
             <h3 className={styles.subtitle}>Attempts</h3>
-            <p>{recentResults.length}</p>
+            <p>{attemptResults}</p>
           </li>
           <li className={styles.item}>
             <h3 className={styles.subtitle}>Pending</h3>

@@ -4,7 +4,6 @@ import { supabase } from '../../../../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
-  const [fullname, setFullname] = useState('');
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -27,7 +26,7 @@ export const Register = () => {
         password,
         options: {
           data: {
-            display_name: fullname,
+            display_name: name + surname,
             name,
             surname,
             email,
@@ -42,7 +41,8 @@ export const Register = () => {
 
       setIsConfirmationModalOpen(true);
 
-      setFullname('');
+      setName('');
+      setSurname('');
       setEmail('');
       setPassword('');
     } catch (error) {
@@ -74,22 +74,6 @@ export const Register = () => {
               id='reg-name'
               type='text'
               name='name'
-              value={fullname}
-              placeholder=' '
-              required
-              className={styles.input}
-              onChange={(event) => setFullname(event.target.value)}
-            />
-            <label htmlFor='reg-name' className={styles.label}>
-              Full Name
-            </label>
-          </div>
-
-          <div className={styles.inputContainer}>
-            <input
-              id='reg-name'
-              type='text'
-              name='name'
               value={name}
               placeholder=' '
               required
@@ -103,17 +87,17 @@ export const Register = () => {
 
           <div className={styles.inputContainer}>
             <input
-              id='reg-name'
+              id='reg-surname'
               type='text'
-              name='name'
+              name='surname'
               value={surname}
               placeholder=' '
               required
               className={styles.input}
               onChange={(event) => setSurname(event.target.value)}
             />
-            <label htmlFor='reg-name' className={styles.label}>
-               Surname
+            <label htmlFor='reg-surname' className={styles.label}>
+              Surname
             </label>
           </div>
 

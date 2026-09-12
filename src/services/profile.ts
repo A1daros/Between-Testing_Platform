@@ -81,9 +81,6 @@ export const uploadAvatar = async (
 
   const filePath = `${userId}/${Date.now()}-${file.name}`;
 
-  console.log('Error', userId, filePath);
-  console.log('MIME type:', file.type, '| size:', file.size);
-
   const { error: uploadError } = await supabase.storage
     .from('avatars')
     .upload(filePath, file, { upsert: true });
@@ -148,6 +145,18 @@ export const loadRecentResults = async (): Promise<Results[]> => {
   }
 
   return data;
+};
+
+export const loadAttemptResults = async (): Promise<number> => {
+  const { count, error } = await supabase
+    .from('results')
+    .select('*', { count: 'exact', head: true });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return count ?? 0;
 };
 
 export const loadAllStudentsResults = async (): Promise<Results[]> => {

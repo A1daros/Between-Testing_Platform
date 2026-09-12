@@ -197,16 +197,12 @@ export const TestForm = () => {
     };
 
     try {
-      console.log('Sending payload:', payload);
-
       await createTest(payload);
 
       navigate('/admin/tests');
     } catch (error) {
       console.error('Failed to create test:', error);
     }
-
-    console.log(payload);
   };
 
   return (

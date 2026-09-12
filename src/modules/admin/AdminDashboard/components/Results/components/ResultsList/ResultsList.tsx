@@ -25,6 +25,8 @@ export const ResultsList: React.FC<Props> = ({
 
         <tbody>
           {allStudentResults.map((student) => {
+            const date = new Date(student.created_at).toLocaleDateString();
+
             return (
               <tr key={student.id} onClick={() => checkDetails(student.id)}>
                 <td>{student.profiles?.display_name}</td>
@@ -32,7 +34,7 @@ export const ResultsList: React.FC<Props> = ({
                 <td>
                   {student.score} / {student.total}
                 </td>
-                <td>{student.created_at}</td>
+                <td>{date}</td>
               </tr>
             );
           })}

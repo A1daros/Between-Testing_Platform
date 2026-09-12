@@ -15,7 +15,7 @@ export const StudentList: React.FC<Props> = ({ students, checkDetails }) => {
           <tr>
             <th>Fullname</th>
             <th>Email</th>
-            <th>Tests taken</th>
+            <th>Tests completed</th>
           </tr>
         </thead>
 

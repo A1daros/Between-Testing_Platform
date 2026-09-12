@@ -36,8 +36,6 @@ export const getTestsWithLevel = async (): Promise<TestWithLevels[]> => {
     throw error;
   }
 
-  console.log(data);
-
   return data;
 };
 
@@ -209,12 +207,6 @@ export const getProfile = async (userId: string): Promise<Profile | null> => {
     .select('*')
     .eq('id', userId)
     .single();
-
-  console.log('GET PROFILE:', {
-    userId,
-    data,
-    error,
-  });
 
   if (error) {
     throw new Error(error.message);
