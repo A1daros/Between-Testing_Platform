@@ -167,7 +167,7 @@ export const loadStudentDetails = async (
 ): Promise<StudentDetails[]> => {
   const { data, error } = await supabase
     .from('profiles')
-    .select(`*,  results(score, total, created_at, tests(title))`)
+    .select(`*,  results(id, score, total, created_at, tests(id, title))`)
     .eq('id', studentId);
 
   if (error) {

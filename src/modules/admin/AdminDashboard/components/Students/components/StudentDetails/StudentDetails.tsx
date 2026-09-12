@@ -102,17 +102,17 @@ export const StudentDetailsOverview = () => {
                     </thead>
 
                     <tbody>
-                      {mappedStudent.map((student) => {
-                        const date = new Date(student.created_at);
+                      {mappedStudent.map((result) => {
+                        const date = new Date(result.created_at);
 
                         return (
                           <tr
-                            key={student.id}
-                            onClick={() => handleCheckDetails(student.id)}
+                            key={result.id}
+                            onClick={() => handleCheckDetails(result.id)}
                           >
-                            <td>{student.tests?.title}</td>
+                            <td>{result.tests?.title}</td>
                             <td>
-                              {student.score} / {student.total}
+                              {result.score} / {result.total}
                             </td>
                             <td>{date.toLocaleDateString()}</td>
                           </tr>
