@@ -26,7 +26,7 @@ export const Register = () => {
         password,
         options: {
           data: {
-            display_name: name + surname,
+            display_name: `${name} + ${surname}`,
             name,
             surname,
             email,

@@ -58,7 +58,7 @@ personal student profiles, and an administrative panel for teachers.
 
 **Users & results:**
 
-- **profiles** — extends `auth.users` (role, display name, avatar, birth date)
+- **profiles** — extends `auth.users` (role, fullname, name, surname, email, avatar, birth date)
 - **results** — a completed test attempt (score, user, test)
 - **result_answers** — per-question answers within a result
 - **teachers** — staff shown on the About page
@@ -69,32 +69,24 @@ their own data, while admins get elevated access via role-based policies.
 ## ⚙️ Running locally
 
 **Test account:**
-\```
-email: demo@between-lms.com
-password: demo12345
-\```
 
-\```bash
-git clone https://github.com/A1daros/between-lms.git
-cd between-lms
-npm install
-npm run dev
-\```
+- email: demo@between-lms.com
+- password: demo12345
 
-Required environment variables (`.env`):
-\```
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-\```
+**How to clone:**
+- git clone https://github.com/A1daros/between-lms.git
+- cd between-lms
+- npm install
+- npm run dev
+
+**Required environment variables (`.env`):**
+
+- VITE_SUPABASE_URL=
+- VITE_SUPABASE_ANON_KEY=
 
 ## 📍 Roadmap
 
 - [ ] Obtain the necessary information from the customer and fill in About School Page
 - [ ] Fill the platform with the necessary tests from A1 to C2 levels
-- [ ] Complete Admin Dashboard page with the ability to add tests yourself
+- [ ] Complete Admin Dashboard page with the ability to edit and delete tests yourself
 - [ ] Refactoring the structure, optimizing and converting local states to Redux Toolkit
-- [ ] Expansion to a full-fledged LMS (submodules, theory, written assignments):
-  - [ ] Listening/Speaking modules
-  - [ ] Practice submodules
-  - [ ] Implement theory, reading, and practice content for A1–C2
-  - [ ] Student progress analytics
