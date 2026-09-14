@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import type {
+  EditTest,
   Level,
   Profile,
   QuestionWithAnswers,
@@ -21,7 +22,25 @@ export const getTests = async (): Promise<Test[]> => {
     .neq('test_type', 'placement_test');
 
   if (error) {
-    throw error;
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getTestById = async (testId: number): Promise<EditTest> => {
+  const { data, error } = await supabase
+    .from('tests')
+    .select(`*, test_parts(*), questions(*, answers(*))`)
+    .eq('id', testId)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) {
+    throw new Error('Test not found');
   }
 
   return data;
@@ -33,7 +52,7 @@ export const getTestsWithLevel = async (): Promise<TestWithLevels[]> => {
     .select(`*, levels(code), questions(count)`);
 
   if (error) {
-    throw error;
+    throw new Error(error.message);
   }
 
   return data;

@@ -1,47 +1,31 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import React, { useEffect, useState, type FormEvent } from 'react';
 import type { Level } from '../../../../../../../types/database';
 import { getLevelsById } from '../../../../../../../services/quiz';
-import { createTest } from '../../../../../../../services/tests';
 import { useNavigate } from 'react-router-dom';
+import type { NewTestPayload, UIPart, UIQuestion } from '../../types/testForm';
 
-export type NewTestPayload = {
-  title: string;
-  description: string;
-  levelId: string;
-  parts: {
-    uiId: string;
+type Props = {
+  initialData?: {
     title: string;
-    instruction: string;
-    points: number;
-  }[];
-  questions: {
-    partId: string | null;
-    question: string;
-    answers: { text: string; isCorrect: boolean }[];
-  }[];
+    description: string;
+    levelId: string;
+    parts: UIPart[];
+    questions: UIQuestion[];
+  };
+  onSubmit: (payload: NewTestPayload) => Promise<void>;
 };
 
-interface UIPart {
-  uiId: string;
-  title: string;
-  instruction: string;
-  points: number;
-}
+export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
+  const [title, setTitle] = useState(initialData?.title ?? '');
+  const [description, setDescription] = useState(
+    initialData?.description ?? '',
+  );
+  const [levelId, setLevelId] = useState(initialData?.levelId ?? '');
 
-interface UIQuestion {
-  uiId: string;
-  partUiId: string | null;
-  question: string;
-  answers: { text: string; isCorrect: boolean }[];
-}
-
-export const TestForm = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [levelId, setLevelId] = useState('');
-
-  const [parts, setParts] = useState<UIPart[]>([]);
-  const [questions, setQuestions] = useState<UIQuestion[]>([]);
+  const [parts, setParts] = useState<UIPart[]>(initialData?.parts ?? []);
+  const [questions, setQuestions] = useState<UIQuestion[]>(
+    initialData?.questions ?? [],
+  );
 
   const [levels, setLevels] = useState<Level[]>([]);
 
@@ -197,7 +181,7 @@ export const TestForm = () => {
     };
 
     try {
-      await createTest(payload);
+      await onSubmit(payload);
 
       navigate('/admin/tests');
     } catch (error) {

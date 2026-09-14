@@ -24,10 +24,10 @@ import { Overview } from './modules/admin/AdminDashboard/components/Overview';
 import { ResultsOverview } from './modules/admin/AdminDashboard/components/Results/Results';
 import { Tests } from './modules/admin/AdminDashboard/components/Tests/Tests';
 import { Students } from './modules/admin/AdminDashboard/components/Students/Students';
-import { EditTest } from './modules/admin/AdminDashboard/components/Tests/components/EditTest/EditTest';
-import { CreateTest } from './modules/admin/AdminDashboard/components/Tests/components/CreateTest/CreateTest';
+import { CreateTestForm } from './modules/admin/AdminDashboard/components/Tests/components/CreateTest/CreateTest';
 import { ResultDetailsOverview } from './modules/admin/AdminDashboard/components/Results/components/ResultDetails/ResultDetails';
 import { StudentDetailsOverview } from './modules/admin/AdminDashboard/components/Students/components/StudentDetails/StudentDetails';
+import { EditTestForm } from './modules/admin/AdminDashboard/components/Tests/components/EditTest';
 
 export const App = () => {
   return (
@@ -66,8 +66,8 @@ export const App = () => {
                   <Route index element={<Navigate to='overview' replace />} />
                   <Route path='overview' element={<Overview />} />
                   <Route path='tests' element={<Tests />} />
-                  <Route path='tests/:testId/edit' element={<EditTest />} />
-                  <Route path='tests/create' element={<CreateTest />} />
+                  <Route path='tests/:testId/edit' element={<EditTestForm />} />
+                  <Route path='tests/create' element={<CreateTestForm />} />
                   <Route path='results' element={<ResultsOverview />} />
                   <Route path='students' element={<Students />} />
                   <Route

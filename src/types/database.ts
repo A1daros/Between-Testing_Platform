@@ -9,6 +9,22 @@ export interface Test {
   level: Level[];
 }
 
+export interface EditTest {
+  id: number;
+  title: string;
+  description: string;
+  level_id: number;
+
+  test_parts: {
+    id: number;
+    title: string;
+    instruction: string;
+    points: number;
+  }[];
+
+  questions: (Question & { answers: Answer[] })[];
+}
+
 export interface TestWithLevels extends Test {
   levels: {
     code: string;

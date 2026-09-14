@@ -1,30 +1,11 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { AdminDashboard } from './AdminDashboard';
 import styles from './AdminPage.module.scss';
 
 export const AdminPage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        <div className={styles.sidebar}>
-          <nav className={styles.nav}>
-            <NavLink to={`/admin/overview`} className={styles.link}>
-              Overview
-            </NavLink>
-            <NavLink to={`/admin/tests`} className={styles.link}>
-              Tests
-            </NavLink>
-            <NavLink to={`/admin/results`} className={styles.link}>
-              Results
-            </NavLink>
-            <NavLink to={`/admin/students`} className={styles.link}>
-              Students
-            </NavLink>
-          </nav>
-        </div>
-
-        <div className={styles.mainbar}>
-          <Outlet />
-        </div>
+        <AdminDashboard />
       </div>
     </div>
   );
