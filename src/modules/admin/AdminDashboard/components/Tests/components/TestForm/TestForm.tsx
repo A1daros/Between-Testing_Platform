@@ -48,7 +48,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
 
   const handleAddPart = () => {
     const newPart: UIPart = {
-      uiId: Date.now().toString(),
+      uiId: crypto.randomUUID(),
       title: '',
       instruction: '',
       points: 1,
@@ -83,7 +83,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
 
   const handleAddQuestion = () => {
     const newQuestion: UIQuestion = {
-      uiId: Date.now().toString(),
+      uiId: crypto.randomUUID(),
       partUiId: null,
       question: '',
       answers: [

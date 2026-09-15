@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Answer, QuestionWithAnswers } from '../types/database';
 
 export const useQuiz = (questions: QuestionWithAnswers[]) => {
@@ -19,41 +19,35 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
     ? (userAnswers[currentQuestion.id] ?? null)
     : null;
 
-  const handleChooseAnswer = useCallback(
-    (answer: Answer) => {
-      if (!currentQuestion) {
-        return;
-      }
+  const handleChooseAnswer = (answer: Answer) => {
+    if (!currentQuestion) {
+      return;
+    }
 
-      setUserAnswers((prev) => ({
-        ...prev,
-        [currentQuestion.id]: answer.id,
-      }));
-    },
-    [currentQuestion],
-  );
+    setUserAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.id]: answer.id,
+    }));
+  };
 
-  const handleChoosePlacementAnswer = useCallback(
-    (answer: Answer) => {
-      const questionId = questions[currentQuestionIndex]?.id;
-      if (questionId) {
-        setUserAnswers((prev) => ({ ...prev, [questionId]: answer.id }));
-      }
-    },
-    [questions, currentQuestionIndex],
-  );
+  const handleChoosePlacementAnswer = (answer: Answer) => {
+    const questionId = questions[currentQuestionIndex]?.id;
+    if (questionId) {
+      setUserAnswers((prev) => ({ ...prev, [questionId]: answer.id }));
+    }
+  };
 
-  const handlePrevQuestion = useCallback(() => {
+  const handlePrevQuestion = () => {
     setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
-  }, []);
+  };
 
-  const handleNextQuestion = useCallback(() => {
+  const handleNextQuestion = () => {
     setCurrentQuestionIndex((prev) => Math.min(prev + 1, total - 1));
-  }, [total]);
+  };
 
-  const handleFinishQuiz = useCallback(() => {
+  const handleFinishQuiz = () => {
     setIsFinished(true);
-  }, []);
+  };
 
   const score = useMemo(() => {
     return questions.reduce((sum, question) => {

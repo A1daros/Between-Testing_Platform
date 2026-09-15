@@ -71,11 +71,11 @@ export const App = () => {
                   <Route path='results' element={<ResultsOverview />} />
                   <Route path='students' element={<Students />} />
                   <Route
-                    path='/admin/results/result-details/:resultId'
+                    path='results/result-details/:resultId'
                     element={<ResultDetailsOverview />}
                   />
                   <Route
-                    path='/admin/students/student-details/:studentId'
+                    path='students/student-details/:studentId'
                     element={<StudentDetailsOverview />}
                   />
                 </Route>
