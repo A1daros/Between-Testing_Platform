@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import styles from './Overview.module.scss';
 import type { Results, Test } from '../../../../../types/database';
+import { loadCountStudents } from '../../../../../services/profile';
+import { getTests } from '../../../../../services/tests';
 import {
   loadAttemptResults,
-  loadCountStudents,
   loadRecentResults,
-} from '../../../../../services/profile';
-import { getTests } from '../../../../../services/tests';
+} from '../../../../../services/results';
+import { StatCard } from '../common/StatCard';
 
 export const Overview = () => {
   const [tests, setTests] = useState<Test[]>([]);
@@ -47,22 +48,10 @@ export const Overview = () => {
 
       <div className={styles.container}>
         <ul className={styles.list}>
-          <li className={styles.item}>
-            <h3 className={styles.subtitle}>Tests</h3>
-            <p>{tests.length}</p>
-          </li>
-          <li className={styles.item}>
-            <h3 className={styles.subtitle}>Students</h3>
-            <p>{totalStudents}</p>
-          </li>
-          <li className={styles.item}>
-            <h3 className={styles.subtitle}>Attempts</h3>
-            <p>{attemptResults}</p>
-          </li>
-          <li className={styles.item}>
-            <h3 className={styles.subtitle}>Pending</h3>
-            <p>{0}</p>
-          </li>
+          <StatCard label='Tests' value={tests.length} />
+          <StatCard label='Students' value={totalStudents} />
+          <StatCard label='Attempts' value={attemptResults} />
+          <StatCard label='Pending' value={0} />
         </ul>
 
         <div className={styles.recent}>

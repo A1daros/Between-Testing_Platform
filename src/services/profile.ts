@@ -1,7 +1,6 @@
 import { supabase } from '../lib/supabase';
 import type {
   Profile,
-  Results,
   StudentDetails,
   StudentProfile,
 } from '../types/database';
@@ -125,44 +124,6 @@ export const loadStudents = async (): Promise<StudentProfile[]> => {
     .from('profiles')
     .select(`*, results(count)`)
     .eq('role', 'student');
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
-
-export const loadRecentResults = async (): Promise<Results[]> => {
-  const { data, error } = await supabase
-    .from('results')
-    .select(`*, tests(title), profiles(display_name)`)
-    .order('created_at', { ascending: false })
-    .limit(5);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
-
-export const loadAttemptResults = async (): Promise<number> => {
-  const { count, error } = await supabase
-    .from('results')
-    .select('*', { count: 'exact', head: true });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return count ?? 0;
-};
-
-export const loadAllStudentsResults = async (): Promise<Results[]> => {
-  const { data, error } = await supabase
-    .from('results')
-    .select(`*, tests(title), profiles(display_name)`);
 
   if (error) {
     throw new Error(error.message);

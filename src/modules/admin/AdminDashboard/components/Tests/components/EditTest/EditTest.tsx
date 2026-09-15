@@ -119,7 +119,7 @@ export const EditTestForm = () => {
       <div>
         <TestForm initialData={initialData} onSubmit={handleSubmit} />
 
-        <button type='submit' onClick={() => setShowConfirm(true)}>
+        <button type='button' onClick={() => setShowConfirm(true)}>
           Delete Test
         </button>
 

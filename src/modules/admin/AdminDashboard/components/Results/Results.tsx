@@ -3,8 +3,8 @@ import { SearchInput } from '../common/SearchInput/SearchInput';
 import { ResultsList } from './components/ResultsList/ResultsList';
 import styles from './Results.module.scss';
 import type { Results } from '../../../../../types/database';
-import { loadAllStudentsResults } from '../../../../../services/profile';
 import { useNavigate, useParams } from 'react-router-dom';
+import { loadAllStudentsResults } from '../../../../../services/results';
 
 export const ResultsOverview = () => {
   const [query, setQuery] = useState('');
