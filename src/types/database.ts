@@ -190,23 +190,3 @@ export interface Level {
   title: string;
   sort_order: number;
 }
-
-export interface TheorySection {
-  id: number;
-  submodule_id: number;
-  title: string;
-  content: string;
-}
-
-export interface WritingPrompt {
-  id: number;
-  submodule_id: number;
-  prompt_text: string;
-}
-
-export interface WritingSubmission {
-  id: number;
-  writing_prompt_id: number;
-  user_id: number;
-  answer_text: string;
-}
