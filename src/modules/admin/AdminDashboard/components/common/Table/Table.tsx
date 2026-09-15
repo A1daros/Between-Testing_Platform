@@ -1,4 +1,4 @@
-import type { TableProps } from '../../../../types/tableCascade';
+import type { TableProps } from '../../../../types/table.ts';
 import styles from './Table.module.scss';
 
 export function Table<T extends { id: string | number }>({
@@ -7,7 +7,7 @@ export function Table<T extends { id: string | number }>({
   onRowClick,
 }: TableProps<T>) {
   return (
-    <table>
+    <table className={styles.table}>
       <thead>
         <tr>
           {columns.map((column, index) => (
@@ -17,23 +17,23 @@ export function Table<T extends { id: string | number }>({
       </thead>
 
       <tbody>
-        <tr>
-          {rows.map((row) => (
-            <tr
-              key={row.id}
-              onClick={onRowClick ? () => onRowClick(row) : undefined}
-              className={onRowClick ? styles.clickableRow : undefined}
-            >
-              {columns.map((column, index) => (
+        {rows.map((row) => (
+          <tr
+            key={row.id}
+            onClick={onRowClick ? () => onRowClick(row) : undefined}
+            className={onRowClick ? styles.clickableRow : undefined}
+          >
+            {columns.map((column, index) => {
+              const defaultRender = String(row[column.key as keyof T] ?? '—');
+
+              return (
                 <td key={index}>
-                  {column.render
-                    ? column.render(row)
-                    : String(row[column.key as keyof T] ?? '—')}
+                  {column.render ? column.render(row) : defaultRender}
                 </td>
-              ))}
-            </tr>
-          ))}
-        </tr>
+              );
+            })}
+          </tr>
+        ))}
       </tbody>
     </table>
   );

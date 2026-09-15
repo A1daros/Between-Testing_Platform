@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './StudentsList.module.scss';
 import type { StudentProfile } from '../../../../../../../types/database';
+import { getStudentsColumns } from './studentsColumns';
+import { Table } from '../../../common/Table';
 
 type Props = {
   students: StudentProfile[];
@@ -8,29 +10,15 @@ type Props = {
 };
 
 export const StudentList: React.FC<Props> = ({ students, checkDetails }) => {
-  return (
-    <div>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Fullname</th>
-            <th>Email</th>
-            <th>Tests completed</th>
-          </tr>
-        </thead>
+  const columns = getStudentsColumns();
 
-        <tbody>
-          {students.map((student) => {
-            return (
-              <tr key={student.id} onClick={() => checkDetails(student.id)}>
-                <td>{student.display_name}</td>
-                <td>{student.email}</td>
-                <td>{student.results?.[0]?.count ?? 0}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+  return (
+    <div className={styles.page}>
+      <Table
+        columns={columns}
+        rows={students}
+        onRowClick={(student) => checkDetails(student.id)}
+      />
     </div>
   );
 };
