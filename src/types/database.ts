@@ -5,8 +5,6 @@ export interface Test {
   level_id: number;
   submodule_id: number;
   test_type: string;
-
-  level: Level[];
 }
 
 export interface EditTest {
@@ -22,7 +20,9 @@ export interface EditTest {
     points: number;
   }[];
 
-  questions: (Question & { answers: Answer[] })[];
+  questions: (Question & {
+    answers: Answer[];
+  })[];
 }
 
 export interface TestWithLevels extends Test {
@@ -94,13 +94,6 @@ export interface Results {
   profiles: {
     display_name: string;
   } | null;
-}
-
-export interface ResultAnswers {
-  id: number;
-  result_id: number;
-  question_id: number;
-  answer_id: number;
 }
 
 export interface ResultAnswersInput {
@@ -176,12 +169,6 @@ export interface StudentProfile {
         count: number;
       }[]
     | null;
-}
-
-export interface Submodule {
-  id: number;
-  level_id: number;
-  title: string;
 }
 
 export interface Level {
