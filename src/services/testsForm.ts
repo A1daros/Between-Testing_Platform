@@ -58,6 +58,17 @@ const deleteTestStructure = async (testId: number) => {
   }
 };
 
+const deleteTestResults = async (testId: number) => {
+  const { error: resultError } = await supabase
+    .from('results')
+    .delete()
+    .eq('test_id', testId);
+
+  if (resultError) {
+    throw new Error(`Failed to delete result: ${resultError.message}`);
+  }
+};
+
 const createTestStructure = async (testId: number, payload: NewTestPayload) => {
   const { data: createdParts, error: partsError } = await supabase
     .from('test_parts')
@@ -157,6 +168,7 @@ export const updateTest = async (testId: number, payload: NewTestPayload) => {
     throw new Error(`Failed to update test: ${testError.message}`);
   }
 
+  await deleteTestResults(testId);
   await deleteTestStructure(testId);
 
   await createTestStructure(testId, payload);
@@ -165,16 +177,8 @@ export const updateTest = async (testId: number, payload: NewTestPayload) => {
 };
 
 export const deleteTest = async (testId: number) => {
+  await deleteTestResults(testId);
   await deleteTestStructure(testId);
-
-  const { error: resultError } = await supabase
-    .from('results')
-    .delete()
-    .eq('test_id', testId);
-
-  if (resultError) {
-    throw new Error(`Failed to delete result: ${resultError.message}`);
-  }
 
   const { error: testError } = await supabase
     .from('tests')
