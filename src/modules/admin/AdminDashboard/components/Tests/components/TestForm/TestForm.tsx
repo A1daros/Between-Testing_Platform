@@ -3,6 +3,7 @@ import type { Level } from '../../../../../../../types/database';
 import { getLevelsById } from '../../../../../../../services/quiz';
 import { useNavigate } from 'react-router-dom';
 import type { NewTestPayload, UIPart, UIQuestion } from '../../types/testForm';
+import styles from './TestForm.module.scss';
 
 type Props = {
   initialData?: {
@@ -356,7 +357,9 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
           </button>
         </div>
 
-        <button type='submit'>Save Test</button>
+        <div className={styles.buttons}>
+          <button type='submit'>Save Test</button>
+        </div>
       </form>
     </div>
   );
