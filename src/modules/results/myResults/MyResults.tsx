@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import type { Results } from '../../../types/database';
-import { getResultsByUserId } from '../../../services/quiz';
 import { Loader } from '../../Loader';
+import { getResultsByUserId } from '../../../services/results';
 
 export const MyResults = () => {
   const [results, setResults] = useState<Results[]>([]);

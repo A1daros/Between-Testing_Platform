@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import styles from './TestsByLevel.module.scss';
 import type { Level, Test } from '../../../types/database';
-import { getLevelsById, getTestsByLevelId } from '../../../services/quiz';
+import { getTestsByLevelId } from '../../../services/tests';
+import { getLevelsById } from '../../../services/levels';
 import { Loader } from '../../Loader';
 import { Link, useParams } from 'react-router-dom';
 
@@ -70,7 +71,9 @@ export const TestsByLevel = () => {
             {levels
               .filter((level) => String(level.id) === String(levelId))
               .map((level) => (
-                <div key={level.id} className={styles.level}>{level.code}</div>
+                <div key={level.id} className={styles.level}>
+                  {level.code}
+                </div>
               ))}
 
             <div className={styles.heroContent}>

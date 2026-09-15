@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './TestsPage.module.scss';
 import type { Test } from '../../types/database';
-import { getTests } from '../../services/quiz';
+import { getTests } from '../../services/tests';
 import { Loader } from '../Loader';
 import { Link } from 'react-router-dom';
 

@@ -1,0 +1,93 @@
+import { supabase } from '../lib/supabase';
+import type {
+  ResultInput,
+  Results,
+  SaveQuizResultInput,
+} from '../types/database';
+import { saveResultAnswers } from './resultAnswers';
+
+export const saveResult = async (result: ResultInput): Promise<Results> => {
+  const { data, error } = await supabase
+    .from('results')
+    .insert(result)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getResultsByTestId = async (
+  testId: number,
+): Promise<Results[]> => {
+  const { data, error } = await supabase
+    .from('results')
+    .select(`*, profiles(display_name)`)
+    .eq('test_id', testId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getResultsByUserId = async (
+  userId: string,
+): Promise<Results[]> => {
+  const { data, error } = await supabase
+    .from('results')
+    .select(`*, tests(title)`)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getResultById = async (resultId: number): Promise<Results[]> => {
+  const { data, error } = await supabase
+    .from('results')
+    .select('*')
+    .eq('id', resultId)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const saveQuizResult = async ({
+  testId,
+  userId,
+  score,
+  total,
+  userAnswers,
+}: SaveQuizResultInput) => {
+  const result = await saveResult({
+    test_id: testId,
+    user_id: userId,
+    score,
+    total,
+  });
+
+  const resultAnswers = Object.entries(userAnswers).map(
+    ([questionId, answerId]) => ({
+      result_id: result.id,
+      question_id: Number(questionId),
+      answer_id: Number(answerId),
+    }),
+  );
+
+  await saveResultAnswers(resultAnswers);
+
+  return result;
+};

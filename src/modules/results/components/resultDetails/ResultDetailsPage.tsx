@@ -1,9 +1,9 @@
 import styles from './ResultDetailsPage.module.scss';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getResultDetails } from '../../../../services/quiz';
 import type { ResultDetails } from '../../../../types/database';
 import { Loader } from '../../../Loader';
+import { getResultDetails } from '../../../../services/resultAnswers';
 
 export const ResultDetailsPage = () => {
   const [resultDetails, setResultDetails] = useState<ResultDetails[]>([]);

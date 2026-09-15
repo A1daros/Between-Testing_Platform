@@ -2,8 +2,8 @@ import styles from './ResultDetails.module.scss';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import type { ResultDetails } from '../../../../../../../types/database';
-import { getResultDetails } from '../../../../../../../services/quiz';
 import { Loader } from '../../../../../../Loader';
+import { getResultDetails } from '../../../../../../../services/resultAnswers';
 
 export const ResultDetailsOverview = () => {
   const [resultDetails, setResultDetails] = useState<ResultDetails[]>([]);

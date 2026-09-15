@@ -1,9 +1,9 @@
 import React, { useEffect, useState, type FormEvent } from 'react';
 import type { Level } from '../../../../../../../types/database';
-import { getLevelsById } from '../../../../../../../services/quiz';
 import { useNavigate } from 'react-router-dom';
 import type { NewTestPayload, UIPart, UIQuestion } from '../../types/testForm';
 import styles from './TestForm.module.scss';
+import { getLevelsById } from '../../../../../../../services/levels';
 
 type Props = {
   initialData?: {

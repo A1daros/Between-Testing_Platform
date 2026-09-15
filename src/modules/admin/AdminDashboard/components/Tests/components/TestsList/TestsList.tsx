@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './TestsList.module.scss';
 import type { TestWithLevels } from '../../../../../../../types/database';
-import { getTestsWithLevel } from '../../../../../../../services/quiz';
+import { getTestsWithLevel } from '../../../../../../../services/tests';
 import { useNavigate } from 'react-router-dom';
 
 export const TestsList = () => {

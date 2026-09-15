@@ -3,12 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import type { QuestionWithAnswers } from '../../types/database';
 import { useQuiz } from '../../hooks/useQuiz';
-import {
-  getQuestionsWithAnswersByTestId,
-  saveQuizResult,
-} from '../../services/quiz';
+
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../Loader';
+import { getQuestionsWithAnswersByTestId } from '../../services/questions';
+import { saveQuizResult } from '../../services/results';
 
 export const QuizPage = () => {
   const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);

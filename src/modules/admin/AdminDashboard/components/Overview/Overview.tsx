@@ -6,7 +6,7 @@ import {
   loadCountStudents,
   loadRecentResults,
 } from '../../../../../services/profile';
-import { getTests } from '../../../../../services/quiz';
+import { getTests } from '../../../../../services/tests';
 
 export const Overview = () => {
   const [tests, setTests] = useState<Test[]>([]);

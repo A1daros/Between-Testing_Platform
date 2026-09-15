@@ -2,11 +2,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { TestForm } from '../TestForm';
 import { useEffect, useState } from 'react';
 import type { EditTest } from '../../../../../../../types/database';
-import { getTestById } from '../../../../../../../services/quiz';
+import { getTestById } from '../../../../../../../services/tests';
 import type { NewTestPayload, UIPart, UIQuestion } from '../../types/testForm';
 import { Loader } from '../../../../../../Loader';
 import styles from './EditTest.module.scss';
-import { deleteTest, updateTest } from '../../../../../../../services/tests';
+import { deleteTest, updateTest } from '../../../../../../../services/testsForm';
 
 export const EditTestForm = () => {
   const [editTest, setEditTest] = useState<EditTest | null>(null);

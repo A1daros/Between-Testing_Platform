@@ -1,11 +1,12 @@
 import styles from './PlacementTest.module.scss';
 import { useEffect, useState } from 'react';
 import type { Level, QuestionWithAnswers } from '../../../types/database';
-import { getLevelsById, getPlacementTest } from '../../../services/quiz';
 import { Loader } from '../../Loader';
 import { useNavigate } from 'react-router-dom';
 import { useQuiz } from '../../../hooks/useQuiz';
 import { calculateLevel } from '../../../utils/calculateLevel';
+import { getPlacementTest } from '../../../services/questions';
+import { getLevelsById } from '../../../services/levels';
 
 export const PlacementTest = () => {
   const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);

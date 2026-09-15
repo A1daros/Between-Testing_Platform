@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styles from './ChooseLevel.module.scss';
 import { useEffect, useState } from 'react';
 import type { Level } from '../../../../types/database';
-import { getLevelsById } from '../../../../services/quiz';
+import { getLevelsById } from '../../../../services/levels';
 
 type Props = {
   title: string;

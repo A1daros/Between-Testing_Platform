@@ -1,4 +1,4 @@
-import { createTest } from '../../../../../../../services/tests';
+import { createTest } from '../../../../../../../services/testsForm';
 import type { NewTestPayload } from '../../types/testForm';
 import { TestForm } from '../TestForm/TestForm';
 
