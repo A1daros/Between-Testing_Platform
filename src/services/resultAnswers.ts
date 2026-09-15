@@ -1,20 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { ResultAnswers, ResultAnswersInput, ResultDetails } from '../types/database';
-
-export const getResultAnswersByResultId = async (
-  resultId: number,
-): Promise<ResultAnswers[]> => {
-  const { data, error } = await supabase
-    .from('result_answers')
-    .select('*')
-    .eq('result_id', resultId);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
+import type { ResultAnswersInput, ResultDetails } from '../types/database';
 
 export const getResultDetails = async (
   resultId: number,

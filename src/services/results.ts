@@ -20,21 +20,6 @@ export const saveResult = async (result: ResultInput): Promise<Results> => {
   return data;
 };
 
-export const getResultsByTestId = async (
-  testId: number,
-): Promise<Results[]> => {
-  const { data, error } = await supabase
-    .from('results')
-    .select(`*, profiles(display_name)`)
-    .eq('test_id', testId);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
-
 export const getResultsByUserId = async (
   userId: string,
 ): Promise<Results[]> => {
@@ -43,20 +28,6 @@ export const getResultsByUserId = async (
     .select(`*, tests(title)`)
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
-
-export const getResultById = async (resultId: number): Promise<Results[]> => {
-  const { data, error } = await supabase
-    .from('results')
-    .select('*')
-    .eq('id', resultId)
-    .single();
 
   if (error) {
     throw new Error(error.message);
