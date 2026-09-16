@@ -3,9 +3,7 @@ import { ChooseLevel } from './components/ChooseLevel';
 import { PicturesSlider } from './components/PictureSlider';
 import { About } from './components/About/About.tsx';
 import { FindLevel } from './components/FindLevel/FindLevel.tsx';
-
-// import { PostList } from '../shared/components/PostList';
-// import { posts } from '../../data/posts.data.ts';
+import { ContactUs } from './components/ContactUs/ContactUs.tsx';
 
 export const HomePage = () => {
   // const [loading, setLoading] = useState(true);
@@ -33,7 +31,7 @@ export const HomePage = () => {
 
         <About />
 
-        {/* <PostList posts={posts} /> */}
+        <ContactUs />
       </div>
     </div>
   );
