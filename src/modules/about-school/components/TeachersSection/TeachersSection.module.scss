@@ -1,0 +1,106 @@
+@use '../../../../styles/variables' as *;
+
+.teachersSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionLabel {
+  color: $accent;
+  @include uppercase;
+}
+
+.sectionTitle {
+  @include h2-font-mobile;
+  margin: 16px 0;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+.teachersContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.teacherCard {
+  display: flex;
+  flex-direction: column;
+  background-color: $surface-1;
+  border: $card-border;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.03);
+  }
+}
+
+.teacherContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+
+  @media (min-width: $breakpoint-s) {
+    padding: 24px;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.teacherNumber {
+  @include buttons;
+  color: $accent;
+
+  &::after {
+    content: '.';
+  }
+}
+
+.teacherName {
+  @include h3-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
+  }
+}
+
+.teacherInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.characteristics {
+  margin: 0;
+  @include body-font;
+  color: $text-main;
+
+  strong {
+    margin-right: 8px;
+  }
+}

@@ -21,7 +21,7 @@ export const HomePage = () => {
     <div className={styles.page}>
       <div className={styles.container}>
         <h1 className={styles.hiddenTitle}>Wellcome to Between English Hub!</h1>
-        <h2 className={styles.title}>Wellcome to Between English Hub!</h2>
+        <h1 className={styles.title}>Wellcome to Between English Hub!</h1>
 
         <FindLevel />
 
