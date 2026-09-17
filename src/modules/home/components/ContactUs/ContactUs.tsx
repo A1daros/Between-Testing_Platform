@@ -50,67 +50,69 @@ export const ContactUs = () => {
 
       <div className={styles.container}>
         <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.fieldGroup}>
-            <label htmlFor='first-name' className={styles.label}>
-              First name
-            </label>
-            <input
-              id='first-name'
-              name='first-name'
-              type='text'
-              placeholder='Place your first name'
-              value={firstName}
-              onChange={(event) => setFirstName(event.target.value)}
-              className={styles.input}
-              required
-            />
-          </div>
+          <div className={styles.inputGroup}>
+            <div className={styles.inputContainer}>
+              <input
+                id='first-name'
+                name='first-name'
+                type='text'
+                placeholder=' '
+                value={firstName}
+                onChange={(event) => setFirstName(event.target.value)}
+                className={styles.input}
+                required
+              />
+              <label htmlFor='first-name' className={styles.inputLabel}>
+                First name
+              </label>
+            </div>
 
-          <div className={styles.fieldGroup}>
-            <label htmlFor='last-name' className={styles.label}>
-              Last name
-            </label>
-            <input
-              id='last-name'
-              name='last-name'
-              type='text'
-              placeholder='Place your last name'
-              value={lastName}
-              onChange={(event) => setLastName(event.target.value)}
-              className={styles.input}
-              required
-            />
-          </div>
+            <div className={styles.inputContainer}>
+              <input
+                id='last-name'
+                name='last-name'
+                type='text'
+                placeholder=' '
+                value={lastName}
+                onChange={(event) => setLastName(event.target.value)}
+                className={styles.input}
+                required
+              />
+              <label htmlFor='last-name' className={styles.inputLabel}>
+                Last name
+              </label>
+            </div>
 
-          <div className={styles.fieldGroup}>
-            <label htmlFor='email' className={styles.label}>
-              Email
-            </label>
-            <input
-              id='email'
-              name='email'
-              type='email'
-              placeholder='example@gmail.com'
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className={styles.input}
-              required
-            />
-          </div>
+            <div className={styles.inputContainer}>
+              <input
+                id='email'
+                name='email'
+                type='email'
+                placeholder=' '
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className={styles.input}
+                required
+              />
+              <label htmlFor='email' className={styles.inputLabel}>
+                Email Address
+              </label>
+            </div>
 
-          <div className={styles.fieldGroup}>
-            <label htmlFor='message' className={styles.label}>
-              Message
-            </label>
-            <textarea
-              id='message'
-              name='message'
-              placeholder='Describe your problem or solution...'
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-              className={styles.inputTextarea}
-              required
-            />
+            <div className={styles.inputContainer}>
+              <textarea
+                id='message'
+                name='message'
+                placeholder=' '
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                className={styles.inputTextarea}
+                required
+              />
+              <label htmlFor='message' className={styles.inputLabel}>
+                Message
+              </label>
+            </div>
           </div>
 
           <div className={styles.formAction}>
@@ -153,14 +155,14 @@ export const ContactUs = () => {
 
         <address className={styles.additional}>
           <div className={styles.infoBlock}>
-            <h3 className={styles.infoTitle}>Phone</h3>
+            <span className={styles.infoTitle}>Phone:</span>
             <a href='tel:+380733060097' className={styles.infoDescription}>
               +380 73 306 00 97
             </a>
           </div>
 
           <div className={styles.infoBlock}>
-            <h3 className={styles.infoTitle}>Email</h3>
+            <span className={styles.infoTitle}>Email:</span>
             <a
               href='mailto:school.between@gmail.com'
               className={styles.infoDescription}

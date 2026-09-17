@@ -5,11 +5,11 @@
   @include page-container;
   margin: 24px 0;
 
-  @media (min-width: $breakpoint-tablet) {
+  @media (min-width: $breakpoint-m) {
     margin: 32px 0;
   }
 
-  @media (min-width: $breakpoint-desktop) {
+  @media (min-width: $breakpoint-l) {
     margin: 56px 0;
   }
 }
@@ -20,7 +20,7 @@
   justify-content: center;
   gap: 36px;
 
-  @media (min-width: $breakpoint-tablet) {
+  @media (min-width: $breakpoint-m) {
     flex-direction: row;
   }
 }

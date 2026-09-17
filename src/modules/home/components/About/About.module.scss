@@ -1,16 +1,8 @@
 @use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
 
 .page {
-  width: 100%;
-  margin: 0 auto 56px;
-
-  @media (min-width: 768px) {
-    margin: 0 auto 64px;
-  }
-
-  @media (min-width: 1024px) {
-    margin: 0 auto 80px;
-  }
+  @include section-container;
 }
 
 .title {
@@ -20,26 +12,27 @@
   text-align: center;
   @include h2-font-mobile;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     @include h2-font;
   }
 }
 
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(1, minmax(300px, 1fr));
+  grid-template-columns: repeat(1, minmax(250px, 1fr));
   gap: 20px;
-  padding: 0 16px;
   margin: 0 0 40px 0;
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, minmax(300px, 1fr));
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
   }
 }
 
 .sectionCard {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 12px;
   padding: 24px;
   background-color: $surface-1;
@@ -52,7 +45,7 @@
   color: $text-main;
   @include h3-font-mobile;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     @include h3-font;
   }
 }
@@ -81,10 +74,6 @@
 
   border: 1px solid #e7dbd7;
   border-radius: 8px;
-
-  @media (min-width: 768px) {
-    max-width: 60%;
-  }
 }
 
 .aboutTitle {
@@ -94,7 +83,7 @@
 
   @include h3-font-mobile;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     @include h3-font;
   }
 }
@@ -131,7 +120,7 @@
   &:hover {
     background-color: $accent-hover;
     transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(49, 50, 55, 0.2);
+    box-shadow: $shadow;
   }
 
   &:active {

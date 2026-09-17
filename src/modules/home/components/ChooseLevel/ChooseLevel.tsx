@@ -26,6 +26,7 @@ export const ChooseLevel: React.FC<Props> = ({ title }) => {
   return (
     <div className={styles.page}>
       <h2 className={styles.title}>{title}</h2>
+
       <ul className={styles.wrapper}>
         {levels.map((level) => (
           <li key={level.id} className={styles.levelItem}>

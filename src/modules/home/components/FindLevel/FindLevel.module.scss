@@ -1,16 +1,8 @@
 @use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
 
 .page {
-  width: 100%;
-  margin: 0 auto 56px;
-
-  @media (min-width: 768px) {
-    margin: 0 auto 64px;
-  }
-
-  @media (min-width: 1024px) {
-    margin: 0 auto 80px;
-  }
+  @include section-container;
 }
 
 .wrapper {
@@ -22,7 +14,7 @@
   border: $card-border;
   border-radius: 8px;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -43,7 +35,7 @@
 
   @include h3-font-mobile;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     @include h3-font;
   }
 }
@@ -60,7 +52,7 @@
   flex-shrink: 0;
   width: 100%;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     width: auto;
   }
 }
@@ -82,7 +74,7 @@
 
   @include buttons;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     width: auto;
   }
 }

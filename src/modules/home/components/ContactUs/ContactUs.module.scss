@@ -1,17 +1,9 @@
 @use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+@use '../../../../styles/mixins/auth-form' as *;
 
 .page {
-  width: 100%;
-  margin: 0 auto 56px;
-  padding: 0 16px;
-
-  @media (min-width: 768px) {
-    margin: 0 auto 64px;
-  }
-
-  @media (min-width: 1024px) {
-    margin: 0 auto 80px;
-  }
+  @include section-container;
 }
 
 .title {
@@ -20,7 +12,7 @@
 
   @include h2-font-mobile;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     margin-bottom: 56px;
 
     @include h2-font;
@@ -32,67 +24,58 @@
   grid-template-columns: 1fr;
   gap: 40px;
 
-  @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: 1.2fr 0.8fr;
     align-items: start;
     gap: 64px;
   }
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  @include form;
 }
 
-.fieldGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.inputGroup {
+  @include input-group;
 }
 
-.label {
-  color: #333;
-
-  @include uppercase;
-}
-
-.input,
-.inputTextarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid $surface-2;
-  border-radius: 8px;
-  outline: none;
-  background-color: #fff;
-  font-family: inherit;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-
-  &:focus {
-    border-color: $accent-hover;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
-  }
-
-  @include small-text;
+.inputContainer {
+  @include input-container;
 }
 
 .input {
-  height: 48px;
+  @include input;
+}
+
+.inputLabel {
+  @include input-label;
 }
 
 .inputTextarea {
-  min-height: 120px;
-  resize: vertical;
+  @include input;
+
+  height: 120px;
+  padding-top: 20px;
+  resize: none;
+
+  &:focus ~ .inputLabel,
+  &:not(:placeholder-shown) ~ .inputLabel {
+    transform: translateY(-8px) scale(0.8);
+    color: $text-secondary;
+  }
+}
+
+.formAction {
+  display: flex;
+  align-items: center;
 }
 
 .checkboxWrapper {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
   cursor: pointer;
+  user-select: none;
 }
 
 .checkbox {
@@ -109,62 +92,32 @@
 }
 
 .submitBtn {
-  width: 100%;
-  height: 44px;
-  border: 1px solid $surface-2;
-  border-radius: 8px;
-  background-color: $background;
-
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    opacity 0.2s ease;
-
-  &:hover:not(:disabled) {
-    background-color: $accent;
-    color: $surface-1;
-    transform: scale(1.02);
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  @include buttons;
-}
-
-.errorCard,
-.successCard {
-  padding: 12px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  line-height: 1.4;
+  @include form-btn-submit;
 }
 
 .errorCard {
-  background-color: #fef3f2;
-  border: 1px solid #fecdca;
-  color: #b42318;
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
 }
 
 .successCard {
-  background-color: #f6fef9;
-  border: 1px solid #a6f4c5;
-  color: #027a48;
+  @include success-card;
 }
 
-.errorText,
 .successText {
-  margin: 0;
+  @include success-text;
 }
 
 .additional {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  border: $form-border;
+  border-radius: 8px;
+  padding: 16px;
 }
 
 .infoBlock {
@@ -174,21 +127,16 @@
 }
 
 .infoTitle {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
-  color: #000;
+  color: $text-main;
 }
 
 .infoDescription {
-  font-size: 16px;
-  color: #555;
+  color: $text-main;
   text-decoration: none;
-  width: max-content;
+  font-weight: 700;
   transition: color 0.2s;
 
   &:hover {
-    color: #000;
-    text-decoration: underline;
+    color: $text-secondary;
   }
 }

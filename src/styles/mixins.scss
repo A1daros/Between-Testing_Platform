@@ -5,15 +5,28 @@
   margin: 0 auto;
   padding: 0 16px;
 
-  @media (min-width: $breakpoint-mobile) {
+  @media (min-width: $breakpoint-s) {
     padding: 0 24px;
   }
 
-  @media (min-width: $breakpoint-tablet) {
+  @media (min-width: $breakpoint-m) {
     padding: 0 32px;
   }
 
-  @media (min-width: $breakpoint-desktop) {
+  @media (min-width: $breakpoint-l) {
     padding: 0 120px;
+  }
+}
+
+@mixin section-container {
+  width: 100%;
+  margin: 0 auto 56px;
+
+  @media (min-width: $breakpoint-s) {
+    margin: 0 auto 64px;
+  }
+
+  @media (min-width: $breakpoint-m) {
+    margin: 0 auto 80px;
   }
 }

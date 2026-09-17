@@ -23,7 +23,7 @@
 
   @include h1-font-mobile;
 
-  @media (min-width: $breakpoint-tablet) {
+  @media (min-width: $breakpoint-m) {
     @include h1-font;
   }
 }
@@ -34,13 +34,13 @@
 
   @include h1-font-mobile;
 
-  @media (min-width: $breakpoint-tablet) {
+  @media (min-width: $breakpoint-m) {
     margin: 32px 0;
 
     @include h1-font;
   }
 
-  @media (min-width: $breakpoint-desktop) {
+  @media (min-width: $breakpoint-l) {
     margin: 56px 0;
   }
 }

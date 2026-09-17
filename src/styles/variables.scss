@@ -23,9 +23,9 @@ $filter: brightness(0) invert(0.2);
 $green: #27ae60;
 $red: #eb5757;
 
-$breakpoint-mobile: 768px;
-$breakpoint-tablet: 1024px;
-$breakpoint-desktop: 1200px;
+$breakpoint-s: 768px;
+$breakpoint-m: 1024px;
+$breakpoint-l: 1200px;
 
 @mixin h1-font {
   font-family: 'Montserrat', sans-serif;
