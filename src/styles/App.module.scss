@@ -1,4 +1,4 @@
-@use 'variables.scss';
+@use 'variables.scss' as *;
 
 * {
   box-sizing: border-box;
@@ -21,7 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: variables.$background;
+  background-color: $background;
 }
 
 .mainContent {

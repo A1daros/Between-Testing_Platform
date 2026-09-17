@@ -1,121 +1,65 @@
-@use '../../../../styles/variables.scss';
-
-$bg-form: #ffffff;
-$text-main: #09090b;
-$text-muted: #71717a;
-$border-color: #e4e4e7;
-$btn-bg: #18181b;
-$btn-hover: #27272a;
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins/auth-form' as *;
 
 .wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f8fafc;
+  @include wrapper;
 }
 
 .loginContainer {
-  width: 100%;
-  max-width: 420px;
-  padding: 2.5rem 2rem;
-  border-radius: 16px;
-  background-color: $bg-form;
-  box-shadow:
-    0 10px 25px -5px rgba(0, 0, 0, 0.05),
-    0 8px 10px -6px rgba(0, 0, 0, 0.05);
-  border: 1px solid $border-color;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  @include container;
 }
 
 .header {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  @include header;
 }
 
 .title {
-  margin: 0;
-  color: variables.$text-main;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.025em;
+  @include form-title;
 }
 
 .subtitle {
-  margin: 0;
-  color: $text-muted;
-  font-size: 0.875rem;
+  @include form-subtitle;
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  @include form;
 }
 
 .inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  @include input-group;
 }
 
 .inputContainer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  @include input-container;
 }
 
 .input {
-  width: 100%;
-  padding: 1rem 0.75rem 0.5rem 0.75rem;
-  height: 52px;
-  font-size: 0.95rem;
-  color: variables.$text-main;
-  background-color: transparent;
-  border: 1px solid $border-color;
-  border-radius: 8px;
-  outline: none;
-  transition: all 0.2s ease;
-
-  &:focus {
-    border-color: $btn-bg;
-    box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.08);
-  }
-
-  &:focus ~ .label,
-  &:not(:placeholder-shown) ~ .label {
-    transform: translateY(-8px) scale(0.8);
-    color: $text-muted;
-  }
+  @include input;
 }
 
-.label {
-  position: absolute;
-  left: 0.75rem;
-  top: 1rem;
-  font-size: 0.95rem;
-  color: $text-muted;
-  pointer-events: none;
-  transform-origin: top left;
-  transition: all 0.2s ease;
+.inputLabel {
+  @include input-label;
 }
 
 .formActions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.875rem;
+
+  gap: 12px;
+
+  @media (max-width: 360px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }
 
 .rememberMe {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: $text-muted;
+  gap: 8px;
+  color: $text-secondary;
   cursor: pointer;
   user-select: none;
 }
@@ -124,71 +68,45 @@ $btn-hover: #27272a;
   width: 16px;
   height: 16px;
   border-radius: 4px;
-  border: 1px solid $border-color;
-  accent-color: $btn-bg;
+  border: $form-border;
+  accent-color: $accent;
   cursor: pointer;
 }
 
 .link {
-  color: $text-muted;
+  color: $text-secondary;
   text-decoration: none;
   transition: color 0.2s;
 
   &:hover {
-    color: variables.$text-main;
+    color: $text-main;
   }
 }
 
 .submitBtn {
-  width: 100%;
-  height: 44px;
-  background-color: $btn-bg;
-  color: variables.$surface-1;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    opacity 0.2s ease;
-
-  &:hover {
-    background-color: $btn-hover;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  @include variables.buttons;
-}
-
-.errorCard {
-  padding: 0.75rem 1rem;
-  background-color: variables.$background;
-  border: 1px solid $border-color;
-  border-radius: 8px;
-}
-
-.errorText {
-  margin: 0;
-  color: variables.$red;
-
-  @include variables.h4-font;
+  @include form-btn-submit;
 }
 
 .signupLink {
   text-align: center;
   font-size: 0.875rem;
-  color: $text-muted;
+  color: $text-secondary;
 }
 
 .linkAccent {
-  color: variables.$text-main;
+  color: $text-main;
   font-weight: 500;
   text-decoration: none;
 
   &:hover {
     text-decoration: underline;
   }
+}
+
+.errorCard {
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
 }

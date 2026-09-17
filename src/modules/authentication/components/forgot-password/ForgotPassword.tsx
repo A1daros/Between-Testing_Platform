@@ -42,7 +42,7 @@ export const ForgotPassword = () => {
           <div className={styles.successState}>
             <span className={styles.label}>BETWEEN / ACCOUNT</span>
 
-            <h1 className={styles.title}>Check your email</h1>
+            <h2 className={styles.title}>Check your email</h2>
 
             <p className={styles.description}>
               We sent a password reset link to your email address. Follow the
@@ -58,7 +58,7 @@ export const ForgotPassword = () => {
             <header className={styles.header}>
               <span className={styles.label}>BETWEEN / ACCOUNT</span>
 
-              <h1 className={styles.title}>Forgot password?</h1>
+              <h2 className={styles.title}>Forgot password?</h2>
 
               <p className={styles.subtitle}>
                 Enter your email address and we'll send you a link to reset your

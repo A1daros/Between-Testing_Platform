@@ -15,11 +15,17 @@ $accent-soft: #ead8dc;
 $text-on-accent: #fff;
 
 $card-border: 1px solid #e2e6e9;
+$form-border: 1px solid rgb(228, 228, 231);
+
 $shadow: 0 8px 32px rgba(49, 50, 55, 0.08);
 $filter: brightness(0) invert(0.2);
 
 $green: #27ae60;
 $red: #eb5757;
+
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1200px;
 
 @mixin h1-font {
   font-family: 'Montserrat', sans-serif;
@@ -78,6 +84,13 @@ $red: #eb5757;
   font-weight: 700;
   font-size: 12px;
   line-height: 15px;
+}
+
+@mixin input-text {
+  font-family: 'Arial', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: normal;
 }
 
 @mixin h1-font-mobile {

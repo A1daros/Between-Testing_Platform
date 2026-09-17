@@ -1,12 +1,12 @@
-@use '../../../../../styles/variables';
+@use '../../../../../styles/variables' as *;
 
 .header {
   position: sticky;
   width: 100%;
   max-width: 1440px;
-  background-color: variables.$background;
-  border-bottom: 1px solid variables.$surface-2;
-  box-shadow: variables.$shadow;
+  background-color: $background;
+  border-bottom: 1px solid $surface-2;
+  box-shadow: $shadow;
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease,
@@ -61,7 +61,7 @@
   right: 0;
   width: 100%;
   height: calc(50vh - 48px);
-  background-color: variables.$background;
+  background-color: $background;
   padding: 24px;
   box-sizing: border-box;
   z-index: 99;
@@ -112,17 +112,17 @@
   padding-bottom: 8px;
   text-decoration: none;
   text-transform: uppercase;
-  color: variables.$text-main;
+  color: $text-main;
   border-bottom: 3px solid transparent;
   transition:
     color 0.2s ease,
     border-color 0.2s ease;
 
   &:hover {
-    color: variables.$text-secondary;
+    color: $text-secondary;
   }
 
-  @include variables.buttons;
+  @include buttons;
 
   @media (min-width: 768px) {
     padding: 0;
@@ -130,11 +130,11 @@
 }
 
 .isActive {
-  color: variables.$text-main;
-  color: variables.$accent;
+  color: $text-main;
+  color: $accent;
 
   @media (min-width: 768px) {
-    border-bottom-color: variables.$accent;
+    border-bottom-color: $accent;
   }
 }
 
@@ -145,14 +145,14 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: variables.$text-main;
+  color: $text-main;
   transition: color 0.2s ease;
 
   &:hover {
-    color: variables.$red;
+    color: $red;
   }
 
-  @include variables.buttons;
+  @include buttons;
 
   @media (min-width: 768px) {
     height: 64px;
@@ -181,7 +181,7 @@
     position: absolute;
     width: 20px;
     height: 2px;
-    background-color: variables.$text-main;
+    background-color: $text-main;
     transition:
       transform 0.2s ease,
       opacity 0.2s ease;

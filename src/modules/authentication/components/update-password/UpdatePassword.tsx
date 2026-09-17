@@ -56,7 +56,7 @@ export const UpdatePassword = () => {
           <div className={styles.successState}>
             <span className={styles.label}>BETWEEN / ACCOUNT</span>
 
-            <h1 className={styles.title}>Password updated</h1>
+            <h2 className={styles.title}>Password updated</h2>
 
             <p className={styles.description}>
               Your password has been successfully updated. You can now sign in
@@ -72,56 +72,65 @@ export const UpdatePassword = () => {
             <header className={styles.header}>
               <span className={styles.label}>BETWEEN / ACCOUNT</span>
 
-              <h1 className={styles.title}>Create new password</h1>
+              <h2 className={styles.title}>Create new password</h2>
 
               <p className={styles.subtitle}>
                 Enter and confirm your new password.
               </p>
             </header>
 
-            <form onSubmit={handleUpdatePassword} className={styles.form}>
+            <div aria-live='polite'>
               {errorMessage && (
-                <div className={styles.errorCard}>
+                <div className={styles.errorCard} role='alert'>
                   <p className={styles.errorText}>{errorMessage}</p>
                 </div>
               )}
+            </div>
 
-              <div className={styles.inputContainer}>
-                <input
-                  id='new-password'
-                  type='password'
-                  name='new-password'
-                  value={newPassword}
-                  placeholder=' '
-                  required
-                  minLength={6}
-                  autoComplete='new-password'
-                  className={styles.input}
-                  onChange={(event) => setNewPassword(event.target.value)}
-                />
+            <form onSubmit={handleUpdatePassword} className={styles.form}>
+              <div className={styles.inputGroup}>
+                <div className={styles.inputContainer}>
+                  <input
+                    id='new-password'
+                    type='password'
+                    name='new-password'
+                    value={newPassword}
+                    placeholder=' '
+                    required
+                    minLength={6}
+                    autoComplete='new-password'
+                    className={styles.input}
+                    onChange={(event) => setNewPassword(event.target.value)}
+                  />
 
-                <label htmlFor='new-password' className={styles.inputLabel}>
-                  New password
-                </label>
+                  <label htmlFor='new-password' className={styles.inputLabel}>
+                    New password
+                  </label>
+                </div>
               </div>
 
-              <div className={styles.inputContainer}>
-                <input
-                  id='confirm-password'
-                  type='password'
-                  name='confirm-password'
-                  value={confirmPassword}
-                  placeholder=' '
-                  required
-                  minLength={6}
-                  autoComplete='new-password'
-                  className={styles.input}
-                  onChange={(event) => setConfirmPassword(event.target.value)}
-                />
+              <div className={styles.inputGroup}>
+                <div className={styles.inputContainer}>
+                  <input
+                    id='confirm-password'
+                    type='password'
+                    name='confirm-password'
+                    value={confirmPassword}
+                    placeholder=' '
+                    required
+                    minLength={6}
+                    autoComplete='new-password'
+                    className={styles.input}
+                    onChange={(event) => setConfirmPassword(event.target.value)}
+                  />
 
-                <label htmlFor='confirm-password' className={styles.inputLabel}>
-                  Confirm password
-                </label>
+                  <label
+                    htmlFor='confirm-password'
+                    className={styles.inputLabel}
+                  >
+                    Confirm password
+                  </label>
+                </div>
               </div>
 
               <button

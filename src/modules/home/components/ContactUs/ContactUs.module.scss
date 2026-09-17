@@ -1,0 +1,194 @@
+@use '../../../../styles/variables' as *;
+
+.page {
+  width: 100%;
+  margin: 0 auto 56px;
+  padding: 0 16px;
+
+  @media (min-width: 768px) {
+    margin: 0 auto 64px;
+  }
+
+  @media (min-width: 1024px) {
+    margin: 0 auto 80px;
+  }
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 48px;
+
+  @include h2-font-mobile;
+
+  @media (min-width: 768px) {
+    margin-bottom: 56px;
+
+    @include h2-font;
+  }
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 64px;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: #333;
+
+  @include uppercase;
+}
+
+.input,
+.inputTextarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid $surface-2;
+  border-radius: 8px;
+  outline: none;
+  background-color: #fff;
+  font-family: inherit;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: $accent-hover;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+  }
+
+  @include small-text;
+}
+
+.input {
+  height: 48px;
+}
+
+.inputTextarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.checkboxWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.checkboxDescription {
+  user-select: none;
+  color: $text-main;
+
+  @include small-text;
+}
+
+.submitBtn {
+  width: 100%;
+  height: 44px;
+  border: 1px solid $surface-2;
+  border-radius: 8px;
+  background-color: $background;
+
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: $accent;
+    color: $surface-1;
+    transform: scale(1.02);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  @include buttons;
+}
+
+.errorCard,
+.successCard {
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.errorCard {
+  background-color: #fef3f2;
+  border: 1px solid #fecdca;
+  color: #b42318;
+}
+
+.successCard {
+  background-color: #f6fef9;
+  border: 1px solid #a6f4c5;
+  color: #027a48;
+}
+
+.errorText,
+.successText {
+  margin: 0;
+}
+
+.additional {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.infoTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: #000;
+}
+
+.infoDescription {
+  font-size: 16px;
+  color: #555;
+  text-decoration: none;
+  width: max-content;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
+}

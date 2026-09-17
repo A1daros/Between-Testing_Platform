@@ -7,14 +7,14 @@ personal student profiles, and an administrative panel for teachers.
 
 ## 📸 Screenshots
 
-![Home](./screenshots/home_01.png)
-![Home](./screenshots/home_02.png)
-![Home](./screenshots/home_03.png)
-![Tests](./screenshots/tests_01.png)
-![Quiz](./screenshots/quiz_01.png)
-![My-results](./screenshots/my-results_01.png)
-![Result-details](./screenshots/result-details_01.png)
-![Profile](./screenshots/profile_01.png)
+![Home](/screenshots/home_01.png)
+![Home](/screenshots/home_02.png)
+![Home](/screenshots/home_03.png)
+![Tests](/screenshots/tests_01.png)
+![Quiz](/screenshots/quiz_01.png)
+![My-results](/screenshots/my-results_01.png)
+![Result-details](/screenshots/result-details_01.png)
+![Profile](/screenshots/profile_01.png)
 
 ## 🚀 Main features
 
@@ -74,6 +74,7 @@ their own data, while admins get elevated access via role-based policies.
 - password: demo12345
 
 **How to clone:**
+
 - git clone https://github.com/A1daros/between-lms.git
 - cd between-lms
 - npm install

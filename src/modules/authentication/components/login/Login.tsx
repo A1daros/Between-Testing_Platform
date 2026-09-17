@@ -47,11 +47,13 @@ export const Login = () => {
           </p>
         </div>
 
-        {errorMessage && (
-          <div className={styles.errorCard}>
-            <p className={styles.errorText}>{errorMessage}</p>
-          </div>
-        )}
+        <div aria-live='polite'>
+          {errorMessage && (
+            <div className={styles.errorCard} role='alert'>
+              <p className={styles.errorText}>{errorMessage}</p>
+            </div>
+          )}
+        </div>
 
         <form onSubmit={handleLogin} className={styles.form}>
           <div className={styles.inputGroup}>
@@ -66,7 +68,7 @@ export const Login = () => {
                 className={styles.input}
                 onChange={(event) => setEmail(event.target.value)}
               />
-              <label htmlFor='email' className={styles.label}>
+              <label htmlFor='email' className={styles.inputLabel}>
                 Email Address
               </label>
             </div>
@@ -82,7 +84,7 @@ export const Login = () => {
                 className={styles.input}
                 onChange={(event) => setPassword(event.target.value)}
               />
-              <label htmlFor='password' className={styles.label}>
+              <label htmlFor='password' className={styles.inputLabel}>
                 Password
               </label>
             </div>

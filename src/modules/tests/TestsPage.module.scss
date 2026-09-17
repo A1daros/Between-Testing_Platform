@@ -1,25 +1,14 @@
-@use '../../styles/variables';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .page {
   min-height: 100vh;
 
-  background-color: variables.$background;
+  background-color: $background;
 }
 
 .container {
-  max-width: 1440px;
-
-  margin: 0 auto;
-
-  padding: 0 16px;
-
-  @media (min-width: 768px) {
-    padding: 0 32px;
-  }
-
-  @media (min-width: 1200px) {
-    padding: 0 120px;
-  }
+  @include page-container;
 }
 
 .wrapper {
@@ -51,20 +40,20 @@
 }
 
 .sectionLabel {
-  color: variables.$accent;
+  color: $accent;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .pageTitle {
   margin: 16px 0 0;
 
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h1-font;
+  @include h1-font;
 
   @media (max-width: 767px) {
-    @include variables.h1-font-mobile;
+    @include h1-font-mobile;
   }
 }
 
@@ -73,9 +62,9 @@
 
   margin: 20px 0 0;
 
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.body-font;
+  @include body-font;
 
   font-size: 16px;
   line-height: 1.7;
@@ -97,19 +86,19 @@
 
   padding-bottom: 16px;
 
-  border-bottom: variables.$card-border;
+  border-bottom: $card-border;
 }
 
 .testsLabel {
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .testsCount {
-  color: variables.$accent;
+  color: $accent;
 
-  @include variables.h3-font;
+  @include h3-font;
 }
 
 .testsList {
@@ -120,7 +109,7 @@
 }
 
 .testItem {
-  border-bottom: variables.$card-border;
+  border-bottom: $card-border;
 }
 
 .testLink {
@@ -136,7 +125,7 @@
 
   padding: 24px 0;
 
-  color: variables.$text-main;
+  color: $text-main;
 
   text-decoration: none;
 
@@ -147,14 +136,14 @@
   &:hover {
     padding-left: 24px;
 
-    color: variables.$accent;
+    color: $accent;
 
     .testArrow {
       transform: translateX(8px);
     }
 
     .testNumber {
-      color: variables.$accent;
+      color: $accent;
     }
   }
 
@@ -174,23 +163,23 @@
 }
 
 .testNumber {
-  color: variables.$text-icons;
+  color: $text-icons;
 
-  @include variables.uppercase;
+  @include uppercase;
 
   transition: color 0.2s ease;
 }
 
 .testTitle {
-  @include variables.h2-font;
+  @include h2-font;
 
   @media (max-width: 767px) {
-    @include variables.h3-font-mobile;
+    @include h3-font-mobile;
   }
 }
 
 .testArrow {
-  color: variables.$accent;
+  color: $accent;
 
   font-size: 32px;
 
@@ -210,9 +199,9 @@
 .error {
   padding: 32px;
 
-  color: variables.$red;
+  color: $red;
 
-  border: 1px solid variables.$red;
+  border: 1px solid $red;
 
-  @include variables.body-font;
+  @include body-font;
 }

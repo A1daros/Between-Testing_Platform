@@ -1,4 +1,4 @@
-@use '../../../../styles/variables';
+@use '../../../../styles/variables' as *;
 
 .page {
   width: 100%;
@@ -18,8 +18,8 @@
   flex-direction: column;
   gap: 24px;
   padding: 24px;
-  background-color: variables.$surface-1;
-  border: variables.$card-border;
+  background-color: $surface-1;
+  border: $card-border;
   border-radius: 8px;
 
   @media (min-width: 768px) {
@@ -39,20 +39,20 @@
 
 .title {
   margin: 0;
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h3-font-mobile;
+  @include h3-font-mobile;
 
   @media (min-width: 768px) {
-    @include variables.h3-font;
+    @include h3-font;
   }
 }
 
 .description {
   margin: 0;
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.body-font;
+  @include body-font;
 }
 
 .buttonWrapper {
@@ -66,8 +66,8 @@
 }
 
 .button {
-  background-color: variables.$accent;
-  color: variables.$text-on-accent;
+  background-color: $accent;
+  color: $text-on-accent;
   padding: 12px 32px;
   border: none;
   border-radius: 8px;
@@ -77,10 +77,10 @@
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: variables.$accent-hover;
+    background-color: $accent-hover;
   }
 
-  @include variables.buttons;
+  @include buttons;
 
   @media (min-width: 768px) {
     width: auto;

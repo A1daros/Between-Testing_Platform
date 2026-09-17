@@ -1,22 +1,13 @@
-@use '../../styles/variables';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .page {
   min-height: 100vh;
-  background-color: variables.$background;
+  background-color: $background;
 }
 
 .container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 16px;
-
-  @media (min-width: 768px) {
-    padding: 0 32px;
-  }
-
-  @media (min-width: 1200px) {
-    padding: 0 120px;
-  }
+  @include page-container;
 }
 
 .wrapper {
@@ -38,8 +29,8 @@
   display: flex;
   flex-direction: column;
 
-  border-top: variables.$card-border;
-  border-bottom: variables.$card-border;
+  border-top: $card-border;
+  border-bottom: $card-border;
 }
 
 /* =========================
@@ -53,7 +44,7 @@
 
   padding: 16px 0;
 
-  border-bottom: variables.$card-border;
+  border-bottom: $card-border;
 
   @media (max-width: 767px) {
     gap: 16px;
@@ -61,15 +52,15 @@
 }
 
 .sectionLabel {
-  color: variables.$accent;
+  color: $accent;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .resultStatus {
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.uppercase;
+  @include uppercase;
 
   @media (max-width: 767px) {
     text-align: right;
@@ -98,9 +89,9 @@
 }
 
 .resultNumber {
-  color: variables.$text-icons;
+  color: $text-icons;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .introContent {
@@ -110,12 +101,12 @@
 .title {
   margin: 0;
 
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h1-font;
+  @include h1-font;
 
   @media (max-width: 767px) {
-    @include variables.h1-font-mobile;
+    @include h1-font-mobile;
   }
 }
 
@@ -124,9 +115,9 @@
 
   margin: 20px 0 0;
 
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.body-font;
+  @include body-font;
 
   line-height: 1.8;
 }
@@ -142,18 +133,18 @@
 
   padding: 64px 24px;
 
-  background-color: variables.$surface-1;
+  background-color: $surface-1;
 
-  border-top: variables.$card-border;
-  border-bottom: variables.$card-border;
+  border-top: $card-border;
+  border-bottom: $card-border;
 
   text-align: center;
 }
 
 .scoreLabel {
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .scoreValue {
@@ -163,7 +154,7 @@
 
   margin-top: 24px;
 
-  color: variables.$text-main;
+  color: $text-main;
 
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
@@ -182,7 +173,7 @@
 .divider {
   margin: 0 12px;
 
-  color: variables.$text-icons;
+  color: $text-icons;
 
   font-size: 48px;
 
@@ -192,7 +183,7 @@
 }
 
 .total {
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
   font-size: 48px;
 
@@ -204,12 +195,12 @@
 .percentage {
   margin-top: 20px;
 
-  color: variables.$accent;
+  color: $accent;
 
-  @include variables.h3-font;
+  @include h3-font;
 
   @media (max-width: 767px) {
-    @include variables.h3-font-mobile;
+    @include h3-font-mobile;
   }
 }
 
@@ -235,17 +226,17 @@
 }
 
 .messageNumber {
-  color: variables.$text-icons;
+  color: $text-icons;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .resultMessage p {
   margin: 0;
 
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.body-font;
+  @include body-font;
 
   font-size: 16px;
   line-height: 1.8;
@@ -262,7 +253,7 @@
 
   padding: 24px 0;
 
-  border-top: variables.$card-border;
+  border-top: $card-border;
 
   @media (max-width: 767px) {
     flex-direction: column;
@@ -282,7 +273,7 @@
 
   cursor: pointer;
 
-  @include variables.buttons;
+  @include buttons;
 
   transition:
     background-color 0.2s ease,
@@ -291,7 +282,7 @@
     box-shadow 0.2s ease;
 
   &:focus-visible {
-    outline: 2px solid variables.$accent;
+    outline: 2px solid $accent;
     outline-offset: 3px;
   }
 
@@ -309,18 +300,18 @@
 }
 
 .button {
-  color: variables.$text-on-accent;
+  color: $text-on-accent;
 
-  background-color: variables.$accent;
+  background-color: $accent;
 
-  border: 1px solid variables.$accent;
+  border: 1px solid $accent;
 
   &:not(:disabled):hover {
-    background-color: variables.$accent-hover;
+    background-color: $accent-hover;
 
     transform: translate(-4px, -4px);
 
-    box-shadow: 4px 4px 0 variables.$text-main;
+    box-shadow: 4px 4px 0 $text-main;
   }
 
   &:active {
@@ -331,16 +322,16 @@
 }
 
 .secondaryButton {
-  color: variables.$text-main;
+  color: $text-main;
 
   background-color: transparent;
 
-  border: 1px solid variables.$accent;
+  border: 1px solid $accent;
 
   &:hover {
-    color: variables.$text-on-accent;
+    color: $text-on-accent;
 
-    background-color: variables.$accent;
+    background-color: $accent;
   }
 }
 
@@ -355,18 +346,18 @@
 
   padding: 64px 0;
 
-  border-top: variables.$card-border;
-  border-bottom: variables.$card-border;
+  border-top: $card-border;
+  border-bottom: $card-border;
 }
 
 .errorTitle {
   margin: 24px 0 32px;
 
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h2-font;
+  @include h2-font;
 
   @media (max-width: 767px) {
-    @include variables.h2-font-mobile;
+    @include h2-font-mobile;
   }
 }

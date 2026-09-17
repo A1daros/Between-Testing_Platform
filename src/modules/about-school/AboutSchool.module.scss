@@ -1,26 +1,13 @@
-@use '../../styles/variables';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .page {
-  background-color: variables.$background;
+  background-color: $background;
   transition: background-color 0.3s ease;
 }
 
 .container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 16px;
-
-  @media (min-width: 768px) {
-    padding: 0 24px;
-  }
-
-  @media (min-width: 1024px) {
-    padding: 0 32px;
-  }
-
-  @media (min-width: 1200px) {
-    padding: 0 152px;
-  }
+  @include page-container;
 }
 
 .wrapper {
@@ -51,20 +38,20 @@
 }
 
 .sectionLabel {
-  color: variables.$accent;
+  color: $accent;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .pageTitle {
   margin: 16px 0 24px;
 
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h1-font;
+  @include h1-font;
 
   @media (max-width: 768px) {
-    @include variables.h1-font-mobile;
+    @include h1-font-mobile;
   }
 }
 
@@ -72,7 +59,7 @@
   width: 100%;
   height: 1px;
 
-  background-color: variables.$elements;
+  background-color: $elements;
 }
 
 /* =========================
@@ -91,12 +78,12 @@
   max-width: 700px;
   margin: 0;
 
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h2-font;
+  @include h2-font;
 
   @media (max-width: 768px) {
-    @include variables.h2-font-mobile;
+    @include h2-font-mobile;
   }
 }
 
@@ -124,12 +111,12 @@
 
   padding: 32px;
 
-  background-color: variables.$surface-1;
+  background-color: $surface-1;
 
-  border: variables.$card-border;
+  border: $card-border;
 
   &:nth-child(2) {
-    background-color: variables.$accent-soft;
+    background-color: $accent-soft;
 
     @media (max-width: 1024px) {
       transform: none;
@@ -137,7 +124,7 @@
   }
 
   &:nth-child(3) {
-    background-color: variables.$surface-2;
+    background-color: $surface-2;
   }
 
   @media (max-width: 768px) {
@@ -151,9 +138,9 @@
 
   margin-bottom: auto;
 
-  color: variables.$accent;
+  color: $accent;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 /* =========================
@@ -163,9 +150,9 @@
 .description {
   margin: 32px 0 0;
 
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.body-font;
+  @include body-font;
 
   font-size: 15px;
   line-height: 1.8;
@@ -195,15 +182,15 @@
 
   padding: 14px 32px;
 
-  color: variables.$text-on-accent;
+  color: $text-on-accent;
 
-  background-color: variables.$accent;
+  background-color: $accent;
 
-  border: 1px solid variables.$accent;
+  border: 1px solid $accent;
 
   cursor: pointer;
 
-  @include variables.buttons;
+  @include buttons;
 
   transition:
     transform 0.2s ease,
@@ -211,11 +198,11 @@
     box-shadow 0.2s ease;
 
   &:hover {
-    background-color: variables.$accent-hover;
+    background-color: $accent-hover;
 
     transform: translate(-4px, -4px);
 
-    box-shadow: 4px 4px 0 variables.$text-main;
+    box-shadow: 4px 4px 0 $text-main;
   }
 
   &:active {
@@ -242,8 +229,8 @@
 
   grid-template-columns: repeat(3, minmax(0, 1fr));
 
-  border-top: variables.$card-border;
-  border-bottom: variables.$card-border;
+  border-top: $card-border;
+  border-bottom: $card-border;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
@@ -258,21 +245,21 @@
 
   padding: 32px;
 
-  border-right: variables.$card-border;
+  border-right: $card-border;
 
   &:last-child {
     border-right: none;
   }
 
   &:nth-child(2) {
-    background-color: variables.$surface-2;
+    background-color: $surface-2;
   }
 
   @media (max-width: 1024px) {
     min-height: 280px;
 
     border-right: none;
-    border-bottom: variables.$card-border;
+    border-bottom: $card-border;
 
     &:last-child {
       border-bottom: none;
@@ -287,14 +274,14 @@
 .blockTitle {
   margin: 48px 0 0;
 
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h3-font;
+  @include h3-font;
 
   @media (max-width: 768px) {
     margin-top: 32px;
 
-    @include variables.h3-font-mobile;
+    @include h3-font-mobile;
   }
 }
 
@@ -313,9 +300,9 @@
 
   padding: 48px;
 
-  background-color: variables.$surface-1;
+  background-color: $surface-1;
 
-  border: variables.$card-border;
+  border: $card-border;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -336,9 +323,9 @@
 }
 
 .statLabel {
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .statCircle {
@@ -350,9 +337,9 @@
   width: 160px;
   height: 160px;
 
-  background-color: variables.$background;
+  background-color: $background;
 
-  border: 2px solid variables.$text-main;
+  border: 2px solid $text-main;
 
   border-radius: 50%;
 
@@ -363,12 +350,12 @@
 }
 
 .statLevel {
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h2-font;
+  @include h2-font;
 
   @media (max-width: 768px) {
-    @include variables.h2-font-mobile;
+    @include h2-font-mobile;
   }
 }
 
@@ -376,15 +363,15 @@
   max-width: 220px;
   margin: 0;
 
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
   text-align: center;
 
-  @include variables.small-text;
+  @include small-text;
 }
 
 .statArrow {
-  color: variables.$accent;
+  color: $accent;
 
   font-size: 48px;
   line-height: 1;
@@ -396,13 +383,13 @@
 
 .statBlockAccent {
   .statCircle {
-    background-color: variables.$accent;
+    background-color: $accent;
 
-    border-color: variables.$accent;
+    border-color: $accent;
   }
 
   .statLevel {
-    color: variables.$text-on-accent;
+    color: $text-on-accent;
   }
 }
 
@@ -411,7 +398,7 @@
 ========================= */
 
 .teachersSection {
-//   width: 800px;
+  //   width: 800px;
   display: grid;
   grid-template-columns: repeat(2, minmax(250px, 1fr));
 
@@ -430,12 +417,12 @@
 
   padding: 32px;
 
-  background-color: variables.$surface-1;
+  background-color: $surface-1;
 
-  border: variables.$card-border;
+  border: $card-border;
 
   &:nth-child(2) {
-    background-color: variables.$surface-2;
+    background-color: $surface-2;
 
     @media (max-width: 767px) {
       margin-top: 0;
@@ -453,7 +440,7 @@
 
   overflow: hidden;
 
-  background-color: variables.$elements;
+  background-color: $elements;
 
   img {
     display: block;
@@ -468,20 +455,20 @@
 .teacherNumber {
   margin-top: 24px;
 
-  color: variables.$accent;
+  color: $accent;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .personName {
   margin: 12px 0 0;
 
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h2-font;
+  @include h2-font;
 
   @media (max-width: 767px) {
-    @include variables.h2-font-mobile;
+    @include h2-font-mobile;
   }
 }
 
@@ -497,9 +484,9 @@
 .characteristics {
   margin: 0;
 
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.body-font;
+  @include body-font;
 }
 
 /* =========================
@@ -514,10 +501,10 @@
 
   padding: 64px;
 
-  background-color: variables.$text-main;
+  background-color: $text-main;
 
   .sectionLabel {
-    color: variables.$accent-soft;
+    color: $accent-soft;
   }
 
   .button {
@@ -534,11 +521,11 @@
 
   margin: 20px 0 0;
 
-  color: variables.$text-on-accent;
+  color: $text-on-accent;
 
-  @include variables.h1-font;
+  @include h1-font;
 
   @media (max-width: 767px) {
-    @include variables.h1-font-mobile;
+    @include h1-font-mobile;
   }
 }

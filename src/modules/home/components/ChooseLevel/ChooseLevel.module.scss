@@ -1,4 +1,4 @@
-@use '../../../../styles/variables';
+@use '../../../../styles/variables' as *;
 
 .page {
   width: 100%;
@@ -14,13 +14,13 @@
 }
 
 .title {
-  color: variables.$text-main;
+  color: $text-main;
   margin-bottom: 30px;
   text-align: center;
-  @include variables.h2-font-mobile;
+  @include h2-font-mobile;
 
   @media (min-width: 768px) {
-    @include variables.h2-font;
+    @include h2-font;
   }
 }
 
@@ -38,10 +38,10 @@
 }
 
 .levelItem {
-  background-color: variables.$surface-1;
-  border: variables.$card-border;
+  background-color: $surface-1;
+  border: $card-border;
   border-radius: 8px;
-  box-shadow: variables.$shadow;
+  box-shadow: $shadow;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -67,23 +67,23 @@
 
 .itemLevel {
   margin: 0;
-  color: variables.$red;
+  color: $red;
   text-transform: uppercase;
 
-  @include variables.h3-font-mobile;
+  @include h3-font-mobile;
 
   @media (min-width: 768px) {
-    @include variables.h3-font;
+    @include h3-font;
   }
 }
 
 .itemTitle {
   margin: 0;
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h3-font-mobile;
+  @include h3-font-mobile;
 
   @media (min-width: 768px) {
-    @include variables.h3-font;
+    @include h3-font;
   }
 }

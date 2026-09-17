@@ -1,9 +1,9 @@
-@use '../../../../../styles/variables';
+@use '../../../../../styles/variables' as *;
 
 .footer {
   padding: 24px 0;
-  background-color: variables.$background;
-  border-top: 1px solid variables.$surface-2;
+  background-color: $background;
+  border-top: 1px solid $surface-2;
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease;
@@ -81,14 +81,14 @@
 .link {
   text-decoration: none;
   text-transform: uppercase;
-  color: variables.$text-main;
+  color: $text-main;
   transition: color 0.3s ease;
 
   &:hover {
-    color: variables.$accent-hover;
+    color: $accent-hover;
   }
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .backTop {
@@ -105,10 +105,10 @@
 }
 
 .buttonTopText {
-  color: variables.$text-secondary;
+  color: $text-secondary;
   white-space: nowrap;
 
-  @include variables.small-text;
+  @include small-text;
 }
 
 .iconWrapper {
@@ -118,7 +118,7 @@
   width: 32px;
   height: 32px;
   border-radius: 0;
-  background-color: variables.$surface-2;
+  background-color: $surface-2;
   transition: background-color 0.3s ease;
 }
 
@@ -135,12 +135,12 @@
   &:hover,
   &:focus-visible {
     .iconWrapper {
-      background-color: variables.$text-icons;
+      background-color: $text-icons;
     }
   }
 
   &:focus-visible {
-    outline: 2px solid variables.$accent;
+    outline: 2px solid $accent;
   }
 }
 
@@ -150,5 +150,5 @@
   display: block;
   transition: filter 0.3s ease;
 
-  filter: variables.$filter;
+  filter: $filter;
 }

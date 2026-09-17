@@ -1,4 +1,4 @@
-@use '../../../../styles/variables';
+@use '../../../../styles/variables' as *;
 
 .sliderWrapper {
   width: 100%;
@@ -27,7 +27,7 @@
   flex: 1;
   height: 320px;
   overflow: hidden;
-  background-color: variables.$surface-1;
+  background-color: $surface-1;
 
   @media (min-width: 768px) {
     height: 200px;
@@ -66,13 +66,13 @@
   display: none;
 
   img {
-    filter: variables.$filter;
+    filter: $filter;
     opacity: 0.6;
     transition: opacity 0.3s ease;
   }
 
   &:hover {
-    background: variables.$text-icons;
+    background: $text-icons;
 
     img {
       opacity: 1;
@@ -92,7 +92,7 @@
     cursor: pointer;
     width: 32px;
     height: 200px;
-    background: variables.$surface-2;
+    background: $surface-2;
     transition: background-color 0.3s ease;
   }
 
@@ -116,17 +116,17 @@
   padding: 0;
   border: none;
   cursor: pointer;
-  background: variables.$elements;
+  background: $elements;
   transition:
     background-color 0.3s ease,
     transform 0.3s ease;
 
   &:hover {
-    background: variables.$text-secondary;
+    background: $text-secondary;
   }
 
   &.dotActive {
-    background: variables.$text-main;
+    background: $text-main;
     transform: scaleX(1.1);
   }
 }

@@ -1,9 +1,9 @@
-@use '../../../styles/variables';
+@use '../../../styles/variables' as *;
 
 .page {
   min-height: 100vh;
 
-  background-color: variables.$background;
+  background-color: $background;
 }
 
 .container {
@@ -54,7 +54,7 @@
 
   padding-bottom: 32px;
 
-  border-bottom: variables.$card-border;
+  border-bottom: $card-border;
 
   @media (max-width: 767px) {
     grid-template-columns: 1fr;
@@ -71,9 +71,9 @@
   top: 0;
   left: 0;
 
-  color: variables.$accent;
+  color: $accent;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .level {
@@ -87,13 +87,13 @@
 
   margin-top: 48px;
 
-  color: variables.$text-on-accent;
+  color: $text-on-accent;
 
-  background-color: variables.$accent;
+  background-color: $accent;
 
   border-radius: 50%;
 
-  @include variables.h1-font;
+  @include h1-font;
 
   @media (max-width: 767px) {
     width: 140px;
@@ -101,7 +101,7 @@
 
     margin-top: 48px;
 
-    @include variables.h2-font;
+    @include h2-font;
   }
 }
 
@@ -116,12 +116,12 @@
 
   margin: 0;
 
-  color: variables.$text-main;
+  color: $text-main;
 
-  @include variables.h1-font;
+  @include h1-font;
 
   @media (max-width: 767px) {
-    @include variables.h1-font-mobile;
+    @include h1-font-mobile;
   }
 }
 
@@ -130,9 +130,9 @@
 
   margin: 20px 0 0;
 
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.body-font;
+  @include body-font;
 
   font-size: 16px;
   line-height: 1.7;
@@ -154,19 +154,19 @@
 
   padding-bottom: 16px;
 
-  border-bottom: variables.$card-border;
+  border-bottom: $card-border;
 }
 
 .testsLabel {
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.uppercase;
+  @include uppercase;
 }
 
 .testsCount {
-  color: variables.$accent;
+  color: $accent;
 
-  @include variables.h3-font;
+  @include h3-font;
 }
 
 .testsList {
@@ -177,7 +177,7 @@
 }
 
 .testItem {
-  border-bottom: variables.$card-border;
+  border-bottom: $card-border;
 }
 
 .testLink {
@@ -193,7 +193,7 @@
 
   padding: 24px 0;
 
-  color: variables.$text-main;
+  color: $text-main;
 
   text-decoration: none;
 
@@ -204,10 +204,10 @@
   &:hover {
     padding-left: 24px;
 
-    color: variables.$accent;
+    color: $accent;
 
     .testNumber {
-      color: variables.$accent;
+      color: $accent;
     }
 
     .testArrow {
@@ -231,23 +231,23 @@
 }
 
 .testNumber {
-  color: variables.$text-icons;
+  color: $text-icons;
 
-  @include variables.uppercase;
+  @include uppercase;
 
   transition: color 0.2s ease;
 }
 
 .testTitle {
-  @include variables.h2-font;
+  @include h2-font;
 
   @media (max-width: 767px) {
-    @include variables.h3-font-mobile;
+    @include h3-font-mobile;
   }
 }
 
 .testArrow {
-  color: variables.$accent;
+  color: $accent;
 
   font-size: 32px;
   line-height: 1;
@@ -270,15 +270,15 @@
 
   min-height: 180px;
 
-  border-bottom: variables.$card-border;
+  border-bottom: $card-border;
 }
 
 .emptyText {
   margin: 0;
 
-  color: variables.$text-secondary;
+  color: $text-secondary;
 
-  @include variables.body-font;
+  @include body-font;
 }
 
 /* =========================
@@ -288,9 +288,9 @@
 .error {
   padding: 32px;
 
-  color: variables.$red;
+  color: $red;
 
-  border: 1px solid variables.$red;
+  border: 1px solid $red;
 
-  @include variables.body-font;
+  @include body-font;
 }

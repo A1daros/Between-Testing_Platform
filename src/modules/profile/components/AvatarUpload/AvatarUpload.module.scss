@@ -1,17 +1,11 @@
-@use '../../../../styles/variables.scss';
-
-$bg-form: #ffffff;
-variables.$text-main: #09090b;
-$text-muted: #71717a;
-$border-color: #e4e4e7;
-$btn-bg: #18181b;
-$btn-hover: #27272a;
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins/auth-form' as *;
 
 .avatarWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
+  gap: 20px;
   width: 100%;
 }
 
@@ -20,8 +14,8 @@ $btn-hover: #27272a;
   width: 96px;
   height: 96px;
   border-radius: 50%;
-  border: 1px solid $border-color;
-  background-color: #f8fafc;
+  border: $form-border;
+  background-color: $surface-1;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -35,16 +29,14 @@ $btn-hover: #27272a;
 }
 
 .avatarPlaceholder {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: $text-muted;
-  letter-spacing: 0.05em;
+  color: $text-secondary;
+  @include uppercase;
 }
 
 .loadingOverlay {
   position: absolute;
   inset: 0;
-  background-color: rgba(9, 9, 11, 0.6);
+  background-color: rgba($text-main, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,17 +44,15 @@ $btn-hover: #27272a;
 }
 
 .loadingText {
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  color: $text-on-accent;
+  @include uppercase;
 }
 
 .controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.375rem;
+  gap: 6px;
 }
 
 .uploadLabel {
@@ -70,19 +60,18 @@ $btn-hover: #27272a;
   align-items: center;
   justify-content: center;
   height: 36px;
-  padding: 0 1rem;
-  background-color: transparent;
-  color: variables.$text-main;
-  border: 1px solid $border-color;
+  padding: 0 16px;
+  background-color: $accent;
+  color: $surface-1;
+  border: $card-border;
   border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
+
+  @include buttons;
 
   &:hover {
-    background-color: #f4f4f5;
-    border-color: $text-muted;
+    background-color: $accent-hover;
   }
 }
 
@@ -99,26 +88,19 @@ $btn-hover: #27272a;
 
 .hint {
   margin: 0;
-  font-size: 0.75rem;
-  color: $text-muted;
+  color: $text-secondary;
+
+  @include small-text;
 }
 
 .errorCard {
-  display: flex;
-  align-items: center;
+  @include error-card;
   width: 100%;
   max-width: 320px;
-  padding: 0.625rem 0.875rem;
-  background-color: #fef2f2;
-  border: 1px solid #fee2e2;
-  border-radius: 8px;
 }
 
 .errorText {
-  margin: 0;
-  font-size: 0.8rem;
-  color: #ef4444;
-  font-weight: 500;
+  @include error-text;
   text-align: center;
   width: 100%;
 }

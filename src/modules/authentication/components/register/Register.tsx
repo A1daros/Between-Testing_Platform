@@ -80,7 +80,7 @@ export const Register = () => {
               className={styles.input}
               onChange={(event) => setName(event.target.value)}
             />
-            <label htmlFor='reg-name' className={styles.label}>
+            <label htmlFor='reg-name' className={styles.inputLabel}>
               Name
             </label>
           </div>
@@ -96,7 +96,7 @@ export const Register = () => {
               className={styles.input}
               onChange={(event) => setSurname(event.target.value)}
             />
-            <label htmlFor='reg-surname' className={styles.label}>
+            <label htmlFor='reg-surname' className={styles.inputLabel}>
               Surname
             </label>
           </div>
@@ -112,7 +112,7 @@ export const Register = () => {
               className={styles.input}
               onChange={(event) => setEmail(event.target.value)}
             />
-            <label htmlFor='reg-email' className={styles.label}>
+            <label htmlFor='reg-email' className={styles.inputLabel}>
               Email Address
             </label>
           </div>
@@ -130,7 +130,7 @@ export const Register = () => {
               className={styles.input}
               onChange={(event) => setPassword(event.target.value)}
             />
-            <label htmlFor='reg-password' className={styles.label}>
+            <label htmlFor='reg-password' className={styles.inputLabel}>
               Password
             </label>
           </div>

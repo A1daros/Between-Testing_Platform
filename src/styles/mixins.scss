@@ -1,0 +1,19 @@
+@use './variables.scss' as *;
+
+@mixin page-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px;
+
+  @media (min-width: $breakpoint-mobile) {
+    padding: 0 24px;
+  }
+
+  @media (min-width: $breakpoint-tablet) {
+    padding: 0 32px;
+  }
+
+  @media (min-width: $breakpoint-desktop) {
+    padding: 0 120px;
+  }
+}

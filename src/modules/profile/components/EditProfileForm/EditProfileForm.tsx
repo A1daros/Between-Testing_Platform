@@ -67,7 +67,7 @@ export const EditProfileForm = ({
   };
 
   return (
-    <div className={styles.formContainer}>
+    <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.title}>Profile Settings</h2>
         <p className={styles.subtitle}>
@@ -108,14 +108,21 @@ export const EditProfileForm = ({
               className={styles.input}
               onChange={(event) => setDisplayName(event.target.value)}
             />
-            <label htmlFor='profile-name' className={styles.label}>
+            <label htmlFor='profile-name' className={styles.inputLabel}>
               Full Name
             </label>
           </div>
 
           <div className={styles.inputContainer}>
-            <p className={styles.input}>{currentUser?.email}</p>
-            <label htmlFor='profile-name' className={styles.label}>
+            <input
+              id='profile-email'
+              type='email'
+              value={currentUser?.email || ''}
+              placeholder=' '
+              disabled
+              className={styles.input}
+            />
+            <label htmlFor='profile-email' className={styles.inputLabel}>
               User Email
             </label>
           </div>
@@ -130,7 +137,7 @@ export const EditProfileForm = ({
               className={styles.input}
               onChange={(event) => setBirthDate(event.target.value)}
             />
-            <label htmlFor='profile-birth' className={styles.label}>
+            <label htmlFor='profile-birth' className={styles.inputLabel}>
               Birth Date
             </label>
           </div>
