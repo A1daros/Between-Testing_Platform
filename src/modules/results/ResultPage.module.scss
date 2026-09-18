@@ -1,263 +1,206 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
+@use '../../styles/mixins/auth-form' as *;
 
 .page {
-  min-height: 100vh;
   background-color: $background;
+  transition: background-color 0.3s ease;
 }
 
 .container {
   @include page-container;
+  margin-bottom: 60px;
+}
+
+.pageTitle {
+  margin: 24px 0;
+  color: $text-main;
+
+  @include h1-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    margin: 32px 0;
+
+    @include h1-font;
+  }
+
+  @media (min-width: $breakpoint-m) {
+    margin: 56px 0;
+  }
 }
 
 .wrapper {
   display: flex;
   flex-direction: column;
-
-  padding: 72px 0;
-
-  @media (max-width: 767px) {
-    padding: 48px 0;
-  }
+  gap: 32px;
 }
-
-/* =========================
-   RESULT
-========================= */
 
 .resultSection {
   display: flex;
   flex-direction: column;
-
   border-top: $card-border;
   border-bottom: $card-border;
 }
-
-/* =========================
-   HEADER
-========================= */
 
 .resultHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  gap: 8px;
   padding: 16px 0;
 
   border-bottom: $card-border;
 
-  @media (max-width: 767px) {
+  @media (min-width: $breakpoint-s) {
     gap: 16px;
   }
 }
 
 .sectionLabel {
   color: $accent;
-
   @include uppercase;
 }
 
 .resultStatus {
   color: $text-secondary;
-
   @include uppercase;
-
-  @media (max-width: 767px) {
-    text-align: right;
-  }
 }
 
-/* =========================
-   INTRO
-========================= */
+.introWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: $card-border;
+
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 36px 0;
+  }
+}
 
 .resultIntro {
-  display: grid;
-  grid-template-columns: 80px minmax(0, 1fr);
+  display: flex;
+  gap: 16px;
 
-  gap: 32px;
-
-  padding: 64px 0 48px;
-
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-
-    gap: 16px;
-
-    padding: 40px 0 32px;
+  @media (min-width: $breakpoint-s) {
+    gap: 24px;
   }
 }
 
-.resultNumber {
-  color: $text-icons;
-
-  @include uppercase;
-}
-
-.introContent {
-  max-width: 800px;
-}
-
-.title {
+.introTitle {
   margin: 0;
-
   color: $text-main;
+  @include h2-font-mobile;
 
-  @include h1-font;
-
-  @media (max-width: 767px) {
-    @include h1-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
   }
 }
 
-.description {
-  max-width: 600px;
-
-  margin: 20px 0 0;
-
+.introDescription {
+  margin-top: 12px;
   color: $text-secondary;
-
   @include body-font;
-
-  line-height: 1.8;
 }
-
-/* =========================
-   SCORE
-========================= */
 
 .scoreSection {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 20px;
 
-  padding: 64px 24px;
-
-  background-color: $surface-1;
-
-  border-top: $card-border;
-  border-bottom: $card-border;
-
-  text-align: center;
+  @media (min-width: $breakpoint-s) {
+    align-items: flex-end;
+    border: none;
+    padding: 0;
+  }
 }
 
 .scoreLabel {
   color: $text-secondary;
-
   @include uppercase;
 }
 
 .scoreValue {
   display: flex;
   align-items: baseline;
-  justify-content: center;
-
-  margin-top: 24px;
-
   color: $text-main;
-
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
-
-  line-height: 1;
 }
 
 .score {
-  font-size: 96px;
-
-  @media (max-width: 767px) {
-    font-size: 64px;
-  }
+  @include h2-font;
 }
 
 .divider {
-  margin: 0 12px;
-
+  margin: 0 8px;
   color: $text-icons;
-
-  font-size: 48px;
-
-  @media (max-width: 767px) {
-    font-size: 32px;
-  }
 }
 
 .total {
   color: $text-secondary;
-
-  font-size: 48px;
-
-  @media (max-width: 767px) {
-    font-size: 32px;
-  }
+  @include h3-font;
 }
 
 .percentage {
-  margin-top: 20px;
-
   color: $accent;
+  @include h3-font-mobile;
 
-  @include h3-font;
-
-  @media (max-width: 767px) {
-    @include h3-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
   }
 }
-
-/* =========================
-   MESSAGE
-========================= */
 
 .resultMessage {
-  display: grid;
-  grid-template-columns: 80px minmax(0, 700px);
+  display: flex;
+  gap: 16px;
+  padding: 24px 0;
 
-  gap: 32px;
-
-  padding: 64px 0;
-
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-
-    gap: 16px;
-
-    padding: 40px 0;
+  @media (min-width: $breakpoint-s) {
+    gap: 24px;
+    padding: 32px 0;
   }
 }
 
-.messageNumber {
-  color: $text-icons;
-
-  @include uppercase;
+.messageContent {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
 }
 
-.resultMessage p {
-  margin: 0;
-
+.subtext {
   color: $text-secondary;
+  @include body-font;
+}
 
+.inlineLink {
+  color: $accent;
+  text-decoration: underline;
+  text-transform: uppercase;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
   @include body-font;
 
-  font-size: 16px;
-  line-height: 1.8;
+  &:hover {
+    color: $accent-hover;
+  }
 }
-
-/* =========================
-   ACTIONS
-========================= */
 
 .actions {
   display: flex;
-  align-items: center;
-  gap: 16px;
-
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
   padding: 24px 0;
-
   border-top: $card-border;
 
-  @media (max-width: 767px) {
-    flex-direction: column;
-    align-items: stretch;
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
   }
 }
 
@@ -266,12 +209,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  min-height: 52px;
-
   padding: 14px 32px;
-
   cursor: pointer;
+  border: $card-border;
+  border-radius: 8px;
 
   @include buttons;
 
@@ -288,76 +229,43 @@
 
   &:disabled {
     opacity: 0.35;
-
     cursor: not-allowed;
-
-    transform: none;
   }
 
-  @media (max-width: 767px) {
-    width: 100%;
+  @media (min-width: $breakpoint-s) {
+    width: auto;
   }
 }
 
 .button {
   color: $text-on-accent;
-
   background-color: $accent;
 
-  border: 1px solid $accent;
-
-  &:not(:disabled):hover {
-    background-color: $accent-hover;
-
-    transform: translate(-4px, -4px);
-
-    box-shadow: 4px 4px 0 $text-main;
+  &:hover {
+    color: $text-main;
+    background-color: transparent;
   }
 
   &:active {
     transform: translate(0, 0);
-
     box-shadow: none;
   }
 }
 
 .secondaryButton {
   color: $text-main;
-
   background-color: transparent;
-
-  border: 1px solid $accent;
 
   &:hover {
     color: $text-on-accent;
-
-    background-color: $accent;
+    background-color: $text-main;
   }
 }
 
-/* =========================
-   ERROR
-========================= */
-
-.error {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  padding: 64px 0;
-
-  border-top: $card-border;
-  border-bottom: $card-border;
+.errorCard {
+  @include error-card;
 }
 
-.errorTitle {
-  margin: 24px 0 32px;
-
-  color: $text-main;
-
-  @include h2-font;
-
-  @media (max-width: 767px) {
-    @include h2-font-mobile;
-  }
+.errorText {
+  @include error-text;
 }

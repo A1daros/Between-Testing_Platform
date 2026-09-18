@@ -1,70 +1,79 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
+@use '../../../../styles/mixins/auth-form' as *;
 
 .page {
-  min-height: 100vh;
-
   background-color: $background;
+  transition: background-color 0.3s ease;
 }
 
 .container {
   @include page-container;
+  margin-bottom: 24px;
+
+  @media (min-width: $breakpoint-s) {
+    margin-bottom: 32px;
+  }
+
+  @media (min-width: $breakpoint-m) {
+    margin-bottom: 56px;
+  }
+}
+
+.pageTitle {
+  margin: 24px 0;
+  color: $text-main;
+
+  @include h1-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    margin: 32px 0;
+
+    @include h1-font;
+  }
+
+  @media (min-width: $breakpoint-m) {
+    margin: 56px 0;
+  }
 }
 
 .wrapper {
   display: flex;
   flex-direction: column;
-
-  padding: 72px 0;
-
-  @media (max-width: 767px) {
-    padding: 48px 0;
-  }
+  gap: 32px;
 }
 
-/* =========================
-   HERO
-========================= */
-
 .heroSection {
-  border-top: $card-border;
-  border-bottom: $card-border;
+  display: flex;
+  flex-direction: column;
 }
 
 .heroTop {
   display: flex;
-
   align-items: center;
   justify-content: space-between;
-
+  gap: 16px;
   padding: 16px 0;
-
+  margin-bottom: 16px;
+  border-top: $card-border;
   border-bottom: $card-border;
 
-  @media (max-width: 767px) {
-    align-items: flex-start;
-
-    gap: 16px;
+  @media (min-width: $breakpoint-s) {
+    gap: 24px;
   }
 }
 
 .sectionLabel {
   color: $accent;
-
   @include uppercase;
 }
 
 .backButton {
   padding: 0;
-
   color: $text-secondary;
-
   background: none;
-
   border: none;
-
   cursor: pointer;
-
   @include buttons;
 
   transition: color 0.2s ease;
@@ -75,314 +84,208 @@
 }
 
 .heroContent {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
-  grid-template-columns: 80px minmax(0, 800px);
-
-  gap: 32px;
-
-  padding: 56px 0;
-
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-
-    gap: 16px;
-
-    padding: 40px 0;
+  @media (min-width: $breakpoint-s) {
+    gap: 24px;
   }
 }
 
-.resultNumber {
-  color: $text-icons;
-
-  @include uppercase;
-}
-
-.pageTitle {
+.heroTitle {
   margin: 0;
-
   color: $text-main;
+  @include h2-font-mobile;
 
-  @include h1-font;
-
-  @media (max-width: 767px) {
-    @include h1-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
   }
 }
 
-.pageDescription {
-  max-width: 650px;
-
-  margin: 20px 0 0;
-
+.heroDescription {
+  margin: 0;
   color: $text-secondary;
-
   @include body-font;
-
-  line-height: 1.8;
 }
-
-/* =========================
-   ANSWERS
-========================= */
-
-.answersSection {
-  margin-top: 64px;
-
-  @media (max-width: 767px) {
-    margin-top: 40px;
-  }
-}
-
-/* =========================
-   TEST PART
-========================= */
 
 .partSection {
-  display: grid;
-
-  grid-template-columns: 80px minmax(0, 1fr);
-
-  gap: 32px;
-
-  padding: 40px 0;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 0;
+  margin-top: 16px;
   border-top: 2px solid $text-main;
+  border-bottom: $card-border;
 
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-
-    gap: 16px;
-
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
     padding: 32px 0;
   }
 }
 
 .partNumber {
   color: $accent;
-
   @include uppercase;
+}
+
+.partContent {
+  display: flex;
+  flex-direction: column;
 }
 
 .partTitle {
   margin: 0;
-
   color: $text-main;
+  @include h2-font-mobile;
 
-  @include h2-font;
-
-  @media (max-width: 767px) {
-    @include h2-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
   }
 }
 
 .partInstruction {
-  max-width: 700px;
-
-  margin: 12px 0 0;
-
+  margin: 0;
   color: $text-secondary;
-
   @include body-font;
-
-  line-height: 1.7;
 }
 
-/* =========================
-   QUESTION
-========================= */
-
 .questionBlock {
-  padding: 40px 0;
-
+  padding: 24px 0;
   border-top: $card-border;
 
-  &:last-child {
-    border-bottom: $card-border;
-  }
-
-  @media (max-width: 767px) {
+  @media (min-width: $breakpoint-s) {
     padding: 32px 0;
   }
 }
 
 .questionMeta {
   display: flex;
-
   align-items: center;
   justify-content: space-between;
-
-  margin-bottom: 20px;
-
+  margin-bottom: 12px;
   color: $text-secondary;
-
   @include uppercase;
 }
 
 .question {
-  max-width: 900px;
-
   margin: 0;
-
   color: $text-main;
+  @include h3-font-mobile;
 
-  @include h3-font;
-
-  @media (max-width: 767px) {
-    @include h3-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
   }
 }
 
-/* =========================
-   ANSWER GRID
-========================= */
-
 .answerGrid {
   display: grid;
-
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-
+  grid-template-columns: 1fr;
   gap: 16px;
+  margin-top: 24px;
 
-  margin-top: 32px;
-
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-
-    margin-top: 24px;
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 32px;
   }
 }
 
 .answerBlock {
-  min-height: 130px;
-
-  padding: 24px;
-
+  padding: 12px;
   background-color: $surface-1;
-
   border: $card-border;
+  border-left-width: 4px;
 
-  @media (max-width: 767px) {
-    min-height: 0;
-
-    padding: 20px;
+  @media (min-width: $breakpoint-s) {
+    padding: 16px;
   }
 }
 
 .answerCorrect {
-  border-left: 3px solid $green;
+  border-left-color: $green;
 }
 
 .answerIncorrect {
-  border-left: 3px solid $red;
+  border-left-color: $red;
 }
 
 .correctAnswer {
-  border-left: 3px solid $green;
+  border-left-color: $green;
 }
 
 .answerLabel {
   display: block;
-
   color: $text-secondary;
-
   @include uppercase;
 }
 
 .answerText {
-  margin: 20px 0 0;
-
+  margin-top: 12px;
   color: $text-main;
-
   @include body-font;
 
-  font-size: 16px;
-  line-height: 1.7;
+  @media (min-width: $breakpoint-s) {
+    margin-top: 16px;
+  }
 }
-
-/* =========================
-   FOOTER
-========================= */
 
 .footer {
   display: flex;
-
   justify-content: center;
-
-  padding: 48px 0 0;
-
-  @media (max-width: 767px) {
-    padding-top: 40px;
-  }
 }
 
 .button {
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
-
-  min-height: 52px;
-
   padding: 14px 32px;
-
-  color: $text-on-accent;
-
-  background-color: $accent;
-
-  border: 1px solid $accent;
-
   cursor: pointer;
+  border: $card-border;
+  border-radius: 8px;
+  color: $text-on-accent;
+  background-color: $accent;
 
   @include buttons;
 
   transition:
     background-color 0.2s ease,
+    color 0.2s ease,
     transform 0.2s ease,
     box-shadow 0.2s ease;
 
+  &:focus-visible {
+    outline: 2px solid $accent;
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
   &:hover {
-    background-color: $accent-hover;
-
-    transform: translate(-4px, -4px);
-
-    box-shadow: 4px 4px 0 $text-main;
+    color: $text-main;
+    background-color: transparent;
   }
 
   &:active {
     transform: translate(0, 0);
-
     box-shadow: none;
   }
-}
 
-/* =========================
-   EMPTY / ERROR
-========================= */
-
-.error,
-.emptyState {
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: flex-start;
-
-  padding: 64px 0;
-
-  border-top: $card-border;
-  border-bottom: $card-border;
-}
-
-.errorTitle,
-.emptyTitle {
-  margin: 24px 0 32px;
-
-  color: $text-main;
-
-  @include h2-font;
-
-  @media (max-width: 767px) {
-    @include h2-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    width: auto;
   }
+}
+
+.errorCard {
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
 }

@@ -45,12 +45,10 @@ export const ResultDetailsPage = () => {
   if (errorMessage) {
     return (
       <main className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.error}>
-            <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
+        <div className={styles.errorCard}>
+          <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
 
-            <h1 className={styles.errorTitle}>{errorMessage}</h1>
-          </div>
+          <h2 className={styles.errorText}>{errorMessage}</h2>
         </div>
       </main>
     );
@@ -59,32 +57,32 @@ export const ResultDetailsPage = () => {
   if (!resultDetails.length) {
     return (
       <main className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.emptyState}>
-            <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
+        <div className={styles.errorCard}>
+          <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
 
-            <h1 className={styles.emptyTitle}>No result details found</h1>
+          <h2 className={styles.errorText}>No result details found</h2>
 
-            <button
-              type='button'
-              className={styles.button}
-              onClick={() => navigate(-1)}
-            >
-              Go back →
-            </button>
-          </div>
+          <button
+            type='button'
+            className={styles.button}
+            onClick={() => navigate(-1)}
+          >
+            Go back →
+          </button>
         </div>
       </main>
     );
   }
 
-  const test = resultDetails[0].questions.tests;
+  const test = resultDetails[0]?.questions?.tests;
 
   return (
     <main className={styles.page}>
       <div className={styles.container}>
+        <h1 className={styles.pageTitle}></h1>
+
         <div className={styles.wrapper}>
-          <header className={styles.heroSection}>
+          <section className={styles.heroSection}>
             <div className={styles.heroTop}>
               <span className={styles.sectionLabel}>
                 BETWEEN / RESULT DETAILS
@@ -99,16 +97,16 @@ export const ResultDetailsPage = () => {
               </button>
             </div>
 
-            <div className={styles.heroContent}>
-              <span className={styles.resultNumber}>01</span>
+            <div>
+              <div className={styles.heroContent}>
+                <h2 className={styles.heroTitle}>{test.title}</h2>
 
-              <div>
-                <h1 className={styles.pageTitle}>{test.title}</h1>
-
-                <p className={styles.pageDescription}>{test.description}</p>
+                {test?.description && (
+                  <p className={styles.heroDescription}>{test.description}</p>
+                )}
               </div>
             </div>
-          </header>
+          </section>
 
           <section className={styles.answersSection}>
             {resultDetails.map((item, index) => {
@@ -117,28 +115,29 @@ export const ResultDetailsPage = () => {
               );
 
               const prevItem = resultDetails[index - 1];
-
               const isNewPart =
-                item.questions.part_id !== prevItem?.questions.part_id;
+                item.questions.part_id !== prevItem?.questions?.part_id;
 
               const isCorrect = item.answers.id === correctAnswer?.id;
+              const partNumber = resultDetails
+                .slice(0, index + 1)
+                .filter((currentItem, currentIndex) => {
+                  const previousItem = resultDetails[currentIndex - 1];
+
+                  return (
+                    currentItem.questions.part_id !==
+                      previousItem?.questions?.part_id &&
+                    Boolean(currentItem.questions?.test_parts)
+                  );
+                }).length;
 
               return (
                 <div key={item.id}>
-                  {isNewPart && item.questions.test_parts && (
+                  {isNewPart && item.questions?.test_parts && (
                     <section className={styles.partSection}>
-                      <div className={styles.partNumber}>
-                        {String(
-                          resultDetails
-                            .slice(0, index)
-                            .filter(
-                              (currentItem, currentIndex) =>
-                                currentItem.questions.part_id !==
-                                resultDetails[currentIndex - 1]?.questions
-                                  .part_id,
-                            ).length + 1,
-                        ).padStart(2, '0')}
-                      </div>
+                      <span className={styles.partNumber} aria-hidden='true'>
+                        {String(partNumber).padStart(2, '0')}
+                      </span>
 
                       <div className={styles.partContent}>
                         <h2 className={styles.partTitle}>
@@ -156,7 +155,9 @@ export const ResultDetailsPage = () => {
                     <div className={styles.questionMeta}>
                       <span>QUESTION</span>
 
-                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      <span aria-label={`Question number ${index + 1}`}>
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
                     </div>
 
                     <h3 className={styles.question}>
@@ -196,15 +197,15 @@ export const ResultDetailsPage = () => {
             })}
           </section>
 
-          <footer className={styles.footer}>
+          <section className={styles.footer}>
             <button
               type='button'
               className={styles.button}
               onClick={() => navigate('/my-results')}
             >
-              Back to my results →
+              Back to my results
             </button>
-          </footer>
+          </section>
         </div>
       </div>
     </main>
