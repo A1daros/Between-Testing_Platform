@@ -56,7 +56,9 @@ export const TestsByLevel = () => {
     return (
       <main className={styles.page}>
         <div className={styles.container}>
-          <div className={styles.error}>{errorMessage}</div>
+          <div className={styles.errorCard}>
+            <p className={styles.errorText}>{errorMessage}</p>
+          </div>
         </div>
       </main>
     );
@@ -65,8 +67,10 @@ export const TestsByLevel = () => {
   return (
     <main className={styles.page}>
       <div className={styles.container}>
+        <h1 className={styles.pageTitle}></h1>
+
         <div className={styles.wrapper}>
-          <header className={styles.heroSection}>
+          <section className={styles.heroSection}>
             <span className={styles.sectionLabel}>BETWEEN / LEVEL</span>
             {levels
               .filter((level) => String(level.id) === String(levelId))
@@ -77,42 +81,78 @@ export const TestsByLevel = () => {
               ))}
 
             <div className={styles.heroContent}>
-              <h1 className={styles.pageTitle}>Choose your test</h1>
+              <h2 className={styles.heroTitle}>Check your English skills</h2>
 
-              <p className={styles.pageDescription}>
-                Select a test to check your English knowledge.
+              <p className={styles.heroDescription}>
+                Choose a test and discover your current level of English.
               </p>
             </div>
-          </header>
+          </section>
 
           <section className={styles.testsSection}>
             <div className={styles.testsHeader}>
               <span className={styles.testsLabel}>AVAILABLE TESTS</span>
 
               <span className={styles.testsCount}>
-                {String(testsByLevel.length).padStart(1, '0')}
+                {String(testsByLevel.length).padStart(2, '0')}
               </span>
             </div>
 
             {testsByLevel.length > 0 ? (
               <ul className={styles.testsList}>
-                {testsByLevel.map((test, index) => (
-                  <li key={test.id} className={styles.testItem}>
-                    <Link to={`/tests/${test.id}`} className={styles.testLink}>
-                      <span className={styles.testNumber}>
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
+                {testsByLevel.map((test, index) => {
+                  const testTitle = test.title ?? 'Untitled Test';
+                  const testId = `test-title-${test.id}`;
 
-                      <span className={styles.testTitle}>{test.title}</span>
+                  return (
+                    <li key={test.id} className={styles.testItem}>
+                      <Link
+                        to={`/tests/${test.id}`}
+                        className={styles.testCard}
+                        aria-labelledby={testId}
+                      >
+                        <span className={styles.testNumber}>
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <span className={styles.testType}>
+                          {test.test_type}
+                        </span>
+                        <h3 className={styles.testTitle}>{testTitle}</h3>
 
-                      <span className={styles.testArrow}>→</span>
-                    </Link>
-                  </li>
-                ))}
+                        {test.description && (
+                          <p className={styles.testDescription}>
+                            {test.description}
+                          </p>
+                        )}
+
+                        <div className={styles.testInfo}>
+                          <div className={styles.testMeta}>
+                            <span
+                              className={styles.metaBadge}
+                              aria-label={`Duration: ${10} minutes`}
+                            >
+                              ⏱ {'10 min'}
+                            </span>
+                            <span
+                              className={styles.metaBadge}
+                              aria-label={`${20} questions`}
+                            >
+                              ❓ {20} q
+                            </span>
+                          </div>
+
+                          <span className={styles.testArrow} aria-hidden='true'>
+                            →
+                          </span>
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             ) : (
-              <div className={styles.emptyState}>
-                <p className={styles.emptyText}>
+              <div className={styles.errorCard}>
+                <p className={styles.errorText}>
                   No tests available for this level yet.
                 </p>
               </div>

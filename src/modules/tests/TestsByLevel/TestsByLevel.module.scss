@@ -1,296 +1,236 @@
 @use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/mixins/auth-form' as *;
 
 .page {
-  min-height: 100vh;
-
   background-color: $background;
+  transition: background-color 0.3s ease;
 }
 
 .container {
-  max-width: 1440px;
+  @include page-container;
+}
 
-  margin: 0 auto;
+.pageTitle {
+  margin: 24px 0;
+  color: $text-main;
 
-  padding: 0 16px;
+  @include h1-font-mobile;
 
-  @media (min-width: 768px) {
-    padding: 0 32px;
+  @media (min-width: $breakpoint-s) {
+    margin: 32px 0;
+
+    @include h1-font;
   }
 
-  @media (min-width: 1200px) {
-    padding: 0 120px;
+  @media (min-width: $breakpoint-m) {
+    margin: 56px 0;
   }
 }
 
 .wrapper {
   display: flex;
   flex-direction: column;
+  gap: 32px;
+}
 
-  gap: 80px;
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 
-  padding: 72px 0;
-
-  @media (max-width: 767px) {
-    gap: 56px;
-
-    padding: 48px 0;
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
   }
 }
 
-/* =========================
-   HERO
-========================= */
-
-.heroSection {
-  position: relative;
-
-  display: grid;
-
-  grid-template-columns: 280px 1fr;
-
-  column-gap: 64px;
-
-  min-height: 320px;
-
-  padding-bottom: 32px;
-
-  border-bottom: $card-border;
-
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-
-    gap: 32px;
-
-    min-height: auto;
-  }
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .sectionLabel {
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
   color: $accent;
-
   @include uppercase;
 }
 
 .level {
   display: flex;
-
   align-items: center;
   justify-content: center;
-
-  width: 220px;
-  height: 220px;
-
-  margin-top: 48px;
-
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
   color: $text-on-accent;
-
   background-color: $accent;
-
+  border: $card-border;
   border-radius: 50%;
+  box-shadow: $shadow;
 
-  @include h1-font;
+  @include h2-font-mobile;
 
-  @media (max-width: 767px) {
-    width: 140px;
-    height: 140px;
-
-    margin-top: 48px;
-
+  @media (min-width: $breakpoint-s) {
+    width: 120px;
+    height: 120px;
     @include h2-font;
   }
 }
 
-.heroContent {
-  align-self: end;
-
-  padding-bottom: 16px;
-}
-
-.pageTitle {
-  max-width: 700px;
-
-  margin: 0;
-
+.heroTitle {
+  @include h2-font-mobile;
+  margin: 16px 0;
   color: $text-main;
 
-  @include h1-font;
-
-  @media (max-width: 767px) {
-    @include h1-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
   }
 }
 
-.pageDescription {
-  max-width: 520px;
-
-  margin: 20px 0 0;
-
+.heroDescription {
   color: $text-secondary;
-
   @include body-font;
-
-  font-size: 16px;
-  line-height: 1.7;
-}
-
-/* =========================
-   TESTS
-========================= */
-
-.testsSection {
-  width: 100%;
 }
 
 .testsHeader {
   display: flex;
-
   align-items: center;
   justify-content: space-between;
 
   padding-bottom: 16px;
-
   border-bottom: $card-border;
 }
 
 .testsLabel {
   color: $text-secondary;
-
   @include uppercase;
 }
 
 .testsCount {
   color: $accent;
-
-  @include h3-font;
+  @include uppercase;
 }
 
 .testsList {
-  margin: 0;
-  padding: 0;
-
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .testItem {
   border-bottom: $card-border;
 }
 
-.testLink {
-  display: grid;
-
-  grid-template-columns: 80px 1fr auto;
-
-  align-items: center;
-
-  gap: 24px;
-
-  min-height: 120px;
-
+.testCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding: 24px 0;
-
   color: $text-main;
-
   text-decoration: none;
 
   transition:
     color 0.2s ease,
-    padding 0.2s ease;
+    transform 0.2s ease;
+
+  @media (min-width: $breakpoint-m) {
+    display: grid;
+    grid-template-columns:
+      50px 100px minmax(120px, 2fr) minmax(150px, 2.5fr)
+      130px 40px;
+    gap: 12px;
+    align-items: center;
+  }
 
   &:hover {
-    padding-left: 24px;
-
-    color: $accent;
+    transform: translateX(8px);
 
     .testNumber {
       color: $accent;
     }
 
     .testArrow {
-      transform: translateX(8px);
-    }
-  }
-
-  @media (max-width: 767px) {
-    grid-template-columns: 48px 1fr auto;
-
-    gap: 12px;
-
-    min-height: 88px;
-
-    padding: 16px 0;
-
-    &:hover {
-      padding-left: 12px;
+      transform: translateX(6px);
     }
   }
 }
 
 .testNumber {
-  color: $text-icons;
-
-  @include uppercase;
-
+  color: $text-secondary;
   transition: color 0.2s ease;
+
+  @include body-font;
 }
 
-.testTitle {
-  @include h2-font;
-
-  @media (max-width: 767px) {
-    @include h3-font-mobile;
-  }
-}
-
-.testArrow {
-  color: $accent;
-
-  font-size: 32px;
-  line-height: 1;
-
-  transition: transform 0.2s ease;
-
-  @media (max-width: 767px) {
-    font-size: 24px;
-  }
-}
-
-/* =========================
-   EMPTY STATE
-========================= */
-
-.emptyState {
-  display: flex;
-
-  align-items: center;
-
-  min-height: 180px;
-
-  border-bottom: $card-border;
-}
-
-.emptyText {
-  margin: 0;
-
+.testType {
   color: $text-secondary;
 
   @include body-font;
 }
 
-/* =========================
-   ERROR
-========================= */
+.testTitle {
+  @include h3-font-mobile;
 
-.error {
-  padding: 32px;
+  @media (min-width: $breakpoint-s) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @include h3-font;
+  }
+}
 
-  color: $red;
-
-  border: 1px solid $red;
+.testDescription {
+  margin: 0;
+  color: $text-secondary;
 
   @include body-font;
+}
+
+.testInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  @media (min-width: $breakpoint-m) {
+    display: contents;
+  }
+}
+
+.testMeta {
+  display: flex;
+  gap: 12px;
+
+  @media (min-width: $breakpoint-m) {
+    white-space: nowrap;
+  }
+}
+
+.metaBadge {
+  color: $text-secondary;
+  @include body-font;
+}
+
+.testArrow {
+  color: $accent;
+  font-size: 24px;
+  transition: transform 0.2s ease;
+
+  @media (min-width: $breakpoint-s) {
+    font-size: 32px;
+  }
+
+  @media (min-width: $breakpoint-m) {
+    text-align: right;
+  }
+}
+
+.errorCard {
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
 }
