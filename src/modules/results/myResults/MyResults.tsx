@@ -44,12 +44,8 @@ export const MyResults = () => {
   if (errorMessage) {
     return (
       <main className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.error}>
-            <span className={styles.sectionLabel}>BETWEEN / RESULTS</span>
-
-            <h1 className={styles.errorTitle}>{errorMessage}</h1>
-          </div>
+        <div className={styles.errorCard}>
+          <div className={styles.errorText}>{errorMessage}</div>
         </div>
       </main>
     );
@@ -58,37 +54,36 @@ export const MyResults = () => {
   return (
     <main className={styles.page}>
       <div className={styles.container}>
+        <h1 className={styles.pageTitle}>My results</h1>
+
         <div className={styles.wrapper}>
-          <header className={styles.heroSection}>
+          <section className={styles.heroSection}>
             <span className={styles.sectionLabel}>BETWEEN / MY RESULTS</span>
+            <h2 className={styles.sectionTitle}>Track Your Progress</h2>
 
-            <div className={styles.heroContent}>
-              <h1 className={styles.pageTitle}>My results</h1>
-
-              <p className={styles.pageDescription}>
-                Your test history and learning progress.
-              </p>
-            </div>
+            <p className={styles.sectionDescription}>
+              Your test history and learning progress.
+            </p>
 
             <div className={styles.heroMeta}>
               <span>COMPLETED TESTS</span>
 
-              <span>{String(results.length).padStart(2, '0')}</span>
+              <span className={styles.heroBadge}>
+                {String(results.length).padStart(2, '0')}
+              </span>
             </div>
-          </header>
+          </section>
 
           {results.length > 0 ? (
             <section className={styles.resultsSection}>
-              <div className={styles.listHeader}>
-                <span>TEST</span>
-                <span>SCORE</span>
-                <span>DATE</span>
-                <span />
-              </div>
-
               <div className={styles.resultsList}>
                 {results.map((result, index) => {
                   const date = new Date(result.created_at);
+                  const formattedDate = date.toLocaleDateString();
+                  const formattedTime = date.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  });
 
                   return (
                     <article key={result.id} className={styles.resultItem}>
@@ -97,20 +92,23 @@ export const MyResults = () => {
                       </span>
 
                       <div className={styles.testInfo}>
-                        <h2 className={styles.testTitle}>
-                          {result.tests.title ?? 'Unknown test'}
-                        </h2>
+                        <h3 className={styles.testTitle}>
+                          {result.tests?.title ?? 'Unknown test'}
+                        </h3>
 
                         <span className={styles.testType}>
-                          {result.tests.title ?? 'TEST'}
+                          {result.tests?.test_type ?? 'TEST'}
                         </span>
                       </div>
 
                       <div className={styles.score}>
                         <span>{result.score}</span>
-
-                        <span className={styles.scoreDivider}>/</span>
-
+                        <span
+                          className={styles.scoreDivider}
+                          aria-hidden='true'
+                        >
+                          /
+                        </span>
                         <span className={styles.scoreTotal}>
                           {result.total}
                         </span>
@@ -120,22 +118,19 @@ export const MyResults = () => {
                         className={styles.date}
                         dateTime={result.created_at}
                       >
-                        {date.toLocaleDateString()}
-                        <span>
-                          {date.toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </span>
+                        {formattedDate}
+                        <span>{formattedTime}</span>
                       </time>
 
                       <Link
                         to={`/my-results/${result.id}`}
                         className={styles.resultLink}
+                        aria-label={`View results for ${result.tests?.title ?? 'Unknown test'}`}
                       >
                         <span>View</span>
-
-                        <span className={styles.arrow}>→</span>
+                        <span className={styles.arrow} aria-hidden='true'>
+                          →
+                        </span>
                       </Link>
                     </article>
                   );
@@ -155,7 +150,7 @@ export const MyResults = () => {
               </div>
 
               <Link to='/tests' className={styles.button}>
-                Choose a test →
+                Choose a test <span aria-hidden='true'>→</span>
               </Link>
             </section>
           )}

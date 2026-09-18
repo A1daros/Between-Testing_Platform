@@ -125,8 +125,8 @@ export const QuizPage = () => {
   if (errorMessage) {
     return (
       <main className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.error}>{errorMessage}</div>
+        <div className={styles.errorCard}>
+          <p className={styles.errorText}>{errorMessage}</p>
         </div>
       </main>
     );
@@ -135,10 +135,8 @@ export const QuizPage = () => {
   if (!questions.length) {
     return (
       <main className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.emptyState}>
-            <p>No questions found.</p>
-          </div>
+        <div className={styles.errorCard}>
+          <p className={styles.errorText}>No questions found.</p>
         </div>
       </main>
     );
@@ -148,14 +146,16 @@ export const QuizPage = () => {
     return <Loader />;
   }
 
-  const progress = ((currentQuestionIndex + 1) / total) * 100;
+  const progress = total > 0 ? ((currentQuestionIndex + 1) / total) * 100 : 0;
 
   return (
     <main className={styles.page}>
       <div className={styles.container}>
+        <h1 className={styles.pageTitle}>Quiz page</h1>
+
         <div className={styles.wrapper}>
-          <header className={styles.quizHeader}>
-            <div className={styles.headerTop}>
+          <section className={styles.quizSection}>
+            <div className={styles.sectionTop}>
               <span className={styles.sectionLabel}>BETWEEN / TEST</span>
 
               <span className={styles.questionCounter}>
@@ -164,11 +164,11 @@ export const QuizPage = () => {
               </span>
             </div>
 
-            <div className={styles.headerContent}>
+            <div className={styles.sectionContent}>
               <div>
-                <h1 className={styles.testTitle}>
+                <h2 className={styles.testTitle}>
                   {currentQuestion.tests.title}
-                </h1>
+                </h2>
 
                 {currentQuestion.tests.description && (
                   <p className={styles.testDescription}>
@@ -178,7 +178,14 @@ export const QuizPage = () => {
               </div>
 
               <div className={styles.progressWrapper}>
-                <div className={styles.progressTrack}>
+                <div
+                  className={styles.progressTrack}
+                  role='progressbar'
+                  aria-valuenow={Math.round(progress)}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label='Quiz progress'
+                >
                   <div
                     className={styles.progressBar}
                     style={{ width: `${progress}%` }}
@@ -186,66 +193,81 @@ export const QuizPage = () => {
                 </div>
               </div>
             </div>
-          </header>
+          </section>
 
-          <section className={styles.questionSection}>
-            <div className={styles.partHeader}>
-              <span className={styles.partNumber}>QUESTION</span>
-
-              {currentQuestion.test_parts?.title && (
-                <span className={styles.partTitle}>
-                  {currentQuestion.test_parts.title}
-                </span>
-              )}
+          {!currentQuestion ? (
+            <div className={styles.loaderCenter}>
+              <Loader />
             </div>
+          ) : (
+            <section className={styles.questionSection}>
+              <div className={styles.partHeader}>
+                <span className={styles.partNumber}>QUESTION</span>
 
-            {currentQuestion.test_parts?.instruction && (
-              <p className={styles.instruction}>
-                {currentQuestion.test_parts.instruction}
-              </p>
-            )}
+                {currentQuestion.test_parts?.title && (
+                  <span className={styles.partTitle}>
+                    {currentQuestion.test_parts.title}
+                  </span>
+                )}
+              </div>
 
-            <div className={styles.questionContent}>
-              {currentQuestion.description !== null && (
-                <p className={styles.questionDescription}>
-                  {currentQuestion.description}
+              {currentQuestion.test_parts?.instruction && (
+                <p className={styles.instruction}>
+                  {currentQuestion.test_parts.instruction}
                 </p>
               )}
 
-              <h2 className={styles.question}>{currentQuestion.question}</h2>
-            </div>
+              <div className={styles.questionContent}>
+                {currentQuestion.description !== null && (
+                  <p className={styles.questionDescription}>
+                    {currentQuestion.description}
+                  </p>
+                )}
 
-            <div className={styles.answers}>
-              {currentAnswers.map((answer, index) => {
-                const isSelected = selectedAnswerId === answer.id;
+                <h3 className={styles.question}>{currentQuestion.question}</h3>
+              </div>
 
-                return (
-                  <button
-                    key={answer.id}
-                    type='button'
-                    className={`${styles.answer} ${
-                      isSelected ? styles.answerSelected : ''
-                    }`}
-                    onClick={() => handleChooseAnswer(answer)}
-                  >
-                    <span className={styles.answerNumber}>
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
+              <div
+                className={styles.answers}
+                role='radiogroup'
+                aria-label='Answers choices'
+              >
+                {currentAnswers.map((answer, index) => {
+                  const isSelected = selectedAnswerId === answer.id;
 
-                    <span className={styles.answerText}>
-                      {answer.answer_text}
-                    </span>
+                  return (
+                    <button
+                      key={answer.id}
+                      type='button'
+                      className={`${styles.answer} ${
+                        isSelected ? styles.answerSelected : ''
+                      }`}
+                      onClick={() => handleChooseAnswer(answer)}
+                      aria-checked={isSelected}
+                      role='radio'
+                    >
+                      <span className={styles.answerNumber}>
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
 
-                    <span className={styles.answerIndicator}>
-                      {isSelected ? '×' : '→'}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
+                      <span className={styles.answerText}>
+                        {answer.answer_text}
+                      </span>
 
-          <footer className={styles.navigation}>
+                      <span
+                        className={styles.answerIndicator}
+                        aria-hidden='true'
+                      >
+                        {isSelected ? '✓' : '→'}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          <section className={styles.navigation}>
             <button
               type='button'
               className={styles.backButton}
@@ -269,7 +291,7 @@ export const QuizPage = () => {
                 ? 'Finish quiz'
                 : 'Next question →'}
             </button>
-          </footer>
+          </section>
         </div>
       </div>
     </main>

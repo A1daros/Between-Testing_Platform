@@ -25,7 +25,7 @@ export const getResultsByUserId = async (
 ): Promise<Results[]> => {
   const { data, error } = await supabase
     .from('results')
-    .select(`*, tests(title)`)
+    .select(`*, tests(title, test_type)`)
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
 

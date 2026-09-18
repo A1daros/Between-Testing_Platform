@@ -1,5 +1,6 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
+@use '../../styles/mixins/auth-form' as *;
 
 .page {
   background-color: $background;
@@ -58,9 +59,6 @@
   @include body-font;
 }
 
-.testsSection {
-}
-
 .testsHeader {
   display: flex;
   align-items: center;
@@ -97,19 +95,23 @@
   padding: 24px 0;
   color: $text-main;
   text-decoration: none;
+
   transition:
     color 0.2s ease,
-    padding 0.2s ease;
+    transform 0.2s ease;
 
   @media (min-width: $breakpoint-m) {
     display: grid;
-    grid-template-columns: 0.5fr 0.5fr 2fr 2fr 1.2fr;
+    grid-template-columns: 50px 100px minmax(120px, 2fr) minmax(
+        150px,
+        2.5fr
+      ) 130px 40px;
+    gap: 12px;
     align-items: center;
-    gap: 20px;
   }
 
   &:hover {
-    padding-left: 12px;
+    transform: translateX(8px);
 
     .testNumber {
       color: $accent;
@@ -131,13 +133,15 @@
 .testType {
   color: $text-secondary;
 
-  @include uppercase;
+  @include body-font;
 }
 
 .testTitle {
   @include h3-font-mobile;
 
   @media (min-width: $breakpoint-s) {
+    overflow: hidden;
+    text-overflow: ellipsis;
     @include h3-font;
   }
 }
@@ -145,6 +149,7 @@
 .testDescription {
   margin: 0;
   color: $text-secondary;
+
   @include body-font;
 }
 
@@ -153,16 +158,24 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+
+  @media (min-width: $breakpoint-m) {
+    display: contents;
+  }
 }
 
 .testMeta {
   display: flex;
   gap: 12px;
+
+  @media (min-width: $breakpoint-m) {
+    white-space: nowrap;
+  }
 }
 
 .metaBadge {
-  font-size: 13px;
   color: $text-secondary;
+  @include body-font;
 }
 
 .testArrow {
@@ -173,11 +186,16 @@
   @media (min-width: $breakpoint-s) {
     font-size: 32px;
   }
+
+  @media (min-width: $breakpoint-m) {
+    text-align: right;
+  }
 }
 
-.error {
-  padding: 32px;
-  color: $red;
-  border: 1px solid $red;
-  @include body-font;
+.errorCard {
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
 }

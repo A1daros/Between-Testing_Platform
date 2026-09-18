@@ -37,8 +37,8 @@ export const TestsPage = () => {
   if (errorMessage) {
     return (
       <main className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.error}>{errorMessage}</div>
+        <div className={styles.errorCard}>
+          <div className={styles.errorText}>{errorMessage}</div>
         </div>
       </main>
     );
@@ -52,7 +52,7 @@ export const TestsPage = () => {
         <div className={styles.wrapper}>
           <section className={styles.heroSection}>
             <span className={styles.sectionLabel}>BETWEEN / TESTS</span>
-            <h2 className={styles.sectionTitle}>Check your English skils</h2>
+            <h2 className={styles.sectionTitle}>Check your English skills</h2>
 
             <p className={styles.sectionDescription}>
               Choose a test and discover your current level of English.
@@ -69,32 +69,53 @@ export const TestsPage = () => {
             </div>
 
             <ul className={styles.testsList}>
-              {tests.map((test, index) => (
-                <li key={test.id} className={styles.testItem}>
-                  <Link to={`/tests/${test.id}`} className={styles.testCard}>
-                    <span className={styles.testNumber}>
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span className={styles.testType}>{test.test_type}</span>
-                    <h3 className={styles.testTitle}>{test.title}</h3>
+              {tests.map((test, index) => {
+                const testTitle = test.title ?? 'Untitled Test';
+                const testId = `test-title-${test.id}`;
 
-                    {test.description && (
-                      <p className={styles.testDescription}>
-                        {test.description}
-                      </p>
-                    )}
+                return (
+                  <li key={test.id} className={styles.testItem}>
+                    <Link
+                      to={`/tests/${test.id}`}
+                      className={styles.testCard}
+                      aria-labelledby={testId}
+                    >
+                      <span className={styles.testNumber}>
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className={styles.testType}>{test.test_type}</span>
+                      <h3 className={styles.testTitle}>{testTitle}</h3>
 
-                    <div className={styles.testInfo}>
-                      <div className={styles.testMeta}>
-                        <span className={styles.metaBadge}>⏱ {'10 min'}</span>
-                        <span className={styles.metaBadge}>❓ {20} q</span>
+                      {test.description && (
+                        <p className={styles.testDescription}>
+                          {test.description}
+                        </p>
+                      )}
+
+                      <div className={styles.testInfo}>
+                        <div className={styles.testMeta}>
+                          <span
+                            className={styles.metaBadge}
+                            aria-label={`Duration: ${10} minutes`}
+                          >
+                            ⏱ {'10 min'}
+                          </span>
+                          <span
+                            className={styles.metaBadge}
+                            aria-label={`${20} questions`}
+                          >
+                            ❓ {20} q
+                          </span>
+                        </div>
+
+                        <span className={styles.testArrow} aria-hidden='true'>
+                          →
+                        </span>
                       </div>
-
-                      <span className={styles.testArrow}>→</span>
-                    </div>
-                  </Link>
-                </li>
-              ))}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         </div>

@@ -1,38 +1,47 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
+@use '../../styles/mixins/auth-form' as *;
 
 .page {
-  min-height: 100vh;
   background-color: $background;
+  transition: background-color 0.3s ease;
 }
 
 .container {
   @include page-container;
 }
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  padding: 72px 0;
+.pageTitle {
+  margin: 24px 0;
+  color: $text-main;
 
-  @media (max-width: 767px) {
-    padding: 48px 0;
+  @include h1-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    margin: 32px 0;
+
+    @include h1-font;
+  }
+
+  @media (min-width: $breakpoint-m) {
+    margin: 56px 0;
   }
 }
 
-/* =========================
-   HEADER
-========================= */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
 
-.quizHeader {
+.quizSection {
   border-bottom: $card-border;
 }
 
-.headerTop {
+.sectionTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding-bottom: 16px;
 
   border-bottom: $card-border;
@@ -50,48 +59,35 @@
   @include uppercase;
 }
 
-.headerContent {
+.sectionContent {
   display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 64px;
+  grid-template-columns: 1fr 150px;
+  gap: 24px;
+  padding: 24px 0;
 
-  padding: 40px 0;
-
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: 1fr 300px;
     gap: 32px;
-
     padding: 32px 0;
   }
 }
 
 .testTitle {
-  margin: 0;
-
   color: $text-main;
+  @include h2-font-mobile;
 
-  @include h2-font;
-
-  @media (max-width: 767px) {
-    @include h2-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
   }
 }
 
 .testDescription {
-  max-width: 620px;
-
-  margin: 16px 0 0;
+  margin-top: 16px;
 
   color: $text-secondary;
 
   @include body-font;
-
-  line-height: 1.7;
 }
-
-/* =========================
-   PROGRESS
-========================= */
 
 .progressWrapper {
   display: flex;
@@ -101,7 +97,8 @@
 .progressTrack {
   width: 100%;
   height: 4px;
-
+  border: none;
+  border-radius: 8px;
   overflow: hidden;
 
   background-color: $elements;
@@ -109,125 +106,91 @@
 
 .progressBar {
   height: 100%;
-
   background-color: $accent;
 
   transition: width 0.3s ease;
-}
-
-/* =========================
-   QUESTION
-========================= */
-
-.questionSection {
-  padding: 64px 0;
-
-  @media (max-width: 767px) {
-    padding: 40px 0;
-  }
 }
 
 .partHeader {
   display: flex;
   align-items: center;
   gap: 16px;
-
   margin-bottom: 24px;
 }
 
 .partNumber {
   color: $text-icons;
-
   @include uppercase;
 }
 
 .partTitle {
   color: $text-secondary;
-
   @include small-text;
 
   &::before {
     content: '/';
 
     margin-right: 16px;
-
     color: $text-icons;
   }
 }
 
 .instruction {
-  max-width: 680px;
-
-  margin: 0 0 40px;
-
+  margin-bottom: 24px;
   color: $text-secondary;
-
   @include body-font;
 
-  font-style: italic;
-}
-
-.questionContent {
-  max-width: 900px;
-}
-
-.questionDescription {
-  margin: 0 0 16px;
-
-  color: $text-secondary;
-
-  @include small-text;
-}
-
-.question {
-  margin: 0;
-
-  color: $text-main;
-
-  @include h2-font;
-
-  font-size: 30px;
-  line-height: 1.35;
-
-  @media (max-width: 767px) {
-    @include h2-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    margin-bottom: 36px;
   }
 }
 
-/* =========================
-   ANSWERS
-========================= */
+.questionDescription {
+  margin-bottom: 16px;
+  color: $text-secondary;
+  @include small-text;
+
+  @media (min-width: $breakpoint-s) {
+    margin-bottom: 24px;
+  }
+}
+
+.question {
+  color: $text-main;
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
 
 .answers {
   display: flex;
   flex-direction: column;
+  margin-top: 24px;
 
-  max-width: 900px;
-
-  margin-top: 48px;
+  @media (min-width: $breakpoint-s) {
+    margin-top: 36px;
+  }
 }
 
 .answer {
   display: grid;
-  grid-template-columns: 64px 1fr 40px;
+  grid-template-columns: 40px 1fr 28px;
+  gap: 12px;
+  min-height: 64px;
+  padding: 14px 12px;
   align-items: center;
-
-  gap: 20px;
-
-  width: 100%;
-  min-height: 72px;
-
-  padding: 16px 20px;
-
   color: $text-main;
   background-color: transparent;
-
   border: none;
   border-top: $card-border;
-
   cursor: pointer;
-
   text-align: left;
+
+  &:hover {
+    padding-left: 16px;
+  }
 
   @include body-font;
 
@@ -240,12 +203,6 @@
     border-bottom: $card-border;
   }
 
-  &:hover {
-    padding-left: 28px;
-
-    background-color: $surface-1;
-  }
-
   &:focus-visible {
     outline: 2px solid $accent;
     outline-offset: -2px;
@@ -255,37 +212,33 @@
     cursor: default;
   }
 
-  @media (max-width: 767px) {
-    grid-template-columns: 40px 1fr 28px;
-    gap: 12px;
-
-    min-height: 64px;
-
-    padding: 14px 12px;
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: 64px 1fr 40px;
+    gap: 20px;
+    min-height: 72px;
+    padding: 16px 20px;
 
     &:hover {
-      padding-left: 16px;
+      padding-left: 28px;
+
+      background-color: $surface-1;
     }
   }
 }
 
 .answerNumber {
   color: $text-icons;
-
   @include uppercase;
 }
 
 .answerText {
   color: inherit;
-
-  font-weight: 600;
+  @include body-font;
 }
 
 .answerIndicator {
   color: $text-icons;
-
   font-size: 22px;
-
   text-align: right;
 
   transition:
@@ -303,14 +256,15 @@
 
 .answerSelected {
   color: $text-on-accent;
-
   background-color: $accent;
-
   border-color: $accent;
+
+  &:last-child {
+    border-bottom-color: $accent;
+  }
 
   &:hover {
     padding-left: 28px;
-
     background-color: $accent;
   }
 
@@ -328,37 +282,27 @@
   }
 }
 
-/* =========================
-   NAVIGATION
-========================= */
-
 .navigation {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-
+  flex-direction: column-reverse;
+  align-items: stretch;
   gap: 24px;
-
-  padding-top: 24px;
-
+  padding: 24px 0;
   border-top: $card-border;
 
-  @media (max-width: 767px) {
-    flex-direction: column-reverse;
-    align-items: stretch;
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 36px 0;
   }
 }
 
 .backButton,
 .nextButton {
   min-height: 48px;
-
   padding: 12px 24px;
-
   border: 1px solid $accent;
-
   cursor: pointer;
-
   @include buttons;
 
   transition:
@@ -368,7 +312,6 @@
 
   &:disabled {
     opacity: 0.35;
-
     cursor: not-allowed;
 
     transform: none;
@@ -382,19 +325,16 @@
 
 .backButton {
   color: $text-main;
-
   background-color: transparent;
 
   &:not(:disabled):hover {
     color: $text-on-accent;
-
     background-color: $accent;
   }
 }
 
 .nextButton {
   color: $text-on-accent;
-
   background-color: $accent;
 
   &:not(:disabled):hover {
@@ -404,24 +344,10 @@
   }
 }
 
-/* =========================
-   STATES
-========================= */
-
 .error {
-  padding: 32px;
-
-  color: $red;
-
-  border: 1px solid $red;
-
-  @include body-font;
+  @include error-card;
 }
 
-.emptyState {
-  padding: 64px 0;
-
-  color: $text-secondary;
-
-  @include body-font;
+.errorText {
+  @include error-text;
 }

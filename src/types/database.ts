@@ -89,6 +89,7 @@ export interface Results {
 
   tests: {
     title: string;
+    test_type: string;
   };
 
   profiles: {
