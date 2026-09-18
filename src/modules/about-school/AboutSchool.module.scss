@@ -54,6 +54,7 @@
 .sectionTitle {
   @include h2-font-mobile;
   margin: 16px 0;
+  color: $text-main;
 
   @media (min-width: $breakpoint-s) {
     @include h2-font;
@@ -290,7 +291,11 @@
   gap: 16px;
 
   padding: 24px 16px;
-  background-color: $surface-2;
+  background-image: url(../../assets/bg-imgs/final-section_bg-img.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   border: $card-border;
   border-radius: 8px;
 
@@ -300,14 +305,11 @@
 
   @media (min-width: $breakpoint-m) {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: 1.2fr 0.8fr;
     gap: 48px;
     padding: 48px;
     align-items: center;
-  }
-
-  .sectionLabel {
-    margin-bottom: 8px;
+    background-position: center;
   }
 
   .sectionTitle {

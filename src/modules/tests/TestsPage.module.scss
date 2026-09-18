@@ -2,7 +2,6 @@
 @use '../../styles/mixins' as *;
 
 .page {
-  min-height: 100vh;
   background-color: $background;
   transition: background-color 0.3s ease;
 }
@@ -11,197 +10,174 @@
   @include page-container;
 }
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
+.pageTitle {
+  margin: 24px 0;
+  color: $text-main;
 
-  gap: 80px;
+  @include h1-font-mobile;
 
-  padding: 72px 0;
+  @media (min-width: $breakpoint-s) {
+    margin: 32px 0;
 
-  @media (max-width: 767px) {
-    gap: 56px;
+    @include h1-font;
+  }
 
-    padding: 48px 0;
+  @media (min-width: $breakpoint-m) {
+    margin: 56px 0;
   }
 }
 
-/* =========================
-   HERO
-========================= */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
 
 .heroSection {
   display: flex;
   flex-direction: column;
-
-  align-items: flex-start;
-
-  max-width: 720px;
 }
 
 .sectionLabel {
   color: $accent;
-
   @include uppercase;
 }
 
-.pageTitle {
-  margin: 16px 0 0;
-
+.sectionTitle {
+  @include h2-font-mobile;
+  margin: 16px 0;
   color: $text-main;
 
-  @include h1-font;
-
-  @media (max-width: 767px) {
-    @include h1-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
   }
 }
 
-.pageDescription {
-  max-width: 520px;
-
-  margin: 20px 0 0;
-
+.sectionDescription {
   color: $text-secondary;
-
   @include body-font;
-
-  font-size: 16px;
-  line-height: 1.7;
 }
 
-/* =========================
-   TESTS
-========================= */
-
 .testsSection {
-  width: 100%;
 }
 
 .testsHeader {
   display: flex;
-
   align-items: center;
   justify-content: space-between;
 
   padding-bottom: 16px;
-
   border-bottom: $card-border;
 }
 
 .testsLabel {
   color: $text-secondary;
-
   @include uppercase;
 }
 
 .testsCount {
   color: $accent;
-
-  @include h3-font;
+  @include uppercase;
 }
 
 .testsList {
-  margin: 0;
-  padding: 0;
-
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .testItem {
   border-bottom: $card-border;
 }
 
-.testLink {
-  display: grid;
-
-  grid-template-columns: 80px 1fr auto;
-
-  align-items: center;
-
-  gap: 24px;
-
-  min-height: 120px;
-
+.testCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding: 24px 0;
-
   color: $text-main;
-
   text-decoration: none;
-
   transition:
     color 0.2s ease,
     padding 0.2s ease;
 
+  @media (min-width: $breakpoint-m) {
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr 2fr 2fr 1.2fr;
+    align-items: center;
+    gap: 20px;
+  }
+
   &:hover {
-    padding-left: 24px;
-
-    color: $accent;
-
-    .testArrow {
-      transform: translateX(8px);
-    }
+    padding-left: 12px;
 
     .testNumber {
       color: $accent;
     }
-  }
 
-  @media (max-width: 767px) {
-    grid-template-columns: 48px 1fr auto;
-
-    gap: 12px;
-
-    min-height: 88px;
-
-    padding: 16px 0;
-
-    &:hover {
-      padding-left: 12px;
+    .testArrow {
+      transform: translateX(6px);
     }
   }
 }
 
 .testNumber {
-  color: $text-icons;
+  color: $text-secondary;
+  transition: color 0.2s ease;
+
+  @include body-font;
+}
+
+.testType {
+  color: $text-secondary;
 
   @include uppercase;
-
-  transition: color 0.2s ease;
 }
 
 .testTitle {
-  @include h2-font;
+  @include h3-font-mobile;
 
-  @media (max-width: 767px) {
-    @include h3-font-mobile;
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
   }
+}
+
+.testDescription {
+  margin: 0;
+  color: $text-secondary;
+  @include body-font;
+}
+
+.testInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.testMeta {
+  display: flex;
+  gap: 12px;
+}
+
+.metaBadge {
+  font-size: 13px;
+  color: $text-secondary;
 }
 
 .testArrow {
   color: $accent;
-
-  font-size: 32px;
-
-  line-height: 1;
-
+  font-size: 24px;
   transition: transform 0.2s ease;
 
-  @media (max-width: 767px) {
-    font-size: 24px;
+  @media (min-width: $breakpoint-s) {
+    font-size: 32px;
   }
 }
 
-/* =========================
-   ERROR
-========================= */
-
 .error {
   padding: 32px;
-
   color: $red;
-
   border: 1px solid $red;
-
   @include body-font;
 }

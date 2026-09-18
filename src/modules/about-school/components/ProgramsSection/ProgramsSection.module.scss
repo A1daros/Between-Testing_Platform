@@ -15,6 +15,7 @@
 .sectionTitle {
   @include h2-font-mobile;
   margin: 16px 0;
+  color: $text-main;
 
   @media (min-width: $breakpoint-s) {
     @include h2-font;
