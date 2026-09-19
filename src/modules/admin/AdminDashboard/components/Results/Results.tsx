@@ -5,10 +5,12 @@ import styles from './Results.module.scss';
 import type { Results } from '../../../../../types/database';
 import { useNavigate, useParams } from 'react-router-dom';
 import { loadAllStudentsResults } from '../../../../../services/results';
+import type { SortType } from '../Tests/types/admin';
 
 export const ResultsOverview = () => {
   const [query, setQuery] = useState('');
   const [allStudentResults, setAllStudentResults] = useState<Results[]>([]);
+  const [sortBy, setSortBy] = useState<SortType>('default');
 
   const { resultId } = useParams();
   const navigate = useNavigate();
@@ -31,74 +33,84 @@ export const ResultsOverview = () => {
     navigate(`/admin/results/result-details/${id}`);
   };
 
-  const filteredSudents = useMemo(() => {
-    return allStudentResults.filter((student) => {
-      const name = student.profiles?.display_name || '';
-      const test = student.tests.title || '';
+  const filteredAndSortedStudents = useMemo(() => {
+    const filtered = allStudentResults.filter((student) => {
+      const name = student.profiles?.display_name ?? '';
+      const test = student.tests.title ?? '';
 
       return (
         name.toLowerCase().includes(query.toLowerCase()) ||
         test.toLowerCase().includes(query.toLowerCase())
       );
     });
-  }, [allStudentResults, query]);
 
-  const handleSearchByTest = () => {
-    setAllStudentResults((result) =>
-      [...result].sort((a, b) => {
+    if (sortBy === 'default') {
+      return filtered;
+    }
+
+    return [...filtered].sort((a, b) => {
+      if (sortBy === 'test') {
         const testA = a.tests.title ?? '';
         const testB = b.tests.title ?? '';
 
         return testA.localeCompare(testB);
-      }),
-    );
-  };
+      }
 
-  const handleSearchByStudent = () => {
-    setAllStudentResults((results) =>
-      [...results].sort((a, b) => {
+      if (sortBy === 'student') {
         const studentA = a.profiles?.display_name ?? '';
         const studentB = b.profiles?.display_name ?? '';
 
         return studentA.localeCompare(studentB);
-      }),
-    );
-  };
+      }
 
-  const handleSearchByDate = () => {
-    setAllStudentResults((result) =>
-      [...result].sort((a, b) => {
-        const oldDate = a.created_at ?? null;
-        const latestDate = b.created_at ?? null;
+      if (sortBy === 'date') {
+        const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
+        const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
 
-        return latestDate.localeCompare(oldDate);
-      }),
-    );
-  };
+        return timeB - timeA;
+      }
+
+      return 0;
+    });
+  }, [allStudentResults, query, sortBy]);
 
   return (
     <div className={styles.page}>
-      <h2 className={styles.title}>BETWEEN/RESULTS</h2>
-      <div className={styles.container}>
-        <div className={styles.serchSystems}>
+      <h2 className={styles.title}>BETWEEN / RESULTS</h2>
+      <div className={styles.infoSection}>
+        <div className={styles.searchSystems}>
           <SearchInput
-            title='Search by Student name or Test title'
+            placeholder='Search for students or tests...'
             value={query}
             onChange={setQuery}
           />
-          <button className={styles.searchInfo} onClick={handleSearchByTest}>
-            Search by test
-          </button>
-          <button className={styles.searchInfo} onClick={handleSearchByStudent}>
-            Search by student
-          </button>
-          <button className={styles.searchInfo} onClick={handleSearchByDate}>
-            Search by date
-          </button>
-        </div>
 
+          <div className={styles.searchSection}>
+            <button
+              className={`${styles.searchInfo} ${sortBy === 'test' ? styles.activeSort : ''}`}
+              onClick={() => setSortBy('test')}
+            >
+              Sort by test
+            </button>
+            <button
+              className={`${styles.searchInfo} ${sortBy === 'student' ? styles.activeSort : ''}`}
+              onClick={() => setSortBy('student')}
+            >
+              Sort by student
+            </button>
+            <button
+              className={`${styles.searchInfo} ${sortBy === 'date' ? styles.activeSort : ''}`}
+              onClick={() => setSortBy('date')}
+            >
+              Sort by date
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div>
         <ResultsList
-          allStudentResults={filteredSudents}
+          allStudentResults={filteredAndSortedStudents}
           checkDetails={handleCheckDetails}
         />
       </div>

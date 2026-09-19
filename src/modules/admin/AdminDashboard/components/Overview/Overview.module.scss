@@ -1,0 +1,100 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.page {
+  width: 100%;
+}
+
+.title {
+  color: $text-main;
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+  padding: 0;
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+
+.recent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recentTitle {
+  color: $text-main;
+  @include h3-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
+  }
+}
+
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+}
+
+.recentItem {
+  background-color: $surface-1;
+  border: $card-border;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.studentInfo {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 1;
+
+  @media (min-width: $breakpoint-s) {
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+}
+
+.infoCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    gap: 10px;
+  }
+}
+
+.label {
+  color: $text-main;
+  @include body-font;
+}
+
+.studentDescription {
+  color: $text-secondary;
+  word-break: break-word;
+  @include body-font;
+}

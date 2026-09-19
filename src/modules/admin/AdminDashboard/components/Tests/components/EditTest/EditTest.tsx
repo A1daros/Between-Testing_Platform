@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { TestForm } from '../TestForm';
 import { useEffect, useState } from 'react';
 import type { EditTest } from '../../../../../../../types/database';
@@ -6,20 +6,15 @@ import { getTestById } from '../../../../../../../services/tests';
 import type { NewTestPayload, UIPart, UIQuestion } from '../../types/testForm';
 import { Loader } from '../../../../../../Loader';
 import styles from './EditTest.module.scss';
-import { deleteTest, updateTest } from '../../../../../../../services/testsForm';
+import { updateTest } from '../../../../../../../services/testsForm';
 
 export const EditTestForm = () => {
   const [editTest, setEditTest] = useState<EditTest | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isDeletingError, setIsDeletingError] = useState('');
-
-  const [showConfirm, setShowConfirm] = useState(false);
-
   const { testId } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!testId) {
@@ -51,27 +46,7 @@ export const EditTestForm = () => {
     await updateTest(Number(testId), payload);
   };
 
-  const handleConfirmDelete = async () => {
-    if (!testId) {
-      throw new Error('Test ID is missing');
-    }
-
-    try {
-      setIsDeleting(true);
-      setIsDeletingError('');
-
-      await deleteTest(Number(testId));
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to delete test:', error);
-      setIsDeletingError('Failed to delete test. Please try again later.');
-    } finally {
-      setIsDeleting(false);
-      setShowConfirm(false);
-    }
-  };
-
-  if (isLoading || isDeleting) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -109,31 +84,8 @@ export const EditTestForm = () => {
   };
 
   return (
-    <div>
-      <h2>Edit / Delete | Between</h2>
-
-      {isDeletingError && (
-        <div className={styles.errorMessage}>{isDeletingError}</div>
-      )}
-
-      <div>
+    <div className={styles.container}>
         <TestForm initialData={initialData} onSubmit={handleSubmit} />
-
-        <button type='button' onClick={() => setShowConfirm(true)}>
-          Delete Test
-        </button>
-
-        {showConfirm && (
-          <div>
-            <p>Are you sure you want to delete this test?</p>
-
-            <div className={styles.buttons}>
-              <button onClick={handleConfirmDelete}>Yes, i`m sure</button>
-              <button onClick={() => setShowConfirm(false)}>No, cancel</button>
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 };

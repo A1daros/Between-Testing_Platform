@@ -1,0 +1,82 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.title {
+  color: $text-main;
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: start;
+  }
+}
+
+.searchSystems {
+  display: flex;
+  flex-direction: column;
+  margin: 24px 0;
+  padding: 0;
+
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    gap: 16px;
+  }
+}
+
+.searchSection {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+
+  @media (min-width: $breakpoint-s) {
+    gap: 12px;
+    margin: 0;
+  }
+}
+
+.searchInfo {
+  border: $card-border;
+  border-radius: 8px;
+  background-color: $surface-2;
+  color: $text-main;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    background-color: $surface-1;
+    border-color: $text-secondary;
+  }
+
+  @include buttons;
+}
+
+.activeSort {
+  background-color: $accent;
+  border-color: $accent;
+  color: $background;
+
+  &:hover {
+    background-color: $accent;
+    color: $background;
+  }
+}

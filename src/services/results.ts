@@ -68,7 +68,7 @@ export const loadRecentResults = async (): Promise<Results[]> => {
     .from('results')
     .select(`*, tests(title), profiles(display_name)`)
     .order('created_at', { ascending: false })
-    .limit(5);
+    .limit(6);
 
   if (error) {
     throw new Error(error.message);

@@ -3,22 +3,33 @@ import styles from './StudentDetails.module.scss';
 import type { StudentDetails } from '../../../../../../../types/database';
 import { useNavigate, useParams } from 'react-router-dom';
 import { loadStudentDetails } from '../../../../../../../services/profile';
+import { Table } from '../../../common/Table';
+import { getStudentDetailsColumns } from './StudentDetailsColumns';
+import { Loader } from '../../../../../../Loader';
+import { SearchInput } from '../../../common/SearchInput/SearchInput';
 
 export const StudentDetailsOverview = () => {
   const [studentDetails, setStudentDetails] = useState<StudentDetails[]>([]);
+  const [query, setQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const { studentId } = useParams();
   const navigate = useNavigate();
 
-  const handleCheckDetails = (id: number) => {
-    navigate(`/admin/results/result-details/${id}`);
+  const handleCheckDetails = (resultId: number) => {
+    navigate(`/admin/results/result-details/${resultId}`);
   };
 
   useEffect(() => {
-    if (!studentId) return;
+    if (!studentId) {
+      return;
+    }
 
     const loadStudentDetailsData = async () => {
+      setIsLoading(true);
+      setErrorMessage('');
+
       try {
         const data = await loadStudentDetails(studentId);
 
@@ -26,11 +37,19 @@ export const StudentDetailsOverview = () => {
       } catch (error) {
         console.error('Failed to load student details:', error);
         setErrorMessage('Failed to load student details!');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     loadStudentDetailsData();
   }, [studentId]);
+
+  const columns = getStudentDetailsColumns(navigate);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   if (errorMessage) {
     return (
@@ -53,7 +72,7 @@ export const StudentDetailsOverview = () => {
           <div className={styles.emptyState}>
             <span className={styles.sectionLabel}>BETWEEN / STUDENT</span>
 
-            <h1 className={styles.emptyTitle}>No student details found</h1>
+            <h2 className={styles.emptyTitle}>No student details found</h2>
 
             <button
               type='button'
@@ -69,63 +88,70 @@ export const StudentDetailsOverview = () => {
   }
 
   return (
-    <main>
-      <div>
-        <div>
-          <span>BETWEEN / STUDENT DETAILS</span>
-          <button
-            type='button'
-            className={styles.backButton}
-            onClick={() => navigate(-1)}
-          >
-            ← Go back
-          </button>
+    <div className={styles.page}>
+      <h2 className={styles.title}>BETWEEN / STUDENT DETAILS</h2>
+      <div className={styles.infoSection}>
+        <div className={styles.searchSystems}>
+          <SearchInput
+            placeholder='Search for students...'
+            value={query}
+            onChange={setQuery}
+          />
 
-          <div>
-            {studentDetails.map((student) => {
-              const mappedStudent = student.results;
-
-              return (
-                <div key={student.id}>
-                  <h2>Name: {student.name}</h2>
-                  <h2>Surname: {student.surname}</h2>
-                  <h2>Email: {student.email}</h2>
-                  <h2>Birth date: {student.birth_date}</h2>
-
-                  <table>
-                    <thead>
-                      <tr>
-                        <td>Test</td>
-                        <td>Score</td>
-                        <td>Date</td>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {mappedStudent.map((result) => {
-                        const date = new Date(result.created_at);
-
-                        return (
-                          <tr
-                            key={result.id}
-                            onClick={() => handleCheckDetails(result.id)}
-                          >
-                            <td>{result.tests?.title}</td>
-                            <td>
-                              {result.score} / {result.total}
-                            </td>
-                            <td>{date.toLocaleDateString()}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              );
-            })}
+          <div className={styles.searchSection}>
+            <button
+              type='button'
+              className={styles.searchInfo}
+              onClick={() => navigate(-1)}
+            >
+              Go back
+            </button>
           </div>
         </div>
       </div>
-    </main>
+
+      <div>
+        {studentDetails.map((student) => {
+          const mappedStudent = student.results;
+          const filteredResults = mappedStudent.filter((result) => {
+            const name = result.tests?.title.toLowerCase() ?? '';
+
+            return name.includes(query.toLowerCase());
+          });
+
+          return (
+            <div key={student.id} className={styles.studentInfo}>
+              <div className={styles.infoContainer}>
+                <div className={styles.infoBlock}>
+                  <h3 className={styles.infoTitle}>Name:</h3>
+                  <p className={styles.infoDescription}> {student.name}</p>
+                </div>
+
+                <div className={styles.infoBlock}>
+                  <h3 className={styles.infoTitle}>Surname:</h3>
+                  <p className={styles.infoDescription}>{student.surname}</p>
+                </div>
+
+                <div className={styles.infoBlock}>
+                  <h3 className={styles.infoTitle}>Email:</h3>
+                  <p className={styles.infoDescription}>{student.email}</p>
+                </div>
+
+                <div className={styles.infoBlock}>
+                  <h3 className={styles.infoTitle}>Birth date:</h3>
+                  <p className={styles.infoDescription}>{student.birth_date}</p>
+                </div>
+              </div>
+
+              <Table
+                columns={columns}
+                rows={filteredResults}
+                onRowClick={(row) => handleCheckDetails(row.id)}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };

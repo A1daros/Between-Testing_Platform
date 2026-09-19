@@ -59,7 +59,7 @@ export const Header = () => {
           >
             <img
               className={styles.logo}
-              src='./img/icons/logo.svg'
+              src='/img/icons/logo.svg'
               alt='Page Logo'
             />
           </Link>

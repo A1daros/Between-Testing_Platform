@@ -123,7 +123,8 @@ export const loadStudents = async (): Promise<StudentProfile[]> => {
   const { data, error } = await supabase
     .from('profiles')
     .select(`*, results(count)`)
-    .eq('role', 'student');
+    .eq('role', 'student')
+    .order('created_at', { ascending: false, nullsFirst: false });
 
   if (error) {
     throw new Error(error.message);

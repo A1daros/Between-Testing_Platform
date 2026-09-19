@@ -1,0 +1,217 @@
+@use '../../../../../../../styles/variables' as *;
+@use '../../../../../../../styles/mixins' as *;
+
+.formContainer {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+
+  @media (min-width: $breakpoint-s) {
+    padding: 32px 0;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: $text-main;
+  border-bottom: 1px solid $surface-2;
+  padding-bottom: 8px;
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+.subTitle {
+  margin: 8px 0 0 0;
+  color: $text-main;
+  @include h4-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h4-font;
+  }
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: $text-main;
+  @include body-font;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 12px 16px;
+  border: $card-border;
+  border-radius: 8px;
+  background-color: $background;
+  color: $text-main;
+  @include input-text;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba($accent, 0.1);
+  }
+
+  &::placeholder {
+    color: $text-secondary;
+    opacity: 0.8;
+  }
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2389939a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+.dynamicList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dynamicCard {
+  position: relative;
+  background-color: $surface-1;
+  border: $card-border;
+  border-radius: 12px;
+  padding: 32px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 2px 8px rgba(49, 50, 55, 0.02);
+}
+
+.removeButton {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: $text-icons;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    color: $red;
+    transform: scale(1.15);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.answersList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+}
+
+.radio {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: $accent;
+}
+
+.addButton {
+  align-self: flex-start;
+  background-color: transparent;
+  border: 1px dashed $text-secondary;
+  border-radius: 8px;
+  color: $text-main;
+  padding: 12px 20px;
+  cursor: pointer;
+  @include buttons;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    background-color: $surface-1;
+    border-color: $accent;
+    border-style: dashed;
+  }
+
+  &:active {
+    background-color: $surface-2;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.submitButton {
+  background-color: $accent;
+  color: $text-on-accent;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  @include buttons;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(49, 50, 55, 0.1);
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    background-color: $accent-hover;
+    box-shadow: 0 6px 16px rgba(49, 50, 55, 0.15);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}

@@ -1,0 +1,84 @@
+@use '../../../../../../../styles/variables' as *;
+@use '../../../../../../../styles/mixins' as *;
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: start;
+  }
+}
+
+.searchSystems {
+  display: flex;
+  gap: 24px;
+  margin: 24px 0;
+  padding: 0;
+}
+
+.searchSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchInfo {
+  border: $card-border;
+  border-radius: 8px;
+  background-color: $surface-2;
+  color: $text-main;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    background-color: $surface-1;
+    border-color: $text-secondary;
+  }
+
+  @include buttons;
+}
+
+.infoBlock {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.infoTitle {
+  margin: 0;
+  color: $text-main;
+  @include h3-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
+  }
+}
+
+.infoDescription {
+  margin: 0;
+  color: $text-secondary;
+  @include h3-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
+  }
+}

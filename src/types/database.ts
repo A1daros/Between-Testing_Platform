@@ -113,6 +113,14 @@ export interface ResultDetails {
   answers: Answer;
 }
 
+export interface StudentResults {
+  id: number;
+  score: number;
+  total: number;
+  created_at: string;
+  tests: Test | null;
+}
+
 export interface StudentDetails {
   id: string;
   name: string;
@@ -120,16 +128,7 @@ export interface StudentDetails {
   email: string;
   birth_date: string;
 
-  results: {
-    id: number;
-    score: number;
-    total: number;
-    created_at: string;
-    tests: {
-      id: number;
-      title: string;
-    } | null;
-  }[];
+  results: StudentResults[];
 }
 
 export interface SaveQuizResultInput {

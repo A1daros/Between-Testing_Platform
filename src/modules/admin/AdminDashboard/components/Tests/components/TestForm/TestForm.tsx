@@ -191,15 +191,17 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        {/* БЛОК 1: Загальна інформація про тест */}
-        <div>
-          <div>
-            <label htmlFor='testTitle'>Test title *</label>
+    <div className={styles.formContainer}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.section}>
+          <div className={styles.fieldGroup}>
+            <label htmlFor='testTitle' className={styles.label}>
+              Test title *
+            </label>
             <input
               id='testTitle'
               type='text'
+              className={styles.input}
               placeholder='e.g. English Placement Test'
               value={title}
               onChange={(event) => setTitle(event.target.value)}
@@ -207,10 +209,13 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
             />
           </div>
 
-          <div>
-            <label htmlFor='testDescription'>Test description *</label>
+          <div className={styles.fieldGroup}>
+            <label htmlFor='testDescription' className={styles.label}>
+              Test description *
+            </label>
             <textarea
               id='testDescription'
+              className={styles.textarea}
               placeholder='Short description for students'
               value={description}
               onChange={(event) => setDescription(event.target.value)}
@@ -218,11 +223,13 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
             />
           </div>
 
-          {/* Level: два select-и, значення підтягуються з таблиці levels, не хардкодяться */}
-          <div>
-            <label htmlFor='levelCode'>Select level *</label>
+          <div className={styles.fieldGroup}>
+            <label htmlFor='levelCode' className={styles.label}>
+              Select level *
+            </label>
             <select
               id='levelCode'
+              className={styles.select}
               value={levelId}
               onChange={(event) => setLevelId(event.target.value)}
               required
@@ -237,128 +244,200 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
           </div>
         </div>
 
-        {/* БЛОК 2: Test parts — окрема секція, питання сюди НЕ вкладені */}
-        <div>
-          <h2>Test parts</h2>
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Test parts</h2>
 
-          {parts.map((part) => (
-            <div key={part.uiId}>
-              <button type='button' onClick={() => handleRemovePart(part.uiId)}>
-                ✕
-              </button>
-              <label htmlFor={`partTitle-${part.uiId}`}>Part title</label>
-              <input
-                id={`partTitle-${part.uiId}`}
-                value={part.title}
-                onChange={(event) =>
-                  handleUpdatePart(part.uiId, { title: event.target.value })
-                }
-                placeholder='e.g. Reading | Writing | Listening'
-              />
-              <label htmlFor={`instruction-${part.uiId}`}>Instruction</label>
-              <textarea
-                id={`instruction-${part.uiId}`}
-                value={part.instruction}
-                onChange={(event) =>
-                  handleUpdatePart(part.uiId, {
-                    instruction: event.target.value,
-                  })
-                }
-                placeholder='Instruction text for this part'
-              />
-              <label htmlFor={`points-${part.uiId}`}>Points</label>
-              <input
-                id={`points-${part.uiId}`}
-                type='number'
-                value={part.points}
-                onChange={(event) =>
-                  handleUpdatePart(part.uiId, {
-                    points: Number(event.target.value),
-                  })
-                }
-              />
-            </div>
-          ))}
+          <div className={styles.dynamicList}>
+            {parts.map((part) => (
+              <div key={part.uiId} className={styles.dynamicCard}>
+                <button
+                  type='button'
+                  className={styles.removeButton}
+                  onClick={() => handleRemovePart(part.uiId)}
+                >
+                  ✕
+                </button>
 
-          <button type='button' onClick={handleAddPart}>
+                <div className={styles.fieldGroup}>
+                  <label
+                    htmlFor={`partTitle-${part.uiId}`}
+                    className={styles.label}
+                  >
+                    Part title
+                  </label>
+                  <input
+                    id={`partTitle-${part.uiId}`}
+                    className={styles.input}
+                    value={part.title}
+                    onChange={(event) =>
+                      handleUpdatePart(part.uiId, { title: event.target.value })
+                    }
+                    placeholder='e.g. Reading | Writing | Listening'
+                  />
+                </div>
+
+                <div className={styles.fieldGroup}>
+                  <label
+                    htmlFor={`instruction-${part.uiId}`}
+                    className={styles.label}
+                  >
+                    Instruction
+                  </label>
+                  <textarea
+                    id={`instruction-${part.uiId}`}
+                    className={styles.textarea}
+                    value={part.instruction}
+                    onChange={(event) =>
+                      handleUpdatePart(part.uiId, {
+                        instruction: event.target.value,
+                      })
+                    }
+                    placeholder='Instruction text for this part'
+                  />
+                </div>
+
+                <div className={styles.fieldGroup}>
+                  <label
+                    htmlFor={`points-${part.uiId}`}
+                    className={styles.label}
+                  >
+                    Points
+                  </label>
+                  <input
+                    id={`points-${part.uiId}`}
+                    className={styles.input}
+                    type='number'
+                    value={part.points}
+                    onChange={(event) =>
+                      handleUpdatePart(part.uiId, {
+                        points: Number(event.target.value),
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type='button'
+            className={styles.addButton}
+            onClick={handleAddPart}
+          >
             + Add test part
           </button>
         </div>
 
-        {/* БЛОК 3: Questions — окрема секція, кожне питання має свій select Part */}
-        <div>
-          <h2>Questions</h2>
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Questions</h2>
 
-          {questions.map((question) => (
-            <div key={question.uiId}>
-              <button
-                type='button'
-                onClick={() => handleRemoveQuestion(question.uiId)}
-              >
-                ✕
-              </button>
-              <label htmlFor={`questionPart-${question.uiId}`}>Part</label>
-              <select
-                id={`questionPart-${question.uiId}`}
-                value={question.partUiId ?? ''}
-                onChange={(event) =>
-                  handleUpdateQuestionPart(question.uiId, event.target.value)
-                }
-              >
-                <option value=''>No part</option>
-                {parts.map((part) => (
-                  <option key={part.uiId} value={part.uiId}>
-                    {part.title || 'Untitled part'}
-                  </option>
-                ))}
-              </select>
-              <label htmlFor={`questionText-${question.uiId}`}>
-                Question text
-              </label>
-              <input
-                id={`questionText-${question.uiId}`}
-                value={question.question}
-                onChange={(event) =>
-                  handleUpdateQuestionText(question.uiId, event.target.value)
-                }
-                type='text'
-                placeholder='Question text'
-              />
-              <h4>Answers</h4>
-              {question.answers.map((answer, index) => (
-                <div key={index}>
-                  <input
-                    type='radio'
-                    name={`correct-answer-${question.uiId}`}
-                    checked={answer.isCorrect}
-                    onChange={() =>
-                      handleSelectCorrectAnswer(question.uiId, index)
-                    }
-                  />
-                  <input
-                    type='text'
-                    value={answer.text}
+          <div className={styles.dynamicList}>
+            {questions.map((question) => (
+              <div key={question.uiId} className={styles.dynamicCard}>
+                <button
+                  type='button'
+                  className={styles.removeButton}
+                  onClick={() => handleRemoveQuestion(question.uiId)}
+                >
+                  ✕
+                </button>
+
+                <div className={styles.fieldGroup}>
+                  <label
+                    htmlFor={`questionPart-${question.uiId}`}
+                    className={styles.label}
+                  >
+                    Part
+                  </label>
+                  <select
+                    id={`questionPart-${question.uiId}`}
+                    className={styles.select}
+                    value={question.partUiId ?? ''}
                     onChange={(event) =>
-                      handleUpdateAnswerText(
+                      handleUpdateQuestionPart(
                         question.uiId,
-                        index,
                         event.target.value,
                       )
                     }
-                    placeholder={`Answer ${index + 1}`}
+                  >
+                    <option value=''>No part</option>
+                    {parts.map((part) => (
+                      <option key={part.uiId} value={part.uiId}>
+                        {part.title || 'Untitled part'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className={styles.fieldGroup}>
+                  <label
+                    htmlFor={`questionText-${question.uiId}`}
+                    className={styles.label}
+                  >
+                    Question text
+                  </label>
+                  <input
+                    id={`questionText-${question.uiId}`}
+                    className={styles.input}
+                    value={question.question}
+                    onChange={(event) =>
+                      handleUpdateQuestionText(
+                        question.uiId,
+                        event.target.value,
+                      )
+                    }
+                    type='text'
+                    placeholder='Question text'
                   />
                 </div>
-              ))}
-            </div>
-          ))}
 
-          <button type='button' onClick={handleAddQuestion}>
+                <h4 className={styles.subTitle}>Answers</h4>
+
+                <div className={styles.answersList}>
+                  {question.answers.map((answer, index) => (
+                    <div key={index}>
+                      <input
+                        type='radio'
+                        className={styles.radio}
+                        name={`correct-answer-${question.uiId}`}
+                        checked={answer.isCorrect}
+                        onChange={() =>
+                          handleSelectCorrectAnswer(question.uiId, index)
+                        }
+                      />
+                      <input
+                        type='text'
+                        className={styles.input}
+                        value={answer.text}
+                        onChange={(event) =>
+                          handleUpdateAnswerText(
+                            question.uiId,
+                            index,
+                            event.target.value,
+                          )
+                        }
+                        placeholder={`Answer ${index + 1}`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type='button'
+            className={styles.addButton}
+            onClick={handleAddQuestion}
+          >
             + Add question
           </button>
         </div>
 
         <div className={styles.buttons}>
-          <button type='submit'>Save Test</button>
+          <button type='submit' className={styles.submitButton}>
+            Save Test
+          </button>
         </div>
       </form>
     </div>

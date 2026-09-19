@@ -14,7 +14,7 @@ export const Footer = () => {
         <div className={styles.footerContent}>
           <Link to='/' aria-label='Go to home page'>
             <img
-              src='./img/icons/logo.svg'
+              src='/img/icons/logo.svg'
               alt='Page Logo'
               className={styles.logo}
             />
@@ -55,7 +55,7 @@ export const Footer = () => {
           >
             <div className={styles.iconWrapper}>
               <img
-                src='./img/icons/back-up.svg'
+                src='/img/icons/back-up.svg'
                 alt='Back to top'
                 aria-hidden='true'
                 className={styles.icon}

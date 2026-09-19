@@ -4,12 +4,17 @@ import type { StudentProfile } from '../../../../../types/database';
 import { loadStudents } from '../../../../../services/profile';
 import { StudentList } from './components/StudentsList/StudentsList';
 import { useNavigate } from 'react-router-dom';
+import styles from './Students.module.scss';
+import type { SortOrder } from '../Tests/types/admin';
 
 export const Students = () => {
   const [students, setStudents] = useState<StudentProfile[]>([]);
   const [query, setQuery] = useState('');
 
+  const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
+
   const navigate = useNavigate();
+
   const handleCheckDetails = (id: string) => {
     navigate(`/admin/students/student-details/${id}`);
   };
@@ -29,23 +34,50 @@ export const Students = () => {
   }, []);
 
   const filteredSudents = useMemo(() => {
-    return students.filter((student) => {
+    const filtered = students.filter((student) => {
       const name = student.display_name ?? '';
 
       return name.toLowerCase().includes(query.toLowerCase());
     });
-  }, [students, query]);
+
+    if (sortOrder === 'newest') {
+      return filtered;
+    }
+
+    return [...filtered].sort((a, b) => {
+      const studentA = a.display_name ?? '';
+      const studentB = b.display_name ?? '';
+
+      return sortOrder === 'asc'
+        ? studentA.localeCompare(studentB)
+        : studentB.localeCompare(studentA);
+    });
+  }, [students, query, sortOrder]);
+
+  const toggleSortOrder = () => {
+    setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+  };
 
   return (
-    <div>
-      <h2>BETWEEN/STUDENTS</h2>
-      <div>
-        <SearchInput
-          title='Search by Student name'
-          value={query}
-          onChange={setQuery}
-        />
+    <div className={styles.page}>
+      <h2 className={styles.title}>BETWEEN / STUDENTS</h2>
+      <div className={styles.infoSection}>
+        <div className={styles.searchSystems}>
+          <SearchInput
+            placeholder='Search for students...'
+            value={query}
+            onChange={setQuery}
+          />
 
+          <div className={styles.searchSection}>
+            <button className={styles.searchInfo} onClick={toggleSortOrder}>
+              Sort: {sortOrder === 'asc' ? 'A-Z' : 'Z-A'}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div>
         <StudentList
           students={filteredSudents}
           checkDetails={handleCheckDetails}

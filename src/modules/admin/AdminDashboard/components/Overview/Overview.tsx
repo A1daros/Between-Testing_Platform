@@ -15,6 +15,11 @@ export const Overview = () => {
   const [attemptResults, setAttemptResults] = useState<number>(0);
   const [recentResults, setRecentResults] = useState<Results[]>([]);
 
+  const testsIcon = '/img/admin_ds/tests.svg';
+  const studentsIcon = '/img/admin_ds/students.svg';
+  const attemptsIcon = '/img/admin_ds/attempts.svg';
+  const pendingIcon = '/img/admin_ds/pending.svg';
+
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -44,14 +49,22 @@ export const Overview = () => {
 
   return (
     <div className={styles.page}>
-      <h2 className={styles.title}>BETWEEN/ADMIN</h2>
+      <h2 className={styles.title}>BETWEEN / ADMIN</h2>
 
       <div className={styles.container}>
         <ul className={styles.list}>
-          <StatCard label='Tests' value={tests.length} />
-          <StatCard label='Students' value={totalStudents} />
-          <StatCard label='Attempts' value={attemptResults} />
-          <StatCard label='Pending' value={0} />
+          <StatCard label='Tests' value={tests.length} iconPath={testsIcon} />
+          <StatCard
+            label='Students'
+            value={totalStudents}
+            iconPath={studentsIcon}
+          />
+          <StatCard
+            label='Attempts'
+            value={attemptResults}
+            iconPath={attemptsIcon}
+          />
+          <StatCard label='Pending' value={0} iconPath={pendingIcon} />
         </ul>
 
         <div className={styles.recent}>
@@ -59,25 +72,37 @@ export const Overview = () => {
 
           <ul className={styles.recentList}>
             {recentResults.map((student) => {
+              const date = new Date(student.created_at);
+              const formattedDate = date.toLocaleDateString();
+
               return (
                 <li key={student.id} className={styles.recentItem}>
                   <div className={styles.studentInfo}>
-                    <div>
+                    <div className={styles.infoCard}>
                       <span className={styles.label}>Student Name:</span>
-                      <p className={styles.studentName}>
+                      <p className={styles.studentDescription}>
                         {student.profiles?.display_name || student.id}
                       </p>
                     </div>
 
-                    <div>
+                    <div className={styles.infoCard}>
                       <span className={styles.label}>Test title:</span>
-                      <p>{student.tests.title || 'Not valid'}</p>
+                      <p className={styles.studentDescription}>
+                        {student.tests.title || 'Not valid'}
+                      </p>
                     </div>
 
-                    <div>
+                    <div className={styles.infoCard}>
                       <span className={styles.label}>Student Score:</span>
-                      <p>
+                      <p className={styles.studentDescription}>
                         {student.score} / {student.total}
+                      </p>
+                    </div>
+
+                    <div className={styles.infoCard}>
+                      <span className={styles.label}>Date:</span>
+                      <p className={styles.studentDescription}>
+                        {formattedDate}
                       </p>
                     </div>
                   </div>

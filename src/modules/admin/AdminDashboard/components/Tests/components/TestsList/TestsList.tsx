@@ -7,21 +7,17 @@ import { getTestsColumns } from './testsColumns';
 
 type Props = {
   allTests: TestWithLevels[];
-  onClick: () => void;
+  onDeleteClick: (id: number) => void;
 };
 
-export const TestsList: React.FC<Props> = ({ allTests, onClick }) => {
+export const TestsList: React.FC<Props> = ({ allTests, onDeleteClick }) => {
   const navigate = useNavigate();
 
-  const columns = getTestsColumns(navigate);
+  const columns = getTestsColumns(navigate, onDeleteClick);
 
   return (
     <div className={styles.page}>
       <Table columns={columns} rows={allTests} />
-
-      <div>
-        <button onClick={onClick}>Add Test</button>
-      </div>
     </div>
   );
 };

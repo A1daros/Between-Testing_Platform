@@ -1,0 +1,41 @@
+@use '../../../../../../styles/variables' as *;
+
+.searchContainer {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.label {
+  @include small-text;
+  color: $text-secondary;
+}
+
+.input {
+  @include input-text;
+  width: 100%;
+  padding: 6px 10px;
+  color: $text-main;
+  background-color: $background;
+  border: $form-border;
+  border-radius: 8px;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &::placeholder {
+    color: $text-icons;
+  }
+
+  &:focus {
+    border-color: $accent;
+    box-shadow: 0 0 0 2px rgba($accent, 0.15);;
+  }
+
+  &::-webkit-search-cancel-button {
+    cursor: pointer;
+    filter: $filter;
+    padding: 2px;
+  }
+}

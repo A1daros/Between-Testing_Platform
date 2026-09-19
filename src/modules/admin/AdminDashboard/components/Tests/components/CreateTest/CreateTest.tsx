@@ -7,7 +7,6 @@ export const CreateTestForm = () => {
 
   return (
     <div>
-      <h2>Create Test | BETWEEN</h2>
       <div>
         <TestForm onSubmit={handleSubmit} />
       </div>

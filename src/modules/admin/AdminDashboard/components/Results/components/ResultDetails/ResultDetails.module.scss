@@ -1,0 +1,183 @@
+@use '../../../../../../../styles/variables' as *;
+@use '../../../../../../../styles/mixins' as *;
+
+.adminHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid $surface-2;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.badge {
+  @include uppercase;
+  color: $text-secondary;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.pageTitle {
+  margin: 0 0 8px 0;
+  color: $text-main;
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+.pageDescription {
+  margin: 0;
+  color: $text-secondary;
+  @include body-font;
+}
+
+.btnSecondary {
+  @include buttons;
+  background-color: $surface-2;
+  color: $text-main;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: $elements;
+  }
+}
+
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.itemWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.partDivider {
+  background-color: $surface-1;
+  border-left: 4px solid $accent;
+  padding: 12px 16px;
+  margin-top: 12px;
+  border-radius: 0 8px 8px 0;
+
+  h3 {
+    margin: 0 0 4px 0;
+    color: $text-main;
+    @include h4-font;
+  }
+
+  p {
+    margin: 0;
+    color: $text-secondary;
+    @include small-text;
+  }
+}
+
+.questionCard {
+  background-color: $background;
+  border: 1px solid $surface-2;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  border-left: 5px solid $surface-2;
+
+  &.correct {
+    border-left-color: $green;
+    .statusBadge {
+      color: $green;
+      background-color: rgba($green, 0.1);
+    }
+  }
+
+  &.incorrect {
+    border-left-color: $red;
+    .statusBadge {
+      color: $red;
+      background-color: rgba($red, 0.1);
+    }
+  }
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.questionNumber {
+  @include uppercase;
+  color: $text-secondary;
+}
+
+.statusBadge {
+  @include small-text;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.questionText {
+  margin: 0;
+  color: $text-main;
+  @include body-font;
+}
+
+.answersGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 4px;
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.answerBox {
+  background-color: $surface-1;
+  border: $card-border;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.boxLabel {
+  @include small-text;
+  color: $text-secondary;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.boxText {
+  margin: 0;
+  color: $text-main;
+  @include body-font;
+}
+
+.errorBlock {
+  text-align: center;
+  padding: 40px;
+  background-color: $surface-1;
+  border: 1px solid $surface-2;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  h2 {
+    margin: 0;
+    color: $text-main;
+    @include h3-font;
+  }
+}

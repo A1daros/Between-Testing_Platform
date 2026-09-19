@@ -59,6 +59,30 @@ const deleteTestStructure = async (testId: number) => {
 };
 
 const deleteTestResults = async (testId: number) => {
+  const { data: results, error: fetchError } = await supabase
+    .from('results')
+    .select('id')
+    .eq('test_id', testId);
+
+  if (fetchError) {
+    throw new Error(`Failed to delete result: ${fetchError.message}`);
+  }
+
+  const resultIds = results.map((result) => result.id);
+
+  if (resultIds.length > 0) {
+    const { error: resultAnswersError } = await supabase
+      .from('result_answers')
+      .delete()
+      .in('result_id', resultIds);
+
+    if (resultAnswersError) {
+      throw new Error(
+        `Failed to delete result answers by result_id: ${resultAnswersError.message}`,
+      );
+    }
+  }
+
   const { error: resultError } = await supabase
     .from('results')
     .delete()
