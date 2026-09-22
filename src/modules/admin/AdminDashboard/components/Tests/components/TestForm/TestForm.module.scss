@@ -215,3 +215,28 @@
     transform: scale(0.98);
   }
 }
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+
+  .label {
+    cursor: pointer;
+    margin: 0;
+  }
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: $accent;
+}
+
+.timerFields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

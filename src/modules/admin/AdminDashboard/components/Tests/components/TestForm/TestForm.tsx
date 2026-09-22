@@ -10,6 +10,9 @@ type Props = {
     title: string;
     description: string;
     levelId: string;
+    timerEnabled: boolean;
+    timerType: 'test' | 'question' | null;
+    timerDuration: number | null;
     parts: UIPart[];
     questions: UIQuestion[];
   };
@@ -22,6 +25,15 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
     initialData?.description ?? '',
   );
   const [levelId, setLevelId] = useState(initialData?.levelId ?? '');
+  const [timerEnabled, setTimerEnabled] = useState(
+    initialData?.timerEnabled ?? false,
+  );
+  const [timerType, setTimerType] = useState<'test' | 'question' | null>(
+    initialData?.timerType ?? null,
+  );
+  const [timerDuration, setTimerDuration] = useState<number | null>(
+    initialData?.timerDuration ?? null,
+  );
 
   const [parts, setParts] = useState<UIPart[]>(initialData?.parts ?? []);
   const [questions, setQuestions] = useState<UIQuestion[]>(
@@ -166,6 +178,9 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
       title,
       description,
       levelId,
+      timerEnabled,
+      timerType,
+      timerDuration,
       parts: parts.map(({ uiId, title, instruction, points }) => ({
         uiId,
         title,
@@ -432,6 +447,74 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
           >
             + Add question
           </button>
+        </div>
+
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Timer</h2>
+
+          <div className={styles.checkboxGroup}>
+            <input
+              id='timerEnabled'
+              type='checkbox'
+              className={styles.checkbox}
+              checked={timerEnabled}
+              onChange={(event) => {
+                const enabled = event.target.checked;
+                setTimerEnabled(enabled);
+                if (!enabled) {
+                  setTimerType(null);
+                  setTimerDuration(null);
+                }
+              }}
+            />
+            <label htmlFor='timerEnabled' className={styles.label}>
+              Enable timer
+            </label>
+          </div>
+
+          {timerEnabled && (
+            <div className={styles.timerFields}>
+              <div className={styles.fieldGroup}>
+                <label htmlFor='timerType' className={styles.label}>
+                  Timer type
+                </label>
+                <select
+                  id='timerType'
+                  className={styles.select}
+                  value={timerType ?? ''}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    setTimerType(
+                      value === 'test' || value === 'question' ? value : null,
+                    );
+                  }}
+                  required
+                >
+                  <option value=''>Select timer type...</option>
+                  <option value='test'>Whole test</option>
+                  <option value='question'>Each question</option>
+                </select>
+              </div>
+
+              <div className={styles.fieldGroup}>
+                <label htmlFor='timerDuration' className={styles.label}>
+                  Timer duration (seconds)
+                </label>
+                <input
+                  id='timerDuration'
+                  type='number'
+                  min='1'
+                  className={styles.input}
+                  value={timerDuration ?? ''}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    setTimerDuration(value ? Number(value) : null);
+                  }}
+                  required
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         <div className={styles.buttons}>

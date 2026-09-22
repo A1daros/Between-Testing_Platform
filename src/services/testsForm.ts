@@ -162,6 +162,9 @@ export const createTest = async (payload: NewTestPayload) => {
       description: payload.description,
       level_id: payload.levelId,
       test_type: 'final_test',
+      timer_enabled: payload.timerEnabled,
+      timer_type: payload.timerType,
+      timer_duration: payload.timerDuration,
     })
     .select('*')
     .single();
@@ -183,6 +186,9 @@ export const updateTest = async (testId: number, payload: NewTestPayload) => {
       description: payload.description,
       level_id: payload.levelId,
       test_type: 'final_test',
+      timer_enabled: payload.timerEnabled,
+      timer_type: payload.timerType,
+      timer_duration: payload.timerDuration,
     })
     .eq('id', testId)
     .select('*')

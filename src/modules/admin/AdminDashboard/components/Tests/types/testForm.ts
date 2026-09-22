@@ -2,6 +2,9 @@ export type NewTestPayload = {
   title: string;
   description: string;
   levelId: string;
+  timerEnabled: boolean;
+  timerType: 'test' | 'question' | null;
+  timerDuration: number | null;
   parts: {
     uiId: string;
     title: string;
