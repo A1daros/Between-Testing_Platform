@@ -75,7 +75,7 @@ export const Tests = () => {
       setActiveDeleteId(null);
     } catch (error) {
       console.error('Failed to delete test:', error);
-      setIsDeletingError('Failed to delete test. Please try again later.');
+      setIsDeletingError('Failed to delete tests!');
     } finally {
       setIsDeleting(false);
     }
@@ -86,7 +86,15 @@ export const Tests = () => {
   }
 
   if (errorMessage) {
-    return <div className={styles.errorMessage}>{errorMessage}</div>;
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.errorTitle}>Ooops, {errorMessage}</h2>
+        <p className={styles.errorDescription}>Try again later!</p>
+        <button className={styles.errorButton} onClick={() => {}}>
+          Reload!
+        </button>
+      </div>
+    );
   }
 
   return (

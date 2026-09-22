@@ -6,11 +6,15 @@ import type { Results } from '../../../../../types/database';
 import { useNavigate, useParams } from 'react-router-dom';
 import { loadAllStudentsResults } from '../../../../../services/results';
 import type { SortType } from '../Tests/types/admin';
+import { Loader } from '../../../../Loader';
 
 export const ResultsOverview = () => {
   const [query, setQuery] = useState('');
   const [allStudentResults, setAllStudentResults] = useState<Results[]>([]);
   const [sortBy, setSortBy] = useState<SortType>('default');
+
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { resultId } = useParams();
   const navigate = useNavigate();
@@ -18,11 +22,17 @@ export const ResultsOverview = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
+        setLoading(true);
+        setErrorMessage('');
+
         const data = await loadAllStudentsResults();
 
         setAllStudentResults(data);
       } catch (error) {
         console.error('Failed to load all student results', error);
+        setErrorMessage('Failed to load students results!');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -73,6 +83,22 @@ export const ResultsOverview = () => {
       return 0;
     });
   }, [allStudentResults, query, sortBy]);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (errorMessage) {
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.errorTitle}>Ooops, {errorMessage}</h2>
+        <p className={styles.errorDescription}>Try again later!</p>
+        <button className={styles.errorButton} onClick={() => {}}>
+          Reload!
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>

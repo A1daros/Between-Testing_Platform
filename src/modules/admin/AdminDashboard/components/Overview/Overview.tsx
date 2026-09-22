@@ -8,6 +8,8 @@ import {
   loadRecentResults,
 } from '../../../../../services/results';
 import { StatCard } from '../common/StatCard';
+import { useAuth } from '../../../../../hooks/useAuth';
+import { Loader } from '../../../../Loader';
 
 export const Overview = () => {
   const [tests, setTests] = useState<Test[]>([]);
@@ -15,14 +17,29 @@ export const Overview = () => {
   const [attemptResults, setAttemptResults] = useState<number>(0);
   const [recentResults, setRecentResults] = useState<Results[]>([]);
 
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const { profile } = useAuth();
+
   const testsIcon = '/img/admin_ds/tests.svg';
   const studentsIcon = '/img/admin_ds/students.svg';
   const attemptsIcon = '/img/admin_ds/attempts.svg';
   const pendingIcon = '/img/admin_ds/pending.svg';
 
+  const today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   useEffect(() => {
     const loadData = async () => {
       try {
+        setLoading(true);
+        setErrorMessage('');
+
         const [
           testsData,
           totalStudentsData,
@@ -40,16 +57,45 @@ export const Overview = () => {
         setAttemptResults(attemptResultsData);
         setRecentResults(recentResultsData);
       } catch (error) {
-        console.error(error);
+        console.error('Failed to load data!', error);
+        setErrorMessage('Failed to load DATA!');
+      } finally {
+        setLoading(false);
       }
     };
 
     loadData();
   }, []);
 
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (errorMessage) {
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.errorTitle}>Ooops, {errorMessage}</h2>
+        <p className={styles.errorDescription}>Try again later!</p>
+        <button className={styles.errorButton} onClick={() => {}}>
+          Reload!
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.page}>
-      <h2 className={styles.title}>BETWEEN / ADMIN</h2>
+      <h2 className={styles.title}>BETWEEN / OVERVIEW</h2>
+
+      <div className={styles.greetingRow}>
+        <p className={styles.greeting}>Welcome back, {profile?.display_name}</p>
+        <span className={styles.dateBadge}>{today}</span>
+      </div>
+
+      <p className={styles.greetingDescription}>
+        Monitor testing activity, review pending student submissions, and manage
+        educational content. Here is what is happening on your platform today.
+      </p>
 
       <div className={styles.container}>
         <ul className={styles.list}>

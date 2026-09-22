@@ -4,25 +4,22 @@
 .tableWrapper {
   width: 100%;
   border: $card-border;
+  background-color: $background;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 
   @media (min-width: $breakpoint-s) {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    background-color: $background;
     box-shadow: 0 2px 8px rgba(49, 50, 55, 0.02);
   }
 }
 
 .table {
   width: 100%;
+  display: table;
+  text-align: left;
   border-collapse: collapse;
   background-color: $background;
-  text-align: left;
-  display: block;
-
-  @media (min-width: $breakpoint-s) {
-    display: table;
-  }
+  white-space: nowrap;
 }
 
 .headColumn:nth-last-child(-n + 2),
@@ -63,15 +60,16 @@
 }
 
 .bodyColumn {
-  @include body-font;
   color: $text-main;
   padding: 10px 12px;
   vertical-align: middle;
-  white-space: normal;
-  word-break: break-word;
+  white-space: nowrap;
+  @include body-font;
 
   @media (min-width: $breakpoint-s) {
     padding: 12px 14px;
+    white-space: normal;
+    word-break: break-word;
   }
 
   @media (min-width: $breakpoint-m) {

@@ -14,6 +14,57 @@
   }
 }
 
+.greetingRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 24px;
+
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.greeting {
+  color: $text-main;
+  margin: 0;
+  @include h4-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h4-font;
+  }
+}
+
+.dateBadge {
+  color: $text-secondary;
+  background-color: $surface-2;
+  padding: 6px 12px;
+  border-radius: 6px;
+  align-self: flex-start;
+  @include small-text;
+
+  @media (min-width: $breakpoint-s) {
+    align-self: center;
+  }
+}
+
+.greetingDescription {
+  margin-top: 12px;
+  color: $text-secondary;
+  max-width: 600px;
+  @include body-font;
+
+  br {
+    display: none;
+
+    @media (min-width: $breakpoint-s) {
+      display: inline;
+    }
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -64,11 +115,12 @@
 
 .studentInfo {
   display: flex;
-  justify-content: space-between;
+  justify-content: column;
   gap: 12px;
   flex: 1;
 
   @media (min-width: $breakpoint-s) {
+    justify-content: row;
     justify-content: space-between;
     align-items: center;
     gap: 24px;
@@ -78,13 +130,14 @@
 .infoCard {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   gap: 4px;
 
   @media (min-width: $breakpoint-s) {
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
+    flex: none;
   }
 }
 

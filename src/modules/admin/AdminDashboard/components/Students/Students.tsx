@@ -6,12 +6,16 @@ import { StudentList } from './components/StudentsList/StudentsList';
 import { useNavigate } from 'react-router-dom';
 import styles from './Students.module.scss';
 import type { SortOrder } from '../Tests/types/admin';
+import { Loader } from '../../../../Loader';
 
 export const Students = () => {
   const [students, setStudents] = useState<StudentProfile[]>([]);
   const [query, setQuery] = useState('');
 
   const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
+
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -22,11 +26,17 @@ export const Students = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
+        setLoading(true);
+        setErrorMessage('');
+
         const data = await loadStudents();
 
         setStudents(data);
       } catch (error) {
         console.error('Failed to load students', error);
+        setErrorMessage('Failed to load students!');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -57,6 +67,22 @@ export const Students = () => {
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
   };
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (errorMessage) {
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.errorTitle}>Ooops, {errorMessage}</h2>
+        <p className={styles.errorDescription}>Try again later!</p>
+        <button className={styles.errorButton} onClick={() => {}}>
+          Reload!
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>

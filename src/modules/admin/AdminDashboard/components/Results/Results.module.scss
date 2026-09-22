@@ -37,7 +37,7 @@
 
 .searchSection {
   display: flex;
-  justify-content: space-between;
+  gap: 8px;
   margin-top: 12px;
 
   @media (min-width: $breakpoint-s) {
@@ -51,23 +51,27 @@
   border-radius: 8px;
   background-color: $surface-2;
   color: $text-main;
-  padding: 5px 10px;
+  padding: 6px 12px;
   cursor: pointer;
   text-align: center;
-  white-space: nowrap;
-  width: fit-content;
+  flex: 1;
 
   transition:
     background-color 0.2s ease,
     color 0.2s ease,
     border-color 0.2s ease;
 
+  @include buttons;
+
   &:hover {
     background-color: $surface-1;
     border-color: $text-secondary;
   }
 
-  @include buttons;
+  @media (min-width: $breakpoint-s) {
+    white-space: nowrap;
+    width: fit-content;
+  }
 }
 
 .activeSort {
