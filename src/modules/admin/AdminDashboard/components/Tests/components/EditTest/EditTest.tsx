@@ -79,13 +79,16 @@ export const EditTestForm = () => {
     title: editTest.title,
     description: editTest.description,
     levelId: String(editTest.level_id),
+    timerEnabled: editTest.timerEnabled,
+    timerType: editTest.timerType,
+    timerDuration: editTest.timerDuration,
     parts: mappedParts,
     questions: mappedQuestions,
   };
 
   return (
     <div className={styles.container}>
-        <TestForm initialData={initialData} onSubmit={handleSubmit} />
+      <TestForm initialData={initialData} onSubmit={handleSubmit} />
     </div>
   );
 };
