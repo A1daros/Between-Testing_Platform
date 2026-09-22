@@ -25,6 +25,7 @@
   grid-template-columns: 1fr;
   gap: 32px;
 
+
   @media (min-width: $breakpoint-s) {
     grid-template-columns: repeat(2, 1fr);
   }

@@ -153,24 +153,57 @@ export const ContactUs = () => {
           </button>
         </form>
 
-        <address className={styles.additional}>
-          <div className={styles.infoBlock}>
-            <span className={styles.infoTitle}>Phone:</span>
-            <a href='tel:+380733060097' className={styles.infoDescription}>
-              +380 73 306 00 97
-            </a>
-          </div>
+        <div className={styles.additionalInfo}>
+          <address className={styles.address}>
+            <div className={styles.addressBlock}>
+              <span className={styles.addressTitle}>Phone:</span>
+              <a href='tel:+380733060097' className={styles.addressDescription}>
+                +380 73 306 00 97
+              </a>
+            </div>
 
-          <div className={styles.infoBlock}>
-            <span className={styles.infoTitle}>Email:</span>
-            <a
-              href='mailto:school.between@gmail.com'
-              className={styles.infoDescription}
-            >
-              school.between@gmail.com
-            </a>
+            <div className={styles.addressBlock}>
+              <span className={styles.addressTitle}>Email:</span>
+              <a
+                href='mailto:school.between@gmail.com'
+                className={styles.addressDescription}
+              >
+                school.between@gmail.com
+              </a>
+            </div>
+
+            <div className={styles.addressBlock}>
+              <span className={styles.addressTitle}>Instagram:</span>
+              <a
+                href='https://www.instagram.com/school.between?stkn=eDk5a3F0emltaWRl'
+                className={styles.addressDescription}
+              >
+                school.between
+              </a>
+            </div>
+          </address>
+
+          <div className={styles.info}>
+            <div className={styles.infoBlock}>
+              <span className={styles.infoTitle}>1. Залиште заявку</span>
+              <p className={styles.infoDescription}>
+                Опрацювання протягом 15 хвилин.
+              </p>
+            </div>
+            <div className={styles.infoBlock}>
+              <span className={styles.infoTitle}>2. Дзвінок менеджера</span>
+              <p className={styles.infoDescription}>
+               Підбір зручного часу та безкоштовний урок.
+              </p>
+            </div>
+            <div className={styles.infoBlock}>
+              <span className={styles.infoTitle}>3. Старт навчання</span>
+              <p className={styles.infoDescription}>
+                Реєстраціяя та початок навчання.
+              </p>
+            </div>
           </div>
-        </address>
+        </div>
       </div>
     </div>
   );

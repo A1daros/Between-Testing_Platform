@@ -1,20 +1,24 @@
 import type { Teacher } from '../types/landing';
+import mira from '../assets/teachers/mira.png';
+import vita from '../assets/teachers/vita.png';
 
 export const teachers: Teacher[] = [
   {
     id: 1,
     name: 'Mira',
     role: 'Founding Teacher & Head of Education',
-    experience: '6+ років досвіду',
+    experience: '4+ років досвіду',
     specialties: 'НМТ / Підготовка до вступу / Teens',
-    imgSrc: '/assets/teachers/mira.jpg',
+    grade: '',
+    imgSrc: mira,
   },
   {
     id: 2,
     name: 'Vita',
     role: 'Senior English Tutor',
-    experience: '4+ роки досвіду',
+    experience: '3+ роки досвіду',
     specialties: 'Kids & Junior groups / Speaking Clubs',
-    imgSrc: '/assets/teachers/vita.jpg',
+    grade: '',
+    imgSrc: vita,
   },
 ];

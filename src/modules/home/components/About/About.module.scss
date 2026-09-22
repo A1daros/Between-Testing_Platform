@@ -107,9 +107,8 @@
   background-color: $accent;
   color: $text-on-accent;
   padding: 12px 32px;
-
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   @include buttons;
   transition:

@@ -10,6 +10,7 @@ export interface Program {
   description: string;
   formats: {
     type: string;
+    countPerLesson: string;
     lessonsCount: string;
     duration: string;
     price: string;
@@ -29,5 +30,6 @@ export interface Teacher {
   role: string;
   experience: string;
   specialties: string;
+  grade: string;
   imgSrc: string;
 }

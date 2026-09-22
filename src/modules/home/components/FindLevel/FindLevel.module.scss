@@ -61,20 +61,27 @@
   background-color: $accent;
   color: $text-on-accent;
   padding: 12px 32px;
+
   border: none;
   border-radius: 8px;
   cursor: pointer;
   white-space: nowrap;
-  width: 100%;
+  text-decoration: none;
   transition: background-color 0.2s ease;
+  @include buttons;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 
   &:hover {
     background-color: $accent-hover;
+    transform: scale(1.05);
+    box-shadow: $shadow;
   }
 
-  @include buttons;
-
-  @media (min-width: $breakpoint-s) {
-    width: auto;
+  &:active {
+    transform: scale(0.98);
   }
 }

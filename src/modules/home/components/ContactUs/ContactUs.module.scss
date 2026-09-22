@@ -8,13 +8,10 @@
 
 .title {
   text-align: center;
-  margin-bottom: 48px;
-
+  margin-bottom: 30px;
   @include h2-font-mobile;
 
   @media (min-width: $breakpoint-s) {
-    margin-bottom: 56px;
-
     @include h2-font;
   }
 }
@@ -25,7 +22,7 @@
   gap: 40px;
 
   @media (min-width: $breakpoint-s) {
-    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-columns: 1fr 1fr;
     align-items: start;
     gap: 64px;
   }
@@ -111,13 +108,60 @@
   @include success-text;
 }
 
-.additional {
+.additionalInfo {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  justify-content: space-between;
+  border: $form-border;
+  border-radius: 8px;
+  gap: 24px;
+  padding: 24px;
+  background-color: $surface-1;
+  height: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: $breakpoint-s) {
+    padding: 16px;
+    height: auto;
+  }
+}
+
+.address {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   border: $form-border;
   border-radius: 8px;
   padding: 16px;
+}
+
+.addressBlock {
+  display: flex;
+  gap: 6px;
+}
+
+.addressTitle {
+  color: $text-main;
+}
+
+.addressDescription {
+  color: $text-main;
+  text-decoration: none;
+  transition: color 0.2s;
+  @include body-font;
+
+  &:hover {
+    color: $text-secondary;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  border: $form-border;
+  border-radius: 8px;
+  padding: 16px;
+  gap: 16px;
 }
 
 .infoBlock {
@@ -132,11 +176,5 @@
 
 .infoDescription {
   color: $text-main;
-  text-decoration: none;
-  font-weight: 700;
-  transition: color 0.2s;
-
-  &:hover {
-    color: $text-secondary;
-  }
+  @include body-font;
 }
