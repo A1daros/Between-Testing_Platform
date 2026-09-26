@@ -4,7 +4,7 @@ import type { EditTest, Test, TestWithLevels } from '../types/database';
 export const getTests = async (): Promise<Test[]> => {
   const { data, error } = await supabase
     .from('tests')
-    .select('*')
+    .select(`*, levels(code), questions(count)`)
     .neq('test_type', 'placement_test');
 
   if (error) {

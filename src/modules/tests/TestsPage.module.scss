@@ -65,7 +65,6 @@
   justify-content: space-between;
 
   padding-bottom: 16px;
-  border-bottom: $card-border;
 }
 
 .testsLabel {
@@ -81,58 +80,55 @@
 .testsList {
   list-style: none;
   padding: 0;
-  margin: 0;
-}
+  margin-bottom: 16px;
 
-.testItem {
-  border-bottom: $card-border;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: $breakpoint-m) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
 }
 
 .testCard {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 24px 0;
+  gap: 12px;
+  height: 100%;
+  padding: 24px;
+  border-radius: 12px;
+  border: $card-border;
   color: $text-main;
   text-decoration: none;
-
   transition:
-    color 0.2s ease,
-    transform 0.2s ease;
-
-  @media (min-width: $breakpoint-m) {
-    display: grid;
-    grid-template-columns: 50px 100px minmax(120px, 2fr) minmax(
-        150px,
-        2.5fr
-      ) 130px 40px;
-    gap: 12px;
-    align-items: center;
-  }
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
-    transform: translateX(8px);
+    transform: translateY(-4px);
+    box-shadow: $shadow;
 
     .testNumber {
       color: $accent;
     }
-
-    .testArrow {
-      transform: translateX(6px);
-    }
   }
+}
+
+.testCardHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
 }
 
 .testNumber {
   color: $text-secondary;
   transition: color 0.2s ease;
-
-  @include body-font;
-}
-
-.testType {
-  color: $text-secondary;
-
   @include body-font;
 }
 
@@ -140,8 +136,6 @@
   @include h3-font-mobile;
 
   @media (min-width: $breakpoint-s) {
-    overflow: hidden;
-    text-overflow: ellipsis;
     @include h3-font;
   }
 }
@@ -149,47 +143,26 @@
 .testDescription {
   margin: 0;
   color: $text-secondary;
-
   @include body-font;
+
+  overflow: hidden;
 }
 
 .testInfo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-
-  @media (min-width: $breakpoint-m) {
-    display: contents;
-  }
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: $card-border;
 }
 
-.testMeta {
+.metaBox {
   display: flex;
-  gap: 12px;
-
-  @media (min-width: $breakpoint-m) {
-    white-space: nowrap;
-  }
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .metaBadge {
   color: $text-secondary;
   @include body-font;
-}
-
-.testArrow {
-  color: $accent;
-  font-size: 24px;
-  transition: transform 0.2s ease;
-
-  @media (min-width: $breakpoint-s) {
-    font-size: 32px;
-  }
-
-  @media (min-width: $breakpoint-m) {
-    text-align: right;
-  }
 }
 
 .errorCard {

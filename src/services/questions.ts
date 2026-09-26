@@ -7,7 +7,13 @@ export const getQuestionsWithAnswersByTestId = async (
   const { data, error } = await supabase
     .from('questions')
     .select(
-      `*, answers(*), tests(title, description), test_parts(title, instruction, points)`,
+      `*, answers(*), 
+        tests(title,
+        description,
+        timer_enabled, 
+        timer_type,
+        timer_duration), 
+        test_parts(title, instruction, points)`,
     )
     .eq('test_id', testId)
     .order('sort_order', { ascending: true });

@@ -5,6 +5,17 @@ export interface Test {
   level_id: number;
   submodule_id: number;
   test_type: string;
+  timer_enabled: boolean;
+  timer_type: 'test' | 'question' | null;
+  timer_duration: number | null;
+
+  levels: {
+    code: string;
+  } | null;
+
+  questions: {
+    count: number;
+  } | null;
 }
 
 export interface EditTest {
@@ -54,6 +65,9 @@ export interface QuestionWithAnswers extends Question {
   tests: {
     title: string;
     description: string;
+    timer_enabled: boolean;
+    timer_type: 'test' | 'question' | null;
+    timer_duration: number | null;
   };
 
   test_parts: {

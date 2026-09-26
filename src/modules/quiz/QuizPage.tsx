@@ -8,9 +8,14 @@ import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../Loader';
 import { getQuestionsWithAnswersByTestId } from '../../services/questions';
 import { saveQuizResult } from '../../services/results';
+import { Timer } from './components/Timer';
 
 export const QuizPage = () => {
   const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
+
+  const [timerEnabled, setTimerEnabled] = useState(false);
+  const [timerType, setTimerType] = useState<'test' | 'question' | null>(null);
+  const [timerDuration, setTimerDuration] = useState(0);
 
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -51,6 +56,14 @@ export const QuizPage = () => {
         const data = await getQuestionsWithAnswersByTestId(Number(testId));
 
         setQuestions(data);
+
+        if (data.length > 0) {
+          const test = data[0].tests;
+
+          setTimerEnabled(test.timer_enabled);
+          setTimerType(test.timer_type);
+          setTimerDuration(test.timer_duration ?? 0);
+        }
       } catch (error) {
         console.error('Failed to load questions:', error);
         setErrorMessage('Failed to load quiz!');
@@ -116,6 +129,19 @@ export const QuizPage = () => {
     user,
   ]);
 
+  const handleTimerExpire = () => {
+    if (timerType === 'test') {
+      handleFinishQuiz();
+      return;
+    }
+
+    if (currentQuestionIndex === total - 1) {
+      handleFinishQuiz();
+    } else {
+      handleNextQuestion();
+    }
+  };
+
   const currentAnswers = currentQuestion?.answers ?? [];
 
   if (loading || isSaving) {
@@ -176,6 +202,14 @@ export const QuizPage = () => {
                   </p>
                 )}
               </div>
+
+              {timerEnabled && timerDuration > 0 && (
+                <Timer
+                  key={timerType === 'test' ? testId : currentQuestion.id}
+                  durationSeconds={timerDuration}
+                  onExpire={handleTimerExpire}
+                />
+              )}
 
               <div className={styles.progressWrapper}>
                 <div
@@ -268,14 +302,16 @@ export const QuizPage = () => {
           )}
 
           <section className={styles.navigation}>
-            <button
-              type='button'
-              className={styles.backButton}
-              disabled={currentQuestionIndex === 0}
-              onClick={handlePrevQuestion}
-            >
-              ← Go back
-            </button>
+            {timerType !== 'question' && (
+              <button
+                type='button'
+                className={styles.backButton}
+                disabled={currentQuestionIndex === 0}
+                onClick={handlePrevQuestion}
+              >
+                ← Go back
+              </button>
+            )}
 
             <button
               type='button'

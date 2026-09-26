@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
 import styles from './TestsPage.module.scss';
 import type { Test } from '../../types/database';
-import { getTests } from '../../services/tests';
 import { Loader } from '../Loader';
 import { Link } from 'react-router-dom';
+import { getTests } from '../../services/tests';
+
+const getDurationLabel = (test: Test) => {
+  if (test.timer_type === null) {
+    return 'without timer';
+  }
+
+  return test.timer_type === 'test' ? 'per test' : 'per question';
+};
 
 export const TestsPage = () => {
   const [tests, setTests] = useState<Test[]>([]);
@@ -16,12 +24,12 @@ export const TestsPage = () => {
       setErrorMessage('');
 
       try {
-        const data = await getTests();
+        const testsData = await getTests();
 
-        setTests(data);
+        setTests(testsData);
       } catch (error) {
         console.error('Failed to load tests:', error);
-        setErrorMessage('Failed to load Home Page!');
+        setErrorMessage('Failed to load Test page!');
       } finally {
         setLoading(false);
       }
@@ -72,6 +80,9 @@ export const TestsPage = () => {
               {tests.map((test, index) => {
                 const testTitle = test.title ?? 'Untitled Test';
                 const testId = `test-title-${test.id}`;
+                const questionCount = Array.isArray(test.questions)
+                  ? (test.questions[0]?.count ?? 0)
+                  : 0;
 
                 return (
                   <li key={test.id} className={styles.testItem}>
@@ -80,11 +91,14 @@ export const TestsPage = () => {
                       className={styles.testCard}
                       aria-labelledby={testId}
                     >
-                      <span className={styles.testNumber}>
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <span className={styles.testType}>{test.test_type}</span>
-                      <h3 className={styles.testTitle}>{testTitle}</h3>
+                      <div className={styles.testCardHeader}>
+                        <span className={styles.testNumber}>
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <h3 id={testId} className={styles.testTitle}>
+                          {testTitle}
+                        </h3>
+                      </div>
 
                       {test.description && (
                         <p className={styles.testDescription}>
@@ -93,24 +107,24 @@ export const TestsPage = () => {
                       )}
 
                       <div className={styles.testInfo}>
-                        <div className={styles.testMeta}>
+                        <div className={styles.metaBox}>
                           <span
                             className={styles.metaBadge}
-                            aria-label={`Duration: ${10} minutes`}
+                            aria-label={`Duration: ${test.timer_duration ?? 'unlimited'} seconds`}
                           >
-                            ⏱ {'10 min'}
+                            ⏱{' '}
+                            {test.timer_duration !== null
+                              ? `${test.timer_duration}s `
+                              : ''}
+                            {getDurationLabel(test)}
                           </span>
                           <span
                             className={styles.metaBadge}
-                            aria-label={`${20} questions`}
+                            aria-label={`${questionCount} questions`}
                           >
-                            ❓ {20} q
+                            ❓ {questionCount} questions
                           </span>
                         </div>
-
-                        <span className={styles.testArrow} aria-hidden='true'>
-                          →
-                        </span>
                       </div>
                     </Link>
                   </li>
