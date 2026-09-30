@@ -1,8 +1,9 @@
 import styles from './styles/App.module.scss';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { QuizPage } from './modules/quiz';
 import { ResultPage } from './modules/results';
-import { AdminPage } from './modules/admin';
 import { Login } from './modules/authentication/components/login';
 import { Register } from './modules/authentication/components/register';
 import { MyResults } from './modules/results/myResults';
@@ -19,15 +20,16 @@ import { AboutSchool } from './modules/about-school';
 import { ScrollToTop } from './utils/ScrollToTop';
 import { ForgotPassword } from './modules/authentication/components/forgot-password';
 import { UpdatePassword } from './modules/authentication/components/update-password';
+import { Loader } from './modules/Loader';
+import { ROUTES } from './constants/routes';
+import { ChunkError } from './modules/shared/components/ChunkError';
 import { ProfilePage } from './modules/profile';
-import { Overview } from './modules/admin/AdminDashboard/components/Overview';
-import { ResultsOverview } from './modules/admin/AdminDashboard/components/Results/Results';
-import { Tests } from './modules/admin/AdminDashboard/components/Tests/Tests';
-import { Students } from './modules/admin/AdminDashboard/components/Students/Students';
-import { CreateTestForm } from './modules/admin/AdminDashboard/components/Tests/components/CreateTest/CreateTest';
-import { ResultDetailsOverview } from './modules/admin/AdminDashboard/components/Results/components/ResultDetails/ResultDetails';
-import { StudentDetailsOverview } from './modules/admin/AdminDashboard/components/Students/components/StudentDetails/StudentDetails';
-import { EditTestForm } from './modules/admin/AdminDashboard/components/Tests/components/EditTest';
+
+const AdminRoutes = lazy(() =>
+  import('./modules/admin/AdminRoutes').then((module) => ({
+    default: module.AdminRoutes,
+  })),
+);
 
 export const App = () => {
   return (
@@ -38,52 +40,51 @@ export const App = () => {
         <Header />
 
         <main className={styles.mainContent}>
-          <Routes>
-            <Route path='/placement-test' element={<PlacementTest />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/forgot-password' element={<ForgotPassword />} />
-            <Route path='/update-password' element={<UpdatePassword />} />
-            <Route path='/about-school' element={<AboutSchool />} />
+          <ErrorBoundary fallbackRender={ChunkError}>
+            <Suspense fallback={<Loader />}>
+              <Routes>
+                <Route path={ROUTES.home} element={<HomePage />} />
+                <Route path={ROUTES.aboutSchool} element={<AboutSchool />} />
+                <Route
+                  path={ROUTES.placementTest}
+                  element={<PlacementTest />}
+                />
+                <Route path={ROUTES.login} element={<Login />} />
+                <Route path={ROUTES.register} element={<Register />} />
+                <Route
+                  path={ROUTES.forgotPassword}
+                  element={<ForgotPassword />}
+                />
+                <Route
+                  path={ROUTES.updatePassword}
+                  element={<UpdatePassword />}
+                />
 
-            <Route path='/' element={<HomePage />} />
-
-            <Route element={<ProtectedRoute />}>
-              <Route path='/tests' element={<TestsPage />} />
-              <Route path='/tests/level/:levelId' element={<TestsByLevel />} />
-              <Route path='/tests/:testId' element={<QuizPage />} />
-
-              <Route path='/my-results' element={<MyResults />} />
-              <Route
-                path='/my-results/:resultId'
-                element={<ResultDetailsPage />}
-              />
-
-              <Route path='/profile/:userId' element={<ProfilePage />} />
-
-              <Route element={<AdminRoute />}>
-                <Route path='/admin' element={<AdminPage />}>
-                  <Route index element={<Navigate to='overview' replace />} />
-                  <Route path='overview' element={<Overview />} />
-                  <Route path='tests' element={<Tests />} />
-                  <Route path='tests/:testId/edit' element={<EditTestForm />} />
-                  <Route path='tests/create' element={<CreateTestForm />} />
-                  <Route path='results' element={<ResultsOverview />} />
-                  <Route path='students' element={<Students />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path={ROUTES.tests} element={<TestsPage />} />
                   <Route
-                    path='results/result-details/:resultId'
-                    element={<ResultDetailsOverview />}
+                    path={ROUTES.testsByLevel}
+                    element={<TestsByLevel />}
                   />
+                  <Route path={ROUTES.quiz} element={<QuizPage />} />
+                  <Route path={ROUTES.testResult} element={<ResultPage />} />
+                  <Route path={ROUTES.myResults} element={<MyResults />} />
                   <Route
-                    path='students/student-details/:studentId'
-                    element={<StudentDetailsOverview />}
+                    path={ROUTES.myResultDetails}
+                    element={<ResultDetailsPage />}
                   />
+                  <Route path={ROUTES.profile} element={<ProfilePage />} />
+
+                  <Route element={<AdminRoute />}>
+                    <Route
+                      path={ROUTES.adminWildcard}
+                      element={<AdminRoutes />}
+                    />
+                  </Route>
                 </Route>
-              </Route>
-
-              <Route path='/tests/:testId/results' element={<ResultPage />} />
-            </Route>
-          </Routes>
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
         </main>
 
         <Footer />
