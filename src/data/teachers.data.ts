@@ -1,6 +1,6 @@
 import type { Teacher } from '../types/landing';
-import mira from '../assets/teachers/mira.png';
-import vita from '../assets/teachers/vita.png';
+import mira from '../assets/teachers/mira.webp';
+import vita from '../assets/teachers/vita.webp';
 
 export const teachers: Teacher[] = [
   {

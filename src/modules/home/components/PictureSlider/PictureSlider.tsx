@@ -54,16 +54,15 @@ export const PicturesSlider = () => {
           onClick={handlePrev}
           aria-label='Previous slide'
         >
-          <img src='./img/icons/left.svg' alt='Arrow left' />
+          <img src='/img/icons/left.svg' alt='Arrow left' />
         </button>
 
         <div className={styles.slide}>
           <picture>
-            <source
-              srcSet={BANNERS[currentIndex].src}
-            />
+            <source srcSet={BANNERS[currentIndex].src} />
 
             <img
+              fetchPriority='high'
               src={BANNERS[currentIndex].src}
               alt={BANNERS[currentIndex].alt}
               className={styles.slideImage}
@@ -76,7 +75,7 @@ export const PicturesSlider = () => {
           onClick={handleNext}
           aria-label='Next slide'
         >
-          <img src='./img/icons/right.svg' alt='Arrow right' />
+          <img src='/img/icons/right.svg' alt='Arrow right' />
         </button>
       </div>
 

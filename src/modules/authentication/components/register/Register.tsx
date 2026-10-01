@@ -77,6 +77,7 @@ export const Register = () => {
               value={name}
               placeholder=' '
               required
+              autoComplete='given-name'
               className={styles.input}
               onChange={(event) => setName(event.target.value)}
             />
@@ -93,6 +94,7 @@ export const Register = () => {
               value={surname}
               placeholder=' '
               required
+              autoComplete='family-name'
               className={styles.input}
               onChange={(event) => setSurname(event.target.value)}
             />
@@ -109,6 +111,7 @@ export const Register = () => {
               value={email}
               placeholder=' '
               required
+              autoComplete='email'
               className={styles.input}
               onChange={(event) => setEmail(event.target.value)}
             />

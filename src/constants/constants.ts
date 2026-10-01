@@ -1,6 +1,6 @@
-import banner01 from '../assets/banners/banner_01.png';
-import banner02 from '../assets/banners/banner_02.png';
-import banner03 from '../assets/banners/banner_03.png';
+import banner01 from '/img/banners/banner_01.webp';
+import banner02 from '/img/banners/banner_02.webp';
+import banner03 from '/img/banners/banner_03.webp';
 
 
 export const BANNERS = [
