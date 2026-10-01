@@ -7,25 +7,35 @@ personal student profiles, and an administrative panel for teachers.
 
 ## 📸 Screenshots
 
-![Home](/screenshots/home_01.png)
-![Home](/screenshots/home_02.png)
-![Home](/screenshots/home_03.png)
-![Tests](/screenshots/tests_01.png)
-![Quiz](/screenshots/quiz_01.png)
-![My-results](/screenshots/my-results_01.png)
-![Result-details](/screenshots/result-details_01.png)
-![Profile](/screenshots/profile_01.png)
+![Home](screenshots/home_01.webp)
+![Home](screenshots/home_02.webp)
+![Home](screenshots/home_03.webp)
+![Tests](screenshots/tests_01.webp)
+![Quiz](screenshots/quiz_01.webp)
+![My-results](screenshots/my-results_01.webp)
+![Result-details](screenshots/result-details_01.webp)
+![Profile](screenshots/profile_01.webp)
+![Admin-dashboard](screenshots/admin-dashboard.webp)
 
 ## 🚀 Main features
 
 - **Authentication and roles** — registration/login via Supabase Auth, user/admin access separation
   via RLS policies at the DB level
-- **Placement Test** — free entrance test without registration, which determines the user's level  
-  (A1–B2) according to a sequential algorithm of passing thresholds by level
+- **Placement Test** — free entrance test without registration that determines the user's level
+  (A1–B2) using a sequential, threshold-based algorithm
 - **Flexible test structure** — tests are divided into parts (`test_parts`) with
-  their own sorting and instructions, support for reading passages in questions
-- **User profiles** — avatars (Supabase Storage), data editing,
+  their own ordering and instructions, with support for reading passages in questions
+- **Test timer** — a countdown limits the time available to complete a test
+- **Results review** — after finishing a test, students can review their results
+  and see which answers were correct and which were wrong
+- **Score summary** — final score and percentage shown right after submission
+- **Progress tracking** — students can see their test history and past results
+- **User profiles** — avatars (Supabase Storage), profile editing,
   password and email change
+- **Admin panel** — full control over tests and students:
+  - view all test results across students
+  - browse the student list and see which tests each student has taken
+  - create, edit, and delete tests
 
 ## 🛠 Technology stack
 
@@ -87,7 +97,5 @@ their own data, while admins get elevated access via role-based policies.
 
 ## 📍 Roadmap
 
-- [ ] Obtain the necessary information from the customer and fill in About School Page
-- [ ] Fill the platform with the necessary tests from A1 to C2 levels
-- [ ] Complete Admin Dashboard page with the ability to edit and delete tests yourself
+- [ ] Unified styles across all test-taking pages (test list, question page, results).
 - [ ] Refactoring the structure, optimizing and converting local states to Redux Toolkit
