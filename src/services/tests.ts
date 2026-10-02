@@ -47,7 +47,7 @@ export const getTestsWithLevel = async (): Promise<TestWithLevels[]> => {
 export const getTestsByLevelId = async (levelId: number): Promise<Test[]> => {
   const { data, error } = await supabase
     .from('tests')
-    .select(`*, levels(id)`)
+    .select(`*, levels(id), questions(count)`)
     .eq('level_id', levelId);
 
   if (error) {

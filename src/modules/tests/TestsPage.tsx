@@ -4,14 +4,7 @@ import type { Test } from '../../types/database';
 import { Loader } from '../Loader';
 import { Link } from 'react-router-dom';
 import { getTests } from '../../services/tests';
-
-const getDurationLabel = (test: Test) => {
-  if (test.timer_type === null) {
-    return 'without timer';
-  }
-
-  return test.timer_type === 'test' ? 'per test' : 'per question';
-};
+import { getDurationLabel } from '../../utils/getDurationLabel';
 
 export const TestsPage = () => {
   const [tests, setTests] = useState<Test[]>([]);

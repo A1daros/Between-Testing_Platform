@@ -5,6 +5,7 @@ import { getTestsByLevelId } from '../../../services/tests';
 import { getLevelsById } from '../../../services/levels';
 import { Loader } from '../../Loader';
 import { Link, useParams } from 'react-router-dom';
+import { getDurationLabel } from '../../../utils/getDurationLabel';
 
 export const TestsByLevel = () => {
   const [testsByLevel, setTestsByLevel] = useState<Test[]>([]);
@@ -103,6 +104,9 @@ export const TestsByLevel = () => {
                 {testsByLevel.map((test, index) => {
                   const testTitle = test.title ?? 'Untitled Test';
                   const testId = `test-title-${test.id}`;
+                  const questionCount = Array.isArray(test.questions)
+                    ? (test.questions[0]?.count ?? 0)
+                    : 0;
 
                   return (
                     <li key={test.id} className={styles.testItem}>
@@ -111,13 +115,14 @@ export const TestsByLevel = () => {
                         className={styles.testCard}
                         aria-labelledby={testId}
                       >
-                        <span className={styles.testNumber}>
-                          {String(index + 1).padStart(2, '0')}
-                        </span>
-                        <span className={styles.testType}>
-                          {test.test_type}
-                        </span>
-                        <h3 className={styles.testTitle}>{testTitle}</h3>
+                        <div className={styles.testCardHeader}>
+                          <span className={styles.testNumber}>
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                          <h3 id={testId} className={styles.testTitle}>
+                            {testTitle}
+                          </h3>
+                        </div>
 
                         {test.description && (
                           <p className={styles.testDescription}>
@@ -126,24 +131,24 @@ export const TestsByLevel = () => {
                         )}
 
                         <div className={styles.testInfo}>
-                          <div className={styles.testMeta}>
+                          <div className={styles.metaBox}>
                             <span
                               className={styles.metaBadge}
-                              aria-label={`Duration: ${10} minutes`}
+                              aria-label={`Duration: ${test.timer_duration ?? 'unlimited'} seconds`}
                             >
-                              ⏱ {'10 min'}
+                              ⏱{' '}
+                              {test.timer_duration !== null
+                                ? `${test.timer_duration}s `
+                                : ''}
+                              {getDurationLabel(test)}
                             </span>
                             <span
                               className={styles.metaBadge}
-                              aria-label={`${20} questions`}
+                              aria-label={`${questionCount} questions`}
                             >
-                              ❓ {20} q
+                              ❓ {questionCount} questions
                             </span>
                           </div>
-
-                          <span className={styles.testArrow} aria-hidden='true'>
-                            →
-                          </span>
                         </div>
                       </Link>
                     </li>
