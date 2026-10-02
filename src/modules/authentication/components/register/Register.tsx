@@ -21,7 +21,7 @@ export const Register = () => {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -29,13 +29,21 @@ export const Register = () => {
             display_name: `${name} ${surname}`,
             name,
             surname,
-            email,
           },
         },
       });
 
       if (error) {
-        setErrorMessage(error.message);
+        setErrorMessage(
+          error.code === 'weak_password'
+            ? 'Password is too weak. Use at least 10 characters and avoid common passwords.'
+            : error.message,
+        );
+        return;
+      }
+
+      if (data.session) {
+        navigate('/');
         return;
       }
 
@@ -128,7 +136,7 @@ export const Register = () => {
               value={password}
               placeholder=' '
               required
-              minLength={6}
+              minLength={10}
               autoComplete='new-password'
               className={styles.input}
               onChange={(event) => setPassword(event.target.value)}
