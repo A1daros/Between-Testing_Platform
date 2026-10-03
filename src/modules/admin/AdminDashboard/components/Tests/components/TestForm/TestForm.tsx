@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import type { NewTestPayload, UIPart, UIQuestion } from '../../types/testForm';
 import styles from './TestForm.module.scss';
 import { getLevelsById } from '../../../../../../../services/levels';
+import { validateQuestions } from '../../../../../../../utils/validateQuestions';
 
 type Props = {
   initialData?: {
@@ -42,16 +43,24 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
 
   const [levels, setLevels] = useState<Level[]>([]);
 
+  const [isSubmitting, setIsSubmiting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadLevels = async () => {
+      setErrorMessage('');
+
       try {
         const data = await getLevelsById();
 
         setLevels(data);
       } catch (error) {
         console.error('Failed to load level data', error);
+        setErrorMessage(
+          error instanceof Error ? error.message : 'Failed to load data',
+        );
       }
     };
 
@@ -173,6 +182,12 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    const validationError = validateQuestions(questions);
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
 
     const payload: NewTestPayload = {
       title,
@@ -196,12 +211,22 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
       }),
     };
 
+    setIsSubmiting(true);
+    setErrorMessage('');
+
     try {
       await onSubmit(payload);
 
       navigate('/admin/tests');
     } catch (error) {
       console.error('Failed to create test:', error);
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Failed to save the test. Please try again.',
+      );
+    } finally {
+      setIsSubmiting(false);
     }
   };
 
@@ -517,9 +542,19 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
           )}
         </div>
 
+        {errorMessage && (
+          <div className={styles.errorCard} role='alert' aria-live='assertive'>
+            <p className={styles.errorText}>{errorMessage}</p>
+          </div>
+        )}
+
         <div className={styles.buttons}>
-          <button type='submit' className={styles.submitButton}>
-            Save Test
+          <button
+            disabled={isSubmitting}
+            type='submit'
+            className={`${styles.submitButton} ${isSubmitting ? styles.isDisabled : ''}`}
+          >
+            {isSubmitting ? 'Saving...' : 'Save'}
           </button>
         </div>
       </form>
