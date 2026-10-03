@@ -23,9 +23,9 @@ export interface EditTest {
   title: string;
   description: string;
   level_id: number;
-  timerEnabled: boolean;
-  timerType: 'test' | 'question' | null;
-  timerDuration: number | null;
+  timer_enabled: boolean;
+  timer_type: 'test' | 'question' | null;
+  timer_duration: number | null;
 
   test_parts: {
     id: number;

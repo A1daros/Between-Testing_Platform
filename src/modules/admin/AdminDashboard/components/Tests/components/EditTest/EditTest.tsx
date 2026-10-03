@@ -79,9 +79,9 @@ export const EditTestForm = () => {
     title: editTest.title,
     description: editTest.description,
     levelId: String(editTest.level_id),
-    timerEnabled: editTest.timerEnabled,
-    timerType: editTest.timerType,
-    timerDuration: editTest.timerDuration,
+    timerEnabled: editTest.timer_enabled,
+    timerType: editTest.timer_type,
+    timerDuration: editTest.timer_duration,
     parts: mappedParts,
     questions: mappedQuestions,
   };

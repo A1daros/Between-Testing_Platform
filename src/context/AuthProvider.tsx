@@ -13,20 +13,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
 
-      setSession(session);
-      setUser(session?.user ?? null);
+        setSession(session);
+        setUser(session?.user ?? null);
 
-      if (session?.user) {
-        const profile = await getProfile(session.user?.id);
+        if (session?.user) {
+          const profile = await getProfile(session.user?.id);
 
-        setProfile(profile);
+          setProfile(profile);
+        }
+      } catch (error) {
+        console.error(error);
+        setProfile(null);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
     initializeAuth();
@@ -34,15 +39,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+      try {
+        setSession(session);
+        setUser(session?.user ?? null);
 
-      if (session?.user) {
-        const profile = await getProfile(session?.user.id);
-        setProfile(profile);
-        setLoading(false);
-      } else {
+        if (session?.user) {
+          const profile = await getProfile(session?.user.id);
+
+          setProfile(profile);
+        } else {
+          setProfile(null);
+        }
+      } catch (error) {
+        console.error(error);
         setProfile(null);
+      } finally {
         setLoading(false);
       }
     });
