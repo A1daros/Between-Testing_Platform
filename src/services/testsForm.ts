@@ -93,117 +93,29 @@ const deleteTestResults = async (testId: number) => {
   }
 };
 
-const createTestStructure = async (testId: number, payload: NewTestPayload) => {
-  const { data: createdParts, error: partsError } = await supabase
-    .from('test_parts')
-    .insert(
-      payload.parts.map(({ title, instruction, points }, index) => ({
-        test_id: testId,
-        title,
-        instruction,
-        points,
-        sort_order: index + 1,
-      })),
-    )
-    .select('*');
-
-  if (partsError) {
-    throw new Error(`Failed to create test parts: ${partsError.message}`);
-  }
-
-  const partIdMap = new Map(
-    payload.parts.map((part, index) => [part.uiId, createdParts[index]?.id]),
-  );
-
-  const questionsToInsert = payload.questions.map((question, index) => ({
-    test_id: testId,
-    part_id: partIdMap.get(question.partId ?? '') ?? null,
-    question: question.question,
-    sort_order: index + 1,
-  }));
-
-  const { data: createdQuestions, error: questionsError } = await supabase
-    .from('questions')
-    .insert(questionsToInsert)
-    .select('*');
-
-  if (questionsError) {
-    throw new Error(`Failed to create questions: ${questionsError.message}`);
-  }
-
-  const answersToInsert = payload.questions.flatMap((question, index) => {
-    const questionId = createdQuestions[index]?.id;
-
-    if (!questionId) {
-      return [];
-    }
-
-    return question.answers.map((answer) => ({
-      question_id: questionId,
-      answer_text: answer.text,
-      is_correct: answer.isCorrect,
-    }));
+export const createTest = async (payload: NewTestPayload) => {
+  const { data, error } = await supabase.rpc('save_test', {
+    p_payload: payload,
   });
 
-  const { error: answersError } = await supabase
-    .from('answers')
-    .insert(answersToInsert);
-
-  if (answersError) {
-    throw new Error(`Failed to create answers: ${answersError.message}`);
-  }
-};
-
-export const createTest = async (payload: NewTestPayload) => {
-  const { data: newTest, error: testError } = await supabase
-    .from('tests')
-    .insert({
-      title: payload.title,
-      description: payload.description,
-      level_id: payload.levelId,
-      test_type: 'final_test',
-      timer_enabled: payload.timerEnabled,
-      timer_type: payload.timerType,
-      timer_duration: payload.timerDuration,
-    })
-    .select('*')
-    .single();
-
-  if (testError) {
-    throw new Error(`Failed to create test: ${testError.message}`);
+  if (error) {
+    throw new Error(`Failed to create test: ${error.message}`);
   }
 
-  await createTestStructure(newTest.id, payload);
-
-  return newTest;
+  return data;
 };
 
 export const updateTest = async (testId: number, payload: NewTestPayload) => {
-  const { data: updatedTest, error: testError } = await supabase
-    .from('tests')
-    .update({
-      title: payload.title,
-      description: payload.description,
-      level_id: payload.levelId,
-      test_type: 'final_test',
-      timer_enabled: payload.timerEnabled,
-      timer_type: payload.timerType,
-      timer_duration: payload.timerDuration,
-    })
-    .eq('id', testId)
-    .select('*')
-    .single();
+  const { data, error } = await supabase.rpc('save_test', {
+    p_payload: payload,
+    p_test_id: testId,
+  });
 
-  if (testError) {
-    throw new Error(`Failed to update test: ${testError.message}`);
+  if (error) {
+    throw new Error(`Failed to update test: ${error.message}`);
   }
 
-  await deleteTestResults(testId);
-  await deleteTestStructure(testId);
-
-  await createTestStructure(testId, payload);
-
-  return updatedTest;
+  return data;
 };
 
 export const deleteTest = async (testId: number) => {
