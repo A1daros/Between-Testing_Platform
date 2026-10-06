@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import styles from './ContactUs.module.scss';
 import { supabase } from '../../../../lib/supabase';
+import { FunctionsHttpError } from '@supabase/supabase-js';
 
 export const ContactUs = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [website, setWebsite] = useState('');
   const [agreeToTerms, setAgreeToTerms] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +24,7 @@ export const ContactUs = () => {
 
     try {
       const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: { firstName, lastName, email, message },
+        body: { firstName, lastName, email, message, website },
       });
 
       if (error) {
@@ -38,7 +40,13 @@ export const ContactUs = () => {
       setAgreeToTerms(false);
     } catch (error) {
       console.error('Resolve error:', error);
-      setErrorMessage('Failed to send the message. Please try again later.');
+      let text = 'Failed to send the message. Please try again later.';
+
+      if (error instanceof FunctionsHttpError) {
+        const payload = await error.context.json().catch(() => null);
+        if (payload?.error) text = payload.error;
+      }
+      setErrorMessage(text);
     } finally {
       setIsLoading(false);
     }
@@ -114,6 +122,17 @@ export const ContactUs = () => {
               </label>
             </div>
           </div>
+
+          <input
+            type='text'
+            name='website'
+            tabIndex={-1}
+            autoComplete='off'
+            aria-hidden='true'
+            value={website}
+            onChange={(event) => setWebsite(event.target.value)}
+            style={{ position: 'absolute', left: '-9999px' }}
+          />
 
           <div className={styles.formAction}>
             <label className={styles.checkboxWrapper}>
@@ -193,7 +212,7 @@ export const ContactUs = () => {
             <div className={styles.infoBlock}>
               <span className={styles.infoTitle}>2. Дзвінок менеджера</span>
               <p className={styles.infoDescription}>
-               Підбір зручного часу та безкоштовний урок.
+                Підбір зручного часу та безкоштовний урок.
               </p>
             </div>
             <div className={styles.infoBlock}>
