@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { ResultAnswersInput, ResultDetails } from '../types/database';
+import type { ResultDetails } from '../types/database';
 
 export const getResultDetails = async (
   resultId: number,
@@ -18,14 +18,4 @@ export const getResultDetails = async (
   return (data as ResultDetails[]).sort(
     (a, b) => a.questions.sort_order - b.questions.sort_order,
   );
-};
-
-export const saveResultAnswers = async (
-  resultAnswers: ResultAnswersInput[],
-) => {
-  const { error } = await supabase.from('result_answers').insert(resultAnswers);
-
-  if (error) {
-    throw new Error(error.message);
-  }
 };

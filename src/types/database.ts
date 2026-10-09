@@ -114,12 +114,6 @@ export interface Results {
   } | null;
 }
 
-export interface ResultAnswersInput {
-  result_id: number;
-  question_id: number;
-  answer_id: number;
-}
-
 export interface ResultDetails {
   id: number;
   result_id: number;
@@ -150,10 +144,13 @@ export interface StudentDetails {
 
 export interface SaveQuizResultInput {
   testId: number;
-  userId: string;
+  userAnswers: Record<number, number>;
+}
+
+export interface SubmitQuizResult {
+  result_id: number;
   score: number;
   total: number;
-  userAnswers: Record<number, number>;
 }
 
 export interface Profile {

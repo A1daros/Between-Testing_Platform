@@ -3,8 +3,8 @@ import type {
   ResultInput,
   Results,
   SaveQuizResultInput,
+  SubmitQuizResult,
 } from '../types/database';
-import { saveResultAnswers } from './resultAnswers';
 
 export const saveResult = async (result: ResultInput): Promise<Results> => {
   const { data, error } = await supabase
@@ -38,29 +38,18 @@ export const getResultsByUserId = async (
 
 export const saveQuizResult = async ({
   testId,
-  userId,
-  score,
-  total,
   userAnswers,
-}: SaveQuizResultInput) => {
-  const result = await saveResult({
-    test_id: testId,
-    user_id: userId,
-    score,
-    total,
+}: SaveQuizResultInput): Promise<SubmitQuizResult> => {
+  const { data, error } = await supabase.rpc('submit_quiz', {
+    p_test_id: testId,
+    p_answers: userAnswers,
   });
 
-  const resultAnswers = Object.entries(userAnswers).map(
-    ([questionId, answerId]) => ({
-      result_id: result.id,
-      question_id: Number(questionId),
-      answer_id: Number(answerId),
-    }),
-  );
+  if (error) {
+    throw new Error(error.message);
+  }
 
-  await saveResultAnswers(resultAnswers);
-
-  return result;
+  return data;
 };
 
 export const loadRecentResults = async (): Promise<Results[]> => {

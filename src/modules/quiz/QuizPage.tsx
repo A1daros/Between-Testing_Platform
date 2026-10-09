@@ -34,8 +34,6 @@ export const QuizPage = () => {
     selectedAnswerId,
     userAnswers,
     total,
-    score,
-    totalScore,
     isFinished,
     handleChooseAnswer,
     handlePrevQuestion,
@@ -95,16 +93,13 @@ export const QuizPage = () => {
       setErrorMessage('');
 
       try {
-        await saveQuizResult({
+        const result = await saveQuizResult({
           testId: Number(testId),
-          userId: user.id,
-          score,
-          total: totalScore,
           userAnswers,
         });
 
         navigate(`/tests/${testId}/results`, {
-          state: { score, totalScore, userAnswers },
+          state: { score: result.score, totalScore: result.total, userAnswers },
           replace: true,
         });
       } catch (error) {
@@ -118,16 +113,7 @@ export const QuizPage = () => {
     };
 
     sendResults();
-  }, [
-    isFinished,
-    total,
-    totalScore,
-    testId,
-    userAnswers,
-    navigate,
-    score,
-    user,
-  ]);
+  }, [isFinished, testId, total, userAnswers, navigate, user]);
 
   const handleTimerExpire = () => {
     if (timerType === 'test') {
