@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { Answer, QuestionWithAnswers } from '../types/database';
 
 export const useQuiz = (questions: QuestionWithAnswers[]) => {
@@ -10,10 +10,6 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
   const currentQuestion = questions[currentQuestionIndex];
 
   const total = questions.length;
-  const totalScore = questions.reduce(
-    (sum, question) => sum + (question.test_parts?.points ?? 1),
-    0,
-  );
 
   const selectedAnswerId = currentQuestion
     ? (userAnswers[currentQuestion.id] ?? null)
@@ -49,23 +45,6 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
     setIsFinished(true);
   };
 
-  const score = useMemo(() => {
-    return questions.reduce((sum, question) => {
-      const savedAnswerId = userAnswers[question.id];
-      const points = question.test_parts?.points ?? 1;
-
-      if (!savedAnswerId) {
-        return sum;
-      }
-
-      const selectedAnswer = question.answers.find(
-        (answer) => answer.id === savedAnswerId,
-      );
-
-      return selectedAnswer?.is_correct ? sum + points : sum;
-    }, 0);
-  }, [questions, userAnswers]);
-
   return {
     currentQuestion,
     currentQuestionIndex,
@@ -73,8 +52,6 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
     userAnswers,
     isFinished,
     total,
-    score,
-    totalScore,
     handleChooseAnswer,
     handleChoosePlacementAnswer,
     handlePrevQuestion,

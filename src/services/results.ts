@@ -1,24 +1,9 @@
 import { supabase } from '../lib/supabase';
 import type {
-  ResultInput,
   Results,
   SaveQuizResultInput,
   SubmitQuizResult,
 } from '../types/database';
-
-export const saveResult = async (result: ResultInput): Promise<Results> => {
-  const { data, error } = await supabase
-    .from('results')
-    .insert(result)
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
 
 export const getResultsByUserId = async (
   userId: string,
