@@ -26,13 +26,6 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
     }));
   };
 
-  const handleChoosePlacementAnswer = (answer: Answer) => {
-    const questionId = questions[currentQuestionIndex]?.id;
-    if (questionId) {
-      setUserAnswers((prev) => ({ ...prev, [questionId]: answer.id }));
-    }
-  };
-
   const handlePrevQuestion = () => {
     setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
   };
@@ -53,7 +46,6 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
     isFinished,
     total,
     handleChooseAnswer,
-    handleChoosePlacementAnswer,
     handlePrevQuestion,
     handleNextQuestion,
     handleFinishQuiz,

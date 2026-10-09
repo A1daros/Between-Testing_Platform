@@ -21,7 +21,7 @@ export const PlacementTest = () => {
     userAnswers,
     isFinished,
     total,
-    handleChoosePlacementAnswer,
+    handleChooseAnswer,
     handlePrevQuestion,
     handleNextQuestion,
     handleFinishQuiz,
@@ -227,7 +227,7 @@ export const PlacementTest = () => {
                     className={`${styles.answer} ${
                       isSelected ? styles.answerSelected : ''
                     }`}
-                    onClick={() => handleChoosePlacementAnswer(answer)}
+                    onClick={() => handleChooseAnswer(answer)}
                   >
                     <span className={styles.answerNumber}>
                       {String(index + 1).padStart(2, '0')}
