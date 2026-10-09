@@ -11,6 +11,7 @@ const allowedOrigins = [
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 const REDIS_URL = Deno.env.get('UPSTASH_REDIS_REST_URL');
 const REDIS_TOKEN = Deno.env.get('UPSTASH_REDIS_REST_TOKEN');
+const CONTACT_TO_EMAIL = Deno.env.get('CONTACT_TO_EMAIL');
 
 const ratelimit = new Ratelimit({
   redis: new Redis({ url: REDIS_URL, token: REDIS_TOKEN }),
@@ -121,7 +122,7 @@ export default {
         },
         body: JSON.stringify({
           from: 'Contact Form <onboarding@resend.dev>',
-          to: ['toliklutai@gmail.com'],
+          to: [CONTACT_TO_EMAIL],
           reply_to: email,
           subject: `Нове повідомлення від ${firstName} ${lastName}`,
           html: `

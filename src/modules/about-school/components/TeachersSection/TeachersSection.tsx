@@ -1,5 +1,5 @@
+import type { Teacher } from '../../../../types/database';
 import styles from './TeachersSection.module.scss';
-import type { Teacher } from '../../../../types/landing';
 import type React from 'react';
 
 type Props = {
@@ -18,16 +18,19 @@ export const TeachersSection: React.FC<Props> = ({ teachers }) => {
         {teachers.map((teacher) => (
           <article key={teacher.id} className={styles.teacherCard}>
             <div className={styles.imageWrapper}>
-              <img src={teacher.imgSrc} alt={teacher.name} />
+              <img src={teacher.photo_url} alt={teacher.name} />
             </div>
 
             <div className={styles.teacherContent}>
               <div className={styles.cardHeader}>
-                <span className={styles.teacherNumber}>{teacher.id}</span>
                 <h3 className={styles.teacherName}>{teacher.name}</h3>
               </div>
 
               <div className={styles.teacherInfo}>
+                <p className={styles.characteristics}>
+                  <strong>Вік:</strong>
+                  {teacher.age}
+                </p>
                 <p className={styles.characteristics}>
                   <strong>Роль:</strong> {teacher.role}
                 </p>

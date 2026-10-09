@@ -191,3 +191,13 @@ export interface Level {
   title: string;
   sort_order: number;
 }
+
+export interface Teacher {
+  id: string;
+  name: string;
+  age: number;
+  role: string;
+  experience: string;
+  specialties: string;
+  photo_url: string;
+}

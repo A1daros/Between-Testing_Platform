@@ -23,13 +23,3 @@ export interface Company {
   title: string;
   description: string;
 }
-
-export interface Teacher {
-  id: number;
-  name: string;
-  role: string;
-  experience: string;
-  specialties: string;
-  grade: string;
-  imgSrc: string;
-}

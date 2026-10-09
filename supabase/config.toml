@@ -1,6 +1,6 @@
 
-[functions.send-contact-email]
 [functions.placement-test]
+[functions.send-contact-email]
 enabled = true
 verify_jwt = false
 import_map = "./functions/send-contact-email/deno.json"

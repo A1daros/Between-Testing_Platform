@@ -2,16 +2,43 @@ import styles from './AboutSchool.module.scss';
 import { useNavigate } from 'react-router-dom';
 
 import { posts } from '../../data/posts.data.ts';
-import { teachers } from '../../data/teachers.data.ts';
 import { programsData as programs } from '../../data/programs.data.ts';
 import { companyValues } from '../../data/companyValues.data.ts';
 
 import { TeachersSection } from './components/TeachersSection';
 import { ProgramsSection } from './components/ProgramsSection';
 import { PostList } from '../shared/components/PostList';
+import { useEffect, useState } from 'react';
+import type { Teacher } from '../../types/database.ts';
+import { loadTeachers } from '../../services/teachers.ts';
+import { Loader } from '../Loader/Loader.tsx';
 
 export const AboutSchool = () => {
+  const [teacher, setTeacher] = useState<Teacher[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      setErrorMessage('');
+
+      try {
+        const data = await loadTeachers();
+
+        setTeacher(data);
+      } catch (error) {
+        console.error(error);
+        setErrorMessage('Failed to load teachers');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -120,7 +147,17 @@ export const AboutSchool = () => {
             </div>
           </section>
 
-          <TeachersSection teachers={teachers} />
+          {isLoading && <Loader />}
+          {errorMessage && (
+            <div
+              className={styles.errorCard}
+              role='alert'
+              aria-live='assertive'
+            >
+              <p className={styles.errorText}>{errorMessage}</p>
+            </div>
+          )}
+          <TeachersSection teachers={teacher} />
 
           <ProgramsSection
             programsData={programs}
