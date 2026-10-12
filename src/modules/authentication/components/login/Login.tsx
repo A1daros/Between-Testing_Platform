@@ -26,15 +26,15 @@ export const Login = () => {
         setErrorMessage(error.message);
         return;
       }
+
+      navigate('/');
     } catch (error) {
       console.error('Failed to sign in:', error);
 
-      setErrorMessage('Something went wrong while creating your account.');
+      setErrorMessage('Something went wrong while while signing in.');
     } finally {
       setIsLoading(false);
     }
-
-    navigate('/');
   };
 
   return (
@@ -91,14 +91,6 @@ export const Login = () => {
           </div>
 
           <div className={styles.formActions}>
-            <label className={styles.rememberMe}>
-              <input
-                type='checkbox'
-                name='remember'
-                className={styles.checkbox}
-              />
-              <span>Remember me</span>
-            </label>
             <Link to='/forgot-password' className={styles.link}>
               Forgot password?
             </Link>
