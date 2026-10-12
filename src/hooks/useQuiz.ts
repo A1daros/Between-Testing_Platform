@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import type { Answer, QuestionWithAnswers } from '../types/database';
 
-export const useQuiz = (questions: QuestionWithAnswers[]) => {
+type WithId = { id: number };
+
+export const useQuiz = <TQuestion extends WithId>(questions: TQuestion[]) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
@@ -15,7 +16,7 @@ export const useQuiz = (questions: QuestionWithAnswers[]) => {
     ? (userAnswers[currentQuestion.id] ?? null)
     : null;
 
-  const handleChooseAnswer = (answer: Answer) => {
+  const handleChooseAnswer = (answer: WithId) => {
     if (!currentQuestion) {
       return;
     }

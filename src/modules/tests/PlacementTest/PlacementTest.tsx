@@ -1,18 +1,24 @@
 import styles from './PlacementTest.module.scss';
 import { useEffect, useState } from 'react';
-import type { Level, QuestionWithAnswers } from '../../../types/database';
 import { Loader } from '../../Loader';
 import { useNavigate } from 'react-router-dom';
 import { useQuiz } from '../../../hooks/useQuiz';
-import { calculateLevel } from '../../../utils/calculateLevel';
 import { getPlacementTest } from '../../../services/questions';
-import { getLevelsById } from '../../../services/levels';
+import type {
+  PlacementQuestion,
+  PlacementResult,
+} from '../../../types/database';
+import { calculatePlacementLevel } from '../../../services/placement';
 
 export const PlacementTest = () => {
-  const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
-  const [levels, setLevels] = useState<Level[]>([]);
+  const [questions, setQuestions] = useState<PlacementQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [placementResult, setPlacementResult] =
+    useState<PlacementResult | null>(null);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [resultError, setResultError] = useState('');
 
   const {
     currentQuestion,
@@ -34,12 +40,9 @@ export const PlacementTest = () => {
       setLoading(true);
       setErrorMessage('');
       try {
-        const [questionsData, levelsData] = await Promise.all([
-          getPlacementTest(),
-          getLevelsById(),
-        ]);
+        const questionsData = await getPlacementTest();
+
         setQuestions(questionsData);
-        setLevels(levelsData);
       } catch (error) {
         console.error('Failed to load quiz data!', error);
         setErrorMessage('Failed to load quiz!');
@@ -50,6 +53,43 @@ export const PlacementTest = () => {
 
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (!isFinished) {
+      return;
+    }
+
+    let isCancelled = false;
+
+    const loadResult = async () => {
+      setIsCalculating(true);
+      setResultError('');
+
+      try {
+        const result = await calculatePlacementLevel(userAnswers);
+
+        if (!isCancelled) {
+          setPlacementResult(result);
+        }
+      } catch (error) {
+        console.error('Failed to calculate placement level:', error);
+
+        if (!isCancelled) {
+          setResultError('Failed to calculate your level. Please try again.');
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsCalculating(false);
+        }
+      }
+    };
+
+    loadResult();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [isFinished, userAnswers]);
 
   if (loading) {
     return <Loader />;
@@ -77,14 +117,23 @@ export const PlacementTest = () => {
     );
   }
 
-  if (isFinished) {
-    const getLevelName = (code: string) => {
-      const level = levels.find((level) => level.code === code);
-      return level ? `${level.title} ${code}` : code;
-    };
+  if (isFinished && resultError) {
+    return (
+      <main className={styles.page}>
+        <div className={styles.container}>
+          <div className={styles.error}>{resultError}</div>
+        </div>
+      </main>
+    );
+  }
 
-    const level = calculateLevel(questions, userAnswers);
-    const levelName = getLevelName(level);
+  if (isFinished && isCalculating) {
+    return <Loader />;
+  }
+
+  if (isFinished) {
+    const level = placementResult?.level_code;
+    const levelName = `${placementResult?.level_title} ${level}`;
 
     return (
       <main className={styles.page}>

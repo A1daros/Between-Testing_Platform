@@ -201,3 +201,28 @@ export interface Teacher {
   specialties: string;
   photo_url: string;
 }
+
+export interface PlacementAnswer {
+  id: number;
+  answer_text: string;
+}
+
+export interface PlacementQuestion {
+  id: number;
+  question: string;
+  description: string | null;
+  sort_order: number;
+  tests: {
+    title: string;
+    description: string | null;
+  };
+  levels: {
+    code: string | null;
+  } | null;
+  answers: PlacementAnswer[];
+}
+
+export interface PlacementResult {
+  level_code: string;
+  level_title: string;
+}

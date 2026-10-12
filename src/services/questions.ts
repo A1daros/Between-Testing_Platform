@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { QuestionWithAnswers } from '../types/database';
+import type { PlacementQuestion, QuestionWithAnswers } from '../types/database';
 
 export const getQuestionsWithAnswersByTestId = async (
   testId: number,
@@ -25,16 +25,12 @@ export const getQuestionsWithAnswersByTestId = async (
   return data;
 };
 
-export const getPlacementTest = async (): Promise<QuestionWithAnswers[]> => {
-  const { data, error } = await supabase
-    .from('questions')
-    .select(`*, answers(*), tests:test_id!inner(*), levels(code)`)
-    .eq('tests.test_type', 'placement_test')
-    .order('sort_order', { ascending: true });
+export const getPlacementTest = async (): Promise<PlacementQuestion[]> => {
+  const { data, error } = await supabase.rpc('get_placement_questions');
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data || [];
+  return (data as PlacementQuestion[] | null) ?? [];
 };

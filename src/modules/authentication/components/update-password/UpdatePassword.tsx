@@ -2,6 +2,8 @@ import { useState, type FormEvent } from 'react';
 import styles from './UpdatePassword.module.scss';
 import { supabase } from '../../../../lib/supabase';
 import { Link } from 'react-router-dom';
+import { getPasswordErrorMessage } from '../../../../utils/getPasswordErrorMessage';
+import { MIN_PASSWORD_LENGTH } from '../../../../constants/constants';
 
 export const UpdatePassword = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -19,8 +21,8 @@ export const UpdatePassword = () => {
       setErrorMessage('Passwords do not match.');
       return;
     }
-    if (newPassword.length < 6) {
-      setErrorMessage('Password must contain at least 6 characters.');
+    if (newPassword.length < 10) {
+      setErrorMessage('Password must contain at least 10 characters.');
       return;
     }
 
@@ -32,7 +34,7 @@ export const UpdatePassword = () => {
       });
 
       if (error) {
-        setErrorMessage(error.message);
+        setErrorMessage(getPasswordErrorMessage(error));
         return;
       }
 
@@ -97,7 +99,7 @@ export const UpdatePassword = () => {
                     value={newPassword}
                     placeholder=' '
                     required
-                    minLength={6}
+                    minLength={MIN_PASSWORD_LENGTH}
                     autoComplete='new-password'
                     className={styles.input}
                     onChange={(event) => setNewPassword(event.target.value)}
@@ -118,7 +120,7 @@ export const UpdatePassword = () => {
                     value={confirmPassword}
                     placeholder=' '
                     required
-                    minLength={6}
+                    minLength={MIN_PASSWORD_LENGTH}
                     autoComplete='new-password'
                     className={styles.input}
                     onChange={(event) => setConfirmPassword(event.target.value)}

@@ -22,7 +22,7 @@ personal student profiles, and an administrative panel for teachers.
 - **Authentication and roles** — registration/login via Supabase Auth, user/admin access separation
   via RLS policies at the DB level
 - **Placement Test** — free entrance test without registration that determines the user's level
-  (A1–B2) using a sequential, threshold-based algorithm
+  (A1–B2) using a sequential, threshold-based algorithm calculated on the client
 - **Flexible test structure** — tests are divided into parts (`test_parts`) with
   their own ordering and instructions, with support for reading passages in questions
 - **Test timer** — a countdown limits the time available to complete a test

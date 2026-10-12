@@ -4,6 +4,7 @@ import type {
   StudentDetails,
   StudentProfile,
 } from '../types/database';
+import { getPasswordErrorMessage } from '../utils/getPasswordErrorMessage';
 
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
@@ -52,7 +53,7 @@ export const updatePassword = async (newPassword: string) => {
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error(getPasswordErrorMessage(error));
   }
 };
 

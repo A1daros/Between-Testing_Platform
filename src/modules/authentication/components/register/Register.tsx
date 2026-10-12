@@ -2,6 +2,8 @@ import styles from './Register.module.scss';
 import { useState, type FormEvent } from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { useNavigate } from 'react-router-dom';
+import { getPasswordErrorMessage } from '../../../../utils/getPasswordErrorMessage';
+import { MIN_PASSWORD_LENGTH } from '../../../../constants/constants';
 
 export const Register = () => {
   const [name, setName] = useState('');
@@ -34,11 +36,7 @@ export const Register = () => {
       });
 
       if (error) {
-        setErrorMessage(
-          error.code === 'weak_password'
-            ? 'Password is too weak. Use at least 10 characters and avoid common passwords.'
-            : error.message,
-        );
+        setErrorMessage(getPasswordErrorMessage(error));
         return;
       }
 
@@ -136,7 +134,7 @@ export const Register = () => {
               value={password}
               placeholder=' '
               required
-              minLength={10}
+              minLength={MIN_PASSWORD_LENGTH}
               autoComplete='new-password'
               className={styles.input}
               onChange={(event) => setPassword(event.target.value)}
