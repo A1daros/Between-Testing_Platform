@@ -218,7 +218,7 @@ export const ContactUs = () => {
             <div className={styles.infoBlock}>
               <span className={styles.infoTitle}>3. Старт навчання</span>
               <p className={styles.infoDescription}>
-                Реєстраціяя та початок навчання.
+                Реєстрація та початок навчання.
               </p>
             </div>
           </div>

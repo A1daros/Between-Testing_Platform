@@ -93,7 +93,10 @@ export const ResultsOverview = () => {
       <div className={styles.container}>
         <h2 className={styles.errorTitle}>Ooops, {errorMessage}</h2>
         <p className={styles.errorDescription}>Try again later!</p>
-        <button className={styles.errorButton} onClick={() => {}}>
+        <button
+          className={styles.errorButton}
+          onClick={() => window.location.reload()}
+        >
           Reload!
         </button>
       </div>
