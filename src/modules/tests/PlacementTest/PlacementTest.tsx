@@ -80,7 +80,7 @@ export const PlacementTest = () => {
   if (isFinished) {
     const getLevelName = (code: string) => {
       const level = levels.find((level) => level.code === code);
-      return `${level?.title} ${code}`;
+      return level ? `${level.title} ${code}` : code;
     };
 
     const level = calculateLevel(questions, userAnswers);
