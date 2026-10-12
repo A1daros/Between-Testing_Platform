@@ -7,7 +7,9 @@ export const useCountdown = (durationSeconds: number, onExpire: () => void) => {
 
   useEffect(() => {
     onExpireRef.current = onExpire;
+  }, [onExpire]);
 
+  useEffect(() => {
     if (durationSeconds <= 0) {
       return;
     }
