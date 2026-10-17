@@ -28,3 +28,6 @@ supabase/.temp/
 # Generated CSS
 src/**/*.css
 src/**/*.css.map
+
+.vercel
+.env*

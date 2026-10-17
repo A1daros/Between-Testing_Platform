@@ -24,6 +24,7 @@ import { Loader } from './modules/Loader';
 import { ROUTES } from './constants/routes';
 import { ChunkError } from './modules/shared/components/ChunkError';
 import { ProfilePage } from './modules/profile';
+import { Analytics } from '@vercel/analytics/react';
 
 const AdminRoutes = lazy(() =>
   import('./modules/admin/AdminRoutes').then((module) => ({
@@ -87,6 +88,7 @@ export const App = () => {
           </ErrorBoundary>
         </main>
 
+        <Analytics />
         <Footer />
       </div>
     </BrowserRouter>
