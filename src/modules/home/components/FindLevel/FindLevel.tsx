@@ -6,7 +6,7 @@ export const FindLevel = () => {
     <section className={styles.page}>
       <div className={styles.wrapper}>
         <div className={styles.descriptionWrapper}>
-          <h3 className={styles.title}>Test your English</h3>
+          <h2 className={styles.title}>Test your English</h2>
           <p className={styles.description}>
             Find your approximate English level with a short placement test. No
             registration required.

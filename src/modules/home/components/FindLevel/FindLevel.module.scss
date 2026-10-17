@@ -33,10 +33,10 @@
   margin: 0;
   color: $text-main;
 
-  @include h3-font-mobile;
+  @include h2-font-mobile;
 
   @media (min-width: $breakpoint-s) {
-    @include h3-font;
+    @include h2-font;
   }
 }
 
