@@ -111,7 +111,7 @@ export const ResultDetailsPage = () => {
           <section className={styles.answersSection}>
             {resultDetails.map((item, index) => {
               const correctAnswer = item.questions.answers?.find(
-                (answer) => answer.is_correct,
+                (answer) => answer.id === item.correct_answer_id,
               );
 
               const prevItem = resultDetails[index - 1];

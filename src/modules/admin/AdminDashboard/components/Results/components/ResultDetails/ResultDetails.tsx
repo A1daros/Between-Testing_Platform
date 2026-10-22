@@ -82,7 +82,7 @@ export const ResultDetailsOverview = () => {
       <div className={styles.questionsList}>
         {resultDetails.map((item, index) => {
           const correctAnswer = item.questions.answers?.find(
-            (ans) => ans.is_correct,
+            (answer) => answer.id === item.correct_answer_id,
           );
           const isCorrect = item.answers.id === correctAnswer?.id;
 
