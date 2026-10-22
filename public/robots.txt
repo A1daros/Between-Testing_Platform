@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Закриті розділи (потребують входу) та службові сторінки
+Disallow: /admin
+Disallow: /tests
+Disallow: /my-results
+Disallow: /profile
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /update-password
+
+Sitemap: https://between-testing-platform.vercel.app/sitemap.xml
