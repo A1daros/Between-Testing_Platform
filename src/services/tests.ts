@@ -1,5 +1,10 @@
 import { supabase } from '../lib/supabase';
-import type { EditTest, Test, TestWithLevels } from '../types/database';
+import type { EditTest, PublicAnswer, Question, Test, TestWithLevels } from '../types/database';
+import { getCorrectAnswers } from './answers';
+
+type TestRow = Omit<EditTest, 'questions'> & {
+  questions: (Question & { answers: PublicAnswer[] })[];
+};
 
 export const getTests = async (): Promise<Test[]> => {
   const { data, error } = await supabase
@@ -17,7 +22,9 @@ export const getTests = async (): Promise<Test[]> => {
 export const getTestById = async (testId: number): Promise<EditTest> => {
   const { data, error } = await supabase
     .from('tests')
-    .select(`*, test_parts(*), questions(*, answers(*))`)
+    .select(
+      `*, test_parts(*), questions(*, answers(id, question_id, answer_text))`,
+    )
     .eq('id', testId)
     .single();
 
@@ -29,7 +36,21 @@ export const getTestById = async (testId: number): Promise<EditTest> => {
     throw new Error('Test not found');
   }
 
-  return data;
+  const test = data as TestRow;
+
+  const correctAnswers = await getCorrectAnswers(testId);
+  const correctIds = new Set(correctAnswers.map((item) => item.answer_id));
+
+  return {
+    ...test,
+    questions: test.questions.map((question) => ({
+      ...question,
+      answers: question.answers.map((answer) => ({
+        ...answer,
+        is_correct: correctIds.has(answer.id),
+      })),
+    })),
+  };
 };
 
 export const getTestsWithLevel = async (): Promise<TestWithLevels[]> => {

@@ -7,7 +7,7 @@ export const getQuestionsWithAnswersByTestId = async (
   const { data, error } = await supabase
     .from('questions')
     .select(
-      `*, answers(*), 
+      `*, answers(id, question_id, answer_text), 
         tests(title,
         description,
         timer_enabled, 

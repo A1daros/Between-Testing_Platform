@@ -18,27 +18,6 @@ export interface Test {
   } | null;
 }
 
-export interface EditTest {
-  id: number;
-  title: string;
-  description: string;
-  level_id: number;
-  timer_enabled: boolean;
-  timer_type: 'test' | 'question' | null;
-  timer_duration: number | null;
-
-  test_parts: {
-    id: number;
-    title: string;
-    instruction: string;
-    points: number;
-  }[];
-
-  questions: (Question & {
-    answers: Answer[];
-  })[];
-}
-
 export interface TestWithLevels extends Test {
   levels: {
     code: string;
@@ -47,6 +26,28 @@ export interface TestWithLevels extends Test {
   questions: {
     count: number;
   } | null;
+}
+
+export interface Level {
+  id: number;
+  code: string;
+  title: string;
+  sort_order: number;
+}
+
+export interface PublicAnswer {
+  id: number;
+  question_id: number;
+  answer_text: string;
+}
+
+export interface Answer extends PublicAnswer {
+  is_correct: boolean;
+}
+
+export interface CorrectAnswer {
+  question_id: number;
+  answer_id: number;
 }
 
 export interface Question {
@@ -60,7 +61,7 @@ export interface Question {
 }
 
 export interface QuestionWithAnswers extends Question {
-  answers: Answer[];
+  answers: PublicAnswer[];
 
   tests: {
     title: string;
@@ -80,13 +81,6 @@ export interface QuestionWithAnswers extends Question {
   levels: {
     code: string;
   } | null;
-}
-
-export interface Answer {
-  id: number;
-  question_id: number;
-  answer_text: string;
-  is_correct: boolean;
 }
 
 export interface ResultInput {
@@ -121,7 +115,65 @@ export interface ResultDetails {
   answer_id: number;
 
   questions: QuestionWithAnswers;
-  answers: Answer;
+  answers: PublicAnswer;
+  correct_answer_id: number | null;
+}
+
+export interface SaveQuizResultInput {
+  testId: number;
+  userAnswers: Record<number, number>;
+}
+
+export interface SubmitQuizResult {
+  result_id: number;
+  score: number;
+  total: number;
+}
+
+export interface PlacementAnswer {
+  id: number;
+  answer_text: string;
+}
+
+export interface PlacementQuestion {
+  id: number;
+  question: string;
+  description: string | null;
+  sort_order: number;
+  tests: {
+    title: string;
+    description: string | null;
+  };
+  levels: {
+    code: string | null;
+  } | null;
+  answers: PlacementAnswer[];
+}
+
+export interface PlacementResult {
+  level_code: string;
+  level_title: string;
+}
+
+export interface EditTest {
+  id: number;
+  title: string;
+  description: string;
+  level_id: number;
+  timer_enabled: boolean;
+  timer_type: 'test' | 'question' | null;
+  timer_duration: number | null;
+
+  test_parts: {
+    id: number;
+    title: string;
+    instruction: string;
+    points: number;
+  }[];
+
+  questions: (Question & {
+    answers: Answer[];
+  })[];
 }
 
 export interface StudentResults {
@@ -140,17 +192,6 @@ export interface StudentDetails {
   birth_date: string;
 
   results: StudentResults[];
-}
-
-export interface SaveQuizResultInput {
-  testId: number;
-  userAnswers: Record<number, number>;
-}
-
-export interface SubmitQuizResult {
-  result_id: number;
-  score: number;
-  total: number;
 }
 
 export interface Profile {
@@ -185,13 +226,6 @@ export interface StudentProfile {
     | null;
 }
 
-export interface Level {
-  id: number;
-  code: string;
-  title: string;
-  sort_order: number;
-}
-
 export interface Teacher {
   id: string;
   name: string;
@@ -200,29 +234,4 @@ export interface Teacher {
   experience: string;
   specialties: string;
   photo_url: string;
-}
-
-export interface PlacementAnswer {
-  id: number;
-  answer_text: string;
-}
-
-export interface PlacementQuestion {
-  id: number;
-  question: string;
-  description: string | null;
-  sort_order: number;
-  tests: {
-    title: string;
-    description: string | null;
-  };
-  levels: {
-    code: string | null;
-  } | null;
-  answers: PlacementAnswer[];
-}
-
-export interface PlacementResult {
-  level_code: string;
-  level_title: string;
 }

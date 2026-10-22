@@ -22,7 +22,7 @@ personal student profiles, and an administrative panel for teachers.
 - **Authentication and roles** — registration/login via Supabase Auth, user/admin access separation
   via RLS policies at the DB level
 - **Placement Test** — free entrance test without registration that determines the user's level
-  (A1–B2) using a sequential, threshold-based algorithm calculated on the client
+  (A1–B2) using a sequential, threshold-based algorithm calculated on the server
 - **Flexible test structure** — tests are divided into parts (`test_parts`) with
   their own ordering and instructions, with support for reading passages in questions
 - **Test timer** — a countdown limits the time available to complete a test
@@ -78,14 +78,9 @@ their own data, while admins get elevated access via role-based policies.
 
 ## ⚙️ Running locally
 
-**Test account:**
-
-- email: demo@between-lms.com
-- password: demo12345
-
 **How to clone:**
 
-- git clone https://github.com/A1daros/between-lms.git
+- git clone https://github.com/A1daros/Between-Testing_Platform
 - cd between-lms
 - npm install
 - npm run dev
@@ -97,5 +92,4 @@ their own data, while admins get elevated access via role-based policies.
 
 ## 📍 Roadmap
 
-- [ ] Unified styles across all test-taking pages (test list, question page, results).
-- [ ] Refactoring the structure, optimizing and converting local states to Redux Toolkit
+- [ ] Wait for domen to update functions using Uptash and Resend
