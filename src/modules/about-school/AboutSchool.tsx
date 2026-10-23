@@ -161,7 +161,6 @@ export const AboutSchool = () => {
 
           <ProgramsSection
             programsData={programs}
-            onRegister={() => navigate('/register')}
           />
 
           <section className={styles.postsSection}>

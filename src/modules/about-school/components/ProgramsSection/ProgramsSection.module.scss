@@ -138,6 +138,10 @@
   padding: 14px;
   background-color: $accent;
   color: $background;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   border-radius: 8px;
   cursor: pointer;

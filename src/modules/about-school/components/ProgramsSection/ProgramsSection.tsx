@@ -1,16 +1,13 @@
 import type React from 'react';
 import type { Program } from '../../../../types/landing';
 import styles from './ProgramsSection.module.scss';
+import { Link } from 'react-router-dom';
 
 type Props = {
   programsData: Program[];
-  onRegister: () => void;
 };
 
-export const ProgramsSection: React.FC<Props> = ({
-  programsData,
-  onRegister,
-}) => {
+export const ProgramsSection: React.FC<Props> = ({ programsData }) => {
   return (
     <section className={styles.programsSection}>
       <div className={styles.sectionHeader}>
@@ -51,9 +48,13 @@ export const ProgramsSection: React.FC<Props> = ({
               ))}
             </div>
 
-            <button className={styles.cardButton} onClick={onRegister}>
+            <Link
+              to='https://www.instagram.com/school.between?stkn=eDk5a3F0emltaWRl'
+              className={styles.cardButton}
+              target='_blank'
+            >
               Записатися на рівень
-            </button>
+            </Link>
           </article>
         ))}
       </div>
