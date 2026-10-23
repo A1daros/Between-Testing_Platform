@@ -28,7 +28,7 @@ export const MyResults = () => {
         setResults(data);
       } catch (error) {
         console.error('Failed to load results', error);
-        setErrorMessage('Failed to load results!');
+        setErrorMessage('Не вдалось завантажити результати!');
       } finally {
         setLoading(false);
       }
@@ -54,19 +54,19 @@ export const MyResults = () => {
   return (
     <main className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}>My results</h1>
+        <h1 className={styles.pageTitle}>Мої результати</h1>
 
         <div className={styles.wrapper}>
           <section className={styles.heroSection}>
             <span className={styles.sectionLabel}>BETWEEN / MY RESULTS</span>
-            <h2 className={styles.sectionTitle}>Track Your Progress</h2>
+            <h2 className={styles.sectionTitle}>Відстежуйте свій прогрес</h2>
 
             <p className={styles.sectionDescription}>
-              Your test history and learning progress.
+              Ваша історія тестувань і прогрес у навчанні.
             </p>
 
             <div className={styles.heroMeta}>
-              <span>COMPLETED TESTS</span>
+              <span>ЗАВЕРШЕНІ ТЕСТИ</span>
 
               <span className={styles.heroBadge}>
                 {String(results.length).padStart(2, '0')}
@@ -93,11 +93,11 @@ export const MyResults = () => {
 
                       <div className={styles.testInfo}>
                         <h3 className={styles.testTitle}>
-                          {result.tests?.title ?? 'Unknown test'}
+                          {result.tests?.title ?? 'Невідомий тест'}
                         </h3>
 
                         <span className={styles.testType}>
-                          {result.tests?.test_type ?? 'TEST'}
+                          {result.tests?.test_type ?? 'ТЕСТ'}
                         </span>
                       </div>
 
@@ -125,7 +125,7 @@ export const MyResults = () => {
                       <Link
                         to={`/my-results/${result.id}`}
                         className={styles.resultLink}
-                        aria-label={`View results for ${result.tests?.title ?? 'Unknown test'}`}
+                        aria-label={`View results for ${result.tests?.title ?? 'Невідомий тест'}`}
                       >
                         <span>View</span>
                         <span className={styles.arrow} aria-hidden='true'>
@@ -142,15 +142,15 @@ export const MyResults = () => {
               <span className={styles.emptyNumber}>00</span>
 
               <div>
-                <h2 className={styles.emptyTitle}>No results yet</h2>
+                <h2 className={styles.emptyTitle}>Поки що немає результатів</h2>
 
                 <p className={styles.emptyText}>
-                  Complete your first test to see your results here.
+                  Пройдіть свій перший тест, щоб побачити результати тут.
                 </p>
               </div>
 
               <Link to='/tests' className={styles.button}>
-                Choose a test <span aria-hidden='true'>→</span>
+                Виберіть тест <span aria-hidden='true'>→</span>
               </Link>
             </section>
           )}

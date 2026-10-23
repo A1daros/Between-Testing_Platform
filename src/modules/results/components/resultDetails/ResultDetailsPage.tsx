@@ -25,7 +25,7 @@ export const ResultDetailsPage = () => {
         setResultDetails(data);
       } catch (error) {
         console.error('Failed to load result answers:', error);
-        setErrorMessage('Failed to load result details!');
+        setErrorMessage('Не вдалось завантажити деталі результату!');
       } finally {
         setLoading(false);
       }
@@ -60,14 +60,14 @@ export const ResultDetailsPage = () => {
         <div className={styles.errorCard}>
           <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
 
-          <h2 className={styles.errorText}>No result details found</h2>
+          <h2 className={styles.errorText}>{errorMessage}</h2>
 
           <button
             type='button'
             className={styles.button}
             onClick={() => navigate(-1)}
           >
-            Go back →
+            Повернутися назад
           </button>
         </div>
       </main>
@@ -93,7 +93,7 @@ export const ResultDetailsPage = () => {
                 className={styles.backButton}
                 onClick={() => navigate(-1)}
               >
-                ← Go back
+                Повернутися назад
               </button>
             </div>
 
@@ -153,7 +153,7 @@ export const ResultDetailsPage = () => {
 
                   <article className={styles.questionBlock}>
                     <div className={styles.questionMeta}>
-                      <span>QUESTION</span>
+                      <span>ЗАПИТАННЯ</span>
 
                       <span aria-label={`Question number ${index + 1}`}>
                         {String(index + 1).padStart(2, '0')}
@@ -172,7 +172,9 @@ export const ResultDetailsPage = () => {
                             : styles.answerIncorrect
                         }`}
                       >
-                        <span className={styles.answerLabel}>YOUR ANSWER</span>
+                        <span className={styles.answerLabel}>
+                          ВАША ВІДПОВІДЬ
+                        </span>
 
                         <p className={styles.answerText}>
                           {item.answers.answer_text}
@@ -183,7 +185,7 @@ export const ResultDetailsPage = () => {
                         className={`${styles.answerBlock} ${styles.correctAnswer}`}
                       >
                         <span className={styles.answerLabel}>
-                          CORRECT ANSWER
+                          ПРАВИЛЬНА ВІДПОВІДЬ
                         </span>
 
                         <p className={styles.answerText}>
@@ -203,7 +205,7 @@ export const ResultDetailsPage = () => {
               className={styles.button}
               onClick={() => navigate('/my-results')}
             >
-              Back to my results
+              Повернутися до моїх результатів
             </button>
           </section>
         </div>

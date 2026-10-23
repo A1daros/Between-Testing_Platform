@@ -1,5 +1,6 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
+@use '../../styles/mixins/auth-form' as *;
 
 .page {
   background-color: $background;
@@ -43,4 +44,12 @@
   @media (min-width: $breakpoint-l) {
     margin: 56px 0;
   }
+}
+
+.errorCard {
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
 }

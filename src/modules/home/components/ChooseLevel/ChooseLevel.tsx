@@ -1,28 +1,13 @@
 import { Link } from 'react-router-dom';
 import styles from './ChooseLevel.module.scss';
-import { useEffect, useState } from 'react';
 import type { Level } from '../../../../types/database';
-import { getLevelsById } from '../../../../services/levels';
 
 type Props = {
   title: string;
+  levels: Level[];
 };
 
-export const ChooseLevel: React.FC<Props> = ({ title }) => {
-  const [levels, setLevels] = useState<Level[]>([]);
-
-  useEffect(() => {
-    const loadLevels = async () => {
-      try {
-        const data = await getLevelsById();
-        setLevels(data);
-      } catch (error) {
-        console.error('Failed to load levels:', error);
-      }
-    };
-    loadLevels();
-  }, []);
-
+export const ChooseLevel: React.FC<Props> = ({ title, levels }) => {
   return (
     <div className={styles.page}>
       <h2 className={styles.title}>{title}</h2>

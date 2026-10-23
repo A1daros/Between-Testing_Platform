@@ -31,7 +31,9 @@ export const Login = () => {
     } catch (error) {
       console.error('Failed to sign in:', error);
 
-      setErrorMessage('Something went wrong while while signing in.');
+      setErrorMessage(
+        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +71,7 @@ export const Login = () => {
                 onChange={(event) => setEmail(event.target.value)}
               />
               <label htmlFor='email' className={styles.inputLabel}>
-                Email
+                Електронна пошта
               </label>
             </div>
 

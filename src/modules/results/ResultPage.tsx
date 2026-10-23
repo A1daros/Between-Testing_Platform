@@ -10,14 +10,14 @@ export const ResultPage = () => {
     return (
       <main className={styles.page}>
         <div className={styles.errorCard}>
-          <h2 className={styles.errorText}>No result data found</h2>
+          <h2 className={styles.errorText}>Не знайдено жодного результату</h2>
 
           <button
             type='button'
             className={styles.button}
             onClick={() => navigate('/')}
           >
-            Back to home →
+            Повернутись на головну →
           </button>
         </div>
       </main>
@@ -38,22 +38,22 @@ export const ResultPage = () => {
             <div className={styles.resultHeader}>
               <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
 
-              <span className={styles.resultStatus}>TEST COMPLETED</span>
+              <span className={styles.resultStatus}>ТЕСТ ЗАВЕРШЕНО</span>
             </div>
 
             <div className={styles.introWrapper}>
               <div className={styles.resultIntro}>
                 <div className={styles.introContent}>
-                  <h2 className={styles.introTitle}>Quiz completed!</h2>
+                  <h2 className={styles.introTitle}>КВІЗ ЗАВЕРШЕНО!</h2>
 
                   <p className={styles.introDescription}>
-                    Your test has been completed. Here is your result.
+                    Ваш тест завершено. Ось ваш результат.
                   </p>
                 </div>
               </div>
 
               <div className={styles.scoreSection}>
-                <span className={styles.scoreLabel}>YOUR SCORE</span>
+                <span className={styles.scoreLabel}>ВАШ РЕЗУЛЬТАТ</span>
 
                 <div
                   className={styles.scoreValue}
@@ -73,14 +73,15 @@ export const ResultPage = () => {
             <div className={styles.resultMessage}>
               <div className={styles.messageContent}>
                 <p className={styles.subtext}>
-                  Every test is not just about the result. It is about
-                  understanding where you are now and what comes next.
+                  Будь-яке випробування — це не лише результат. Це розуміння
+                  того, де ви перебуваєте зараз і що чекає попереду.
                 </p>
 
                 <p className={styles.subtext}>
-                  You can view more information and detailed analytics on {' '}
+                  Ви можете переглянути більше інформації та детальну аналітику
+                  на{' '}
                   <Link to='/my-results' className={styles.inlineLink}>
-                    your results page.
+                    ваша сторінка результатів.
                   </Link>
                 </p>
               </div>
@@ -95,7 +96,7 @@ export const ResultPage = () => {
                   navigate(`/tests/${testId}`);
                 }}
               >
-                Try again
+                Спробуйте ще раз
               </button>
 
               <button
@@ -105,7 +106,7 @@ export const ResultPage = () => {
                   navigate('/');
                 }}
               >
-                Back to home
+                Повернутися на головну
               </button>
             </footer>
           </section>

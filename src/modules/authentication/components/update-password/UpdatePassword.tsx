@@ -18,11 +18,11 @@ export const UpdatePassword = () => {
     setErrorMessage('');
 
     if (newPassword !== confirmPassword) {
-      setErrorMessage('Passwords do not match.');
+      setErrorMessage('Паролі не збігаються.');
       return;
     }
     if (newPassword.length < 10) {
-      setErrorMessage('Password must contain at least 10 characters.');
+      setErrorMessage('Пароль має містити щонайменше 10 символів.');
       return;
     }
 
@@ -45,7 +45,9 @@ export const UpdatePassword = () => {
     } catch (error) {
       console.error('Failed to update password:', error);
 
-      setErrorMessage('Something went wrong. Please try again later.');
+      setErrorMessage(
+        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +68,7 @@ export const UpdatePassword = () => {
             </p>
 
             <Link to='/login' className={styles.btnSecondary}>
-              Go to sign in
+              Перейти до входу
             </Link>
           </div>
         ) : (

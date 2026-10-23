@@ -29,7 +29,9 @@ export const ForgotPassword = () => {
     } catch (error) {
       console.error('Failed to send password reset email:', error);
 
-      setErrorMessage('Something went wrong. Please try again later.');
+      setErrorMessage(
+        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -88,7 +90,7 @@ export const ForgotPassword = () => {
                 />
 
                 <label htmlFor='reset-email' className={styles.inputLabel}>
-                  Email
+                  Електронна пошта
                 </label>
               </div>
 
@@ -102,7 +104,7 @@ export const ForgotPassword = () => {
             </form>
 
             <Link to='/login' className={styles.backLink}>
-              ← Повернутися до входу
+              Повернутися до входу
             </Link>
           </>
         )}

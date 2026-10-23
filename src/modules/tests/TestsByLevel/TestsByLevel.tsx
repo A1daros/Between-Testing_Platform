@@ -23,7 +23,7 @@ export const TestsByLevel = () => {
         setTestsByLevel(data);
       } catch (error) {
         console.error('Failed to load tests:', error);
-        setErrorMessage('Failed to load test');
+        setErrorMessage('Не вдалось завантажити тести!');
       } finally {
         setLoading(false);
       }
@@ -82,17 +82,19 @@ export const TestsByLevel = () => {
               ))}
 
             <div className={styles.heroContent}>
-              <h2 className={styles.heroTitle}>Check your English skills</h2>
+              <h2 className={styles.heroTitle}>
+                Перевірте свої знання англійської мови
+              </h2>
 
               <p className={styles.heroDescription}>
-                Choose a test and discover your current level of English.
+                Оберіть тест і дізнайтеся свій поточний рівень англійської мови.
               </p>
             </div>
           </section>
 
           <section className={styles.testsSection}>
             <div className={styles.testsHeader}>
-              <span className={styles.testsLabel}>AVAILABLE TESTS</span>
+              <span className={styles.testsLabel}>ДОСТУПНІ ТЕСТИ</span>
 
               <span className={styles.testsCount}>
                 {String(testsByLevel.length).padStart(2, '0')}
@@ -136,9 +138,8 @@ export const TestsByLevel = () => {
                               className={styles.metaBadge}
                               aria-label={`Duration: ${test.timer_duration ?? 'unlimited'} seconds`}
                             >
-                              ⏱{' '}
                               {test.timer_duration !== null
-                                ? `${test.timer_duration}s `
+                                ? `${test.timer_duration}с `
                                 : ''}
                               {getDurationLabel(test)}
                             </span>
@@ -146,7 +147,8 @@ export const TestsByLevel = () => {
                               className={styles.metaBadge}
                               aria-label={`${questionCount} questions`}
                             >
-                              ❓ {questionCount} questions
+                              {questionCount}{' '}
+                              {questionCount > 4 ? 'питань' : 'питання'}
                             </span>
                           </div>
                         </div>
@@ -157,9 +159,7 @@ export const TestsByLevel = () => {
               </ul>
             ) : (
               <div className={styles.errorCard}>
-                <p className={styles.errorText}>
-                  No tests available for this level yet.
-                </p>
+                <p className={styles.errorText}>{errorMessage}</p>
               </div>
             )}
           </section>

@@ -22,7 +22,7 @@ export const TestsPage = () => {
         setTests(testsData);
       } catch (error) {
         console.error('Failed to load tests:', error);
-        setErrorMessage('Failed to load Test page!');
+        setErrorMessage('Не вдалось завантажити тести!');
       } finally {
         setLoading(false);
       }
@@ -48,21 +48,23 @@ export const TestsPage = () => {
   return (
     <main className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}>Find your Test</h1>
+        <h1 className={styles.pageTitle}>Знайдіть свій тест</h1>
 
         <div className={styles.wrapper}>
           <section className={styles.heroSection}>
             <span className={styles.sectionLabel}>BETWEEN / TESTS</span>
-            <h2 className={styles.sectionTitle}>Check your English skills</h2>
+            <h2 className={styles.sectionTitle}>
+              Перевірте свої знання англійської мови
+            </h2>
 
             <p className={styles.sectionDescription}>
-              Choose a test and discover your current level of English.
+              Оберіть тест і дізнайтеся свій поточний рівень англійської мови.
             </p>
           </section>
 
           <section className={styles.testsSection}>
             <div className={styles.testsHeader}>
-              <span className={styles.testsLabel}>AVAILABLE TESTS</span>
+              <span className={styles.testsLabel}>ДОСТУПНІ ТЕСТИ</span>
 
               <span className={styles.testsCount}>
                 {String(tests.length).padStart(2, '0')}
@@ -105,9 +107,8 @@ export const TestsPage = () => {
                             className={styles.metaBadge}
                             aria-label={`Duration: ${test.timer_duration ?? 'unlimited'} seconds`}
                           >
-                            ⏱{' '}
                             {test.timer_duration !== null
-                              ? `${test.timer_duration}s `
+                              ? `${test.timer_duration}с `
                               : ''}
                             {getDurationLabel(test)}
                           </span>
@@ -115,7 +116,8 @@ export const TestsPage = () => {
                             className={styles.metaBadge}
                             aria-label={`${questionCount} questions`}
                           >
-                            ❓ {questionCount} questions
+                            {questionCount}{' '}
+                            {questionCount > 4 ? 'питань' : 'питання'}
                           </span>
                         </div>
                       </div>

@@ -45,6 +45,11 @@ export const Register = () => {
         return;
       }
 
+      if (password.length < 10) {
+        setErrorMessage('Пароль має містити щонайменше 10 символів.');
+        return;
+      }
+
       setIsConfirmationModalOpen(true);
 
       setName('');
@@ -54,7 +59,9 @@ export const Register = () => {
     } catch (error) {
       console.error('Failed to sign up:', error);
 
-      setErrorMessage('Something went wrong while creating your account.');
+      setErrorMessage(
+        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -124,7 +131,7 @@ export const Register = () => {
               onChange={(event) => setEmail(event.target.value)}
             />
             <label htmlFor='reg-email' className={styles.inputLabel}>
-              Email
+              Електронна пошта
             </label>
           </div>
 

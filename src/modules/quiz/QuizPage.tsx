@@ -64,7 +64,7 @@ export const QuizPage = () => {
         }
       } catch (error) {
         console.error('Failed to load questions:', error);
-        setErrorMessage('Failed to load quiz!');
+        setErrorMessage('Не вдалося завантажити квіз!');
       } finally {
         setLoading(false);
       }
@@ -104,7 +104,7 @@ export const QuizPage = () => {
         });
       } catch (error) {
         console.error('Failed to save quiz results:', error);
-        setErrorMessage('Failed to save results!');
+        setErrorMessage('Не вдалося зберегти резульати!');
 
         isSavingRef.current = false;
 
@@ -148,7 +148,7 @@ export const QuizPage = () => {
     return (
       <main className={styles.page}>
         <div className={styles.errorCard}>
-          <p className={styles.errorText}>No questions found.</p>
+          <p className={styles.errorText}>Питання не знайдено.</p>
         </div>
       </main>
     );

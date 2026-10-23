@@ -30,7 +30,7 @@ export const ProfilePage = () => {
         setProfile(data);
       } catch (error) {
         console.error('Failed to load student profile', error);
-        setErrorMessage('Failed to load page!');
+        setErrorMessage('Не вдалось завантажити профіль!');
       } finally {
         setLoading(false);
       }
@@ -54,7 +54,7 @@ export const ProfilePage = () => {
   if (!profile) {
     return (
       <main className={styles.page}>
-        <p className={styles.infoMessage}>Profile not found.</p>
+        <p className={styles.infoMessage}>Профіль не знайдено.</p>
       </main>
     );
   }
