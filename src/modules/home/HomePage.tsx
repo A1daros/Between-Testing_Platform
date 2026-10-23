@@ -6,28 +6,17 @@ import { FindLevel } from './components/FindLevel/FindLevel.tsx';
 import { ContactUs } from './components/ContactUs/ContactUs.tsx';
 
 export const HomePage = () => {
-  // const [loading, setLoading] = useState(true);
-  // const [errorMessage, setErrorMessage] = useState('');
-
-  // if (loading) {
-  //   return <Loader />;
-  // }
-
-  // if (errorMessage) {
-  //   return <p>{errorMessage}</p>;
-  // }
-
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.hiddenTitle}>Wellcome to Between English Hub!</h1>
-        <h1 className={styles.title}>Wellcome to Between English Hub!</h1>
+        <h1 className={styles.hiddenTitle}>Ласкаво просимо до BETWEEN!</h1>
+        <h1 className={styles.title}>Ласкаво просимо до BETWEEN!</h1>
 
         <FindLevel />
 
         <PicturesSlider />
 
-        <ChooseLevel title='Select your level' />
+        <ChooseLevel title='Виберіть свій рівень' />
 
         <About />
 

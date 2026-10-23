@@ -58,11 +58,11 @@ export const UpdatePassword = () => {
           <div className={styles.successState}>
             <span className={styles.label}>BETWEEN / ACCOUNT</span>
 
-            <h2 className={styles.title}>Password updated</h2>
+            <h2 className={styles.title}>Пароль оновлено</h2>
 
             <p className={styles.description}>
-              Your password has been successfully updated. You can now sign in
-              with your new password.
+              Ваш пароль успішно оновлено. Тепер ви можете увійти,
+              використовуючи новий пароль.
             </p>
 
             <Link to='/login' className={styles.btnSecondary}>
@@ -74,10 +74,10 @@ export const UpdatePassword = () => {
             <header className={styles.header}>
               <span className={styles.label}>BETWEEN / ACCOUNT</span>
 
-              <h2 className={styles.title}>Create new password</h2>
+              <h2 className={styles.title}>Створити новий пароль</h2>
 
               <p className={styles.subtitle}>
-                Enter and confirm your new password.
+                Введіть і підтвердьте свій новий пароль.
               </p>
             </header>
 
@@ -106,7 +106,7 @@ export const UpdatePassword = () => {
                   />
 
                   <label htmlFor='new-password' className={styles.inputLabel}>
-                    New password
+                    Новий пароль
                   </label>
                 </div>
               </div>
@@ -130,7 +130,7 @@ export const UpdatePassword = () => {
                     htmlFor='confirm-password'
                     className={styles.inputLabel}
                   >
-                    Confirm password
+                    Підтвердити пароль
                   </label>
                 </div>
               </div>
@@ -140,7 +140,7 @@ export const UpdatePassword = () => {
                 className={styles.btnSubmit}
                 disabled={isLoading}
               >
-                {isLoading ? 'Updating password...' : 'Update password'}
+                {isLoading ? 'Виконується...' : 'Оновити пароль'}
               </button>
             </form>
           </>

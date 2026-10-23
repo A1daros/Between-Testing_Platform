@@ -41,9 +41,9 @@ export const Login = () => {
     <div className={styles.wrapper}>
       <div className={styles.loginContainer}>
         <div className={styles.header}>
-          <h2 className={styles.title}>Welcome back</h2>
+          <h2 className={styles.title}>З поверненням</h2>
           <p className={styles.subtitle}>
-            Enter your details to sign in to your account
+            Введіть свої дані, щоб увійти в обліковий запис
           </p>
         </div>
 
@@ -69,7 +69,7 @@ export const Login = () => {
                 onChange={(event) => setEmail(event.target.value)}
               />
               <label htmlFor='email' className={styles.inputLabel}>
-                Email Address
+                Email
               </label>
             </div>
 
@@ -85,14 +85,14 @@ export const Login = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
               <label htmlFor='password' className={styles.inputLabel}>
-                Password
+                Пароль
               </label>
             </div>
           </div>
 
           <div className={styles.formActions}>
             <Link to='/forgot-password' className={styles.link}>
-              Forgot password?
+              Забули пароль?
             </Link>
           </div>
 
@@ -101,14 +101,14 @@ export const Login = () => {
             className={styles.submitBtn}
             disabled={isLoading}
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? 'Виконується...' : 'Увійти'}
           </button>
         </form>
 
         <div className={styles.signupLink}>
-          Don't have an account?{' '}
+          Немаєте акаунту?{' '}
           <Link to='/register' className={styles.linkAccent}>
-            Create an account
+            Створіть обліковий запис
           </Link>
         </div>
       </div>

@@ -54,7 +54,7 @@ export const ContactUs = () => {
 
   return (
     <div className={styles.page}>
-      <h2 className={styles.title}>Contact us</h2>
+      <h2 className={styles.title}>Зв'язатися з нами</h2>
 
       <div className={styles.container}>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -71,7 +71,7 @@ export const ContactUs = () => {
                 required
               />
               <label htmlFor='first-name' className={styles.inputLabel}>
-                First name
+                Ім'я
               </label>
             </div>
 
@@ -87,7 +87,7 @@ export const ContactUs = () => {
                 required
               />
               <label htmlFor='last-name' className={styles.inputLabel}>
-                Last name
+                Прізвище
               </label>
             </div>
 
@@ -118,7 +118,7 @@ export const ContactUs = () => {
                 required
               />
               <label htmlFor='message' className={styles.inputLabel}>
-                Message
+                Повідомлення
               </label>
             </div>
           </div>
@@ -145,7 +145,8 @@ export const ContactUs = () => {
                 required
               />
               <span className={styles.checkboxDescription}>
-                I agree to the Terms of Service and Privacy Policy
+                Я погоджуюся з Умовами обслуговування та Політикою
+                конфіденційності
               </span>
             </label>
           </div>
@@ -158,7 +159,7 @@ export const ContactUs = () => {
             )}
             {isSuccess && (
               <div className={styles.successCard}>
-                <p className={styles.successText}>Message sent successfully!</p>
+                <p className={styles.successText}>Повідомлення успішно надіслано!</p>
               </div>
             )}
           </div>
@@ -168,14 +169,14 @@ export const ContactUs = () => {
             className={styles.submitBtn}
             disabled={isLoading}
           >
-            {isLoading ? 'Sending...' : 'Send Message'}
+            {isLoading ? 'Виконується...' : 'Надіслати повідомлення'}
           </button>
         </form>
 
         <div className={styles.additionalInfo}>
           <address className={styles.address}>
             <div className={styles.addressBlock}>
-              <span className={styles.addressTitle}>Phone:</span>
+              <span className={styles.addressTitle}>Тел:</span>
               <a href='tel:+380733060097' className={styles.addressDescription}>
                 +380 73 306 00 97
               </a>

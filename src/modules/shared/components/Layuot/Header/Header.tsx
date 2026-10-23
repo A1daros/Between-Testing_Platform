@@ -73,30 +73,30 @@ export const Header = () => {
           <ul className={styles.list} onClick={() => setIsMenuOpen(false)}>
             <li>
               <NavLink to='/' end className={getLinkClass}>
-                Home
+                Головна
               </NavLink>
             </li>
             <li>
               <NavLink to='/about-school' className={getLinkClass}>
-                About school
+                Про школу
               </NavLink>
             </li>
             <li>
               <NavLink to='/tests' className={getLinkClass}>
-                Tests
+                Тестування
               </NavLink>
             </li>
 
             {profile?.role === 'student' ? (
               <li>
                 <NavLink to='/my-results' className={getLinkClass}>
-                  My results
+                  Мої результати
                 </NavLink>
               </li>
             ) : profile?.role === 'admin' ? (
               <li>
                 <NavLink to='/admin' className={getLinkClass}>
-                  Admin dashboard
+                  Адмін панель
                 </NavLink>
               </li>
             ) : null}
@@ -104,7 +104,7 @@ export const Header = () => {
             {user && (
               <li>
                 <NavLink to={`/profile/${user?.id}`} className={getLinkClass}>
-                  Profile
+                  Профіль
                 </NavLink>
               </li>
             )}
@@ -112,13 +112,13 @@ export const Header = () => {
             {!user ? (
               <li>
                 <NavLink to='/login' className={getLinkClass}>
-                  Sign in
+                  Увійти
                 </NavLink>
               </li>
             ) : (
               <li>
                 <button onClick={handleSignOut} className={styles.logoutBtn}>
-                  Log out
+                  Вийти
                 </button>
               </li>
             )}
