@@ -1,5 +1,6 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
+@use '../../styles/mixins/auth-form' as *;
 
 .page {
   background-color: $background;
@@ -344,10 +345,22 @@
 
 .finalButton {
   @extend .button;
-  width: 100%;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include body-font;
 }
 
 .thankYouNote {
   color: $text-main;
   @include body-font;
+}
+
+.errorCard {
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
 }

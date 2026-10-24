@@ -1,20 +1,22 @@
 import styles from './AboutSchool.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { posts } from '../../data/posts.data.ts';
-import { programsData as programs } from '../../data/programs.data.ts';
 import { companyValues } from '../../data/companyValues.data.ts';
 
 import { TeachersSection } from './components/TeachersSection';
 import { ProgramsSection } from './components/ProgramsSection';
 import { PostList } from '../shared/components/PostList';
 import { useEffect, useState } from 'react';
-import type { Teacher } from '../../types/database.ts';
+import type { Program, ProgramFormat, Teacher } from '../../types/database.ts';
 import { loadTeachers } from '../../services/teachers.ts';
 import { Loader } from '../Loader/Loader.tsx';
+import { loadProgramFormats, loadPrograms } from '../../services/programs.ts';
 
 export const AboutSchool = () => {
   const [teacher, setTeacher] = useState<Teacher[]>([]);
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [programFormats, setProgramFormats] = useState<ProgramFormat[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -26,12 +28,19 @@ export const AboutSchool = () => {
       setErrorMessage('');
 
       try {
-        const data = await loadTeachers();
+        const [teachersData, programsData, programFormatsData] =
+          await Promise.all([
+            loadTeachers(),
+            loadPrograms(),
+            loadProgramFormats(),
+          ]);
 
-        setTeacher(data);
+        setTeacher(teachersData);
+        setPrograms(programsData);
+        setProgramFormats(programFormatsData);
       } catch (error) {
         console.error(error);
-        setErrorMessage('Failed to load teachers');
+        setErrorMessage('Не вдалось завантажити дані сторінки!');
       } finally {
         setIsLoading(false);
       }
@@ -43,6 +52,12 @@ export const AboutSchool = () => {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
+        {isLoading && <Loader />}
+        {errorMessage && (
+          <div className={styles.errorCard} role='alert' aria-live='assertive'>
+            <p className={styles.errorText}>{errorMessage}</p>
+          </div>
+        )}
         <h1 className={styles.title}>Про школу англійської мови BETWEEN</h1>
 
         <div className={styles.wrapper}>
@@ -147,20 +162,11 @@ export const AboutSchool = () => {
             </div>
           </section>
 
-          {isLoading && <Loader />}
-          {errorMessage && (
-            <div
-              className={styles.errorCard}
-              role='alert'
-              aria-live='assertive'
-            >
-              <p className={styles.errorText}>{errorMessage}</p>
-            </div>
-          )}
           <TeachersSection teachers={teacher} />
 
           <ProgramsSection
             programsData={programs}
+            programFormats={programFormats}
           />
 
           <section className={styles.postsSection}>
@@ -189,12 +195,14 @@ export const AboutSchool = () => {
               </p>
 
               <div className={styles.finalActions}>
-                <button
+                <Link
+                  to='https://www.instagram.com/school.between'
                   className={styles.finalButton}
-                  onClick={() => navigate('/register')}
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
-                  Створити акаунт
-                </button>
+                  Записатися на рівень
+                </Link>
 
                 <p className={styles.thankYouNote}>
                   Дякуємо, що обираєте BETWEEN! Ми цінуємо вашу довіру та готові

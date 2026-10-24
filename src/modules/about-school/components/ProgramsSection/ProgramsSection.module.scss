@@ -4,9 +4,6 @@
   flex-direction: column;
 }
 
-.sectionHeader {
-}
-
 .sectionLabel {
   color: $accent;
   @include uppercase;
@@ -61,6 +58,7 @@
 .programTitle {
   @include h3-font-mobile;
   margin-bottom: 12px;
+  color: $text-main;
 
   @media (min-width: $breakpoint-s) {
     @include h3-font;
@@ -115,6 +113,10 @@
   gap: 4px;
 
   @include body-font;
+}
+
+.formatType {
+  color: $text-main;
 }
 
 .formatTimeline {

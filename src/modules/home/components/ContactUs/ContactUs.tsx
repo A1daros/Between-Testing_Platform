@@ -103,7 +103,7 @@ export const ContactUs = () => {
                 required
               />
               <label htmlFor='email' className={styles.inputLabel}>
-                Email Address
+                Електронна пошта
               </label>
             </div>
 

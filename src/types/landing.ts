@@ -3,21 +3,6 @@ export interface Post {
   image: string;
 }
 
-export interface Program {
-  id: string;
-  ageGroup: string;
-  title: string;
-  description: string;
-  formats: {
-    type: string;
-    countPerLesson: string;
-    lessonsCount: string;
-    duration: string;
-    price: string;
-    isPopular?: boolean;
-  }[];
-}
-
 export interface Company {
   id: number;
   title: string;
