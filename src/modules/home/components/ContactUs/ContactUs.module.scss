@@ -7,6 +7,7 @@
 }
 
 .title {
+  color: $text-main;
   text-align: center;
   margin-bottom: 30px;
   @include h2-font-mobile;

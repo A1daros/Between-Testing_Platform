@@ -29,7 +29,9 @@ export const ForgotPassword = () => {
     } catch (error) {
       console.error('Failed to send password reset email:', error);
 
-      setErrorMessage('Something went wrong. Please try again later.');
+      setErrorMessage(
+        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -42,15 +44,16 @@ export const ForgotPassword = () => {
           <div className={styles.successState}>
             <span className={styles.label}>BETWEEN / ACCOUNT</span>
 
-            <h2 className={styles.title}>Check your email</h2>
+            <h2 className={styles.title}>Перевірте свою електронну пошту</h2>
 
             <p className={styles.description}>
-              We sent a password reset link to your email address. Follow the
-              instructions in the email to create a new password.
+              Ми надіслали посилання для скидання пароля на вашу електронну
+              адресу. Дотримуйтесь інструкцій у листі, щоб створити новий
+              пароль.
             </p>
 
             <Link to='/login' className={styles.btnSecondary}>
-              Back to sign in
+              Повернутися до входу
             </Link>
           </div>
         ) : (
@@ -58,11 +61,11 @@ export const ForgotPassword = () => {
             <header className={styles.header}>
               <span className={styles.label}>BETWEEN / ACCOUNT</span>
 
-              <h2 className={styles.title}>Forgot password?</h2>
+              <h2 className={styles.title}>Забули пароль?</h2>
 
               <p className={styles.subtitle}>
-                Enter your email address and we'll send you a link to reset your
-                password.
+                Введіть свою електронну адресу і ми надішлемо вам посилання для
+                скидання пароля.
               </p>
             </header>
 
@@ -87,7 +90,7 @@ export const ForgotPassword = () => {
                 />
 
                 <label htmlFor='reset-email' className={styles.inputLabel}>
-                  Email address
+                  Електронна пошта
                 </label>
               </div>
 
@@ -96,12 +99,12 @@ export const ForgotPassword = () => {
                 className={styles.btnSubmit}
                 disabled={isLoading}
               >
-                {isLoading ? 'Sending...' : 'Send reset link'}
+                {isLoading ? 'Виконується...' : 'Надіслати запит на скидання'}
               </button>
             </form>
 
             <Link to='/login' className={styles.backLink}>
-              ← Back to sign in
+              Повернутися до входу
             </Link>
           </>
         )}

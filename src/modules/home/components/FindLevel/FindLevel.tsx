@@ -6,16 +6,16 @@ export const FindLevel = () => {
     <section className={styles.page}>
       <div className={styles.wrapper}>
         <div className={styles.descriptionWrapper}>
-          <h2 className={styles.title}>Test your English</h2>
+          <h2 className={styles.title}>Перевірте свій рівень англійської</h2>
           <p className={styles.description}>
-            Find your approximate English level with a short placement test. No
-            registration required.
+            Визначте свій приблизний рівень володіння англійською мовою за
+            допомогою короткого тесту. Реєстрація не потрібна.
           </p>
         </div>
 
         <div className={styles.buttonWrapper}>
           <Link className={styles.button} to='/placement-test'>
-            Let&rsquo;s try!
+            Спробуймо!
           </Link>
         </div>
       </div>

@@ -17,11 +17,11 @@ export const ChangePasswordForm = () => {
     setSuccessMessage('');
 
     if (newPassword !== confirmPassword) {
-      setErrorMessage('Passwords do not match.');
+      setErrorMessage('Паролі не збігаються.');
       return;
     }
     if (newPassword.length < 10) {
-      setErrorMessage('Password must contain at least 10 characters.');
+      setErrorMessage('Пароль має містити щонайменше 10 символів.');
       return;
     }
 
@@ -30,15 +30,13 @@ export const ChangePasswordForm = () => {
     try {
       await updatePassword(newPassword);
 
-      setSuccessMessage('Your password has been successfully changed.');
+      setSuccessMessage('Ваш пароль успішно змінено.');
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
       console.error('Failed to change password::', error);
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong. Please try again later.',
+        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
       );
     } finally {
       setIsLoading(false);
@@ -48,9 +46,9 @@ export const ChangePasswordForm = () => {
   return (
     <div className={styles.formContainer}>
       <header className={styles.header}>
-        <h2 className={styles.title}>Security Settings</h2>
+        <h2 className={styles.title}>Налаштування безпеки</h2>
         <p className={styles.subtitle}>
-          Update your password to keep your account secure
+          Оновіть пароль, щоб убезпечити свій обліковий запис
         </p>
       </header>
 
@@ -82,7 +80,7 @@ export const ChangePasswordForm = () => {
               onChange={(event) => setNewPassword(event.target.value)}
             />
             <label htmlFor='change-new-password' className={styles.inputLabel}>
-              New password
+              Новий пароль
             </label>
           </div>
 
@@ -103,13 +101,13 @@ export const ChangePasswordForm = () => {
               htmlFor='change-confirm-password'
               className={styles.inputLabel}
             >
-              Confirm new password
+              Підтвердьте новий пароль
             </label>
           </div>
         </div>
 
         <button type='submit' className={styles.btnSubmit} disabled={isLoading}>
-          {isLoading ? 'Changing password...' : 'Update password'}
+          {isLoading ? 'Виконується...' : 'Оновити пароль'}
         </button>
       </form>
     </div>

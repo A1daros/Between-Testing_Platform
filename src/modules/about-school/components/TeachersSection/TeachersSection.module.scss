@@ -85,6 +85,7 @@
 
 .teacherName {
   @include h3-font-mobile;
+  color: $text-main;
 
   @media (min-width: $breakpoint-s) {
     @include h3-font;

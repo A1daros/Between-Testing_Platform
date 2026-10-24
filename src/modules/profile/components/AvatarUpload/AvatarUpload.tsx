@@ -35,11 +35,7 @@ export const AvatarUpload = ({
       }
     } catch (error) {
       console.error('Avatar upload failed:', error);
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong during upload.',
-      );
+      setErrorMessage('Під час завантаження щось пішло не так.');
     } finally {
       setIsUploading(false);
       event.target.value = '';
@@ -63,14 +59,14 @@ export const AvatarUpload = ({
 
         {isUploading && (
           <div className={styles.loadingOverlay}>
-            <span className={styles.loadingText}>SAVING...</span>
+            <span className={styles.loadingText}>ЗБЕРЕЖЕННЯ...</span>
           </div>
         )}
       </div>
 
       <div className={styles.controls}>
         <label htmlFor='avatar-file-input' className={styles.uploadLabel}>
-          {isUploading ? 'Uploading...' : 'Change avatar'}
+          {isUploading ? 'Виконується...' : 'Змінити аватар'}
         </label>
         <input
           id='avatar-file-input'
@@ -80,7 +76,7 @@ export const AvatarUpload = ({
           className={styles.hiddenInput}
           onChange={handleFileChange}
         />
-        <p className={styles.hint}>PNG, JPEG or WebP. Max 2MB.</p>
+        <p className={styles.hint}>PNG, JPEG or WebP. Максимально 2MB.</p>
       </div>
 
       {errorMessage && (

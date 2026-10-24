@@ -45,7 +45,7 @@ export const PlacementTest = () => {
         setQuestions(questionsData);
       } catch (error) {
         console.error('Failed to load quiz data!', error);
-        setErrorMessage('Failed to load quiz!');
+        setErrorMessage('Не вдалось завантажити тест!');
       } finally {
         setLoading(false);
       }
@@ -72,10 +72,12 @@ export const PlacementTest = () => {
           setPlacementResult(result);
         }
       } catch (error) {
-        console.error('Failed to calculate placement level:', error);
+        console.error('Не вдалося визначити рівень розміщення:', error);
 
         if (!isCancelled) {
-          setResultError('Failed to calculate your level. Please try again.');
+          setResultError(
+            'Не вдалося розрахувати ваш рівень. Будь ласка, спробуйте ще раз.',
+          );
         }
       } finally {
         if (!isCancelled) {
@@ -159,7 +161,7 @@ export const PlacementTest = () => {
 
               <div className={styles.levelResult}>
                 <span className={styles.levelLabel}>
-                  YOUR APPROXIMATE LEVEL
+                  ВАШ ОРІЄНТОВНИЙ РІВЕНЬ
                 </span>
 
                 <div className={styles.levelBadge}>

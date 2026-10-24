@@ -19,7 +19,7 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
     setSuccessMessage('');
 
     if (newEmail === currentEmail) {
-      setErrorMessage('New email must be different from the current one.');
+      setErrorMessage('Нова електронна адреса має відрізнятися від поточної.');
       return;
     }
 
@@ -29,15 +29,13 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
       await updateEmail(newEmail);
 
       setSuccessMessage(
-        'Confirmation links sent! Please check both your old and new email addresses to confirm the change.',
+        'Посилання для підтвердження надіслано! Будь ласка, перевірте як стару, так і нову електронні адреси, щоб підтвердити зміну.',
       );
       setNewEmail('');
     } catch (error) {
       console.error('Failed to change email:', error);
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong. Please try again later.',
+        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
       );
     } finally {
       setIsLoading(false);
@@ -47,9 +45,10 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
   return (
     <div className={styles.formContainer}>
       <header className={styles.header}>
-        <h2 className={styles.title}>Email Settings</h2>
+        <h2 className={styles.title}>Налаштування електронної пошти</h2>
         <p className={styles.subtitle}>
-          Update your email address for account notifications
+          Оновіть свою електронну адресу для отримання сповіщень облікового
+          запису
         </p>
       </header>
 
@@ -80,13 +79,13 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
               onChange={(event) => setNewEmail(event.target.value)}
             />
             <label htmlFor='change-new-email' className={styles.inputLabel}>
-              New email address
+              Нова електронна адреса
             </label>
           </div>
         </div>
 
         <button type='submit' className={styles.btnSubmit} disabled={isLoading}>
-          {isLoading ? 'Updating email...' : 'Update email'}
+          {isLoading ? 'Виконується...' : 'Оновити електронну пошту'}
         </button>
       </form>
     </div>

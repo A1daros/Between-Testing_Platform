@@ -235,3 +235,22 @@ export interface Teacher {
   specialties: string;
   photo_url: string;
 }
+
+export interface Program {
+  id: string;
+  age_group: string;
+  title: string;
+  description: string;
+  sort_order: number;
+}
+
+export interface ProgramFormat {
+  id: number;
+  program_id: string;
+  type: string;
+  lessons_per_month: number;
+  duration_minutes: number;
+  price: number;
+  is_popular: boolean;
+  sort_order: number;
+}

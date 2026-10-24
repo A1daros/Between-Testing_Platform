@@ -35,23 +35,23 @@ export const Footer = () => {
             </li>
             <li>
               <NavLink to='/contacts' className={styles.link}>
-                Contacts
+                Контакти
               </NavLink>
             </li>
             <li>
               <NavLink to='/' className={styles.link}>
-                Rights
+                Права
               </NavLink>
             </li>
           </ul>
         </nav>
 
         <div className={styles.backTop}>
-          <span className={styles.buttonTopText}>Back to top</span>
+          <span className={styles.buttonTopText}>Повернуться на початок</span>
           <button
             className={styles.backTopButton}
             onClick={scrollTop}
-            aria-label='Back to top'
+            aria-label='Повернуться на початок'
           >
             <div className={styles.iconWrapper}>
               <img

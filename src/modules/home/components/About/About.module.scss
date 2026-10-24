@@ -53,7 +53,7 @@
 .sectionDescription {
   margin: 0;
   color: $text-secondary;
-  @include small-text;
+  @include body-font;
 }
 
 .about {

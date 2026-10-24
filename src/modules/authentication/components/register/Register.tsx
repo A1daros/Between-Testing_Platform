@@ -45,6 +45,11 @@ export const Register = () => {
         return;
       }
 
+      if (password.length < 10) {
+        setErrorMessage('Пароль має містити щонайменше 10 символів.');
+        return;
+      }
+
       setIsConfirmationModalOpen(true);
 
       setName('');
@@ -54,7 +59,9 @@ export const Register = () => {
     } catch (error) {
       console.error('Failed to sign up:', error);
 
-      setErrorMessage('Something went wrong while creating your account.');
+      setErrorMessage(
+        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -64,8 +71,10 @@ export const Register = () => {
     <div className={styles.wrapper}>
       <form onSubmit={handleSignUp} className={styles.registerForm}>
         <div className={styles.header}>
-          <h2 className={styles.title}>CREATE AN ACCOUNT</h2>
-          <p className={styles.subtitle}>Enter your details below to sign up</p>
+          <h2 className={styles.title}>Створити акаунт</h2>
+          <p className={styles.subtitle}>
+            Введіть свої дані нижче, щоб зареєструватися
+          </p>
         </div>
 
         {errorMessage && (
@@ -88,7 +97,7 @@ export const Register = () => {
               onChange={(event) => setName(event.target.value)}
             />
             <label htmlFor='reg-name' className={styles.inputLabel}>
-              Name
+              Ім'я
             </label>
           </div>
 
@@ -105,7 +114,7 @@ export const Register = () => {
               onChange={(event) => setSurname(event.target.value)}
             />
             <label htmlFor='reg-surname' className={styles.inputLabel}>
-              Surname
+              Прізвище
             </label>
           </div>
 
@@ -122,7 +131,7 @@ export const Register = () => {
               onChange={(event) => setEmail(event.target.value)}
             />
             <label htmlFor='reg-email' className={styles.inputLabel}>
-              Email Address
+              Електронна пошта
             </label>
           </div>
 
@@ -140,13 +149,13 @@ export const Register = () => {
               onChange={(event) => setPassword(event.target.value)}
             />
             <label htmlFor='reg-password' className={styles.inputLabel}>
-              Password
+              Пароль
             </label>
           </div>
         </div>
 
         <button className={styles.btnSubmit} type='submit' disabled={isLoading}>
-          {isLoading ? 'Creating account...' : 'Get Started'}
+          {isLoading ? 'Виконується...' : 'Створити акаунт'}
         </button>
       </form>
 
@@ -161,12 +170,12 @@ export const Register = () => {
             <span className={styles.modalLabel}>BETWEEN / ACCOUNT</span>
 
             <h2 id='confirmation-title' className={styles.modalTitle}>
-              Check your email
+              Перевірте ваш email
             </h2>
 
             <p className={styles.modalDescription}>
-              We sent a confirmation link to your email address. Please confirm
-              your account before signing in.
+              Ми надіслали посилання для підтвердження на вашу електронну
+              адресу. Будь ласка, підтвердьте свій обліковий запис перед входом.
             </p>
 
             <button

@@ -30,7 +30,7 @@ export const EditProfileForm = ({
 
   const handleAvatarSuccess = (updatedProfile: Profile) => {
     setCurrentAvatarUrl(updatedProfile.avatar_url);
-    setSuccessMessage('Avatar updated successfully.');
+    setSuccessMessage('Аватар успішно оновлено.');
     onSaveSuccess?.(updatedProfile);
 
     setTimeout(() => setSuccessMessage(''), 3000);
@@ -49,18 +49,14 @@ export const EditProfileForm = ({
       });
 
       if (updatedProfile) {
-        setSuccessMessage('Profile details updated successfully.');
+        setSuccessMessage('Дані профілю успішно оновлено.');
         if (onSaveSuccess) {
           onSaveSuccess(updatedProfile);
         }
       }
     } catch (error) {
       console.error('Failed to update profile:', error);
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong while saving your profile.',
-      );
+      setErrorMessage('Під час збереження вашого профілю щось пішло не так.');
     } finally {
       setIsLoading(false);
     }
@@ -69,9 +65,9 @@ export const EditProfileForm = ({
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Profile Settings</h2>
+        <h2 className={styles.title}>Налаштування профілю</h2>
         <p className={styles.subtitle}>
-          Update your personal information and profile picture
+          Оновіть свої особисті дані та фотографію профілю
         </p>
       </div>
 
@@ -109,7 +105,7 @@ export const EditProfileForm = ({
               onChange={(event) => setDisplayName(event.target.value)}
             />
             <label htmlFor='profile-name' className={styles.inputLabel}>
-              Full Name
+              Повне ім'я
             </label>
           </div>
 
@@ -123,7 +119,7 @@ export const EditProfileForm = ({
               className={styles.input}
             />
             <label htmlFor='profile-email' className={styles.inputLabel}>
-              User Email
+              Електронна пошта користувача
             </label>
           </div>
 
@@ -138,13 +134,13 @@ export const EditProfileForm = ({
               onChange={(event) => setBirthDate(event.target.value)}
             />
             <label htmlFor='profile-birth' className={styles.inputLabel}>
-              Birth Date
+              Дата народження
             </label>
           </div>
         </div>
 
         <button className={styles.btnSubmit} type='submit' disabled={isLoading}>
-          {isLoading ? 'Saving adjustments...' : 'Save changes'}
+          {isLoading ? 'Збереження...' : 'Зберегти зміни'}
         </button>
       </form>
     </div>
