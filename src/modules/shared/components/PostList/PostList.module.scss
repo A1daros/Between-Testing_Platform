@@ -1,3 +1,5 @@
+@use '../../../../styles/variables' as *;
+
 .container {
   margin-bottom: 40px;
   overflow: hidden;
@@ -11,11 +13,11 @@
   padding: 0;
   margin: 0;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: $breakpoint-m) {
     grid-template-columns: repeat(3, 1fr);
   }
 }

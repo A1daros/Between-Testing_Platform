@@ -18,19 +18,19 @@
   margin: 0 auto;
   padding: 0 16px;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     padding: 0 24px;
     align-items: center;
     flex-direction: row;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: $breakpoint-m) {
     min-height: 64px;
     padding: 0 32px;
     flex-wrap: nowrap;
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: $breakpoint-l) {
     padding: 0 152px;
   }
 }
@@ -72,7 +72,7 @@
   margin: 0;
   padding: 0;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     flex-direction: row;
     gap: 96px;
   }
@@ -99,7 +99,7 @@
   width: 100%;
   height: 32px;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-s) {
     justify-content: flex-end;
   }
 }

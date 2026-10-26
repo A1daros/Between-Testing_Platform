@@ -116,14 +116,14 @@
   border: $form-border;
   border-radius: 8px;
   gap: 24px;
-  padding: 24px;
+  padding: 16px;
   background-color: $surface-1;
-  height: 100%;
+  height: auto;
   box-sizing: border-box;
 
-  @media (max-width: $breakpoint-s) {
-    padding: 16px;
-    height: auto;
+  @media (min-width: $breakpoint-s) {
+    padding: 24px;
+    height: 100%;
   }
 }
 

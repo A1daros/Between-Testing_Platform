@@ -67,12 +67,12 @@
   gap: 24px;
   background: radial-gradient(
     ellipse at center,
-    #fafbfc 0%,
-    #f6eeec 70%,
-    #e7dbd7 100%
+    $surface-1 0%,
+    $accent-soft-light 70%,
+    $accent-soft-dark 100%
   );
 
-  border: 1px solid #e7dbd7;
+  border: 1px solid $accent-soft-dark;
   border-radius: 8px;
 }
 
