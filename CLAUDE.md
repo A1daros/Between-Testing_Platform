@@ -24,7 +24,7 @@ BETWEEN — сайт англомовної школи та платформа �
   - Решта маршрутів закрита `routes/ProtectedRoute`, адмінка — ще й `routes/AdminRoute`.
   - Адмін-модуль вантажиться ліниво (lazy), обгорнутий в `ErrorBoundary` (`ChunkError`) + `Suspense`.
 - **Авторизація.** `context/AuthProvider.tsx` зберігає сесію Supabase, користувача та рядок із `profiles`. У цьому рядку є роль, за якою перевіряється доступ до адмінки. Отримувати ці дані слід через `hooks/useAuth.ts`.
-- **Доступ до даних.** Усі запити до Supabase зібрані в `src/services/*.ts`, по одному файлу на домен: tests, questions, answers, results, resultAnswers, profile, programs, teachers, levels тощо. Усі вони використовують єдиний клієнт із `src/lib/supabase.ts`. Компоненти й хуки викликають сервіси, а не клієнт напряму. Типи рядків БД — у `src/types/database.ts`.
+- **Доступ до даних.** Усі запити до Supabase зібрані в `src/services/*.ts`, по одному файлу на домен: tests, questions, answers, results, resultAnswers, profile, programs, teachers, levels тощо. Усі вони використовують єдиний клієнт із `src/lib/supabase.ts`. Типи рядків БД — у `src/types/database.ts`.
 - **Серверна логіка.**
   - Рівень за placement test рахує Postgres RPC `calculate_placement_level` (викликається з `services/placement.ts`). Результати анонімного placement test не зберігаються.
   - Доступ обмежується через RLS, а не лише в UI.
@@ -35,65 +35,38 @@ BETWEEN — сайт англомовної школи та платформа �
   - Логіка стану квізу й таймера — у `hooks/useQuiz.ts` та `hooks/useCountdown.ts`.
   - Спільні SCSS-змінні та міксини — у `src/styles`.
 
-## Примітки
+## Стилі
 
-- Мова сайту — українська (`<html lang="uk">`). Останні коміти змінювали логіку мови для публічних і захищених маршрутів.
-- `public/sitemap.xml` оновлюється вручну. Його треба доповнювати, коли з'являються нові публічні маршрути.
-- `dist/` — артефакт збірки, ігнорується git. Не редагуй його.
+Правила SCSS (структура, класи, значення, типографіка, адаптивність, порядок властивостей) описані в skill `scss-styles` (`.claude/skills/scss-styles/SKILL.md`). Завантажуй його перед будь-якою роботою зі стилями.
 
-## Стилі (SCSS)
+## Конвенції коду
 
-### Структура
-- Один `X.module.scss` на компонент, поруч із `X.tsx`. Імпорт: `import styles from './X.module.scss'`.
-- Глобальні стилі (reset, `html/body/#root`, layout застосунку) — тільки в `src/styles/App.module.scss`. `:global` у модулях не використовується.
-- Спільні файли в `src/styles`:
-  - `variables.scss` — кольори, бордери, тіні, брейкпоінти **і типографічні міксини**;
-  - `mixins.scss` — `page-container`, `section-container`;
-  - `mixins/auth-form.scss` — міксини форм (wrapper, container, input, кнопки, картки помилки та успіху).
-- Підключення тільки через `@use` з відносним шляхом, без розширення, `as *`. `@import` не використовується. `@use` не реекспортує змінні, тому `variables` треба підключати явно навіть разом із `mixins`:
-  ```scss
-  @use '../../../../styles/variables' as *;
-  @use '../../../../styles/mixins' as *;
-  ```
+- **Мова.** Увесь текст інтерфейсу — українською. Код, ідентифікатори, коментарі та повідомлення комітів — англійською. Сайт має `<html lang="uk">`.
+- **Дані.** Компоненти й хуки не імпортують клієнт Supabase напряму: додай або розшир функцію в `src/services/<domain>.ts`. Наявні винятки, які ще не перенесені: сторінки `modules/authentication/*` і `ContactUs.tsx` викликають `supabase` напряму. Новий код так не пишеться.
+- **Помилки сервісів.** Сервіси кидають помилку (`throw`), якщо Supabase повертає `error`. Помилки обробляються в хуках або компонентах.
+- **Типи.** Типи рядків БД беруться з `src/types/database.ts`. Не оголошуй їх заново в компонентах.
+- **Маршрути.** Не прописуй шляхи вручну, використовуй `ROUTES` / `ADMIN_ROUTES`. У частині компонентів ще лишилися рядки на кшталт `navigate('/')`. Якщо редагуєш такий компонент, заміни їх на константи.
+- **Компоненти.** Функціональні компоненти з іменованим типом пропсів (`type XProps = { … }`, як у наявному коді). Один компонент на файл, у відповідній папці `src/modules/<feature>/`.
+- **Новий публічний маршрут.** Додай його в `ROUTES` і `App.tsx`, а також у `public/sitemap.xml` (оновлюється вручну).
 
-### Назви класів
-- camelCase: `.descriptionWrapper`, `.sectionTitle`. Без BEM (`__`, `--`) і без дефісів.
-- Типові назви: `.page` (корінь секції), `.wrapper`/`.container`, `.title`/`.description`/`.button`, `.xxxWrapper`/`.xxxSection`/`.xxxCard`.
-- Модифікатори пишуться окремими класами (`.answerSelected`). У TSX їх комбінують шаблонним рядком: `` className={`${styles.a} ${styles.b}`} ``. `clsx` не використовується.
+## База даних
 
-### Значення
-- Кольори тільки зі змінних (`$text-main`, `$text-secondary`, `$accent`, `$accent-hover`, `$surface-1/2`, `$green`, `$red`…). Без hex у модулях. Якщо потрібен новий колір, його спершу додають у `variables.scss`.
-- Прозорість задається через `rgba($змінна, α)`: `rgba($accent, 0.15)`, `rgba($text-main, 0.4)`.
-- Бордери й тіні: `$card-border`, `$form-border`, `$shadow`.
-- Одиниці — `px`, відступи кратні 4 (найчастіше 8/12/16/24/32/40). `rem`/`em` і `var(--…)` не використовуються.
-- `border-radius`: 8px за замовчуванням, 12px для великих карток, `50%` для кіл.
+- Схема, політики RLS та RPC-функції живуть у Supabase.
+- Після будь-якої зміни схеми онови `src/types/database.ts`.
+- Для кожної нової таблиці вмикай RLS і задавай явні політики. Авторизація не може спиратися лише на перевірки в UI.
 
-### Типографіка
-- Шрифт задається тільки міксинами з `variables.scss`: `h1-font`…`h4-font` (і `-mobile` версії), `body-font`, `buttons`, `uppercase`, `small-text`, `input-text`. `font-size`/`font-weight` вручну не пишуться.
-- Виняток: гліфи-іконки (стрілки, `×`) і декоративні числа (бейдж рівня). Їм дозволено ручний `font-size`.
-- Заголовки пишуться mobile-first:
-  ```scss
-  .title {
-    margin: 0;
-    color: $text-main;
+## Edge-функція
 
-    @include h2-font-mobile;
+`supabase/functions/send-contact-email` працює на Deno, а не на Node: використовуй Deno-імпорти й не змішуй її з конфігурацією Vite/TS.
 
-    @media (min-width: $breakpoint-s) {
-      @include h2-font;
-    }
-  }
-  ```
+## Чого не робити
 
-### Адаптивність і layout
-- Тільки mobile-first: базові стилі для мобільних, розширення через `@media (min-width: $breakpoint-s | $breakpoint-m | $breakpoint-l)` (768 / 1024 / 1200). Без `max-width`-медіа і без чисел замість змінних.
-- `@media` вкладається всередину класу, а не виноситься в кінець файлу.
-- Сторінка використовує `@include page-container`, секція всередині неї — `@include section-container`.
-- Сторінки авторизації та форми профілю збираються з міксинів `auth-form.scss`: кожен клас робить один `@include`.
+- Не використовуй service-role ключ Supabase чи інші секрети в клієнтському коді. У фронтенді дозволені лише `VITE_SUPABASE_URL` та `VITE_SUPABASE_ANON_KEY`.
+- Не додавай `.env` / `.env.local` у git.
+- Не додавай нові залежності без попереднього узгодження.
+- Не редагуй `dist/` (артефакт збірки, ігнорується git).
+- Не «виправляй» написання шляху `Layuot` попутно з іншими задачами. Перейменування — окрема зміна.
 
-### Порядок усередині правила
-layout (display/flex/grid/gap/padding/розміри) → кольори, бордер, радіус → `transition` → `@include` типографіки → стани (`&:hover`, `&:focus-visible`, `&:disabled`, `&:active`) → `@media`.
+## Перед завершенням завдання
 
-### Стани та анімації
-- `transition` задається тільки для конкретних властивостей (`background-color 0.2s ease`), без `all`. Виняток — інпути в `auth-form.scss`. Один `transition` на правило.
-- Hover акцентної кнопки: `background-color: $accent-hover`.
+Тестів немає, тож єдині автоматичні перевірки — `npm run build` (включає `tsc -b`) та `npm run lint`. Запусти обидві й виправ помилки, перш ніж звітувати про завершення.
