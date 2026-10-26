@@ -9,7 +9,7 @@
   -webkit-overflow-scrolling: touch;
 
   @media (min-width: $breakpoint-s) {
-    box-shadow: 0 2px 8px rgba(49, 50, 55, 0.02);
+    box-shadow: 0 2px 8px rgba($text-main, 0.02);
   }
 }
 

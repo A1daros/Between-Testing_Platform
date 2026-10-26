@@ -64,7 +64,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(49, 50, 55, 0.4);
+  background-color: rgba($text-main, 0.4);
   backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;

@@ -114,7 +114,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 0 2px 8px rgba(49, 50, 55, 0.02);
+  box-shadow: 0 2px 8px rgba($text-main, 0.02);
 }
 
 .removeButton {
@@ -201,7 +201,7 @@
   padding: 14px 32px;
   @include buttons;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(49, 50, 55, 0.1);
+  box-shadow: 0 4px 12px rgba($text-main, 0.1);
   transition:
     background-color 0.2s ease,
     transform 0.1s ease,
@@ -209,7 +209,7 @@
 
   &:hover {
     background-color: $accent-hover;
-    box-shadow: 0 6px 16px rgba(49, 50, 55, 0.15);
+    box-shadow: 0 6px 16px rgba($text-main, 0.15);
   }
 
   &:active {

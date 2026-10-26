@@ -65,8 +65,7 @@
 
 .signupLink {
   text-align: center;
-  font-size: 0.875rem;
-  color: $text-secondary;
+  @include form-subtitle;
 }
 
 .linkAccent {
