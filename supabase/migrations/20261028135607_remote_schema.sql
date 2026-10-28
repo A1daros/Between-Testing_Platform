@@ -1829,8 +1829,11 @@ CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXEC
 
 
 -- Buckets are rows in storage.buckets, so db pull does not export them.
-insert into storage.buckets (id, name, public)
-values ('avatars', 'avatars', true)
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values
+  ('avatars', 'avatars', true, 2097152, array['image/png', 'image/jpeg', 'image/webp']),
+  -- Static teacher photos, uploaded via the dashboard; no storage.objects policies needed for public reads.
+  ('teachers', 'teachers', true, null, null)
 on conflict (id) do nothing;
 
 
