@@ -30,7 +30,7 @@ export const ResultsOverview = () => {
         setAllStudentResults(data);
       } catch (error) {
         console.error('Failed to load all student results', error);
-        setErrorMessage('Failed to load students results!');
+        setErrorMessage('не вдалося завантажити результати');
       } finally {
         setLoading(false);
       }
@@ -91,13 +91,13 @@ export const ResultsOverview = () => {
   if (errorMessage) {
     return (
       <div className={styles.container}>
-        <h2 className={styles.errorTitle}>Ooops, {errorMessage}</h2>
-        <p className={styles.errorDescription}>Try again later!</p>
+        <h2 className={styles.errorTitle}>Помилка: {errorMessage}</h2>
+        <p className={styles.errorDescription}>Спробуйте пізніше.</p>
         <button
           className={styles.errorButton}
           onClick={() => window.location.reload()}
         >
-          Reload!
+          Оновити сторінку
         </button>
       </div>
     );
@@ -109,7 +109,7 @@ export const ResultsOverview = () => {
       <div className={styles.infoSection}>
         <div className={styles.searchSystems}>
           <SearchInput
-            placeholder='Search for students or tests...'
+            placeholder='Пошук за учнем або тестом...'
             value={query}
             onChange={setQuery}
           />
@@ -119,19 +119,19 @@ export const ResultsOverview = () => {
               className={`${styles.searchInfo} ${sortBy === 'test' ? styles.activeSort : ''}`}
               onClick={() => setSortBy('test')}
             >
-              Sort by test
+              Сортувати за тестом
             </button>
             <button
               className={`${styles.searchInfo} ${sortBy === 'student' ? styles.activeSort : ''}`}
               onClick={() => setSortBy('student')}
             >
-              Sort by student
+              Сортувати за учнем
             </button>
             <button
               className={`${styles.searchInfo} ${sortBy === 'date' ? styles.activeSort : ''}`}
               onClick={() => setSortBy('date')}
             >
-              Sort by date
+              Сортувати за датою
             </button>
           </div>
         </div>

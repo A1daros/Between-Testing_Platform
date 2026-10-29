@@ -29,7 +29,7 @@ export const EditTestForm = () => {
         setEditTest(data);
       } catch (error) {
         console.error('Failed to load test:', error);
-        setErrorMessage('Failed to load test. It can be empty');
+        setErrorMessage('Не вдалося завантажити тест.');
       } finally {
         setIsLoading(false);
       }
@@ -55,7 +55,7 @@ export const EditTestForm = () => {
   }
 
   if (!editTest) {
-    return <div className={styles.errorMessage}>Empty data!</div>;
+    return <div className={styles.errorMessage}>Тест не знайдено.</div>;
   }
 
   const mappedParts: UIPart[] = editTest.test_parts.map((part) => ({

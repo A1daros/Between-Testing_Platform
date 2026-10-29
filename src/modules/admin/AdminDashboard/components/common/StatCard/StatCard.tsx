@@ -19,7 +19,7 @@ export const StatCard: React.FC<Props> = ({ label, value, iconPath }) => {
         <div className={styles.iconWrapper}>
           <img
             src={iconPath}
-            alt='icon'
+            alt=''
             aria-hidden='true'
             className={styles.icon}
           />

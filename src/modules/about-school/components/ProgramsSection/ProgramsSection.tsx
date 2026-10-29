@@ -2,6 +2,7 @@ import type React from 'react';
 import styles from './ProgramsSection.module.scss';
 import { Link } from 'react-router-dom';
 import type { Program, ProgramFormat } from '../../../../types/database';
+import { SCHOOL_INSTAGRAM_URL } from '../../../../constants/constants';
 
 type Props = {
   programsData: Program[];
@@ -66,7 +67,7 @@ export const ProgramsSection: React.FC<Props> = ({
             </div>
 
             <Link
-              to='https://www.instagram.com/school.between'
+              to={SCHOOL_INSTAGRAM_URL}
               className={styles.cardButton}
               target='_blank'
               rel='noopener noreferrer'

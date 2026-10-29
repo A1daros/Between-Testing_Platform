@@ -75,7 +75,7 @@ export const Students = () => {
         setStudents(data);
       } catch (error) {
         console.error('Failed to load students', error);
-        setErrorMessage('Failed to load students!');
+        setErrorMessage('не вдалося завантажити учнів');
       } finally {
         setLoading(false);
       }
@@ -119,13 +119,13 @@ export const Students = () => {
   if (errorMessage) {
     return (
       <div className={styles.container}>
-        <h2 className={styles.errorTitle}>Ooops, {errorMessage}</h2>
-        <p className={styles.errorDescription}>Try again later!</p>
+        <h2 className={styles.errorTitle}>Помилка: {errorMessage}</h2>
+        <p className={styles.errorDescription}>Спробуйте пізніше.</p>
         <button
           className={styles.errorButton}
           onClick={() => window.location.reload()}
         >
-          Reload!
+          Оновити сторінку
         </button>
       </div>
     );
@@ -137,14 +137,14 @@ export const Students = () => {
       <div className={styles.infoSection}>
         <div className={styles.searchSystems}>
           <SearchInput
-            placeholder='Search for students...'
+            placeholder='Пошук учня...'
             value={query}
             onChange={setQuery}
           />
 
           <div className={styles.searchSection}>
             <button className={styles.searchInfo} onClick={toggleSortOrder}>
-              Sort: {sortOrder === 'asc' ? 'A-Z' : 'Z-A'}
+              Сортування: {sortOrder === 'asc' ? 'А-Я' : 'Я-А'}
             </button>
           </div>
         </div>

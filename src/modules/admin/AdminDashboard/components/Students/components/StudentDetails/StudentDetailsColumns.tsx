@@ -7,19 +7,19 @@ export const getStudentDetailsColumns = (
   navigate: NavigateFunction,
 ): ColumnConfig<StudentResults>[] => [
   {
-    label: 'Test',
+    label: 'Тест',
     render: (result) => result.tests?.title,
   },
   {
-    label: 'Score',
+    label: 'Бал',
     render: (result) => `${result.score} / ${result.total}`,
   },
   {
-    label: 'Date',
+    label: 'Дата',
     render: (result) => new Date(result.created_at).toLocaleDateString(),
   },
   {
-    label: 'Action',
+    label: 'Дія',
     render: (result) => (
       <button
         className={styles.actionButton}
@@ -28,7 +28,7 @@ export const getStudentDetailsColumns = (
           navigate(`/admin/results/result-details/${result.id}`);
         }}
       >
-        View result
+        Переглянути
       </button>
     ),
   },
