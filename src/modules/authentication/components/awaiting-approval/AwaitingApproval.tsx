@@ -6,8 +6,11 @@ import { ROUTES } from '../../../../constants/routes';
 import { SCHOOL_INSTAGRAM_URL } from '../../../../constants/constants';
 import { isProfileApproved } from '../../../../utils/isProfileApproved';
 import { Loader } from '../../../Loader';
+import { usePageMeta } from '../../../../hooks/usePageMeta';
 
 export const AwaitingApproval = () => {
+  usePageMeta({ title: 'Очікування підтвердження', noindex: true });
+
   const { user, profile, loading, refreshProfile } = useAuth();
 
   const [isChecking, setIsChecking] = useState(false);

@@ -5,8 +5,11 @@ import { Loader } from '../Loader';
 import { Link } from 'react-router-dom';
 import { getTests } from '../../services/tests';
 import { getDurationLabel } from '../../utils/getDurationLabel';
+import { usePageMeta } from '../../hooks/usePageMeta';
 
 export const TestsPage = () => {
+  usePageMeta({ title: 'Тести', noindex: true });
+
   const [tests, setTests] = useState<Test[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
@@ -37,16 +40,16 @@ export const TestsPage = () => {
 
   if (errorMessage) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.errorCard}>
           <div className={styles.errorText}>{errorMessage}</div>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <div className={styles.container}>
         <h1 className={styles.pageTitle}>Знайдіть свій тест</h1>
 
@@ -73,7 +76,7 @@ export const TestsPage = () => {
 
             <ul className={styles.testsList}>
               {tests.map((test, index) => {
-                const testTitle = test.title ?? 'Untitled Test';
+                const testTitle = test.title ?? 'Тест без назви';
                 const testId = `test-title-${test.id}`;
                 const questionCount = Array.isArray(test.questions)
                   ? (test.questions[0]?.count ?? 0)
@@ -105,7 +108,11 @@ export const TestsPage = () => {
                         <div className={styles.metaBox}>
                           <span
                             className={styles.metaBadge}
-                            aria-label={`Duration: ${test.timer_duration ?? 'unlimited'} seconds`}
+                            aria-label={
+                              test.timer_duration
+                                ? `Тривалість: ${test.timer_duration} с`
+                                : 'Без обмеження часу'
+                            }
                           >
                             {test.timer_duration !== null
                               ? `${test.timer_duration}с `
@@ -129,6 +136,6 @@ export const TestsPage = () => {
           </section>
         </div>
       </div>
-    </main>
+    </div>
   );
 };

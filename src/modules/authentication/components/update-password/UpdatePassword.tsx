@@ -4,8 +4,11 @@ import { supabase } from '../../../../lib/supabase';
 import { Link } from 'react-router-dom';
 import { getPasswordErrorMessage } from '../../../../utils/getPasswordErrorMessage';
 import { MIN_PASSWORD_LENGTH } from '../../../../constants/constants';
+import { usePageMeta } from '../../../../hooks/usePageMeta';
 
 export const UpdatePassword = () => {
+  usePageMeta({ title: 'Новий пароль', noindex: true });
+
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +57,7 @@ export const UpdatePassword = () => {
   };
 
   return (
-    <main className={styles.wrapper}>
+    <div className={styles.wrapper}>
       <div className={styles.card}>
         {isPasswordUpdated ? (
           <div className={styles.successState}>
@@ -148,6 +151,6 @@ export const UpdatePassword = () => {
           </>
         )}
       </div>
-    </main>
+    </div>
   );
 };

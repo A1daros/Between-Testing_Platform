@@ -2,8 +2,11 @@ import { useState, type FormEvent } from 'react';
 import styles from './ForgotPassword.module.scss';
 import { supabase } from '../../../../lib/supabase';
 import { Link } from 'react-router-dom';
+import { usePageMeta } from '../../../../hooks/usePageMeta';
 
 export const ForgotPassword = () => {
+  usePageMeta({ title: 'Відновлення пароля', noindex: true });
+
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -38,7 +41,7 @@ export const ForgotPassword = () => {
   };
 
   return (
-    <main className={styles.wrapper}>
+    <div className={styles.wrapper}>
       <div className={styles.card}>
         {isEmailSent ? (
           <div className={styles.successState}>
@@ -109,6 +112,6 @@ export const ForgotPassword = () => {
           </>
         )}
       </div>
-    </main>
+    </div>
   );
 };

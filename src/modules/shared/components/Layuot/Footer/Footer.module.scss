@@ -150,3 +150,9 @@
   display: block;
   transition: filter 0.3s ease;
 }
+
+.copyright {
+  color: $text-secondary;
+
+  @include uppercase;
+}

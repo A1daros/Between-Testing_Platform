@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react';
 import type { Results } from '../../../types/database';
 import { Loader } from '../../Loader';
 import { getResultsByUserId } from '../../../services/results';
+import { usePageMeta } from '../../../hooks/usePageMeta';
 
 export const MyResults = () => {
+  usePageMeta({ title: 'Мої результати', noindex: true });
+
   const [results, setResults] = useState<Results[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
@@ -43,16 +46,16 @@ export const MyResults = () => {
 
   if (errorMessage) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.errorCard}>
           <div className={styles.errorText}>{errorMessage}</div>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <div className={styles.container}>
         <h1 className={styles.pageTitle}>Мої результати</h1>
 
@@ -125,9 +128,9 @@ export const MyResults = () => {
                       <Link
                         to={`/my-results/${result.id}`}
                         className={styles.resultLink}
-                        aria-label={`View results for ${result.tests?.title ?? 'Невідомий тест'}`}
+                        aria-label={`Переглянути результат: ${result.tests?.title ?? 'Невідомий тест'}`}
                       >
-                        <span>View</span>
+                        <span>Переглянути</span>
                         <span className={styles.arrow} aria-hidden='true'>
                           →
                         </span>
@@ -156,6 +159,6 @@ export const MyResults = () => {
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 };

@@ -11,6 +11,7 @@ import { saveQuizResult } from '../../services/results';
 import { Timer } from './components/Timer';
 import { AudioPlayer } from './components/AudioPlayer';
 import { MAX_AUDIO_PLAYS } from '../../constants/constants';
+import { usePageMeta } from '../../hooks/usePageMeta';
 
 export const QuizPage = () => {
   const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
@@ -45,6 +46,8 @@ export const QuizPage = () => {
     handleNextQuestion,
     handleFinishQuiz,
   } = useQuiz(questions);
+
+  usePageMeta({ title: currentQuestion?.tests.title ?? 'Тест', noindex: true });
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -146,21 +149,21 @@ export const QuizPage = () => {
 
   if (errorMessage) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.errorCard}>
           <p className={styles.errorText}>{errorMessage}</p>
         </div>
-      </main>
+      </div>
     );
   }
 
   if (!questions.length) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.errorCard}>
           <p className={styles.errorText}>Питання не знайдено.</p>
         </div>
-      </main>
+      </div>
     );
   }
 
@@ -171,9 +174,9 @@ export const QuizPage = () => {
   const progress = total > 0 ? ((currentQuestionIndex + 1) / total) * 100 : 0;
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}>Quiz page</h1>
+        <h1 className={styles.pageTitle}>Проходження тесту</h1>
 
         <div className={styles.wrapper}>
           <section className={styles.quizSection}>
@@ -214,7 +217,7 @@ export const QuizPage = () => {
                   aria-valuenow={Math.round(progress)}
                   aria-valuemin={0}
                   aria-valuemax={100}
-                  aria-label='Quiz progress'
+                  aria-label='Прогрес тесту'
                 >
                   <div
                     className={styles.progressBar}
@@ -232,7 +235,7 @@ export const QuizPage = () => {
           ) : (
             <section className={styles.questionSection}>
               <div className={styles.partHeader}>
-                <span className={styles.partNumber}>QUESTION</span>
+                <span className={styles.partNumber}>ПИТАННЯ</span>
 
                 {currentQuestion.test_parts?.title && (
                   <span className={styles.partTitle}>
@@ -272,7 +275,7 @@ export const QuizPage = () => {
               <div
                 className={styles.answers}
                 role='radiogroup'
-                aria-label='Answers choices'
+                aria-label='Варіанти відповіді'
               >
                 {currentAnswers.map((answer, index) => {
                   const isSelected = selectedAnswerId === answer.id;
@@ -317,7 +320,7 @@ export const QuizPage = () => {
                 disabled={currentQuestionIndex === 0}
                 onClick={handlePrevQuestion}
               >
-                ← Go back
+                ← Назад
               </button>
             )}
 
@@ -332,12 +335,12 @@ export const QuizPage = () => {
               }
             >
               {currentQuestionIndex === total - 1
-                ? 'Finish quiz'
-                : 'Next question →'}
+                ? 'Завершити тест'
+                : 'Наступне питання →'}
             </button>
           </section>
         </div>
       </div>
-    </main>
+    </div>
   );
 };

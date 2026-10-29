@@ -1,5 +1,12 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.scss';
+import {
+  CONTACTS_SECTION_ID,
+  ROUTES,
+} from '../../../../../constants/routes';
+import { SCHOOL_INSTAGRAM_URL } from '../../../../../constants/constants';
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 export const Footer = () => {
   const scrollTop = () =>
@@ -12,10 +19,10 @@ export const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.footerContent}>
-          <Link to='/' aria-label='Go to home page'>
+          <Link to={ROUTES.home} aria-label='На головну'>
             <img
               src='/img/icons/logo.svg'
-              alt='Page Logo'
+              alt='BETWEEN'
               className={styles.logo}
             />
           </Link>
@@ -25,29 +32,30 @@ export const Footer = () => {
           <ul className={styles.list}>
             <li>
               <a
-                href='https://linkedin.com'
+                href={SCHOOL_INSTAGRAM_URL}
                 className={styles.link}
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                LinkedIn
+                Instagram
               </a>
             </li>
             <li>
-              <NavLink to='/contacts' className={styles.link}>
+              <Link
+                to={{ pathname: ROUTES.home, hash: CONTACTS_SECTION_ID }}
+                className={styles.link}
+              >
                 Контакти
-              </NavLink>
+              </Link>
             </li>
             <li>
-              <NavLink to='/' className={styles.link}>
-                Права
-              </NavLink>
+              <span className={styles.copyright}>© {CURRENT_YEAR} BETWEEN</span>
             </li>
           </ul>
         </nav>
 
         <div className={styles.backTop}>
-          <span className={styles.buttonTopText}>Повернуться на початок</span>
+          <span className={styles.buttonTopText}>Повернутися на початок</span>
           <button
             className={styles.backTopButton}
             onClick={scrollTop}
@@ -56,7 +64,7 @@ export const Footer = () => {
             <div className={styles.iconWrapper}>
               <img
                 src='/img/icons/back-up.svg'
-                alt='Back to top'
+                alt=''
                 aria-hidden='true'
                 className={styles.icon}
               />

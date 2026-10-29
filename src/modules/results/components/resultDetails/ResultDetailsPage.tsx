@@ -4,8 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import type { ResultDetails } from '../../../../types/database';
 import { Loader } from '../../../Loader';
 import { getResultDetails } from '../../../../services/resultAnswers';
+import { usePageMeta } from '../../../../hooks/usePageMeta';
 
 export const ResultDetailsPage = () => {
+  usePageMeta({ title: 'Розбір результату', noindex: true });
+
   const [resultDetails, setResultDetails] = useState<ResultDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,19 +47,19 @@ export const ResultDetailsPage = () => {
 
   if (errorMessage) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.errorCard}>
           <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
 
           <h2 className={styles.errorText}>{errorMessage}</h2>
         </div>
-      </main>
+      </div>
     );
   }
 
   if (!resultDetails.length) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.errorCard}>
           <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
 
@@ -70,16 +73,16 @@ export const ResultDetailsPage = () => {
             Повернутися назад
           </button>
         </div>
-      </main>
+      </div>
     );
   }
 
   const test = resultDetails[0]?.questions?.tests;
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}></h1>
+        <h1 className={styles.pageTitle}>Розбір результату</h1>
 
         <div className={styles.wrapper}>
           <section className={styles.heroSection}>
@@ -155,7 +158,7 @@ export const ResultDetailsPage = () => {
                     <div className={styles.questionMeta}>
                       <span>ЗАПИТАННЯ</span>
 
-                      <span aria-label={`Question number ${index + 1}`}>
+                      <span aria-label={`Питання ${index + 1}`}>
                         {String(index + 1).padStart(2, '0')}
                       </span>
                     </div>
@@ -210,6 +213,6 @@ export const ResultDetailsPage = () => {
           </section>
         </div>
       </div>
-    </main>
+    </div>
   );
 };

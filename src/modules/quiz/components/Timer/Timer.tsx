@@ -18,7 +18,7 @@ export const Timer = ({ durationSeconds, onExpire }: Props) => {
   const isUrgent = secondsLeft > 0 && secondsLeft <= URGENT_THRESHOLD_SECONDS;
   return (
     <div className={styles.timer}>
-      <span className={styles.timerLabel}>TIME</span>
+      <span className={styles.timerLabel}>ЧАС</span>
       <span
         className={`${styles.timerValue} ${isUrgent ? styles.timerUrgent : ''}`}
       >

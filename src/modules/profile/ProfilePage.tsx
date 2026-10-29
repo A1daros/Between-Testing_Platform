@@ -8,8 +8,11 @@ import { useParams } from 'react-router-dom';
 import { Loader } from '../Loader';
 import { useAuth } from '../../hooks/useAuth';
 import { ChangeEmailForm } from './components/ChangeEmailForm';
+import { usePageMeta } from '../../hooks/usePageMeta';
 
 export const ProfilePage = () => {
+  usePageMeta({ title: 'Профіль', noindex: true });
+
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -45,22 +48,22 @@ export const ProfilePage = () => {
 
   if (errorMessage) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <p className={styles.errorMessage}>{errorMessage}</p>
-      </main>
+      </div>
     );
   }
 
   if (!profile) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <p className={styles.infoMessage}>Профіль не знайдено.</p>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       {isOwnProfile && (
         <div className={styles.formsContainer}>
           <EditProfileForm
@@ -75,6 +78,6 @@ export const ProfilePage = () => {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 };

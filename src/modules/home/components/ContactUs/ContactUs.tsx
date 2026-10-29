@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './ContactUs.module.scss';
 import { supabase } from '../../../../lib/supabase';
 import { FunctionsHttpError } from '@supabase/supabase-js';
+import { CONTACTS_SECTION_ID } from '../../../../constants/routes';
 
 export const ContactUs = () => {
   const [firstName, setFirstName] = useState('');
@@ -53,7 +54,7 @@ export const ContactUs = () => {
   };
 
   return (
-    <div className={styles.page}>
+    <div id={CONTACTS_SECTION_ID} className={styles.page}>
       <h2 className={styles.title}>Зв'язатися з нами</h2>
 
       <div className={styles.container}>
