@@ -9,6 +9,8 @@ import { Loader } from '../Loader';
 import { getQuestionsWithAnswersByTestId } from '../../services/questions';
 import { saveQuizResult } from '../../services/results';
 import { Timer } from './components/Timer';
+import { AudioPlayer } from './components/AudioPlayer';
+import { MAX_AUDIO_PLAYS } from '../../constants/constants';
 
 export const QuizPage = () => {
   const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
@@ -20,6 +22,9 @@ export const QuizPage = () => {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Plays per test part, kept here so they survive moving between questions.
+  const [audioPlays, setAudioPlays] = useState<Record<number, number>>({});
 
   const { testId } = useParams<{ testId: string }>();
   const { user } = useAuth();
@@ -128,7 +133,12 @@ export const QuizPage = () => {
     }
   };
 
+  const handleAudioPlayStart = (partId: number) => {
+    setAudioPlays((prev) => ({ ...prev, [partId]: (prev[partId] ?? 0) + 1 }));
+  };
+
   const currentAnswers = currentQuestion?.answers ?? [];
+  const currentPart = currentQuestion?.test_parts ?? null;
 
   if (loading || isSaving) {
     return <Loader />;
@@ -235,6 +245,18 @@ export const QuizPage = () => {
                 <p className={styles.instruction}>
                   {currentQuestion.test_parts.instruction}
                 </p>
+              )}
+
+              {currentPart?.audio_path && (
+                // Keyed by part: stays mounted (and keeps playing) while the
+                // student moves between questions of the same part.
+                <AudioPlayer
+                  key={currentPart.id}
+                  path={currentPart.audio_path}
+                  maxPlays={MAX_AUDIO_PLAYS}
+                  playsUsed={audioPlays[currentPart.id] ?? 0}
+                  onPlayStart={() => handleAudioPlayStart(currentPart.id)}
+                />
               )}
 
               <div className={styles.questionContent}>

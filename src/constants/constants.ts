@@ -9,3 +9,6 @@ export const BANNERS = [
 ];
 
 export const MIN_PASSWORD_LENGTH = 10;
+
+// Listening: how many times a part recording can be started during a quiz.
+export const MAX_AUDIO_PLAYS = 2;

@@ -73,7 +73,7 @@ description: Правила роботи зі схемою Supabase/Postgres —
 - Параметри мають префікс `p_`, змінні — `v_`, константи — `c_`.
 - Коди помилок: `28000` — не автентифікований, `42501` — немає прав, `P0002` — не знайдено, `22023` — невалідний параметр. Повідомлення англійською. UI перекладає їх у хуках/компонентах.
 - Повертай `jsonb` (`jsonb_build_object`, `coalesce(jsonb_agg(...), '[]'::jsonb)`), щоб порожній результат не був `null`.
-- Ключі JSON-пейлоаду, які шле клієнт, — у camelCase (`levelId`, `timerEnabled`, `parts[].uiId`, `questions[].partId`, `answers[].isCorrect`). Ключі відповіді — у snake_case (`result_id`, `level_code`).
+- Ключі JSON-пейлоаду, які шле клієнт, — у camelCase (`levelId`, `timerEnabled`, `parts[].uiId`, `parts[].audioPath`, `questions[].partId`, `questions[].description`, `answers[].isCorrect`). Ключі відповіді — у snake_case (`result_id`, `level_code`).
 - Ніколи не повертай клієнту `is_correct` разом із питаннями. Правильні відповіді віддає лише `get_correct_answers`: адміну або тому, хто вже здавав тест.
 - Зміна сигнатури (типи чи кількість параметрів) створює **нову перегрузку**. Стару функцію треба явно видалити: `drop function if exists public.fn(old_types)`.
 
@@ -86,7 +86,7 @@ description: Правила роботи зі схемою Supabase/Postgres —
 - `results.user_id` має два FK: на `auth.users` і на `profiles`. Другий потрібен PostgREST для вкладення `results → profiles(display_name)`, тож не видаляй його.
 - `profiles.id → auth.users` без cascade: видалення користувача з Auth упреться в профіль і його результати.
 - Тригер `on_auth_user_created` → `public.handle_new_user()` заповнює `profiles` з `raw_user_meta_data` (`display_name`, `name`, `surname`). Нову обов'язкову колонку в `profiles` давай з `default` або заповнюй у цій функції, інакше реєстрація впаде.
-- Бакети: `avatars` (public, 2 МБ, png/jpeg/webp, політики на власника) і `teachers` (public, без обмежень і без політик, файли — через дашборд). Новий бакет одразу отримує ліміт розміру й `allowed_mime_types`.
+- Бакети: `avatars` (public, 2 МБ, png/jpeg/webp, політики на власника), `teachers` (public, без обмежень і без політик, файли — через дашборд) і `test-audio` (private, 20 МБ, аудіо; читання — `is_approved()` через signed URL, запис/видалення — `is_admin()`). Шлях аудіо зберігається в `test_parts.audio_path`; SQL не видаляє файли зі Storage, тому прибирає їх клієнт (`services/audio.ts`, `deleteTest`, `TestForm`). Новий бакет одразу отримує ліміт розміру й `allowed_mime_types`.
 
 ## Чекліст для нової міграції
 

@@ -257,3 +257,45 @@
 .errorText {
   @include error-text;
 }
+
+.audioInfo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 16px;
+  border: $card-border;
+  border-radius: 8px;
+  background-color: $background;
+}
+
+.audioName {
+  color: $text-main;
+  word-break: break-word;
+
+  @include body-font;
+}
+
+.audioRemoveButton {
+  padding: 4px 8px;
+  border: 1px solid $red;
+  border-radius: 8px;
+  color: $red;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  @include buttons;
+
+  &:hover {
+    background-color: rgba($red, 0.1);
+  }
+}
+
+.fileInput {
+  color: $text-secondary;
+  cursor: pointer;
+
+  @include body-font;
+}

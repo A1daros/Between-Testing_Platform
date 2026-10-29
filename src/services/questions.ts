@@ -13,7 +13,7 @@ export const getQuestionsWithAnswersByTestId = async (
         timer_enabled, 
         timer_type,
         timer_duration), 
-        test_parts(title, instruction, points)`,
+        test_parts(id, title, instruction, points, audio_path)`,
     )
     .eq('test_id', testId)
     .order('sort_order', { ascending: true });

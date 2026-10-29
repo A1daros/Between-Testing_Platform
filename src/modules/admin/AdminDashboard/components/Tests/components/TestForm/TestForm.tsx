@@ -5,6 +5,12 @@ import type { NewTestPayload, UIPart, UIQuestion } from '../../types/testForm';
 import styles from './TestForm.module.scss';
 import { getLevelsById } from '../../../../../../../services/levels';
 import { validateQuestions } from '../../../../../../../utils/validateQuestions';
+import {
+  ALLOWED_AUDIO_TYPES,
+  removeTestAudio,
+  uploadTestAudio,
+  validateAudioFile,
+} from '../../../../../../../services/audio';
 
 type Props = {
   initialData?: {
@@ -37,6 +43,10 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
   );
 
   const [parts, setParts] = useState<UIPart[]>(initialData?.parts ?? []);
+
+  const initialAudioPaths = (initialData?.parts ?? [])
+    .map((part) => part.audioPath)
+    .filter((path): path is string => Boolean(path));
   const [questions, setQuestions] = useState<UIQuestion[]>(
     initialData?.questions ?? [],
   );
@@ -73,9 +83,31 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
       title: '',
       instruction: '',
       points: 1,
+      audioPath: null,
+      audioFile: null,
     };
 
     setParts([...parts, newPart]);
+  };
+
+  const handleSelectPartAudio = (uiId: string, file: File | undefined) => {
+    if (!file) {
+      return;
+    }
+
+    const validationError = validateAudioFile(file);
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
+
+    setErrorMessage('');
+    handleUpdatePart(uiId, { audioFile: file });
+  };
+
+  const handleRemovePartAudio = (uiId: string) => {
+    handleUpdatePart(uiId, { audioPath: null, audioFile: null });
   };
 
   const handleUpdatePart = (
@@ -107,6 +139,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
       uiId: crypto.randomUUID(),
       partUiId: null,
       question: '',
+      description: '',
       answers: [
         { text: '', isCorrect: true },
         { text: '', isCorrect: false },
@@ -132,6 +165,14 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
     setQuestions(
       questions.map((question) =>
         question.uiId === uiId ? { ...question, question: text } : question,
+      ),
+    );
+  };
+
+  const handleUpdateQuestionDescription = (uiId: string, text: string) => {
+    setQuestions(
+      questions.map((question) =>
+        question.uiId === uiId ? { ...question, description: text } : question,
       ),
     );
   };
@@ -189,39 +230,78 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
       return;
     }
 
-    const payload: NewTestPayload = {
-      title,
-      description,
-      levelId,
-      timerEnabled,
-      timerType,
-      timerDuration,
-      parts: parts.map(({ id, uiId, title, instruction, points }) => ({
-        id,
-        uiId,
-        title,
-        instruction,
-        points,
-      })),
-      questions: questions.map(({ id, partUiId, question, answers }) => {
-        return {
-          id,
-          partId: partUiId,
-          question,
-          answers,
-        };
-      }),
-    };
-
     setIsSubmiting(true);
     setErrorMessage('');
 
+    // Files uploaded in this attempt; removed again if saving fails.
+    const uploadedAudioPaths: string[] = [];
+
     try {
+      const savedParts: UIPart[] = [];
+
+      for (const part of parts) {
+        if (part.audioFile) {
+          const audioPath = await uploadTestAudio(part.audioFile);
+
+          uploadedAudioPaths.push(audioPath);
+          savedParts.push({ ...part, audioPath, audioFile: null });
+        } else {
+          savedParts.push(part);
+        }
+      }
+
+      const payload: NewTestPayload = {
+        title,
+        description,
+        levelId,
+        timerEnabled,
+        timerType,
+        timerDuration,
+        parts: savedParts.map(
+          ({ id, uiId, title, instruction, points, audioPath }) => ({
+            id,
+            uiId,
+            title,
+            instruction,
+            points,
+            audioPath,
+          }),
+        ),
+        questions: questions.map(
+          ({ id, partUiId, question, description, answers }) => {
+            return {
+              id,
+              partId: partUiId,
+              question,
+              description,
+              answers,
+            };
+          },
+        ),
+      };
+
       await onSubmit(payload);
+
+      // Audio that was replaced or belonged to a removed part.
+      const keptAudioPaths = new Set(savedParts.map((part) => part.audioPath));
+      const obsoleteAudioPaths = initialAudioPaths.filter(
+        (path) => !keptAudioPaths.has(path),
+      );
+
+      try {
+        await removeTestAudio(obsoleteAudioPaths);
+      } catch (removeError) {
+        console.error('Failed to remove obsolete audio:', removeError);
+      }
 
       navigate('/admin/tests');
     } catch (error) {
       console.error('Failed to create test:', error);
+
+      removeTestAudio(uploadedAudioPaths).catch((removeError) =>
+        console.error('Failed to remove uploaded audio:', removeError),
+      );
+
       setErrorMessage(
         error instanceof Error
           ? error.message
@@ -357,6 +437,48 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                     }
                   />
                 </div>
+
+                <div className={styles.fieldGroup}>
+                  <label
+                    htmlFor={`audio-${part.uiId}`}
+                    className={styles.label}
+                  >
+                    Аудіо для listening (MP3, M4A, OGG, WAV, до 20 МБ)
+                  </label>
+
+                  {(part.audioFile || part.audioPath) && (
+                    <div className={styles.audioInfo}>
+                      <span className={styles.audioName}>
+                        {part.audioFile
+                          ? `${part.audioFile.name} — завантажиться під час збереження`
+                          : 'Аудіо додано'}
+                      </span>
+
+                      <button
+                        type='button'
+                        className={styles.audioRemoveButton}
+                        onClick={() => handleRemovePartAudio(part.uiId)}
+                      >
+                        Прибрати аудіо
+                      </button>
+                    </div>
+                  )}
+
+                  <input
+                    // Remount to clear the native file input after removal.
+                    key={part.audioFile?.name ?? part.audioPath ?? 'empty'}
+                    id={`audio-${part.uiId}`}
+                    type='file'
+                    accept={ALLOWED_AUDIO_TYPES.join(',')}
+                    className={styles.fileInput}
+                    onChange={(event) =>
+                      handleSelectPartAudio(
+                        part.uiId,
+                        event.target.files?.[0],
+                      )
+                    }
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -430,6 +552,27 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                     }
                     type='text'
                     placeholder='Question text'
+                  />
+                </div>
+
+                <div className={styles.fieldGroup}>
+                  <label
+                    htmlFor={`questionDescription-${question.uiId}`}
+                    className={styles.label}
+                  >
+                    Текст для читання (необовʼязково)
+                  </label>
+                  <textarea
+                    id={`questionDescription-${question.uiId}`}
+                    className={styles.textarea}
+                    value={question.description}
+                    onChange={(event) =>
+                      handleUpdateQuestionDescription(
+                        question.uiId,
+                        event.target.value,
+                      )
+                    }
+                    placeholder='Текст, який учень бачить над питанням (reading)'
                   />
                 </div>
 
