@@ -8,3 +8,10 @@ entrypoint = "./functions/send-contact-email/index.ts"
 # Specifies static files to be bundled with the function. Supports glob patterns.
 # For example, if you want to serve static HTML pages in your function:
 # static_files = [ "./functions/send-contact-email/*.html" ]
+
+[functions.notify-profile-status]
+enabled = true
+# Called by a Database Webhook, authenticated with the x-webhook-secret header.
+verify_jwt = false
+import_map = "./functions/notify-profile-status/deno.json"
+entrypoint = "./functions/notify-profile-status/index.ts"
