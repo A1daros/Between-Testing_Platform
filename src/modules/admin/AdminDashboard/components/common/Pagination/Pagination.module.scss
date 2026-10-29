@@ -1,0 +1,36 @@
+@use '../../../../../../styles/variables' as *;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.button {
+  padding: 6px 12px;
+  border: $card-border;
+  border-radius: 8px;
+  background-color: $surface-2;
+  color: $text-main;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  @include buttons;
+
+  &:hover:not(:disabled) {
+    background-color: $surface-1;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.info {
+  color: $text-secondary;
+
+  @include small-text;
+}

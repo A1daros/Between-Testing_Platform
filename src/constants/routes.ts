@@ -18,6 +18,7 @@ export const ROUTES = {
 
   profile: '/profile/:userId',
 
+  admin: '/admin',
   adminWildcard: '/admin/*',
 
   notFound: '*',

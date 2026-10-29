@@ -109,6 +109,13 @@ export interface Results {
   } | null;
 }
 
+export type AdminResultsSort = 'date' | 'test' | 'student';
+
+export interface AdminResultsPage {
+  items: Results[];
+  total: number;
+}
+
 export interface ResultDetails {
   id: number;
   result_id: number;

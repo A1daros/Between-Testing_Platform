@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabase';
 import type {
+  AdminResultsPage,
+  AdminResultsSort,
   Results,
   SaveQuizResultInput,
   SubmitQuizResult,
@@ -63,10 +65,25 @@ export const loadAttemptResults = async (): Promise<number> => {
   return count ?? 0;
 };
 
-export const loadAllStudentsResults = async (): Promise<Results[]> => {
-  const { data, error } = await supabase
-    .from('results')
-    .select(`*, tests(title), profiles(display_name)`);
+type GetAdminResultsParams = {
+  query: string;
+  sort: AdminResultsSort;
+  page: number;
+  pageSize: number;
+};
+
+export const getAdminResults = async ({
+  query,
+  sort,
+  page,
+  pageSize,
+}: GetAdminResultsParams): Promise<AdminResultsPage> => {
+  const { data, error } = await supabase.rpc('get_admin_results', {
+    p_query: query,
+    p_sort: sort,
+    p_limit: pageSize,
+    p_offset: (page - 1) * pageSize,
+  });
 
   if (error) {
     throw new Error(error.message);
