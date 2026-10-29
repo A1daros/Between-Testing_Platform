@@ -19,11 +19,13 @@ export type NewTestPayload = {
     title: string;
     instruction: string;
     points: number;
+    audioPath: string | null;
   }[];
   questions: {
     id?: number;
     partId: string | null;
     question: string;
+    description: string;
     answers: UIAnswer[];
   }[];
 };
@@ -34,6 +36,10 @@ export interface UIPart {
   title: string;
   instruction: string;
   points: number;
+  // Path in the test-audio bucket that is already saved for this part.
+  audioPath: string | null;
+  // A newly picked file; uploaded on submit and replaces audioPath.
+  audioFile: File | null;
 }
 
 export interface UIQuestion {
@@ -41,5 +47,7 @@ export interface UIQuestion {
   uiId: string;
   partUiId: string | null;
   question: string;
+  // Reading text shown above the question (questions.description).
+  description: string;
   answers: UIAnswer[];
 }

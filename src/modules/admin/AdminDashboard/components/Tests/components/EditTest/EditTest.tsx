@@ -64,6 +64,8 @@ export const EditTestForm = () => {
     title: part.title,
     instruction: part.instruction,
     points: part.points,
+    audioPath: part.audio_path,
+    audioFile: null,
   }));
 
   const mappedQuestions: UIQuestion[] = editTest.questions.map((question) => ({
@@ -71,6 +73,7 @@ export const EditTestForm = () => {
     uiId: String(question.id),
     partUiId: question.part_id ? String(question.part_id) : null,
     question: question.question,
+    description: question.description ?? '',
     answers: question.answers.map((answer) => ({
       id: answer.id,
       text: answer.answer_text,

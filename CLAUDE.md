@@ -31,7 +31,7 @@ BETWEEN — сайт англомовної школи та платформа �
   - `get_correct_answers` — правильні відповіді для розбору результатів і редагування тесту.
   - `save_test`, `delete_test` — створення/редагування/видалення тесту з частинами, питаннями й відповідями (адмінка).
   - Тригер на `auth.users` створює рядок у `profiles` з метаданих `signUp` (`name`, `surname`, `display_name`).
-  - Доступ обмежується через RLS, а не лише в UI. Storage: бакет `avatars`.
+  - Доступ обмежується через RLS, а не лише в UI. Storage: бакети `avatars`, `teachers` і приватний `test-audio` (аудіо listening-частин, signed URL).
   - Єдина edge-функція — `supabase/functions/send-contact-email` (Deno). Налаштування `.vscode` вмикають Deno лише для цього шляху.
 - **Модель контенту.** levels → submodules → tests (`placement_test` / `submodule_quiz` / `final_test`) → test_parts → questions → answers. Результати зберігаються в `results` + `result_answers`. Програми/формати для лендингу та викладачі вантажаться із Supabase (див. `services/programs.ts`, `services/teachers.ts`). Статичний маркетинговий контент лежить у `src/data`.
 - **UI-модулі.** `src/modules/<feature>/` (home, tests, quiz, results, profile, authentication, admin, about-school, shared), стилі `.module.scss` лежать поруч із компонентами.

@@ -55,7 +55,7 @@ export interface Question {
   test_id: number;
   question: string;
   title: string;
-  description: string;
+  description: string | null;
   sort_order: number;
   part_id: number;
 }
@@ -72,10 +72,11 @@ export interface QuestionWithAnswers extends Question {
   };
 
   test_parts: {
+    id: number;
     title: string;
     instruction: string;
-    part_id: number;
     points: number;
+    audio_path: string | null;
   } | null;
 
   levels: {
@@ -169,6 +170,7 @@ export interface EditTest {
     title: string;
     instruction: string;
     points: number;
+    audio_path: string | null;
   }[];
 
   questions: (Question & {
