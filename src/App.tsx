@@ -11,6 +11,8 @@ import { ProtectedRoute } from './routes/ProtectedRoute';
 import { HomePage } from './modules/home';
 import { ResultDetailsPage } from './modules/results/components/resultDetails/ResultDetailsPage';
 import { AdminRoute } from './routes/AdminRoute';
+import { ApprovedRoute } from './routes/ApprovedRoute';
+import { AwaitingApproval } from './modules/authentication/components/awaiting-approval';
 import { Header } from './modules/shared/components/Layuot/Header';
 import { Footer } from './modules/shared/components/Layuot/Footer';
 import { TestsPage } from './modules/tests';
@@ -63,19 +65,26 @@ export const App = () => {
                 />
 
                 <Route element={<ProtectedRoute />}>
-                  <Route path={ROUTES.tests} element={<TestsPage />} />
                   <Route
-                    path={ROUTES.testsByLevel}
-                    element={<TestsByLevel />}
-                  />
-                  <Route path={ROUTES.quiz} element={<QuizPage />} />
-                  <Route path={ROUTES.testResult} element={<ResultPage />} />
-                  <Route path={ROUTES.myResults} element={<MyResults />} />
-                  <Route
-                    path={ROUTES.myResultDetails}
-                    element={<ResultDetailsPage />}
+                    path={ROUTES.awaitingApproval}
+                    element={<AwaitingApproval />}
                   />
                   <Route path={ROUTES.profile} element={<ProfilePage />} />
+
+                  <Route element={<ApprovedRoute />}>
+                    <Route path={ROUTES.tests} element={<TestsPage />} />
+                    <Route
+                      path={ROUTES.testsByLevel}
+                      element={<TestsByLevel />}
+                    />
+                    <Route path={ROUTES.quiz} element={<QuizPage />} />
+                    <Route path={ROUTES.testResult} element={<ResultPage />} />
+                    <Route path={ROUTES.myResults} element={<MyResults />} />
+                    <Route
+                      path={ROUTES.myResultDetails}
+                      element={<ResultDetailsPage />}
+                    />
+                  </Route>
 
                   <Route element={<AdminRoute />}>
                     <Route

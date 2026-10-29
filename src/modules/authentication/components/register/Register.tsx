@@ -4,6 +4,7 @@ import { supabase } from '../../../../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { getPasswordErrorMessage } from '../../../../utils/getPasswordErrorMessage';
 import { MIN_PASSWORD_LENGTH } from '../../../../constants/constants';
+import { ROUTES } from '../../../../constants/routes';
 
 export const Register = () => {
   const [name, setName] = useState('');
@@ -41,7 +42,7 @@ export const Register = () => {
       }
 
       if (data.session) {
-        navigate('/');
+        navigate(ROUTES.home);
         return;
       }
 
@@ -176,12 +177,14 @@ export const Register = () => {
             <p className={styles.modalDescription}>
               Ми надіслали посилання для підтвердження на вашу електронну
               адресу. Будь ласка, підтвердьте свій обліковий запис перед входом.
+              Після цього адміністратор школи перевірить акаунт і відкриє доступ
+              до тестів.
             </p>
 
             <button
               type='button'
               className={styles.modalButton}
-              onClick={() => navigate('/login')}
+              onClick={() => navigate(ROUTES.login)}
             >
               Got it →
             </button>

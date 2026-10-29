@@ -194,9 +194,12 @@ export interface StudentDetails {
   results: StudentResults[];
 }
 
+export type ProfileStatus = 'pending' | 'approved' | 'rejected';
+
 export interface Profile {
   id: string;
   role: 'student' | 'admin';
+  status: ProfileStatus;
   display_name: string;
   name: string;
   surname: string;
@@ -214,6 +217,7 @@ export interface Profile {
 export interface StudentProfile {
   id: string;
   role: 'student';
+  status: ProfileStatus;
   display_name: string;
   email: string;
   avatar_url: string;

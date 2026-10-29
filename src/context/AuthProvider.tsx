@@ -67,6 +67,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await supabase.auth.signOut();
   };
 
+  // Re-reads the profile, e.g. to pick up a status changed by an admin.
+  const refreshProfile = async () => {
+    if (!user) {
+      return;
+    }
+
+    const profile = await getProfile(user.id);
+
+    setProfile(profile);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -75,6 +86,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         session,
         loading,
         signOut,
+        refreshProfile,
       }}
     >
       {children}

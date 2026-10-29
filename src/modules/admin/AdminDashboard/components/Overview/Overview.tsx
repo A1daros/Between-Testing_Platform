@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import styles from './Overview.module.scss';
 import type { Results, Test } from '../../../../../types/database';
-import { loadCountStudents } from '../../../../../services/profile';
+import {
+  loadCountPendingStudents,
+  loadCountStudents,
+} from '../../../../../services/profile';
 import { getTests } from '../../../../../services/tests';
 import {
   loadAttemptResults,
@@ -16,6 +19,7 @@ export const Overview = () => {
   const [totalStudents, setTotalStudents] = useState<number | null>(null);
   const [attemptResults, setAttemptResults] = useState<number>(0);
   const [recentResults, setRecentResults] = useState<Results[]>([]);
+  const [pendingStudents, setPendingStudents] = useState<number>(0);
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -45,17 +49,20 @@ export const Overview = () => {
           totalStudentsData,
           attemptResultsData,
           recentResultsData,
+          pendingStudentsData,
         ] = await Promise.all([
           getTests(),
           loadCountStudents(),
           loadAttemptResults(),
           loadRecentResults(),
+          loadCountPendingStudents(),
         ]);
 
         setTests(testsData);
         setTotalStudents(totalStudentsData);
         setAttemptResults(attemptResultsData);
         setRecentResults(recentResultsData);
+        setPendingStudents(pendingStudentsData);
       } catch (error) {
         console.error('Failed to load data!', error);
         setErrorMessage('Failed to load DATA!');
@@ -113,7 +120,11 @@ export const Overview = () => {
             value={attemptResults}
             iconPath={attemptsIcon}
           />
-          <StatCard label='Pending' value={0} iconPath={pendingIcon} />
+          <StatCard
+            label='Pending'
+            value={pendingStudents}
+            iconPath={pendingIcon}
+          />
         </ul>
 
         <div className={styles.recent}>

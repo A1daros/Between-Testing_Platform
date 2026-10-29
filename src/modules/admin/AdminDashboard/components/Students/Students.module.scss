@@ -58,3 +58,31 @@
 
   @include buttons;
 }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  @media (min-width: $breakpoint-s) {
+    margin: 24px 0;
+  }
+}
+
+.filterActive {
+  border-color: $accent;
+  color: $text-on-accent;
+  background-color: $accent;
+
+  &:hover {
+    border-color: $accent-hover;
+    background-color: $accent-hover;
+  }
+}
+
+.statusError {
+  margin: 0 0 16px;
+  color: $red;
+
+  @include body-font;
+}

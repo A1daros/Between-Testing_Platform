@@ -10,5 +10,6 @@ Disallow: /login
 Disallow: /register
 Disallow: /forgot-password
 Disallow: /update-password
+Disallow: /awaiting-approval
 
 Sitemap: https://between-testing-platform.vercel.app/sitemap.xml

@@ -6,6 +6,7 @@ export const ROUTES = {
   register: '/register',
   forgotPassword: '/forgot-password',
   updatePassword: '/update-password',
+  awaitingApproval: '/awaiting-approval',
 
   tests: '/tests',
   testsByLevel: '/tests/level/:levelId',

@@ -1,0 +1,66 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins/auth-form' as *;
+
+.wrapper {
+  @include wrapper;
+}
+
+.card {
+  @include container;
+}
+
+.header {
+  @include header;
+}
+
+.label {
+  @include auth-badge;
+}
+
+.title {
+  @include form-title;
+}
+
+.description {
+  @include form-subtitle;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btnSubmit {
+  @include form-btn-submit;
+}
+
+// The mixin adds margin-top for a single button under a form; here the
+// buttons are spaced by .actions gap.
+.btnSecondary {
+  @include form-btn-secondary-submit;
+
+  margin-top: 0;
+}
+
+.errorCard {
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
+}
+
+.infoCard {
+  padding: 12px 16px;
+  border: 1px solid rgba($text-secondary, 0.2);
+  border-radius: 8px;
+  background-color: $surface-1;
+}
+
+.infoText {
+  margin: 0;
+  color: $text-secondary;
+
+  @include body-font;
+}

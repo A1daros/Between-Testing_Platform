@@ -1,0 +1,34 @@
+@use '../../../../../../../styles/variables' as *;
+
+.statusBadge {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: $text-secondary;
+  background-color: $surface-2;
+  white-space: nowrap;
+
+  @include uppercase;
+}
+
+.statusApproved {
+  color: $green;
+  background-color: rgba($green, 0.1);
+}
+
+.statusRejected {
+  color: $red;
+  background-color: rgba($red, 0.1);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  // Table action buttons have no disabled state of their own.
+  & > button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
