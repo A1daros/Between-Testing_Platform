@@ -1,90 +1,97 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SearchInput } from '../common/SearchInput/SearchInput';
 import { ResultsList } from './components/ResultsList/ResultsList';
+import { Pagination } from '../common/Pagination';
 import styles from './Results.module.scss';
-import type { Results } from '../../../../../types/database';
-import { useNavigate, useParams } from 'react-router-dom';
-import { loadAllStudentsResults } from '../../../../../services/results';
-import type { SortType } from '../Tests/types/admin';
+import type {
+  AdminResultsSort,
+  Results,
+} from '../../../../../types/database';
+import { generatePath, useNavigate, useParams } from 'react-router-dom';
+import { getAdminResults } from '../../../../../services/results';
+import { ADMIN_ROUTES, ROUTES } from '../../../../../constants/routes';
 import { Loader } from '../../../../Loader';
+
+const PAGE_SIZE = 20;
+const SEARCH_DEBOUNCE_MS = 300;
 
 export const ResultsOverview = () => {
   const [query, setQuery] = useState('');
-  const [allStudentResults, setAllStudentResults] = useState<Results[]>([]);
-  const [sortBy, setSortBy] = useState<SortType>('default');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [sortBy, setSortBy] = useState<AdminResultsSort>('date');
+  const [page, setPage] = useState(1);
 
-  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<Results[]>([]);
+  const [total, setTotal] = useState(0);
+
+  const [initialLoading, setInitialLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
   const { resultId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedQuery(query.trim());
+      setPage(1);
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => clearTimeout(timeoutId);
+  }, [query]);
+
+  useEffect(() => {
+    let cancelled = false;
+
     const loadData = async () => {
       try {
-        setLoading(true);
-        setErrorMessage('');
+        const data = await getAdminResults({
+          query: debouncedQuery,
+          sort: sortBy,
+          page,
+          pageSize: PAGE_SIZE,
+        });
 
-        const data = await loadAllStudentsResults();
-
-        setAllStudentResults(data);
+        if (!cancelled) {
+          setResults(data.items);
+          setTotal(data.total);
+          setErrorMessage('');
+        }
       } catch (error) {
         console.error('Failed to load all student results', error);
-        setErrorMessage('не вдалося завантажити результати');
+
+        if (!cancelled) {
+          setErrorMessage('не вдалося завантажити результати');
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setInitialLoading(false);
+        }
       }
     };
 
     loadData();
-  }, [resultId]);
 
-  const handleCheckDetails = (id: number) => {
-    navigate(`/admin/results/result-details/${id}`);
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedQuery, sortBy, page, resultId]);
+
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+
+  const handleSortChange = (sort: AdminResultsSort) => {
+    setSortBy(sort);
+    setPage(1);
   };
 
-  const filteredAndSortedStudents = useMemo(() => {
-    const filtered = allStudentResults.filter((student) => {
-      const name = student.profiles?.display_name ?? '';
-      const test = student.tests.title ?? '';
+  const handleCheckDetails = (id: number) => {
+    navigate(
+      `${ROUTES.admin}/${generatePath(ADMIN_ROUTES.resultDetails, {
+        resultId: String(id),
+      })}`,
+    );
+  };
 
-      return (
-        name.toLowerCase().includes(query.toLowerCase()) ||
-        test.toLowerCase().includes(query.toLowerCase())
-      );
-    });
-
-    if (sortBy === 'default') {
-      return filtered;
-    }
-
-    return [...filtered].sort((a, b) => {
-      if (sortBy === 'test') {
-        const testA = a.tests.title ?? '';
-        const testB = b.tests.title ?? '';
-
-        return testA.localeCompare(testB);
-      }
-
-      if (sortBy === 'student') {
-        const studentA = a.profiles?.display_name ?? '';
-        const studentB = b.profiles?.display_name ?? '';
-
-        return studentA.localeCompare(studentB);
-      }
-
-      if (sortBy === 'date') {
-        const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
-        const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
-
-        return timeB - timeA;
-      }
-
-      return 0;
-    });
-  }, [allStudentResults, query, sortBy]);
-
-  if (loading) {
+  if (initialLoading) {
     return <Loader />;
   }
 
@@ -117,19 +124,19 @@ export const ResultsOverview = () => {
           <div className={styles.searchSection}>
             <button
               className={`${styles.searchInfo} ${sortBy === 'test' ? styles.activeSort : ''}`}
-              onClick={() => setSortBy('test')}
+              onClick={() => handleSortChange('test')}
             >
               Сортувати за тестом
             </button>
             <button
               className={`${styles.searchInfo} ${sortBy === 'student' ? styles.activeSort : ''}`}
-              onClick={() => setSortBy('student')}
+              onClick={() => handleSortChange('student')}
             >
               Сортувати за учнем
             </button>
             <button
               className={`${styles.searchInfo} ${sortBy === 'date' ? styles.activeSort : ''}`}
-              onClick={() => setSortBy('date')}
+              onClick={() => handleSortChange('date')}
             >
               Сортувати за датою
             </button>
@@ -139,8 +146,13 @@ export const ResultsOverview = () => {
 
       <div>
         <ResultsList
-          allStudentResults={filteredAndSortedStudents}
+          allStudentResults={results}
           checkDetails={handleCheckDetails}
+        />
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
         />
       </div>
     </div>

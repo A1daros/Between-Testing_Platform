@@ -32,7 +32,9 @@ BETWEEN — сайт англомовної школи та платформа �
   - `save_test`, `delete_test` — створення/редагування/видалення тесту з частинами, питаннями й відповідями (адмінка).
   - Тригер на `auth.users` створює рядок у `profiles` з метаданих `signUp` (`name`, `surname`, `display_name`).
   - Доступ обмежується через RLS, а не лише в UI. Storage: бакети `avatars`, `teachers` і приватний `test-audio` (аудіо listening-частин, signed URL).
-  - Єдина edge-функція — `supabase/functions/send-contact-email` (Deno). Налаштування `.vscode` вмикають Deno лише для цього шляху.
+  - `get_admin_results` — сторінка результатів в адмінці (пошук, сортування, пагінація).
+  - Тригер на оновлення `auth.users.email` синхронізує `profiles.email`.
+  - Edge-функції (Deno) лежать у `supabase/functions`: `send-contact-email` (форма зв'язку) і `notify-profile-status` (листи про нову заявку й рішення щодо неї; викликається Database Webhook на `profiles`). Налаштування `.vscode` вмикають Deno лише для `supabase/functions`.
 - **Модель контенту.** levels → submodules → tests (`placement_test` / `submodule_quiz` / `final_test`) → test_parts → questions → answers. Результати зберігаються в `results` + `result_answers`. Програми/формати для лендингу та викладачі вантажаться із Supabase (див. `services/programs.ts`, `services/teachers.ts`). Статичний маркетинговий контент лежить у `src/data`.
 - **UI-модулі.** `src/modules/<feature>/` (home, tests, quiz, results, profile, authentication, admin, about-school, shared), стилі `.module.scss` лежать поруч із компонентами.
   - Спільний layout — у `modules/shared/components/Layuot`. Назва папки саме така, з опечаткою «Layuot».
@@ -63,9 +65,9 @@ BETWEEN — сайт англомовної школи та платформа �
 - Після будь-якої зміни схеми онови `src/types/database.ts`.
 - Для кожної нової таблиці й бакета вмикай RLS і задавай явні політики. Авторизація не може спиратися лише на перевірки в UI.
 
-## Edge-функція
+## Edge-функції
 
-`supabase/functions/send-contact-email` працює на Deno, а не на Node: використовуй Deno-імпорти й не змішуй її з конфігурацією Vite/TS.
+Функції в `supabase/functions/*` працюють на Deno, а не на Node: використовуй Deno-імпорти й не змішуй їх із конфігурацією Vite/TS. Кожна має власний `deno.json` і секцію в `supabase/config.toml`.
 
 ## Стан проєкту та пріоритети
 
@@ -76,7 +78,7 @@ BETWEEN — сайт англомовної школи та платформа �
 Заплановані задачі (у порядку пріоритету):
 1. **Спроби та ключ відповідей** — після першої спроби учень бачить ключ (`get_correct_answers`) і може перездавати без обмежень. Потрібне рішення замовниці: ліміт спроб, позначка першої спроби або ключ лише в межах конкретного результату.
 2. **Серверна сесія тесту** — таймер, ліміт прослуховувань і прогрес живуть лише в браузері й скидаються при оновленні сторінки; `ResultPage` тримається на `location.state`.
-3. **Технічний борг** — запити до Supabase всередині `onAuthStateChange` в `AuthProvider` (ризик зависання, подвійне завантаження профілю); `profiles.email` не синхронізується після зміни пошти; `save_test` не створює `submodule_quiz`, `submit_quiz` не перевіряє тип тесту; список результатів в адмінці без пагінації; немає email-сповіщень про схвалення й нові заявки.
+3. **Технічний борг** — `save_test` не створює `submodule_quiz`: у клієнті немає жодного UI для субмодулів, тож це окрема фіча, яку треба погодити із замовницею. Решту пунктів закрито (синхронний `onAuthStateChange`, синхронізація `profiles.email`, перевірка типу тесту в `submit_quiz`, пагінація результатів, email-сповіщення).
 
 ### Запуск у новому проєкті
 
@@ -84,11 +86,11 @@ BETWEEN — сайт англомовної школи та платформа �
 - Застосувати міграції (`supabase link` + `supabase db push`). Те, що з них піднімається порожня база, ще не перевірено (`supabase db reset` локально, потрібен Docker).
 - Внести довідники: `levels` (A1–B2) обов'язкові для placement test, форми тесту й фільтра за рівнем; також програми, формати й викладачі лендингу. Placement test створюється лише напряму в БД: форма в адмінці робить тільки `final_test`.
 - Призначити першого адміна вручну: `update public.profiles set role = 'admin', status = 'approved' where email = '…';`
-- Поза репозиторієм: Site URL і Redirect URLs в Auth, SMTP/Resend, секрети й деплой edge-функції (`RESEND_API_KEY`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `CONTACT_TO_EMAIL`), нові `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` у Vercel, фото викладачів у бакеті `teachers` (через дашборд), `preconnect` на новий Supabase-домен в `index.html`.
+- Поза репозиторієм: Site URL і Redirect URLs в Auth, SMTP/Resend, секрети й деплой edge-функцій (`RESEND_API_KEY`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `CONTACT_TO_EMAIL`; для `notify-profile-status` ще `WEBHOOK_SECRET`, `SITE_URL`, опційно `NOTIFY_FROM_EMAIL`), Database Webhook на `public.profiles` (INSERT, UPDATE) → `notify-profile-status` із заголовком `x-webhook-secret`, нові `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` у Vercel, фото викладачів у бакеті `teachers` (через дашборд), `preconnect` на новий Supabase-домен в `index.html`.
 
 ### Перехід на власний домен
 
-Адреса `between-testing-platform.vercel.app` зашита в: `index.html` (`og:url`, `og:image`, JSON-LD), `src/constants/seo.ts` (`SITE_URL`: canonical і `og:url`), `public/robots.txt`, `public/sitemap.xml`, `README.md`, а також `allowedOrigins` у `supabase/functions/send-contact-email/index.ts` (без оновлення форма зв'язку перестане працювати). Поза репозиторієм: Site URL і Redirect URLs у Supabase Auth, верифікація домену в Resend (зараз листи йдуть з `onboarding@resend.dev`, тому реєстрація працює лише для пошти власника акаунта). Після запуску відкрити індексацію: `SITE_INDEXABLE = true` у `src/constants/seo.ts` **і** прибрати `<meta name="robots">` з `index.html` (Google не рендерить сторінки, що мають `noindex` у початковому HTML). Службові та закриті сторінки лишаться `noindex` через `usePageMeta`.
+Адреса `between-testing-platform.vercel.app` зашита в: `index.html` (`og:url`, `og:image`, JSON-LD), `src/constants/seo.ts` (`SITE_URL`: canonical і `og:url`), `public/robots.txt`, `public/sitemap.xml`, `README.md`, а також `allowedOrigins` у `supabase/functions/send-contact-email/index.ts` (без оновлення форма зв'язку перестане працювати) і секрет `SITE_URL` функції `notify-profile-status` (посилання в листах). Поза репозиторієм: Site URL і Redirect URLs у Supabase Auth, верифікація домену в Resend (зараз листи йдуть з `onboarding@resend.dev`, тому реєстрація працює лише для пошти власника акаунта). Після запуску відкрити індексацію: `SITE_INDEXABLE = true` у `src/constants/seo.ts` **і** прибрати `<meta name="robots">` з `index.html` (Google не рендерить сторінки, що мають `noindex` у початковому HTML). Службові та закриті сторінки лишаться `noindex` через `usePageMeta`.
 
 ## Чого не робити
 
