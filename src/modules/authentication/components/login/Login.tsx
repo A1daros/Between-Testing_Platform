@@ -2,8 +2,11 @@ import styles from './Login.module.scss';
 import { useState, type FormEvent } from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Link, useNavigate } from 'react-router-dom';
+import { usePageMeta } from '../../../../hooks/usePageMeta';
 
 export const Login = () => {
+  usePageMeta({ title: 'Вхід', noindex: true });
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');

@@ -11,24 +11,6 @@
   @include page-container;
 }
 
-.hiddenTitle {
-  position: absolute;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  color: $text-main;
-
-  @include h1-font-mobile;
-
-  @media (min-width: $breakpoint-m) {
-    @include h1-font;
-  }
-}
-
 .title {
   margin: 24px 0;
   color: $text-main;

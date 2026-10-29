@@ -6,8 +6,11 @@ import { getLevelsById } from '../../../services/levels';
 import { Loader } from '../../Loader';
 import { Link, useParams } from 'react-router-dom';
 import { getDurationLabel } from '../../../utils/getDurationLabel';
+import { usePageMeta } from '../../../hooks/usePageMeta';
 
 export const TestsByLevel = () => {
+  usePageMeta({ title: 'Тести рівня', noindex: true });
+
   const [testsByLevel, setTestsByLevel] = useState<Test[]>([]);
   const [levels, setLevels] = useState<Level[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,20 +58,20 @@ export const TestsByLevel = () => {
 
   if (errorMessage) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.container}>
           <div className={styles.errorCard}>
             <p className={styles.errorText}>{errorMessage}</p>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}></h1>
+        <h1 className={styles.pageTitle}>Тести рівня</h1>
 
         <div className={styles.wrapper}>
           <section className={styles.heroSection}>
@@ -104,7 +107,7 @@ export const TestsByLevel = () => {
             {testsByLevel.length > 0 ? (
               <ul className={styles.testsList}>
                 {testsByLevel.map((test, index) => {
-                  const testTitle = test.title ?? 'Untitled Test';
+                  const testTitle = test.title ?? 'Тест без назви';
                   const testId = `test-title-${test.id}`;
                   const questionCount = Array.isArray(test.questions)
                     ? (test.questions[0]?.count ?? 0)
@@ -136,7 +139,11 @@ export const TestsByLevel = () => {
                           <div className={styles.metaBox}>
                             <span
                               className={styles.metaBadge}
-                              aria-label={`Duration: ${test.timer_duration ?? 'unlimited'} seconds`}
+                              aria-label={
+                                test.timer_duration
+                                  ? `Тривалість: ${test.timer_duration} с`
+                                  : 'Без обмеження часу'
+                              }
                             >
                               {test.timer_duration !== null
                                 ? `${test.timer_duration}с `
@@ -165,6 +172,6 @@ export const TestsByLevel = () => {
           </section>
         </div>
       </div>
-    </main>
+    </div>
   );
 };

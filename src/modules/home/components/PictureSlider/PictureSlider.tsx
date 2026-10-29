@@ -52,9 +52,9 @@ export const PicturesSlider = () => {
         <button
           className={styles.arrow}
           onClick={handlePrev}
-          aria-label='Previous slide'
+          aria-label='Попередній слайд'
         >
-          <img src='/img/icons/left.svg' alt='Arrow left' />
+          <img src='/img/icons/left.svg' alt='' />
         </button>
 
         <div className={styles.slide}>
@@ -73,9 +73,9 @@ export const PicturesSlider = () => {
         <button
           className={styles.arrow}
           onClick={handleNext}
-          aria-label='Next slide'
+          aria-label='Наступний слайд'
         >
-          <img src='/img/icons/right.svg' alt='Arrow right' />
+          <img src='/img/icons/right.svg' alt='' />
         </button>
       </div>
 
@@ -85,7 +85,7 @@ export const PicturesSlider = () => {
             key={index}
             className={`${styles.dot} ${currentIndex === index ? styles.dotActive : ''}`}
             onClick={() => handleDotClick(index)}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={`Перейти до слайда ${index + 1}`}
           />
         ))}
       </div>

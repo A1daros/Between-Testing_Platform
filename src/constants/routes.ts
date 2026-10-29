@@ -19,6 +19,8 @@ export const ROUTES = {
   profile: '/profile/:userId',
 
   adminWildcard: '/admin/*',
+
+  notFound: '*',
 } as const;
 
 export const ADMIN_ROUTES = {
@@ -31,3 +33,6 @@ export const ADMIN_ROUTES = {
   students: 'students',
   studentDetails: 'students/student-details/:studentId',
 } as const;
+
+// Anchor of the contact form section on the home page.
+export const CONTACTS_SECTION_ID = 'contacts';

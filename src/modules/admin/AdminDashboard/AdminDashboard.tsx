@@ -76,9 +76,9 @@ export const AdminDashboard = () => {
         </nav>
       </aside>
 
-      <main className={styles.mainbar}>
+      <div className={styles.mainbar}>
         <Outlet />
-      </main>
+      </div>
     </div>
   );
 };

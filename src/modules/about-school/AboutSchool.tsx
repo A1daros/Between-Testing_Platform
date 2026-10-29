@@ -13,8 +13,17 @@ import { loadTeachers } from '../../services/teachers.ts';
 import { Loader } from '../Loader/Loader.tsx';
 import { loadProgramFormats, loadPrograms } from '../../services/programs.ts';
 import { SCHOOL_INSTAGRAM_URL } from '../../constants/constants';
+import { usePageMeta } from '../../hooks/usePageMeta';
+import { ROUTES } from '../../constants/routes';
 
 export const AboutSchool = () => {
+  usePageMeta({
+    title: 'Про школу',
+    description:
+      'Школа англійської мови BETWEEN: простір, де зникає страх помилки. Викладачі, програми й формати навчання, запис на навчання.',
+    path: ROUTES.aboutSchool,
+  });
+
   const [teacher, setTeacher] = useState<Teacher[]>([]);
   const [programs, setPrograms] = useState<Program[]>([]);
   const [programFormats, setProgramFormats] = useState<ProgramFormat[]>([]);

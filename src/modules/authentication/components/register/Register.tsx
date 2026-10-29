@@ -5,8 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { getPasswordErrorMessage } from '../../../../utils/getPasswordErrorMessage';
 import { MIN_PASSWORD_LENGTH } from '../../../../constants/constants';
 import { ROUTES } from '../../../../constants/routes';
+import { usePageMeta } from '../../../../hooks/usePageMeta';
 
 export const Register = () => {
+  usePageMeta({ title: 'Реєстрація', noindex: true });
+
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -186,7 +189,7 @@ export const Register = () => {
               className={styles.modalButton}
               onClick={() => navigate(ROUTES.login)}
             >
-              Got it →
+              Зрозуміло →
             </button>
           </div>
         </div>

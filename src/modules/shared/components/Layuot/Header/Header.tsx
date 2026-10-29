@@ -54,13 +54,13 @@ export const Header = () => {
         <div className={styles.headerContent}>
           <Link
             to='/'
-            aria-label='Home page'
+            aria-label='На головну'
             onClick={() => setIsMenuOpen(false)}
           >
             <img
               className={styles.logo}
               src='/img/icons/logo.svg'
-              alt='Page Logo'
+              alt='BETWEEN'
             />
           </Link>
         </div>
@@ -128,7 +128,7 @@ export const Header = () => {
         <button
           className={`${styles.burger} ${isMenuOpen ? styles.burgerActive : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label='Toggle menu'
+          aria-label='Меню'
           aria-expanded={isMenuOpen}
         >
           <span></span>

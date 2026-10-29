@@ -53,7 +53,7 @@ export const StudentDetailsOverview = () => {
 
   if (errorMessage) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.container}>
           <div className={styles.error}>
             <span className={styles.sectionLabel}>BETWEEN / STUDENT</span>
@@ -61,13 +61,13 @@ export const StudentDetailsOverview = () => {
             <h1 className={styles.errorTitle}>{errorMessage}</h1>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
   if (!studentDetails.length) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.container}>
           <div className={styles.emptyState}>
             <span className={styles.sectionLabel}>BETWEEN / STUDENT</span>
@@ -83,7 +83,7 @@ export const StudentDetailsOverview = () => {
             </button>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 

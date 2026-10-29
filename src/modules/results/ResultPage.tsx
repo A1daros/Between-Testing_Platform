@@ -1,14 +1,17 @@
 import styles from './ResultPage.module.scss';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { usePageMeta } from '../../hooks/usePageMeta';
 
 export const ResultPage = () => {
+  usePageMeta({ title: 'Результат тесту', noindex: true });
+
   const location = useLocation();
   const navigate = useNavigate();
   const { testId } = useParams<{ testId: string }>();
 
   if (!location.state) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.errorCard}>
           <h2 className={styles.errorText}>Не знайдено жодного результату</h2>
 
@@ -20,7 +23,7 @@ export const ResultPage = () => {
             Повернутись на головну →
           </button>
         </div>
-      </main>
+      </div>
     );
   }
 
@@ -29,9 +32,9 @@ export const ResultPage = () => {
   const percentage = totalScore ? Math.round((score / totalScore) * 100) : 0;
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}></h1>
+        <h1 className={styles.pageTitle}>Результат тесту</h1>
 
         <div className={styles.wrapper}>
           <section className={styles.resultSection}>
@@ -57,7 +60,7 @@ export const ResultPage = () => {
 
                 <div
                   className={styles.scoreValue}
-                  aria-label={`Score: ${score} out of ${totalScore}`}
+                  aria-label={`Результат: ${score} з ${totalScore}`}
                 >
                   <span className={styles.score}>{score}</span>
                   <span className={styles.divider} aria-hidden='true'>
@@ -112,6 +115,6 @@ export const ResultPage = () => {
           </section>
         </div>
       </div>
-    </main>
+    </div>
   );
 };

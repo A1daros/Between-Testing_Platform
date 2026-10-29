@@ -26,6 +26,7 @@ import { Loader } from './modules/Loader';
 import { ROUTES } from './constants/routes';
 import { ChunkError } from './modules/shared/components/ChunkError';
 import { ProfilePage } from './modules/profile';
+import { NotFoundPage } from './modules/not-found';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 
@@ -93,6 +94,8 @@ export const App = () => {
                     />
                   </Route>
                 </Route>
+
+                <Route path={ROUTES.notFound} element={<NotFoundPage />} />
               </Routes>
             </Suspense>
           </ErrorBoundary>

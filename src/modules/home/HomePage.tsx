@@ -8,8 +8,12 @@ import { useEffect, useState } from 'react';
 import type { Level } from '../../types/database.ts';
 import { getLevelsById } from '../../services/levels.ts';
 import { Loader } from '../Loader/Loader.tsx';
+import { usePageMeta } from '../../hooks/usePageMeta';
+import { ROUTES } from '../../constants/routes';
 
 export const HomePage = () => {
+  usePageMeta({ path: ROUTES.home });
+
   const [levels, setLevels] = useState<Level[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -38,7 +42,6 @@ export const HomePage = () => {
       <div className={styles.container}>
         {isLoading && <Loader />}
 
-        <h1 className={styles.hiddenTitle}>Ласкаво просимо до BETWEEN!</h1>
         <h1 className={styles.title}>Ласкаво просимо до BETWEEN!</h1>
 
         <FindLevel />

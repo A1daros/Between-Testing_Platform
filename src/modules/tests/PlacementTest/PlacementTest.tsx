@@ -9,8 +9,17 @@ import type {
   PlacementResult,
 } from '../../../types/database';
 import { calculatePlacementLevel } from '../../../services/placement';
+import { usePageMeta } from '../../../hooks/usePageMeta';
+import { ROUTES } from '../../../constants/routes';
 
 export const PlacementTest = () => {
+  usePageMeta({
+    title: 'Тест на визначення рівня англійської',
+    description:
+      'Безкоштовний онлайн-тест від школи BETWEEN без реєстрації: дізнайтеся свій орієнтовний рівень англійської від A1 до B2.',
+    path: ROUTES.placementTest,
+  });
+
   const [questions, setQuestions] = useState<PlacementQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
@@ -97,33 +106,33 @@ export const PlacementTest = () => {
 
   if (errorMessage) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.container}>
           <div className={styles.error}>{errorMessage}</div>
         </div>
-      </main>
+      </div>
     );
   }
 
   if (!questions.length) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.container}>
           <div className={styles.emptyState}>
-            <p>No questions found.</p>
+            <p>Питань не знайдено.</p>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
   if (isFinished && resultError) {
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.container}>
           <div className={styles.error}>{resultError}</div>
         </div>
-      </main>
+      </div>
     );
   }
 
@@ -136,14 +145,14 @@ export const PlacementTest = () => {
     const levelName = `${placementResult?.level_title} ${level}`;
 
     return (
-      <main className={styles.page}>
+      <div className={styles.page}>
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <section className={styles.resultSection}>
               <div className={styles.resultHeader}>
                 <span className={styles.sectionLabel}>BETWEEN / PLACEMENT</span>
 
-                <span className={styles.resultStatus}>TEST COMPLETED</span>
+                <span className={styles.resultStatus}>ТЕСТ ЗАВЕРШЕНО</span>
               </div>
 
               <div className={styles.resultContent}>
@@ -199,7 +208,7 @@ export const PlacementTest = () => {
             </section>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
@@ -212,7 +221,7 @@ export const PlacementTest = () => {
   const progress = ((currentQuestionIndex + 1) / total) * 100;
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <header className={styles.quizHeader}>
@@ -251,9 +260,9 @@ export const PlacementTest = () => {
 
           <section className={styles.questionSection}>
             <div className={styles.partHeader}>
-              <span className={styles.partNumber}>QUESTION</span>
+              <span className={styles.partNumber}>ПИТАННЯ</span>
 
-              <span className={styles.partTitle}>Placement test</span>
+              <span className={styles.partTitle}>Тест на рівень</span>
             </div>
 
             <div className={styles.questionContent}>
@@ -303,7 +312,7 @@ export const PlacementTest = () => {
               disabled={currentQuestionIndex === 0}
               onClick={handlePrevQuestion}
             >
-              ← Go back
+              ← Назад
             </button>
 
             {currentQuestionIndex === total - 1 ? (
@@ -313,7 +322,7 @@ export const PlacementTest = () => {
                 disabled={!selectedAnswerId}
                 onClick={handleFinishQuiz}
               >
-                Finish test →
+                Завершити тест →
               </button>
             ) : (
               <button
@@ -322,12 +331,12 @@ export const PlacementTest = () => {
                 disabled={!selectedAnswerId}
                 onClick={handleNextQuestion}
               >
-                Next question →
+                Наступне питання →
               </button>
             )}
           </footer>
         </div>
       </div>
-    </main>
+    </div>
   );
 };

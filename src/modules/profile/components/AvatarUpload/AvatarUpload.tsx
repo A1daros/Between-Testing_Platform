@@ -48,7 +48,7 @@ export const AvatarUpload = ({
         {avatarUrl ? (
           <img
             src={avatarUrl}
-            alt='Profile preview'
+            alt='Аватар'
             className={styles.avatarImage}
           />
         ) : (
