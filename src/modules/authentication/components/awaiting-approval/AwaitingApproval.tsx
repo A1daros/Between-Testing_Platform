@@ -3,10 +3,9 @@ import { useState } from 'react';
 import { Link, Navigate, generatePath } from 'react-router-dom';
 import { useAuth } from '../../../../hooks/useAuth';
 import { ROUTES } from '../../../../constants/routes';
+import { SCHOOL_INSTAGRAM_URL } from '../../../../constants/constants';
 import { isProfileApproved } from '../../../../utils/isProfileApproved';
 import { Loader } from '../../../Loader';
-
-const SCHOOL_INSTAGRAM_URL = 'https://www.instagram.com/school.between';
 
 export const AwaitingApproval = () => {
   const { user, profile, loading, refreshProfile } = useAuth();

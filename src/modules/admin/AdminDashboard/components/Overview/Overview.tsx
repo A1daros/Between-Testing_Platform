@@ -31,7 +31,7 @@ export const Overview = () => {
   const attemptsIcon = '/img/admin_ds/attempts.svg';
   const pendingIcon = '/img/admin_ds/pending.svg';
 
-  const today = new Date().toLocaleDateString('en-US', {
+  const today = new Date().toLocaleDateString('uk-UA', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -65,7 +65,7 @@ export const Overview = () => {
         setPendingStudents(pendingStudentsData);
       } catch (error) {
         console.error('Failed to load data!', error);
-        setErrorMessage('Failed to load DATA!');
+        setErrorMessage('не вдалося завантажити дані');
       } finally {
         setLoading(false);
       }
@@ -81,13 +81,13 @@ export const Overview = () => {
   if (errorMessage) {
     return (
       <div className={styles.container}>
-        <h2 className={styles.errorTitle}>Ooops, {errorMessage}</h2>
-        <p className={styles.errorDescription}>Try again later!</p>
+        <h2 className={styles.errorTitle}>Помилка: {errorMessage}</h2>
+        <p className={styles.errorDescription}>Спробуйте пізніше.</p>
         <button
           className={styles.errorButton}
           onClick={() => window.location.reload()}
         >
-          Reload!
+          Оновити сторінку
         </button>
       </div>
     );
@@ -98,37 +98,37 @@ export const Overview = () => {
       <h2 className={styles.title}>BETWEEN / OVERVIEW</h2>
 
       <div className={styles.greetingRow}>
-        <p className={styles.greeting}>Welcome back, {profile?.display_name}</p>
+        <p className={styles.greeting}>Вітаємо, {profile?.display_name}</p>
         <span className={styles.dateBadge}>{today}</span>
       </div>
 
       <p className={styles.greetingDescription}>
-        Monitor testing activity, review pending student submissions, and manage
-        educational content. Here is what is happening on your platform today.
+        Стежте за проходженням тестів, схвалюйте нових учнів і керуйте
+        навчальним контентом. Ось що відбувається на платформі сьогодні.
       </p>
 
       <div className={styles.container}>
         <ul className={styles.list}>
-          <StatCard label='Tests' value={tests.length} iconPath={testsIcon} />
+          <StatCard label='Тести' value={tests.length} iconPath={testsIcon} />
           <StatCard
-            label='Students'
+            label='Учні'
             value={totalStudents}
             iconPath={studentsIcon}
           />
           <StatCard
-            label='Attempts'
+            label='Спроби'
             value={attemptResults}
             iconPath={attemptsIcon}
           />
           <StatCard
-            label='Pending'
+            label='Очікують схвалення'
             value={pendingStudents}
             iconPath={pendingIcon}
           />
         </ul>
 
         <div className={styles.recent}>
-          <h3 className={styles.recentTitle}>Recent results</h3>
+          <h3 className={styles.recentTitle}>Останні результати</h3>
 
           <ul className={styles.recentList}>
             {recentResults.map((student) => {
@@ -139,28 +139,28 @@ export const Overview = () => {
                 <li key={student.id} className={styles.recentItem}>
                   <div className={styles.studentInfo}>
                     <div className={styles.infoCard}>
-                      <span className={styles.label}>Student Name:</span>
+                      <span className={styles.label}>Учень:</span>
                       <p className={styles.studentDescription}>
                         {student.profiles?.display_name || student.id}
                       </p>
                     </div>
 
                     <div className={styles.infoCard}>
-                      <span className={styles.label}>Test title:</span>
+                      <span className={styles.label}>Тест:</span>
                       <p className={styles.studentDescription}>
-                        {student.tests.title || 'Not valid'}
+                        {student.tests.title || '—'}
                       </p>
                     </div>
 
                     <div className={styles.infoCard}>
-                      <span className={styles.label}>Student Score:</span>
+                      <span className={styles.label}>Бал:</span>
                       <p className={styles.studentDescription}>
                         {student.score} / {student.total}
                       </p>
                     </div>
 
                     <div className={styles.infoCard}>
-                      <span className={styles.label}>Date:</span>
+                      <span className={styles.label}>Дата:</span>
                       <p className={styles.studentDescription}>
                         {formattedDate}
                       </p>

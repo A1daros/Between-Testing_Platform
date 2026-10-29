@@ -1,7 +1,7 @@
 import styles from './PlacementTest.module.scss';
 import { useEffect, useState } from 'react';
 import { Loader } from '../../Loader';
-import { useNavigate } from 'react-router-dom';
+import { SCHOOL_INSTAGRAM_URL } from '../../../constants/constants';
 import { useQuiz } from '../../../hooks/useQuiz';
 import { getPlacementTest } from '../../../services/questions';
 import type {
@@ -32,8 +32,6 @@ export const PlacementTest = () => {
     handleNextQuestion,
     handleFinishQuiz,
   } = useQuiz(questions);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const loadData = async () => {
@@ -189,13 +187,14 @@ export const PlacementTest = () => {
               </div>
 
               <div className={styles.resultActions}>
-                <button
-                  type='button'
+                <a
+                  href={SCHOOL_INSTAGRAM_URL}
+                  target='_blank'
+                  rel='noopener noreferrer'
                   className={styles.button}
-                  onClick={() => navigate('/register')}
                 >
                   Зроби цей крок →
-                </button>
+                </a>
               </div>
             </section>
           </div>

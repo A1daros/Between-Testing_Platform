@@ -35,7 +35,7 @@ export const Tests = () => {
         setTestsWithLevels(data);
       } catch (error) {
         console.error(error);
-        setErrorMessage('Failed to load test. It can be empty');
+        setErrorMessage('не вдалося завантажити тести');
       } finally {
         setIsLoading(false);
       }
@@ -75,7 +75,7 @@ export const Tests = () => {
       setActiveDeleteId(null);
     } catch (error) {
       console.error('Failed to delete test:', error);
-      setIsDeletingError('Failed to delete tests!');
+      setIsDeletingError('Не вдалося видалити тест.');
     } finally {
       setIsDeleting(false);
     }
@@ -88,13 +88,13 @@ export const Tests = () => {
   if (errorMessage) {
     return (
       <div className={styles.container}>
-        <h2 className={styles.errorTitle}>Ooops, {errorMessage}</h2>
-        <p className={styles.errorDescription}>Try again later!</p>
+        <h2 className={styles.errorTitle}>Помилка: {errorMessage}</h2>
+        <p className={styles.errorDescription}>Спробуйте пізніше.</p>
         <button
           className={styles.errorButton}
           onClick={() => window.location.reload()}
         >
-          Reload!
+          Оновити сторінку
         </button>
       </div>
     );
@@ -106,13 +106,13 @@ export const Tests = () => {
       <div className={styles.infoSection}>
         <div className={styles.searchSystems}>
           <SearchInput
-            placeholder='Search for tests...'
+            placeholder='Пошук тесту...'
             value={query}
             onChange={setQuery}
           />
 
           <button onClick={handleAddTest} className={styles.actionButton}>
-            Add Test
+            Додати тест
           </button>
         </div>
       </div>
@@ -125,7 +125,7 @@ export const Tests = () => {
         <div className={styles.modalOverlay}>
           <div className={styles.confirmBox}>
             <p className={styles.warningMessage}>
-              Are you sure you want to delete this test?
+              Видалити цей тест? Результати учнів за ним також буде видалено.
             </p>
 
             <div className={styles.buttons}>
@@ -134,7 +134,7 @@ export const Tests = () => {
                 className={styles.confirmButton}
                 onClick={handleConfirmDelete}
               >
-                Yes, i`m sure
+                Так, видалити
               </button>
               <button
                 type='button'
@@ -144,7 +144,7 @@ export const Tests = () => {
                   setActiveDeleteId(null);
                 }}
               >
-                No, cancel
+                Скасувати
               </button>
             </div>
           </div>

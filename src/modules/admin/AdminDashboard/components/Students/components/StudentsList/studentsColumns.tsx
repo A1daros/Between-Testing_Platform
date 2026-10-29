@@ -24,15 +24,15 @@ export const getStudentsColumns = (
   updatingId: string | null,
 ): ColumnConfig<StudentProfile>[] => [
   {
-    label: 'Fullname',
+    label: 'Повне імʼя',
     key: 'display_name',
   },
   {
-    label: 'Email',
+    label: 'Пошта',
     key: 'email',
   },
   {
-    label: 'Test completed',
+    label: 'Пройдено тестів',
     render: (student) => student.results?.[0]?.count ?? 0,
   },
   {

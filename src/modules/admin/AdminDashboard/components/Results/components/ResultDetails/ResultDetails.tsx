@@ -29,7 +29,7 @@ export const ResultDetailsOverview = () => {
         setResultDetails(data);
       } catch (error) {
         console.error('Failed to load result answers:', error);
-        setErrorMessage('Failed to load result details!');
+        setErrorMessage('Не вдалося завантажити результат.');
       } finally {
         setLoading(false);
       }
@@ -46,13 +46,13 @@ export const ResultDetailsOverview = () => {
     return (
       <div className={styles.pageContainer}>
         <div className={styles.errorBlock}>
-          <h2>{errorMessage || 'No result details found'}</h2>
+          <h2>{errorMessage || 'Результат не знайдено'}</h2>
           <button
             type='button'
             className={styles.btnSecondary}
             onClick={() => navigate(-1)}
           >
-            Go back
+            Назад
           </button>
         </div>
       </div>
@@ -64,7 +64,7 @@ export const ResultDetailsOverview = () => {
     <div className={styles.pageContainer}>
       <div className={styles.adminHeader}>
         <div>
-          <span className={styles.badge}>Admin / Result Details</span>
+          <span className={styles.badge}>Адмінка / Розбір результату</span>
           <h2 className={styles.pageTitle}>{test.title}</h2>
           {test.description && (
             <p className={styles.pageDescription}>{test.description}</p>
@@ -75,7 +75,7 @@ export const ResultDetailsOverview = () => {
           className={styles.btnSecondary}
           onClick={() => navigate(-1)}
         >
-          Back to List
+          До списку
         </button>
       </div>
 
@@ -106,10 +106,10 @@ export const ResultDetailsOverview = () => {
               >
                 <div className={styles.questionHeader}>
                   <span className={styles.questionNumber}>
-                    Question {index + 1}
+                    Питання {index + 1}
                   </span>
                   <span className={styles.statusBadge}>
-                    {isCorrect ? 'Correct' : 'Incorrect'}
+                    {isCorrect ? 'Правильно' : 'Неправильно'}
                   </span>
                 </div>
 
@@ -117,12 +117,12 @@ export const ResultDetailsOverview = () => {
 
                 <div className={styles.answersGrid}>
                   <div className={styles.answerBox}>
-                    <span className={styles.boxLabel}>Student's Answer:</span>
+                    <span className={styles.boxLabel}>Відповідь учня:</span>
                     <p className={styles.boxText}>{item.answers.answer_text}</p>
                   </div>
 
                   <div className={styles.answerBox}>
-                    <span className={styles.boxLabel}>Correct Answer:</span>
+                    <span className={styles.boxLabel}>Правильна відповідь:</span>
                     <p className={styles.boxText}>
                       {correctAnswer?.answer_text ?? '—'}
                     </p>

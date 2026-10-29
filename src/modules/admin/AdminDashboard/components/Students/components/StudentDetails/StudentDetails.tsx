@@ -36,7 +36,7 @@ export const StudentDetailsOverview = () => {
         setStudentDetails(data);
       } catch (error) {
         console.error('Failed to load student details:', error);
-        setErrorMessage('Failed to load student details!');
+        setErrorMessage('Не вдалося завантажити дані учня.');
       } finally {
         setIsLoading(false);
       }
@@ -72,14 +72,14 @@ export const StudentDetailsOverview = () => {
           <div className={styles.emptyState}>
             <span className={styles.sectionLabel}>BETWEEN / STUDENT</span>
 
-            <h2 className={styles.emptyTitle}>No student details found</h2>
+            <h2 className={styles.emptyTitle}>Дані учня не знайдено</h2>
 
             <button
               type='button'
               className={styles.button}
               onClick={() => navigate(-1)}
             >
-              Go back →
+              Назад →
             </button>
           </div>
         </div>
@@ -93,7 +93,7 @@ export const StudentDetailsOverview = () => {
       <div className={styles.infoSection}>
         <div className={styles.searchSystems}>
           <SearchInput
-            placeholder='Search for students...'
+            placeholder='Пошук за тестом...'
             value={query}
             onChange={setQuery}
           />
@@ -104,7 +104,7 @@ export const StudentDetailsOverview = () => {
               className={styles.searchInfo}
               onClick={() => navigate(-1)}
             >
-              Go back
+              Назад
             </button>
           </div>
         </div>
@@ -123,22 +123,22 @@ export const StudentDetailsOverview = () => {
             <div key={student.id} className={styles.studentInfo}>
               <div className={styles.infoContainer}>
                 <div className={styles.infoBlock}>
-                  <h3 className={styles.infoTitle}>Name:</h3>
+                  <h3 className={styles.infoTitle}>Імʼя:</h3>
                   <p className={styles.infoDescription}> {student.name}</p>
                 </div>
 
                 <div className={styles.infoBlock}>
-                  <h3 className={styles.infoTitle}>Surname:</h3>
+                  <h3 className={styles.infoTitle}>Прізвище:</h3>
                   <p className={styles.infoDescription}>{student.surname}</p>
                 </div>
 
                 <div className={styles.infoBlock}>
-                  <h3 className={styles.infoTitle}>Email:</h3>
+                  <h3 className={styles.infoTitle}>Пошта:</h3>
                   <p className={styles.infoDescription}>{student.email}</p>
                 </div>
 
                 <div className={styles.infoBlock}>
-                  <h3 className={styles.infoTitle}>Birth date:</h3>
+                  <h3 className={styles.infoTitle}>Дата народження:</h3>
                   <p className={styles.infoDescription}>{student.birth_date}</p>
                 </div>
               </div>

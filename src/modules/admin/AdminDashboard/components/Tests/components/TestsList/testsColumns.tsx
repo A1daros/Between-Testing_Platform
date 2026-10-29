@@ -8,20 +8,20 @@ export const getTestsColumns = (
   onDeleteClick: (id: number) => void,
 ): ColumnConfig<TestWithLevels>[] => [
   {
-    label: 'Name',
+    label: 'Назва',
     key: 'title',
   },
   {
-    label: 'Level',
+    label: 'Рівень',
     render: (test) => test.levels?.code ?? '---',
   },
   {
-    label: 'Q-s',
+    label: 'Питань',
     render: (test) =>
       Array.isArray(test.questions) ? (test.questions[0]?.count ?? 0) : 0,
   },
   {
-    label: 'Action / Edit',
+    label: 'Редагувати',
     render: (test) => (
       <button
         className={styles.actionButton}
@@ -30,12 +30,12 @@ export const getTestsColumns = (
           navigate(`/admin/tests/${test.id}/edit`);
         }}
       >
-        Edit
+        Редагувати
       </button>
     ),
   },
   {
-    label: 'Action / Delete',
+    label: 'Видалити',
     render: (test) => (
       <button
         className={styles.deleteButton}
@@ -44,7 +44,7 @@ export const getTestsColumns = (
           onDeleteClick(test.id);
         }}
       >
-        Delete
+        Видалити
       </button>
     ),
   },

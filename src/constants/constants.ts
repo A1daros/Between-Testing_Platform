@@ -12,3 +12,6 @@ export const MIN_PASSWORD_LENGTH = 10;
 
 // Listening: how many times a part recording can be started during a quiz.
 export const MAX_AUDIO_PLAYS = 2;
+
+// Main enrollment channel of the school; CTAs lead here.
+export const SCHOOL_INSTAGRAM_URL = 'https://www.instagram.com/school.between';

@@ -69,7 +69,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
       } catch (error) {
         console.error('Failed to load level data', error);
         setErrorMessage(
-          error instanceof Error ? error.message : 'Failed to load data',
+          error instanceof Error ? error.message : 'Не вдалося завантажити рівні.',
         );
       }
     };
@@ -305,7 +305,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : 'Failed to save the test. Please try again.',
+          : 'Не вдалося зберегти тест. Спробуйте ще раз.',
       );
     } finally {
       setIsSubmiting(false);
@@ -318,13 +318,13 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
         <div className={styles.section}>
           <div className={styles.fieldGroup}>
             <label htmlFor='testTitle' className={styles.label}>
-              Test title *
+              Назва тесту *
             </label>
             <input
               id='testTitle'
               type='text'
               className={styles.input}
-              placeholder='e.g. English Placement Test'
+              placeholder='Напр., Final test A2'
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               required
@@ -333,12 +333,12 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
 
           <div className={styles.fieldGroup}>
             <label htmlFor='testDescription' className={styles.label}>
-              Test description *
+              Опис тесту *
             </label>
             <textarea
               id='testDescription'
               className={styles.textarea}
-              placeholder='Short description for students'
+              placeholder='Короткий опис для учнів'
               value={description}
               onChange={(event) => setDescription(event.target.value)}
               required
@@ -347,7 +347,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
 
           <div className={styles.fieldGroup}>
             <label htmlFor='levelCode' className={styles.label}>
-              Select level *
+              Рівень *
             </label>
             <select
               id='levelCode'
@@ -356,7 +356,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
               onChange={(event) => setLevelId(event.target.value)}
               required
             >
-              <option value=''>Select code...</option>
+              <option value=''>Оберіть рівень...</option>
               {levels.map((level) => (
                 <option key={level.id} value={level.id}>
                   {level.code} - {level.title}
@@ -367,7 +367,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
         </div>
 
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Test parts</h2>
+          <h2 className={styles.sectionTitle}>Частини тесту</h2>
 
           <div className={styles.dynamicList}>
             {parts.map((part) => (
@@ -385,7 +385,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                     htmlFor={`partTitle-${part.uiId}`}
                     className={styles.label}
                   >
-                    Part title
+                    Назва частини
                   </label>
                   <input
                     id={`partTitle-${part.uiId}`}
@@ -394,7 +394,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                     onChange={(event) =>
                       handleUpdatePart(part.uiId, { title: event.target.value })
                     }
-                    placeholder='e.g. Reading | Writing | Listening'
+                    placeholder='Напр., Reading | Grammar | Listening'
                   />
                 </div>
 
@@ -403,7 +403,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                     htmlFor={`instruction-${part.uiId}`}
                     className={styles.label}
                   >
-                    Instruction
+                    Інструкція
                   </label>
                   <textarea
                     id={`instruction-${part.uiId}`}
@@ -414,7 +414,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                         instruction: event.target.value,
                       })
                     }
-                    placeholder='Instruction text for this part'
+                    placeholder='Інструкція для цієї частини'
                   />
                 </div>
 
@@ -423,7 +423,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                     htmlFor={`points-${part.uiId}`}
                     className={styles.label}
                   >
-                    Points
+                    Балів за питання
                   </label>
                   <input
                     id={`points-${part.uiId}`}
@@ -488,12 +488,12 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
             className={styles.addButton}
             onClick={handleAddPart}
           >
-            + Add test part
+            + Додати частину
           </button>
         </div>
 
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Questions</h2>
+          <h2 className={styles.sectionTitle}>Питання</h2>
 
           <div className={styles.dynamicList}>
             {questions.map((question) => (
@@ -511,7 +511,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                     htmlFor={`questionPart-${question.uiId}`}
                     className={styles.label}
                   >
-                    Part
+                    Частина
                   </label>
                   <select
                     id={`questionPart-${question.uiId}`}
@@ -524,10 +524,10 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                       )
                     }
                   >
-                    <option value=''>No part</option>
+                    <option value=''>Без частини</option>
                     {parts.map((part) => (
                       <option key={part.uiId} value={part.uiId}>
-                        {part.title || 'Untitled part'}
+                        {part.title || 'Частина без назви'}
                       </option>
                     ))}
                   </select>
@@ -538,7 +538,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                     htmlFor={`questionText-${question.uiId}`}
                     className={styles.label}
                   >
-                    Question text
+                    Текст питання
                   </label>
                   <input
                     id={`questionText-${question.uiId}`}
@@ -551,7 +551,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                       )
                     }
                     type='text'
-                    placeholder='Question text'
+                    placeholder='Текст питання'
                   />
                 </div>
 
@@ -576,7 +576,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                   />
                 </div>
 
-                <h4 className={styles.subTitle}>Answers</h4>
+                <h4 className={styles.subTitle}>Відповіді</h4>
 
                 <div className={styles.answersList}>
                   {question.answers.map((answer, index) => (
@@ -601,7 +601,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                             event.target.value,
                           )
                         }
-                        placeholder={`Answer ${index + 1}`}
+                        placeholder={`Відповідь ${index + 1}`}
                       />
                     </div>
                   ))}
@@ -615,12 +615,12 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
             className={styles.addButton}
             onClick={handleAddQuestion}
           >
-            + Add question
+            + Додати питання
           </button>
         </div>
 
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Timer</h2>
+          <h2 className={styles.sectionTitle}>Таймер</h2>
 
           <div className={styles.checkboxGroup}>
             <input
@@ -638,7 +638,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
               }}
             />
             <label htmlFor='timerEnabled' className={styles.label}>
-              Enable timer
+              Увімкнути таймер
             </label>
           </div>
 
@@ -646,7 +646,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
             <div className={styles.timerFields}>
               <div className={styles.fieldGroup}>
                 <label htmlFor='timerType' className={styles.label}>
-                  Timer type
+                  Тип таймера
                 </label>
                 <select
                   id='timerType'
@@ -660,15 +660,15 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                   }}
                   required
                 >
-                  <option value=''>Select timer type...</option>
-                  <option value='test'>Whole test</option>
-                  <option value='question'>Each question</option>
+                  <option value=''>Оберіть тип...</option>
+                  <option value='test'>На весь тест</option>
+                  <option value='question'>На кожне питання</option>
                 </select>
               </div>
 
               <div className={styles.fieldGroup}>
                 <label htmlFor='timerDuration' className={styles.label}>
-                  Timer duration (seconds)
+                  Тривалість (секунди)
                 </label>
                 <input
                   id='timerDuration'
@@ -699,7 +699,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
             type='submit'
             className={`${styles.submitButton} ${isSubmitting ? styles.isDisabled : ''}`}
           >
-            {isSubmitting ? 'Saving...' : 'Save'}
+            {isSubmitting ? 'Збереження...' : 'Зберегти'}
           </button>
         </div>
       </form>

@@ -2,22 +2,22 @@ import type { UIQuestion } from "../modules/admin/AdminDashboard/components/Test
 
 export const validateQuestions = (questions: UIQuestion[]): string | null => {
   if (questions.length === 0) {
-    return 'Add at least one question.';
+    return 'Додайте хоча б одне питання.';
   }
 
   for (const [index, question] of questions.entries()) {
     const number = index + 1;
 
     if (question.question.trim() === '') {
-      return `Question ${number} has no text.`;
+      return `Питання ${number} не має тексту.`;
     }
 
     if (question.answers.some((answer) => answer.text.trim() === '')) {
-      return `Question ${number} has an empty answer.`;
+      return `Питання ${number} має порожню відповідь.`;
     }
 
     if (!question.answers.some((answer) => answer.isCorrect)) {
-      return `Question ${number} has no correct answer selected.`;
+      return `У питанні ${number} не вибрано правильну відповідь.`;
     }
   }
 

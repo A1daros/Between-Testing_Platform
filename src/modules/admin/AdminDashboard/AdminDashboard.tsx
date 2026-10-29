@@ -25,9 +25,9 @@ export const AdminDashboard = () => {
         <button
           className={styles.modalBtn}
           onClick={openMenu}
-          aria-label='open modal'
+          aria-label='Відкрити меню'
         >
-          <img src='/img/icons/menu.svg' alt='open menu' />
+          <img src='/img/icons/menu.svg' alt='' />
         </button>
       </div>
 
@@ -38,9 +38,9 @@ export const AdminDashboard = () => {
           <button
             className={styles.modalBtn}
             onClick={closeMenu}
-            aria-label='close modal'
+            aria-label='Закрити меню'
           >
-            <img src='/img/icons/close.svg' alt='close menu' />
+            <img src='/img/icons/close.svg' alt='' />
           </button>
         )}
 
@@ -50,28 +50,28 @@ export const AdminDashboard = () => {
             className={linkIsActive}
             onClick={closeMenu}
           >
-            Overview
+            Огляд
           </NavLink>
           <NavLink
             to={`/admin/tests`}
             className={linkIsActive}
             onClick={closeMenu}
           >
-            Tests
+            Тести
           </NavLink>
           <NavLink
             to={`/admin/results`}
             className={linkIsActive}
             onClick={closeMenu}
           >
-            Results
+            Результати
           </NavLink>
           <NavLink
             to={`/admin/students`}
             className={linkIsActive}
             onClick={closeMenu}
           >
-            Students
+            Учні
           </NavLink>
         </nav>
       </aside>

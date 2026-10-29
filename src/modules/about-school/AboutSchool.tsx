@@ -12,6 +12,7 @@ import type { Program, ProgramFormat, Teacher } from '../../types/database.ts';
 import { loadTeachers } from '../../services/teachers.ts';
 import { Loader } from '../Loader/Loader.tsx';
 import { loadProgramFormats, loadPrograms } from '../../services/programs.ts';
+import { SCHOOL_INSTAGRAM_URL } from '../../constants/constants';
 
 export const AboutSchool = () => {
   const [teacher, setTeacher] = useState<Teacher[]>([]);
@@ -196,7 +197,7 @@ export const AboutSchool = () => {
 
               <div className={styles.finalActions}>
                 <Link
-                  to='https://www.instagram.com/school.between'
+                  to={SCHOOL_INSTAGRAM_URL}
                   className={styles.finalButton}
                   target='_blank'
                   rel='noopener noreferrer'

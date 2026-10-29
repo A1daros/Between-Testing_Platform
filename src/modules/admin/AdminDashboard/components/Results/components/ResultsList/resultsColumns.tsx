@@ -3,19 +3,19 @@ import type { Results } from '../../../../../../../types/database';
 
 export const getResultsColumns = (): ColumnConfig<Results>[] => [
   {
-    label: 'Student',
+    label: 'Учень',
     render: (result) => result.profiles?.display_name ?? '',
   },
   {
-    label: 'Test',
+    label: 'Тест',
     render: (result) => result.tests.title,
   },
   {
-    label: 'Score',
+    label: 'Бал',
     render: (result) => `${result.score} / ${result.total}`,
   },
   {
-    label: 'Date',
+    label: 'Дата',
     render: (result) => new Date(result.created_at).toLocaleDateString(),
   },
 ];
