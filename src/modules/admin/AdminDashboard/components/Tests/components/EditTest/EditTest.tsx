@@ -59,6 +59,7 @@ export const EditTestForm = () => {
   }
 
   const mappedParts: UIPart[] = editTest.test_parts.map((part) => ({
+    id: part.id,
     uiId: String(part.id),
     title: part.title,
     instruction: part.instruction,
@@ -66,10 +67,12 @@ export const EditTestForm = () => {
   }));
 
   const mappedQuestions: UIQuestion[] = editTest.questions.map((question) => ({
+    id: question.id,
     uiId: String(question.id),
     partUiId: question.part_id ? String(question.part_id) : null,
     question: question.question,
     answers: question.answers.map((answer) => ({
+      id: answer.id,
       text: answer.answer_text,
       isCorrect: answer.is_correct,
     })),

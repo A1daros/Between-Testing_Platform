@@ -196,14 +196,16 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
       timerEnabled,
       timerType,
       timerDuration,
-      parts: parts.map(({ uiId, title, instruction, points }) => ({
+      parts: parts.map(({ id, uiId, title, instruction, points }) => ({
+        id,
         uiId,
         title,
         instruction,
         points,
       })),
-      questions: questions.map(({ partUiId, question, answers }) => {
+      questions: questions.map(({ id, partUiId, question, answers }) => {
         return {
+          id,
           partId: partUiId,
           question,
           answers,

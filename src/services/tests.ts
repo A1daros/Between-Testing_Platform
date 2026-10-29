@@ -26,6 +26,9 @@ export const getTestById = async (testId: number): Promise<EditTest> => {
       `*, test_parts(*), questions(*, answers(id, question_id, answer_text))`,
     )
     .eq('id', testId)
+    .order('sort_order', { referencedTable: 'test_parts' })
+    .order('sort_order', { referencedTable: 'questions' })
+    .order('id', { referencedTable: 'questions.answers' })
     .single();
 
   if (error) {
