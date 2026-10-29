@@ -1,19 +1,28 @@
 import React from 'react';
-import styles from './StudentsList.module.scss';
-import type { StudentProfile } from '../../../../../../../types/database';
+import type {
+  ProfileStatus,
+  StudentProfile,
+} from '../../../../../../../types/database';
 import { getStudentsColumns } from './studentsColumns';
 import { Table } from '../../../common/Table';
 
 type Props = {
   students: StudentProfile[];
   checkDetails: (studentId: string) => void;
+  onChangeStatus: (studentId: string, status: ProfileStatus) => void;
+  updatingId: string | null;
 };
 
-export const StudentList: React.FC<Props> = ({ students, checkDetails }) => {
-  const columns = getStudentsColumns();
+export const StudentList: React.FC<Props> = ({
+  students,
+  checkDetails,
+  onChangeStatus,
+  updatingId,
+}) => {
+  const columns = getStudentsColumns(onChangeStatus, updatingId);
 
   return (
-    <div className={styles.page}>
+    <div>
       <Table
         columns={columns}
         rows={students}

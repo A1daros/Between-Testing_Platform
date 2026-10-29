@@ -31,7 +31,7 @@ description: Правила роботи зі схемою Supabase/Postgres —
   - ніколи не роби `grant select on table public.answers` цілком;
   - нову колонку в `answers`, яку має читати клієнт, відкривай окремим `grant select (col)`;
   - у клієнті `answers(*)` / `select('*')` по `answers` впаде з помилкою доступу. Завжди перелічуй колонки, як у `resultAnswers.ts`.
-- **`profiles`**: клієнт може оновлювати лише `display_name`, `birth_date`, `avatar_url` (колонковий грант). `role` і будь-які службові поля (майбутній `status` для схвалення) **не** додавай у цей грант — їх змінює тільки RPC/адмін. Нове поле, яке редагує сам користувач, додавай окремим `grant update (col)`.
+- **`profiles`**: клієнт може оновлювати лише `display_name`, `birth_date`, `avatar_url` (колонковий грант). `role`, `status` (схвалення: `pending`/`approved`/`rejected`) і будь-які службові поля **не** додавай у цей грант — їх змінює тільки RPC/адмін (`status` — через `set_profile_status`). Нове поле, яке редагує сам користувач, додавай окремим `grant update (col)`.
 - **`results` / `result_answers`**: `insert` для клієнта відкликано, записи робить лише `submit_quiz`. Не повертай клієнтського insert-у й не створюй RPC, що приймає `user_id` чи `score` від клієнта (з цієї причини видалено `save_quiz_result`).
 
 ## RLS-політики
@@ -39,7 +39,7 @@ description: Правила роботи зі схемою Supabase/Postgres —
 - Перевірка адміна в нових політиках: `using ((select private.is_admin()))`. Старий інлайн-патерн `exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')` не копіюй. Усередині політики на самій `profiles` він дає рекурсію, тому там уже використовується `is_admin()`.
 - `auth.uid()` загортай у `(select auth.uid())`: так значення рахується один раз на запит, а не для кожного рядка.
 - Завжди вказуй `to anon` / `to authenticated` / `to anon, authenticated`. Політика без `to` діє на `public`, тобто на всіх.
-- Одна політика на дію й роль, із назвою на кшталт `"<table>: <who> <action>"`. Перш ніж додавати нову, перевір, чи її не перекриває наявна (політики permissive, вони об'єднуються через OR). Широкі `using (true)` для `authenticated` на `tests`/`questions`/`answers` уже є, тому обмеження доступу до тестів (схвалення реєстрації) потребує **заміни** цих політик, а не додавання нових.
+- Одна політика на дію й роль, із назвою на кшталт `"<table>: <who> <action>"`. Перш ніж додавати нову, перевір, чи її не перекриває наявна (політики permissive, вони об'єднуються через OR). Контент тестів (`tests`, `questions`, `answers`, `test_parts`) читає лише схвалений користувач: `using ((select private.is_approved()))` для `authenticated` (адмін вважається схваленим). Не додавай поруч ширших політик на ці таблиці — вони відкриють доступ користувачам зі статусом pending. Security definer RPC, що віддають чи приймають контент тестів (крім placement), перевіряють `private.is_approved()` самі.
 - Storage: шлях об'єкта — `<user_id>/<file>`, власника перевіряє `(storage.foldername(name))[1] = (select auth.uid())::text`. Для публічного бакета читання за public URL працює й без політик, вони потрібні тільки для API (list/upload/update/delete).
 
 ## RPC-функції

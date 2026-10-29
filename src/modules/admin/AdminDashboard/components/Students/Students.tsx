@@ -1,26 +1,67 @@
 import { useEffect, useMemo, useState } from 'react';
 import { SearchInput } from '../common/SearchInput/SearchInput';
-import type { StudentProfile } from '../../../../../types/database';
-import { loadStudents } from '../../../../../services/profile';
+import type {
+  ProfileStatus,
+  StudentProfile,
+} from '../../../../../types/database';
+import { loadStudents, setProfileStatus } from '../../../../../services/profile';
 import { StudentList } from './components/StudentsList/StudentsList';
 import { useNavigate } from 'react-router-dom';
 import styles from './Students.module.scss';
 import type { SortOrder } from '../Tests/types/admin';
 import { Loader } from '../../../../Loader';
 
+type StatusFilter = 'all' | ProfileStatus;
+
+const STATUS_FILTERS: { value: StatusFilter; label: string }[] = [
+  { value: 'all', label: 'Усі' },
+  { value: 'pending', label: 'Очікують' },
+  { value: 'approved', label: 'Схвалені' },
+  { value: 'rejected', label: 'Відхилені' },
+];
+
 export const Students = () => {
   const [students, setStudents] = useState<StudentProfile[]>([]);
   const [query, setQuery] = useState('');
 
   const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [statusError, setStatusError] = useState('');
 
   const navigate = useNavigate();
 
   const handleCheckDetails = (id: string) => {
     navigate(`/admin/students/student-details/${id}`);
+  };
+
+  const handleChangeStatus = async (
+    studentId: string,
+    status: ProfileStatus,
+  ) => {
+    setUpdatingId(studentId);
+    setStatusError('');
+
+    try {
+      const updatedStatus = await setProfileStatus(studentId, status);
+
+      setStudents((prev) =>
+        prev.map((student) =>
+          student.id === studentId
+            ? { ...student, status: updatedStatus }
+            : student,
+        ),
+      );
+    } catch (error) {
+      console.error('Failed to change student status', error);
+      setStatusError('Не вдалося змінити статус. Спробуйте ще раз.');
+    } finally {
+      setUpdatingId(null);
+    }
   };
 
   useEffect(() => {
@@ -47,7 +88,10 @@ export const Students = () => {
     const filtered = students.filter((student) => {
       const name = student.display_name ?? '';
 
-      return name.toLowerCase().includes(query.toLowerCase());
+      const matchesStatus =
+        statusFilter === 'all' || student.status === statusFilter;
+
+      return matchesStatus && name.toLowerCase().includes(query.toLowerCase());
     });
 
     if (sortOrder === 'newest') {
@@ -62,7 +106,7 @@ export const Students = () => {
         ? studentA.localeCompare(studentB)
         : studentB.localeCompare(studentA);
     });
-  }, [students, query, sortOrder]);
+  }, [students, query, sortOrder, statusFilter]);
 
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
@@ -104,12 +148,36 @@ export const Students = () => {
             </button>
           </div>
         </div>
+
+        <div className={styles.filters} role='group' aria-label='Фільтр за статусом'>
+          {STATUS_FILTERS.map(({ value, label }) => (
+            <button
+              key={value}
+              type='button'
+              className={`${styles.searchInfo} ${
+                statusFilter === value ? styles.filterActive : ''
+              }`}
+              aria-pressed={statusFilter === value}
+              onClick={() => setStatusFilter(value)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {statusError && (
+        <p className={styles.statusError} role='alert'>
+          {statusError}
+        </p>
+      )}
 
       <div>
         <StudentList
           students={filteredSudents}
           checkDetails={handleCheckDetails}
+          onChangeStatus={handleChangeStatus}
+          updatingId={updatingId}
         />
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { supabase } from '../lib/supabase';
 import type {
   Profile,
+  ProfileStatus,
   StudentDetails,
   StudentProfile,
 } from '../types/database';
@@ -118,6 +119,36 @@ export const loadCountStudents = async (): Promise<number> => {
   }
 
   return count ?? 0;
+};
+
+export const loadCountPendingStudents = async (): Promise<number> => {
+  const { count, error } = await supabase
+    .from('profiles')
+    .select('*', { count: 'exact', head: true })
+    .eq('role', 'student')
+    .eq('status', 'pending');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return count ?? 0;
+};
+
+export const setProfileStatus = async (
+  userId: string,
+  status: ProfileStatus,
+): Promise<ProfileStatus> => {
+  const { data, error } = await supabase.rpc('set_profile_status', {
+    p_user_id: userId,
+    p_status: status,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return (data as { status: ProfileStatus }).status;
 };
 
 export const loadStudents = async (): Promise<StudentProfile[]> => {
