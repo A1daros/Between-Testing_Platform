@@ -37,23 +37,23 @@
 }
 
 .searchInfo {
-  border: $card-border;
-  border-radius: 8px;
-  background-color: $surface-2;
+  border: $border;
+  border-radius: $radius;
+  background-color: $surface;
   color: $text-main;
-  padding: 5px 10px;
+  padding: 4px 12px;
   cursor: pointer;
   text-align: center;
   white-space: nowrap;
   width: fit-content;
 
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    background-color 0.15s $ease,
+    color 0.15s $ease,
+    border-color 0.15s $ease;
 
   &:hover {
-    background-color: $surface-1;
+    background-color: $surface;
     border-color: $text-secondary;
   }
 

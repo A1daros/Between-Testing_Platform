@@ -4,28 +4,19 @@
 
 .page {
   @include section-container;
-}
 
-.title {
-  color: $text-main;
-  text-align: center;
-  margin-bottom: 30px;
-  @include h2-font-mobile;
-
-  @media (min-width: $breakpoint-s) {
-    @include h2-font;
-  }
+  scroll-margin-top: 96px;
 }
 
 .container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: 48px;
 
-  @media (min-width: $breakpoint-s) {
+  @media (min-width: $breakpoint-m) {
     grid-template-columns: 1fr 1fr;
     align-items: start;
-    gap: 64px;
+    gap: 96px;
   }
 }
 
@@ -45,22 +36,25 @@
 .checkboxWrapper {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 12px;
   cursor: pointer;
   user-select: none;
 }
 
 .checkbox {
+  flex-shrink: 0;
   width: 16px;
   height: 16px;
+  margin-top: 2px;
   cursor: pointer;
+  accent-color: $ink;
 }
 
 .checkboxDescription {
+  color: $text-secondary;
   user-select: none;
-  color: $text-main;
 
-  @include small-text;
+  @include body-small;
 }
 
 .submitBtn {
@@ -70,82 +64,96 @@
 .additionalInfo {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  border: $form-border;
-  border-radius: 8px;
-  gap: 24px;
-  padding: 16px;
-  background-color: $surface-1;
-  height: auto;
-  box-sizing: border-box;
+  gap: 48px;
+}
+
+.contacts {
+  display: flex;
+  flex-direction: column;
+  font-style: normal;
+  border-top: $border;
+}
+
+.contactRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  padding: 16px 0;
+  border-bottom: $border;
 
   @media (min-width: $breakpoint-s) {
-    padding: 24px;
-    height: 100%;
+    grid-template-columns: 160px 1fr;
+    align-items: baseline;
+    gap: 16px;
   }
 }
 
-.address {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  border: $form-border;
-  border-radius: 8px;
-  padding: 16px;
+.contactLabel {
+  color: $text-muted;
+  text-transform: uppercase;
+
+  @include uppercase;
 }
 
-.addressBlock {
-  display: flex;
-  gap: 6px;
-}
-
-.addressTitle {
-  color: $text-main;
-}
-
-.addressDescription {
+.contactValue {
   color: $text-main;
   text-decoration: none;
-  transition: color 0.2s;
-  @include body-font;
+  transition: color 0.15s $ease;
+
+  @include h4-font-mobile;
 
   &:hover {
-    color: $text-secondary;
+    color: $brand;
+  }
+
+  @media (min-width: $breakpoint-s) {
+    @include h4-font;
   }
 }
 
-.info {
+.steps {
   display: flex;
   flex-direction: column;
-  border: $form-border;
-  border-radius: 8px;
-  padding: 16px;
+  gap: 24px;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
   gap: 16px;
 }
 
-.infoBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.stepNumber {
+  color: $brand;
+
+  @include uppercase;
+
+  line-height: 22px;
 }
 
-.infoTitle {
+.stepTitle {
+  margin: 0 0 4px;
   color: $text-main;
+
+  @include h4-font-mobile;
 }
 
-.infoDescription {
-  color: $text-main;
-  @include body-font;
+.stepDescription {
+  margin: 0;
+  color: $text-secondary;
+
+  @include body-small;
 }
 
 .legalLink {
   color: $text-main;
   text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: color 0.2s ease;
+  text-underline-offset: 4px;
+  transition: color 0.15s $ease;
 
   &:hover {
-    color: $accent-hover;
+    color: $brand;
   }
 }
 

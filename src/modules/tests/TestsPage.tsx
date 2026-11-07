@@ -2,6 +2,7 @@ import styles from './TestsPage.module.scss';
 import { Loader } from '../shared/components/Loader';
 import { ErrorState } from '../shared/components/ErrorState';
 import { TestsList } from './components/TestsList';
+import { SectionHeader } from '../shared/components/SectionHeader';
 import { getTests } from '../../services/tests';
 import { useAsyncData } from '../../hooks/useAsyncData';
 import { usePageMeta } from '../../hooks/usePageMeta';
@@ -30,20 +31,14 @@ export const TestsPage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}>Знайдіть свій тест</h1>
+        <SectionHeader
+          as='h1'
+          label='BETWEEN / TESTS'
+          title='Знайдіть свій тест'
+          description='Перевірте свої знання англійської: оберіть тест і дізнайтеся свій поточний рівень.'
+        />
 
         <div className={styles.wrapper}>
-          <section className={styles.heroSection}>
-            <span className={styles.sectionLabel}>BETWEEN / TESTS</span>
-            <h2 className={styles.sectionTitle}>
-              Перевірте свої знання англійської мови
-            </h2>
-
-            <p className={styles.sectionDescription}>
-              Оберіть тест і дізнайтеся свій поточний рівень англійської мови.
-            </p>
-          </section>
-
           <TestsList
             tests={tests}
             emptyMessage='Поки що немає доступних тестів.'

@@ -17,7 +17,7 @@
 .greetingRow {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   margin-top: 24px;
 
   @media (min-width: $breakpoint-s) {
@@ -39,9 +39,9 @@
 
 .dateBadge {
   color: $text-secondary;
-  background-color: $surface-2;
-  padding: 6px 12px;
-  border-radius: 6px;
+  background-color: $surface;
+  padding: 8px 12px;
+  border-radius: $radius;
   align-self: flex-start;
   @include small-text;
 
@@ -54,7 +54,7 @@
   margin-top: 12px;
   color: $text-secondary;
   max-width: 600px;
-  @include body-font;
+  @include body-small;
 
   br {
     display: none;
@@ -107,23 +107,20 @@
 }
 
 .recentItem {
-  background-color: $surface-1;
-  border: $card-border;
-  border-radius: 8px;
+  background-color: $surface;
+  border: $border;
+  border-radius: $radius;
   padding: 16px;
 }
 
 .studentInfo {
-  display: flex;
-  justify-content: column;
-  gap: 12px;
-  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
 
-  @media (min-width: $breakpoint-s) {
-    justify-content: row;
-    justify-content: space-between;
+  @media (min-width: $breakpoint-m) {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 3fr) minmax(0, 1fr) minmax(0, 2fr);
     align-items: center;
-    gap: 24px;
   }
 }
 
@@ -131,23 +128,22 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 
-  @media (min-width: $breakpoint-s) {
+  @media (min-width: $breakpoint-m) {
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex: none;
+    align-items: baseline;
+    gap: 8px;
   }
 }
 
 .label {
   color: $text-main;
-  @include body-font;
+  @include body-small;
 }
 
 .studentDescription {
   color: $text-secondary;
   word-break: break-word;
-  @include body-font;
+  @include body-small;
 }

@@ -1,4 +1,4 @@
-@use 'variables.scss' as *;
+@use 'variables' as *;
 
 * {
   box-sizing: border-box;
@@ -14,7 +14,32 @@ body,
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  color: $text-main;
+  background-color: $background;
+  -webkit-font-smoothing: antialiased;
+
+  @include body-font;
+}
+
+::selection {
+  color: $text-inverse;
+  background-color: $brand;
+}
+
+:focus-visible {
+  outline: 2px solid $ink;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
 
 .appLayout {

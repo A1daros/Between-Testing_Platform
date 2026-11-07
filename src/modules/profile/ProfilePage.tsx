@@ -5,6 +5,7 @@ import { ChangeEmailForm } from './components/ChangeEmailForm';
 import { useAuth } from '../../hooks/useAuth';
 import { usePageMeta } from '../../hooks/usePageMeta';
 import { ErrorState } from '../shared/components/ErrorState';
+import { SectionHeader } from '../shared/components/SectionHeader';
 
 export const ProfilePage = () => {
   usePageMeta({ title: 'Профіль', noindex: true });
@@ -28,6 +29,8 @@ export const ProfilePage = () => {
 
   return (
     <div className={styles.page}>
+      <SectionHeader as='h1' label='BETWEEN / PROFILE' title='Профіль' />
+
       <div className={styles.formsContainer}>
         <EditProfileForm profile={profile} />
 

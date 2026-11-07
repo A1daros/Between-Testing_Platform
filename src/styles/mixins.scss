@@ -1,16 +1,17 @@
-@use './variables.scss' as *;
+@use './variables' as *;
 
 @mixin page-container {
+  width: 100%;
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 16px;
 
   @media (min-width: $breakpoint-s) {
-    padding: 0 24px;
+    padding: 0 32px;
   }
 
   @media (min-width: $breakpoint-m) {
-    padding: 0 32px;
+    padding: 0 48px;
   }
 
   @media (min-width: $breakpoint-l) {
@@ -20,13 +21,153 @@
 
 @mixin section-container {
   width: 100%;
-  margin: 0 auto 56px;
+  margin: 0 auto 64px;
 
   @media (min-width: $breakpoint-s) {
-    margin: 0 auto 64px;
+    margin: 0 auto 96px;
   }
 
   @media (min-width: $breakpoint-m) {
-    margin: 0 auto 80px;
+    margin: 0 auto 128px;
+  }
+}
+
+@mixin section-label {
+  margin: 0;
+  color: $brand;
+
+  @include uppercase;
+}
+
+@mixin page-title {
+  margin: 32px 0;
+  color: $text-main;
+
+  @include h1-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    margin: 48px 0;
+
+    @include h1-font;
+  }
+
+  @media (min-width: $breakpoint-m) {
+    margin: 64px 0 56px;
+  }
+}
+
+@mixin section-title {
+  margin: 16px 0;
+  color: $text-main;
+
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+@mixin section-description {
+  max-width: 680px;
+  margin: 0;
+  color: $text-secondary;
+
+  @include body-font;
+}
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 28px;
+  border-radius: $radius;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.15s $ease,
+    color 0.15s $ease,
+    transform 0.25s $ease,
+    box-shadow 0.25s $ease;
+
+  @include buttons;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+
+  color: $text-inverse;
+  background-color: $ink;
+  border: 1px solid $ink;
+
+  &:not(:disabled):hover {
+    background-color: $ink-hover;
+    box-shadow: $shadow-hard;
+    transform: translate(-4px, -4px);
+  }
+
+  &:not(:disabled):active {
+    box-shadow: none;
+    transform: translate(0, 0);
+  }
+}
+
+@mixin button-brand {
+  @include button-base;
+
+  color: $text-inverse;
+  background-color: $brand;
+  border: 1px solid $brand;
+
+  &:not(:disabled):hover {
+    background-color: $brand-hover;
+    box-shadow: 4px 4px 0 $text-inverse;
+    transform: translate(-4px, -4px);
+  }
+
+  &:not(:disabled):active {
+    box-shadow: none;
+    transform: translate(0, 0);
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+
+  color: $text-main;
+  background-color: transparent;
+  border: 1px solid $ink;
+
+  &:not(:disabled):hover {
+    color: $text-inverse;
+    background-color: $ink;
+  }
+}
+
+@mixin tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  color: $text-main;
+  border: $border;
+  border-radius: $radius;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  @include uppercase;
+}
+
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid $ink;
+    outline-offset: 3px;
   }
 }

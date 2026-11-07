@@ -48,24 +48,28 @@ export const TestsByLevel = () => {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}>Тести рівня</h1>
+        <header className={styles.hero}>
+          <span className={styles.sectionLabel}>BETWEEN / LEVEL</span>
 
-        <div className={styles.wrapper}>
-          <section className={styles.heroSection}>
-            <span className={styles.sectionLabel}>BETWEEN / LEVEL</span>
-            {data.level && <div className={styles.level}>{data.level.code}</div>}
+          <div className={styles.heroBody}>
+            {data.level && (
+              <span className={styles.level}>{data.level.code}</span>
+            )}
 
             <div className={styles.heroContent}>
-              <h2 className={styles.heroTitle}>
-                Перевірте свої знання англійської мови
-              </h2>
+              <h1 className={styles.pageTitle}>
+                Тести рівня{data.level ? ` «${data.level.title}»` : ''}
+              </h1>
 
               <p className={styles.heroDescription}>
-                Оберіть тест і дізнайтеся свій поточний рівень англійської мови.
+                Перевірте свої знання англійської: оберіть тест і дізнайтеся
+                свій поточний рівень.
               </p>
             </div>
-          </section>
+          </div>
+        </header>
 
+        <div className={styles.wrapper}>
           <TestsList
             tests={data.tests}
             emptyMessage='Для цього рівня поки немає тестів.'

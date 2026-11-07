@@ -22,25 +22,9 @@
 }
 
 .actionButton {
-  border: $card-border;
-  border-radius: 8px;
-  color: $surface-1;
-  background-color: $accent;
-  padding: 6px 12px;
+  @include button-primary;
+
   white-space: nowrap;
-  cursor: pointer;
-
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    opacity 0.2s ease;
-
-  &:hover {
-    background-color: $accent-hover;
-    color: $background;
-  }
-
-  @include buttons;
 }
 
 .title {
@@ -72,17 +56,17 @@
 .warningMessage {
   margin: 0;
   color: $text-main;
-  @include body-font;
+  @include body-small;
 }
 
 .confirmButton,
 .nonConfirmButton {
-  padding: 10px 20px;
-  color: $text-on-accent;
+  padding: 12px 20px;
+  color: $text-inverse;
   border: none;
-  border-radius: 8px;
+  border-radius: $radius;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.15s $ease;
 
   @include buttons;
 
@@ -97,9 +81,9 @@
 }
 
 .confirmButton {
-  background-color: $green;
+  background-color: $success;
 }
 
 .nonConfirmButton {
-  background-color: $red;
+  background-color: $error;
 }

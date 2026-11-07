@@ -42,39 +42,38 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <div className={styles.headerContent}>
-          <Link to={ROUTES.home} aria-label='На головну' onClick={closeMenu}>
-            <img
-              className={styles.logo}
-              src='/img/icons/logo.svg'
-              alt='BETWEEN'
-            />
-          </Link>
-        </div>
+        <Link
+          to={ROUTES.home}
+          className={styles.logoLink}
+          aria-label='На головну'
+          onClick={closeMenu}
+        >
+          <img className={styles.logo} src='/img/icons/logo.svg' alt='BETWEEN' />
+        </Link>
 
         <nav
           id='primary-nav'
           className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}
         >
           <ul className={styles.list} onClick={closeMenu}>
-            <li>
+            <li className={styles.item}>
               <NavLink to={ROUTES.home} end className={getLinkClass}>
                 Головна
               </NavLink>
             </li>
-            <li>
+            <li className={styles.item}>
               <NavLink to={ROUTES.aboutSchool} className={getLinkClass}>
                 Про школу
               </NavLink>
             </li>
-            <li>
+            <li className={styles.item}>
               <NavLink to={ROUTES.tests} className={getLinkClass}>
                 Тестування
               </NavLink>
             </li>
 
             {profile?.role === 'student' && (
-              <li>
+              <li className={styles.item}>
                 <NavLink to={ROUTES.myResults} className={getLinkClass}>
                   Мої результати
                 </NavLink>
@@ -82,41 +81,42 @@ export const Header = () => {
             )}
 
             {profile?.role === 'admin' && (
-              <li>
+              <li className={styles.item}>
                 <NavLink to={ROUTES.admin} className={getLinkClass}>
                   Адмін панель
                 </NavLink>
               </li>
             )}
-
-            {!loading && user && (
-              <li>
-                <NavLink to={ROUTES.profile} className={getLinkClass}>
-                  Профіль
-                </NavLink>
-              </li>
-            )}
-
-            {!loading && !user && (
-              <li>
-                <NavLink to={ROUTES.login} className={getLinkClass}>
-                  Увійти
-                </NavLink>
-              </li>
-            )}
-
-            {!loading && user && (
-              <li>
-                <button
-                  type='button'
-                  onClick={handleSignOut}
-                  className={styles.logoutBtn}
-                >
-                  Вийти
-                </button>
-              </li>
-            )}
           </ul>
+
+          {!loading && (
+            <ul className={styles.userList} onClick={closeMenu}>
+              {user ? (
+                <>
+                  <li>
+                    <NavLink to={ROUTES.profile} className={getLinkClass}>
+                      Профіль
+                    </NavLink>
+                  </li>
+                  <li>
+                    <button
+                      type='button'
+                      onClick={handleSignOut}
+                      className={styles.logoutBtn}
+                    >
+                      Вийти
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <NavLink to={ROUTES.login} className={styles.loginLink}>
+                    Увійти
+                  </NavLink>
+                </li>
+              )}
+            </ul>
+          )}
         </nav>
 
         <button

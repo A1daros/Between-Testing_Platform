@@ -3,7 +3,7 @@
 
 .tableWrapper {
   width: 100%;
-  border: $card-border;
+  border: $border;
   background-color: $background;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -30,29 +30,29 @@
 }
 
 .thead {
-  background-color: $surface-1;
-  border-bottom: 2px solid $elements;
+  background-color: $surface;
+  border-bottom: 2px solid $line;
 }
 
 .headColumn {
   @include uppercase;
   color: $text-secondary;
-  padding: 10px 12px;
+  padding: 12px 12px;
   user-select: none;
   white-space: nowrap;
 
   @media (min-width: $breakpoint-s) {
-    padding: 12px 14px;
+    padding: 12px 16px;
   }
 
   @media (min-width: $breakpoint-m) {
-    padding: 14px 16px;
+    padding: 16px 16px;
   }
 }
 
 .bodyRow {
-  border-bottom: 1px solid $elements;
-  transition: background-color 0.15s ease;
+  border-bottom: 1px solid $line;
+  transition: background-color 0.15s $ease;
 
   &:last-child {
     border-bottom: none;
@@ -61,19 +61,19 @@
 
 .bodyColumn {
   color: $text-main;
-  padding: 10px 12px;
+  padding: 12px 12px;
   vertical-align: middle;
   white-space: nowrap;
-  @include body-font;
+  @include body-small;
 
   @media (min-width: $breakpoint-s) {
-    padding: 12px 14px;
+    padding: 12px 16px;
     white-space: normal;
     word-break: break-word;
   }
 
   @media (min-width: $breakpoint-m) {
-    padding: 14px 16px;
+    padding: 16px 16px;
   }
 }
 
@@ -81,15 +81,15 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $surface-1;
+    background-color: $surface;
   }
 
   &:active {
-    background-color: $surface-2;
+    background-color: $surface;
   }
 
   &:focus-visible {
-    outline: 2px solid $accent;
+    outline: 2px solid $ink;
     outline-offset: -2px;
   }
 }
@@ -100,28 +100,19 @@
   justify-content: center;
   width: auto;
   min-width: 80px;
-  border: $card-border;
-  border-radius: 8px;
-  color: $surface-1;
-  background-color: $accent;
-  padding: 5px 10px;
+  padding: 8px 12px;
+  color: $text-inverse;
+  background-color: $ink;
+  border: 1px solid $ink;
+  border-radius: $radius;
   cursor: pointer;
+  transition: background-color 0.15s $ease;
 
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    opacity 0.2s ease;
+  @include small-text;
 
   &:hover {
-    background-color: $accent-hover;
-    color: $background;
+    background-color: $ink-hover;
   }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  @include buttons;
 }
 
 .deleteButton {
@@ -130,19 +121,19 @@
   justify-content: center;
   width: auto;
   min-width: 80px;
-  border-radius: 8px;
-  border: 1px solid $red;
-  color: $red;
-  padding: 5px 10px;
+  border-radius: $radius;
+  border: 1px solid $error;
+  color: $error;
+  padding: 4px 12px;
   cursor: pointer;
 
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+    background-color 0.15s $ease,
+    color 0.15s $ease;
 
   &:hover {
-    background-color: $red;
-    color: $text-on-accent;
+    background-color: $error;
+    color: $text-inverse;
   }
 
   &:active {

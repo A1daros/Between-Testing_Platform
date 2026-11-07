@@ -38,26 +38,31 @@ export const TestsList = ({ tests, emptyMessage }: TestsListProps) => {
                     <span className={styles.testNumber}>
                       {padNumber(index + 1)}
                     </span>
+                    <span className={styles.arrow} aria-hidden='true'>
+                      →
+                    </span>
+                  </div>
 
+                  <div className={styles.testBody}>
                     <h3 id={titleId} className={styles.testTitle}>
                       {test.title || 'Тест без назви'}
                     </h3>
+
+                    {test.description && (
+                      <p className={styles.testDescription}>
+                        {test.description}
+                      </p>
+                    )}
                   </div>
 
-                  {test.description && (
-                    <p className={styles.testDescription}>{test.description}</p>
-                  )}
-
                   <div className={styles.testInfo}>
-                    <div className={styles.metaBox}>
-                      <span className={styles.metaBadge}>
-                        {getDurationLabel(test)}
-                      </span>
+                    <span className={styles.metaBadge}>
+                      {getDurationLabel(test)}
+                    </span>
 
-                      <span className={styles.metaBadge}>
-                        {questionCount} {pluralize(questionCount, QUESTION_FORMS)}
-                      </span>
-                    </div>
+                    <span className={styles.metaBadge}>
+                      {questionCount} {pluralize(questionCount, QUESTION_FORMS)}
+                    </span>
                   </div>
                 </Link>
               </li>

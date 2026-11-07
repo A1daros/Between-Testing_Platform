@@ -1,94 +1,99 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './PictureSlider.module.scss';
 import { BANNERS } from '../../../../data/banners.data';
+import { padNumber } from '../../../../utils/padNumber';
+
+const AUTOPLAY_DELAY = 6000;
+
+const prefersReducedMotion = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const PictureSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const totalSlides = BANNERS.length;
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const resetAutoPlay = useCallback(() => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-
-    timerRef.current = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
-    }, 5000);
-  }, [totalSlides]);
+  const goTo = useCallback(
+    (index: number) =>
+      setCurrentIndex((index + totalSlides) % totalSlides),
+    [totalSlides],
+  );
 
   useEffect(() => {
-    resetAutoPlay();
+    if (isPaused || totalSlides < 2 || prefersReducedMotion()) {
+      return;
+    }
 
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [resetAutoPlay]);
+    const timer = setTimeout(() => goTo(currentIndex + 1), AUTOPLAY_DELAY);
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + totalSlides) % totalSlides);
-    resetAutoPlay();
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
-    resetAutoPlay();
-  };
-
-  const handleDotClick = (index: number) => {
-    setCurrentIndex(index);
-    resetAutoPlay();
-  };
+    return () => clearTimeout(timer);
+  }, [currentIndex, isPaused, totalSlides, goTo]);
 
   if (totalSlides === 0) {
     return null;
   }
 
+  const banner = BANNERS[currentIndex];
+
   return (
-    <div className={styles.sliderWrapper}>
-      <div className={styles.sliderRow}>
-        <button
-          className={styles.arrow}
-          onClick={handlePrev}
-          aria-label='Попередній слайд'
-        >
-          <img src='/img/icons/left.svg' alt='' />
-        </button>
+    <section
+      className={styles.slider}
+      aria-roledescription='carousel'
+      aria-label='Банери школи'
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+    >
+      <div className={styles.slide}>
+        <img
+          key={banner.id}
+          fetchPriority='high'
+          src={banner.src}
+          alt={banner.alt}
+          className={styles.slideImage}
+        />
+      </div>
 
-        <div className={styles.slide}>
-          <picture>
-            <source srcSet={BANNERS[currentIndex].src} />
+      {totalSlides > 1 && (
+        <div className={styles.controls}>
+          <span className={styles.counter}>
+            {padNumber(currentIndex + 1)} / {padNumber(totalSlides)}
+          </span>
 
-            <img
-              fetchPriority='high'
-              src={BANNERS[currentIndex].src}
-              alt={BANNERS[currentIndex].alt}
-              className={styles.slideImage}
-            />
-          </picture>
+          <div className={styles.dots}>
+            {BANNERS.map((item, index) => (
+              <button
+                key={item.id}
+                type='button'
+                className={`${styles.dot} ${currentIndex === index ? styles.dotActive : ''}`}
+                onClick={() => goTo(index)}
+                aria-label={`Перейти до слайда ${index + 1}`}
+                aria-current={currentIndex === index}
+              />
+            ))}
+          </div>
+
+          <div className={styles.arrows}>
+            <button
+              type='button'
+              className={styles.arrow}
+              onClick={() => goTo(currentIndex - 1)}
+              aria-label='Попередній слайд'
+            >
+              ←
+            </button>
+            <button
+              type='button'
+              className={styles.arrow}
+              onClick={() => goTo(currentIndex + 1)}
+              aria-label='Наступний слайд'
+            >
+              →
+            </button>
+          </div>
         </div>
-
-        <button
-          className={styles.arrow}
-          onClick={handleNext}
-          aria-label='Наступний слайд'
-        >
-          <img src='/img/icons/right.svg' alt='' />
-        </button>
-      </div>
-
-      <div className={styles.dots}>
-        {BANNERS.map((_, index) => (
-          <button
-            key={index}
-            className={`${styles.dot} ${currentIndex === index ? styles.dotActive : ''}`}
-            onClick={() => handleDotClick(index)}
-            aria-label={`Перейти до слайда ${index + 1}`}
-          />
-        ))}
-      </div>
-    </div>
+      )}
+    </section>
   );
 };

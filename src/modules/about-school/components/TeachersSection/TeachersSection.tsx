@@ -1,5 +1,6 @@
 import type { Teacher } from '../../../../types/database';
 import styles from './TeachersSection.module.scss';
+import { SectionHeader } from '../../../shared/components/SectionHeader';
 
 type TeachersSectionProps = {
   teachers: Teacher[];
@@ -8,38 +9,36 @@ type TeachersSectionProps = {
 export const TeachersSection = ({ teachers }: TeachersSectionProps) => {
   return (
     <section className={styles.teachersSection}>
-      <div className={styles.sectionHeader}>
-        <span className={styles.sectionLabel}>BETWEEN / TEAM</span>
-        <h2 className={styles.sectionTitle}>Наші викладачі</h2>
-      </div>
+      <SectionHeader label='BETWEEN / TEAM' title='Наші викладачі' />
 
       <div className={styles.teachersContainer}>
         {teachers.map((teacher) => (
           <article key={teacher.id} className={styles.teacherCard}>
             <div className={styles.imageWrapper}>
-              <img src={teacher.photo_url} alt={teacher.name} />
+              <img src={teacher.photo_url} alt={teacher.name} loading='lazy' />
             </div>
 
             <div className={styles.teacherContent}>
-              <div className={styles.cardHeader}>
-                <h3 className={styles.teacherName}>{teacher.name}</h3>
-              </div>
+              <h3 className={styles.teacherName}>{teacher.name}</h3>
 
-              <div className={styles.teacherInfo}>
-                <p className={styles.characteristics}>
-                  <strong>Вік:</strong>{' '}
-                  {teacher.age}
-                </p>
-                <p className={styles.characteristics}>
-                  <strong>Роль:</strong> {teacher.role}
-                </p>
-                <p className={styles.characteristics}>
-                  <strong>Досвід:</strong> {teacher.experience}
-                </p>
-                <p className={styles.characteristics}>
-                  <strong>Фокус навчання:</strong> {teacher.specialties}
-                </p>
-              </div>
+              <dl className={styles.teacherInfo}>
+                <div className={styles.infoRow}>
+                  <dt className={styles.infoLabel}>Вік</dt>
+                  <dd className={styles.infoValue}>{teacher.age}</dd>
+                </div>
+                <div className={styles.infoRow}>
+                  <dt className={styles.infoLabel}>Роль</dt>
+                  <dd className={styles.infoValue}>{teacher.role}</dd>
+                </div>
+                <div className={styles.infoRow}>
+                  <dt className={styles.infoLabel}>Досвід</dt>
+                  <dd className={styles.infoValue}>{teacher.experience}</dd>
+                </div>
+                <div className={styles.infoRow}>
+                  <dt className={styles.infoLabel}>Фокус навчання</dt>
+                  <dd className={styles.infoValue}>{teacher.specialties}</dd>
+                </div>
+              </dl>
             </div>
           </article>
         ))}

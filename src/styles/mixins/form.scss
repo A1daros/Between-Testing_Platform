@@ -1,54 +1,55 @@
-@use '../variables.scss' as *;
+@use '../variables' as *;
+@use '../mixins' as *;
 
 @mixin wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: $surface-1;
-  padding: 16px;
+  @include page-container;
+
+  padding-top: 48px;
+  padding-bottom: 64px;
+
+  @media (min-width: $breakpoint-s) {
+    padding-top: 80px;
+    padding-bottom: 96px;
+  }
 }
 
 @mixin container {
-  width: 100%;
-  max-width: 420px;
-  padding: 40px 32px;
-  border-radius: 16px;
-  background-color: $background;
-  box-shadow: $shadow;
-  border: $form-border;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 @mixin header {
-  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
+  padding-bottom: 32px;
+  border-bottom: $border;
 }
 
 @mixin auth-badge {
-  @include uppercase;
-  color: $text-secondary;
-  text-align: center;
-  margin-bottom: 4px;
+  @include section-label;
 }
 
 @mixin form-title {
   margin: 0;
   color: $text-main;
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.6px;
+
+  @include h1-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
 }
 
 @mixin form-subtitle {
   margin: 0;
   color: $text-secondary;
-  font-size: 14px;
-  line-height: 20px;
+
+  @include body-small;
 }
 
 @mixin form {
@@ -60,7 +61,7 @@
 @mixin input-group {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 @mixin input-container {
@@ -71,122 +72,114 @@
 
 @mixin input {
   width: 100%;
-  padding: 16px 12px 8px 12px;
-  height: 52px;
+  height: 56px;
+  padding: 24px 16px 4px;
   color: $text-main;
-  background-color: transparent;
-  border: $form-border;
-  border-radius: 8px;
+  background-color: $background;
+  border: $border;
+  border-radius: $radius;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.15s $ease;
+
+  @include input-text;
+
+  &:hover {
+    border-color: $text-muted;
+  }
 
   &:focus {
-    border-color: $text-secondary;
-    box-shadow: 0 0 0 2px rgba($accent, 0.15);
+    border-color: $ink;
+    box-shadow: inset 0 0 0 1px $ink;
   }
 
   &:focus ~ .inputLabel,
   &:not(:placeholder-shown) ~ .inputLabel {
-    transform: translateY(-8px) scale(0.8);
     color: $text-secondary;
+    transform: translateY(-10px) scale(0.75);
   }
-
-  @include input-text;
 }
 
 @mixin input-label {
   position: absolute;
-  left: 12px;
   top: 16px;
+  left: 16px;
   color: $text-secondary;
   pointer-events: none;
   transform-origin: top left;
-  transition: all 0.2s ease;
+  transition: all 0.15s $ease;
 
   @include input-text;
 }
 
 @mixin form-btn-submit {
+  @include button-primary;
+
   width: 100%;
-  height: 44px;
-  background-color: $accent;
-  color: $surface-1;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    opacity 0.2s ease;
-
-  &:hover {
-    background-color: $accent-hover;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  @include buttons;
 }
 
 @mixin form-btn-secondary-submit {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include button-secondary;
+
   width: 100%;
-  height: 44px;
   margin-top: 16px;
-  background-color: transparent;
-  color: $text-main;
-  border: $form-border;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #f4f4f5;
-  }
-
-  @include buttons;
 }
 
 @mixin error-card {
-  padding: 12px 16px;
-  background-color: $background;
-  border: 1px solid rgba($red, 0.2);
-  border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 12px 16px;
+  background-color: rgba($error, 0.04);
+  border-left: 2px solid $error;
+  border-radius: 0 $radius $radius 0;
 }
 
 @mixin error-text {
   margin: 0;
-  color: $red;
-  font-size: 14px;
-  font-weight: 500;
+  color: $error;
 
-  @include body-font;
+  @include body-small;
 }
 
 @mixin success-card {
-  padding: 12px 16px;
-  background-color: $background;
-  border: 1px solid rgba($green, 0.2);
-  border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 12px 16px;
+  background-color: rgba($success, 0.06);
+  border-left: 2px solid $success;
+  border-radius: 0 $radius $radius 0;
 }
 
 @mixin success-text {
   margin: 0;
-  color: $green;
-  font-size: 14px;
-  font-weight: 500;
-  @include body-font;
+  color: $success;
+
+  @include body-small;
+}
+
+@mixin form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  padding-top: 24px;
+  border-top: 2px solid $ink;
+}
+
+@mixin form-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@mixin form-section-title {
+  margin: 0;
+  color: $text-main;
+
+  @include h3-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
+  }
 }

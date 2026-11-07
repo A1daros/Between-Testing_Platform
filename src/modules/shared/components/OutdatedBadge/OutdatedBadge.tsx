@@ -1,9 +1,13 @@
 import styles from './OutdatedBadge.module.scss';
 
-export const OutdatedBadge = () => {
+type OutdatedBadgeProps = {
+  inline?: boolean;
+};
+
+export const OutdatedBadge = ({ inline = false }: OutdatedBadgeProps) => {
   return (
     <span
-      className={styles.badge}
+      className={`${styles.badge} ${inline ? styles.inline : ''}`}
       title='Питання тесту змінили після цієї спроби. Бал збережено таким, яким він був під час проходження.'
     >
       Тест змінено

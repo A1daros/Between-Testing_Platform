@@ -15,18 +15,18 @@
   grid-template-columns: 40px 1fr 28px;
   gap: 12px;
   min-height: 64px;
-  padding: 14px 12px;
+  padding: 16px 12px;
   align-items: center;
   color: $text-main;
   background-color: transparent;
   border: none;
-  border-top: $card-border;
+  border-top: $border;
   cursor: pointer;
   text-align: left;
   transition:
-    background-color 0.2s ease,
-    padding 0.2s ease,
-    color 0.2s ease;
+    background-color 0.15s $ease,
+    padding 0.25s $ease,
+    color 0.15s $ease;
 
   @include body-font;
 
@@ -35,11 +35,11 @@
   }
 
   &:last-child {
-    border-bottom: $card-border;
+    border-bottom: $border;
   }
 
   &:focus-visible {
-    outline: 2px solid $accent;
+    outline: 2px solid $brand;
     outline-offset: -2px;
   }
 
@@ -56,13 +56,13 @@
     &:hover {
       padding-left: 28px;
 
-      background-color: $surface-1;
+      background-color: $surface;
     }
   }
 }
 
 .answerNumber {
-  color: $text-icons;
+  color: $text-muted;
   @include uppercase;
 }
 
@@ -72,40 +72,43 @@
 }
 
 .answerIndicator {
-  color: $text-icons;
+  color: $text-muted;
   font-size: 22px;
   text-align: right;
 
   transition:
-    color 0.2s ease,
-    transform 0.2s ease;
+    color 0.15s $ease,
+    transform 0.25s $ease;
 }
 
 .answer:hover {
   .answerIndicator {
-    color: $accent;
+    color: $brand;
 
     transform: translateX(4px);
   }
 }
 
 .answerSelected {
-  color: $text-on-accent;
-  background-color: $accent;
-  border-color: $accent;
+  color: $text-inverse;
+  background-color: $ink;
+  border-color: $ink;
 
   &:last-child {
-    border-bottom-color: $accent;
+    border-bottom-color: $ink;
   }
 
   &:hover {
     padding-left: 28px;
-    background-color: $accent;
+    background-color: $ink;
   }
 
-  .answerNumber,
+  .answerNumber {
+    color: $brand;
+  }
+
   .answerIndicator {
-    color: $text-on-accent;
+    color: $text-inverse;
   }
 
   .answerIndicator {
@@ -113,7 +116,7 @@
   }
 
   & + .answer {
-    border-top-color: $accent;
+    border-top-color: $ink;
   }
 }
 

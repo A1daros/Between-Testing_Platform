@@ -162,8 +162,6 @@ export const QuizPage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}>Проходження тесту</h1>
-
         <div className={styles.wrapper}>
           <section className={styles.quizSection}>
             <div className={styles.sectionTop}>
@@ -176,9 +174,9 @@ export const QuizPage = () => {
 
             <div className={styles.sectionContent}>
               <div>
-                <h2 className={styles.testTitle}>
+                <h1 className={styles.testTitle}>
                   {currentQuestion.tests.title}
-                </h2>
+                </h1>
 
                 {currentQuestion.tests.description && (
                   <p className={styles.testDescription}>
@@ -195,11 +193,12 @@ export const QuizPage = () => {
                 />
               )}
 
-              <QuizProgress current={currentQuestionIndex + 1} total={total} />
             </div>
+
+            <QuizProgress current={currentQuestionIndex + 1} total={total} />
           </section>
 
-          <section>
+          <section className={styles.questionSection}>
             <div className={styles.partHeader}>
               <span className={styles.partNumber}>ПИТАННЯ</span>
 
@@ -229,7 +228,7 @@ export const QuizPage = () => {
                 </p>
               )}
 
-              <h3 className={styles.question}>{currentQuestion.question}</h3>
+              <h2 className={styles.question}>{currentQuestion.question}</h2>
             </div>
 
             <AnswerList

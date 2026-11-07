@@ -1,17 +1,10 @@
 @use '../../../../styles/variables' as *;
 
-.container {
-  margin-bottom: 40px;
-  overflow: hidden;
-}
-
 .productList {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px 16px;
+  gap: 16px;
   list-style: none;
-  padding: 0;
-  margin: 0;
 
   @media (min-width: $breakpoint-s) {
     grid-template-columns: repeat(2, 1fr);
@@ -19,5 +12,6 @@
 
   @media (min-width: $breakpoint-m) {
     grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
   }
 }

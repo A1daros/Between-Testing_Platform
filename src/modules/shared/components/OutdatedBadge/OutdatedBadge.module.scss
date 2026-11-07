@@ -1,15 +1,15 @@
 @use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
 
 .badge {
-  display: inline-flex;
-  align-self: flex-start;
-  align-items: center;
-  padding: 4px 8px;
-  color: $text-secondary;
-  background-color: $accent-soft-light;
-  border: 1px solid $accent-soft-dark;
-  border-radius: 8px;
-  white-space: nowrap;
+  @include tag;
 
-  @include small-text;
+  align-self: flex-start;
+  color: $brand;
+  border-color: rgba($brand, 0.4);
+}
+
+.inline {
+  margin-left: 12px;
+  vertical-align: middle;
 }

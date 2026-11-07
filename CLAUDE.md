@@ -39,7 +39,7 @@ BETWEEN — сайт англомовної школи та платформа �
 - **Модель контенту.** levels → submodules → tests (`placement_test` / `submodule_quiz` / `final_test`) → test_parts → questions → answers. Результати зберігаються в `results` + `result_answers`. Програми/формати для лендингу та викладачі вантажаться із Supabase (див. `services/programs.ts`, `services/teachers.ts`). Статичний маркетинговий контент лежить у `src/data`.
 - **UI-модулі.** `src/modules/<feature>/` (home, tests, quiz, results, profile, authentication, admin, about-school, legal, not-found, shared), стилі `.module.scss` лежать поруч із компонентами.
   - Іменування: папка модуля — kebab-case; головна сторінка модуля лежить у його корені, додаткові сторінки — у підпапках PascalCase (`tests/PlacementTest`, `results/MyResults`, `authentication/Login`); дрібні компоненти сторінки — у `components/<PascalCase>/`. Кожна папка компонента має `index.ts`.
-  - Спільні компоненти — у `modules/shared/components`: `Loader`, `ErrorState` (помилка сторінки з кнопкою повтору), `Alert` (картка помилки/успіху), `FormField` / `FormTextarea` / `PasswordFields` (поля з плаваючим лейблом), `Modal` (Escape, фокус), `AnswerList` / `QuizProgress` / `QuizNavigation` (спільні для квізу й placement test), `OutdatedBadge`, `ScrollToTop`, `ChunkError`.
+  - Спільні компоненти — у `modules/shared/components`: `Loader`, `ErrorState` (помилка сторінки з кнопкою повтору), `Alert` (картка помилки/успіху), `FormField` / `FormTextarea` / `PasswordFields` (поля з плаваючим лейблом), `Modal` (Escape, фокус), `AnswerList` / `QuizProgress` / `QuizNavigation` (спільні для квізу й placement test), `OutdatedBadge`, `ScrollToTop`, `ChunkError`, `SectionHeader` (мітка `BETWEEN / X` + заголовок + опис; `as='h1'` для заголовка сторінки).
   - Адмінка: сторінки (`Overview`, `Tests`, `Tests/CreateTest`, `Tests/EditTest`, `Results`, `Results/ResultDetails`, `Students`, `Students/StudentDetails`) лежать у корені `modules/admin`, layout із сайдбаром — `AdminLayout`, спільні компоненти адмінки (`Table`, `Pagination`, `SearchInput`, `StatCard`) — у `modules/admin/components`. Типи, потрібні лише адмінці, — у `modules/admin/types`.
   - Спільний layout (Header, Footer) — у `modules/shared/components/Layout`.
   - Логіка стану квізу й таймера — у `hooks/useQuiz.ts` та `hooks/useCountdown.ts`.
@@ -48,7 +48,7 @@ BETWEEN — сайт англомовної школи та платформа �
 
 ## Стилі
 
-Правила SCSS (структура, класи, значення, типографіка, адаптивність, порядок властивостей) описані в skill `scss-styles` (`.claude/skills/scss-styles/SKILL.md`). Завантажуй його перед будь-якою роботою зі стилями.
+Стиль — пост-модерн мінімалізм (монохром + брендовий червоний `$brand`, тонкі лінії, великі display-числа, мітки `BETWEEN / X`). Правила SCSS (візуальна мова, структура, кнопки, значення, типографіка, адаптивність, порядок властивостей) описані в skill `scss-styles` (`.claude/skills/scss-styles/SKILL.md`). Завантажуй його перед будь-якою роботою зі стилями.
 
 ## Конвенції коду
 

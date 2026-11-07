@@ -1,31 +1,31 @@
 @use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
 
 .testsHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding-bottom: 16px;
 }
 
 .testsLabel {
   color: $text-secondary;
+
   @include uppercase;
 }
 
 .testsCount {
-  color: $accent;
+  color: $brand;
+
   @include uppercase;
 }
 
 .testsList {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 16px;
-
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  list-style: none;
+  border-top: $border;
+  border-left: $border;
 
   @media (min-width: $breakpoint-s) {
     grid-template-columns: repeat(2, 1fr);
@@ -33,47 +33,74 @@
 
   @media (min-width: $breakpoint-m) {
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+  }
+
+  li {
+    border-right: $border;
+    border-bottom: $border;
   }
 }
 
 .testCard {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
   height: 100%;
   padding: 24px;
-  border-radius: 12px;
-  border: $card-border;
   color: $text-main;
   text-decoration: none;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: background-color 0.15s $ease;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: $shadow;
+    background-color: $surface;
+  }
 
-    .testNumber {
-      color: $accent;
-    }
+  @media (min-width: $breakpoint-s) {
+    padding: 32px;
   }
 }
 
 .testCardHeader {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .testNumber {
-  color: $text-secondary;
-  transition: color 0.2s ease;
-  @include body-font;
+  color: $text-muted;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.15s $ease;
+
+  @include h2-font-mobile;
+
+  .testCard:hover & {
+    color: $brand;
+  }
+}
+
+.arrow {
+  color: $text-muted;
+  font-size: 20px;
+  line-height: 1;
+  transition:
+    color 0.15s $ease,
+    transform 0.25s $ease;
+
+  .testCard:hover & {
+    color: $brand;
+    transform: translateX(4px);
+  }
+}
+
+.testBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .testTitle {
+  margin: 0;
+
   @include h3-font-mobile;
 
   @media (min-width: $breakpoint-s) {
@@ -82,35 +109,34 @@
 }
 
 .testDescription {
+  display: -webkit-box;
   margin: 0;
-  color: $text-secondary;
   overflow: hidden;
-  @include body-font;
+  color: $text-secondary;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  @include body-small;
 }
 
 .testInfo {
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: $card-border;
-}
-
-.metaBox {
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
 }
 
 .metaBadge {
-  color: $text-secondary;
-  @include body-font;
-}
+  @include tag;
 
+  color: $text-secondary;
+}
 
 .emptyText {
   margin: 0;
   padding: 24px 0;
   color: $text-secondary;
-  border-top: $card-border;
+  border-top: $border;
 
   @include body-font;
 }

@@ -3,57 +3,14 @@
 
 .page {
   background-color: $background;
-  transition: background-color 0.3s ease;
 }
 
 .container {
   @include page-container;
 }
 
-.pageTitle {
-  margin: 24px 0;
-  color: $text-main;
-
-  @include h1-font-mobile;
-
-  @media (min-width: $breakpoint-s) {
-    margin: 32px 0;
-
-    @include h1-font;
-  }
-
-  @media (min-width: $breakpoint-m) {
-    margin: 56px 0;
-  }
-}
-
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
+  @include section-container;
 
-.heroSection {
-  display: flex;
-  flex-direction: column;
-}
-
-.sectionLabel {
-  color: $accent;
-  @include uppercase;
-}
-
-.sectionTitle {
-  @include h2-font-mobile;
-  margin: 16px 0;
-  color: $text-main;
-
-  @media (min-width: $breakpoint-s) {
-    @include h2-font;
-  }
-}
-
-.sectionDescription {
-  color: $text-secondary;
-  @include body-font;
+  padding-top: 32px;
 }

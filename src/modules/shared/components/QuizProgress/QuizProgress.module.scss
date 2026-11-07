@@ -7,15 +7,14 @@
 
 .progressTrack {
   width: 100%;
-  height: 4px;
+  height: 2px;
   overflow: hidden;
-  background-color: $elements;
+  background-color: $line;
   border: none;
-  border-radius: 8px;
 }
 
 .progressBar {
   height: 100%;
-  background-color: $accent;
-  transition: width 0.3s ease;
+  background-color: $brand;
+  transition: width 0.25s $ease;
 }

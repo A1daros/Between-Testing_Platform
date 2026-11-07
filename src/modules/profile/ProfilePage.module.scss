@@ -3,31 +3,32 @@
 
 .page {
   @include page-container;
-  margin: 24px 0;
+
+  padding-bottom: 64px;
 
   @media (min-width: $breakpoint-m) {
-    margin: 32px 0;
-  }
-
-  @media (min-width: $breakpoint-l) {
-    margin: 56px 0;
+    padding-bottom: 128px;
   }
 }
 
 .formsContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 36px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  max-width: 1040px;
+  padding-top: 32px;
 
   @media (min-width: $breakpoint-m) {
-    flex-direction: row;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 64px;
+    padding-top: 48px;
   }
 }
 
 .rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 48px;
   width: 100%;
 }

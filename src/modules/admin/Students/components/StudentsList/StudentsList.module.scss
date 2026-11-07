@@ -3,22 +3,22 @@
 .statusBadge {
   display: inline-flex;
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: $radius;
   color: $text-secondary;
-  background-color: $surface-2;
+  background-color: $surface;
   white-space: nowrap;
 
   @include uppercase;
 }
 
 .statusApproved {
-  color: $green;
-  background-color: rgba($green, 0.1);
+  color: $success;
+  background-color: rgba($success, 0.1);
 }
 
 .statusRejected {
-  color: $red;
-  background-color: rgba($red, 0.1);
+  color: $error;
+  background-color: rgba($error, 0.1);
 }
 
 .actions {

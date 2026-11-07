@@ -12,6 +12,10 @@ export const NotFoundPage = () => {
         <section className={styles.section}>
           <span className={styles.label}>BETWEEN / 404</span>
 
+          <span className={styles.code} aria-hidden='true'>
+            404
+          </span>
+
           <h1 className={styles.title}>Сторінку не знайдено</h1>
 
           <p className={styles.description}>

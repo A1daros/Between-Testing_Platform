@@ -14,12 +14,10 @@
   flex-direction: column;
   gap: 32px;
   max-width: 800px;
-  padding: 40px 0;
+  padding: 48px 0 96px;
 
-  @include section-container;
-
-  @media (min-width: $breakpoint-m) {
-    padding: 56px 0;
+  @media (min-width: $breakpoint-s) {
+    padding: 80px 0 128px;
   }
 }
 
@@ -27,12 +25,12 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding-bottom: 32px;
+  border-bottom: $border;
 }
 
 .label {
-  color: $text-secondary;
-
-  @include uppercase;
+  @include section-label;
 }
 
 .title {

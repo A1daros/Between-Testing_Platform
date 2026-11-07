@@ -2,16 +2,15 @@
 @use '../../../../styles/mixins/form' as *;
 
 .container {
-  @include container;
-  max-width: 100%;
+  @include form-section;
 }
 
 .header {
-  @include header;
+  @include form-section-header;
 }
 
 .title {
-  @include form-title;
+  @include form-section-title;
 }
 
 .subtitle {
@@ -20,7 +19,7 @@
 
 .avatarSection {
   padding-bottom: 16px;
-  border-bottom: $form-border;
+  border-bottom: $border;
 }
 
 .form {
