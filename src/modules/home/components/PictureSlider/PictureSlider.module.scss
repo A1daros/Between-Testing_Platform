@@ -1,123 +1,113 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
 
-.sliderWrapper {
+.slider {
   @include section-container;
 }
 
-.sliderRow {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-
-  @media (min-width: $breakpoint-m) {
-    gap: 16px;
-  }
-}
-
 .slide {
-  flex: 1;
-  height: 320px;
   overflow: hidden;
-  background-color: $surface-1;
-
-  @media (min-width: $breakpoint-s) {
-    height: 200px;
-  }
-
-  @media (min-width: $breakpoint-m) {
-    height: 400px;
-  }
+  background-color: $surface;
+  border-radius: $radius;
 }
 
 @keyframes fade-in {
   from {
-    opacity: 0.5;
+    opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
 
 .slideImage {
+  display: block;
   width: 100%;
-  height: 320px;
+  height: auto;
+  aspect-ratio: 1280 / 683;
   object-fit: cover;
-  animation: fade-in 0.5s ease-in-out;
+  animation: fade-in 0.5s $ease;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: $border;
 
   @media (min-width: $breakpoint-s) {
-    height: 200px;
-  }
-
-  @media (min-width: $breakpoint-m) {
-    height: 400px;
+    gap: 32px;
   }
 }
 
-.arrow {
-  display: none;
+.counter {
+  color: $text-secondary;
 
-  img {
-    opacity: 0.6;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover {
-    background: $text-icons;
-
-    img {
-      opacity: 1;
-    }
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  @media (min-width: $breakpoint-s) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    border: none;
-    cursor: pointer;
-    width: 32px;
-    height: 200px;
-    background: $surface-2;
-    transition: background-color 0.3s ease;
-  }
-
-  @media (min-width: $breakpoint-m) {
-    height: 400px;
-  }
+  @include uppercase;
 }
 
 .dots {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 8px;
-  height: 24px;
-  margin-top: 8px;
+  gap: 4px;
 }
 
 .dot {
-  width: 24px;
-  height: 4px;
+  flex: 1;
+  max-width: 64px;
+  height: 24px;
   padding: 0;
+  background: none;
   border: none;
   cursor: pointer;
-  background: $elements;
-  transition:
-    background-color 0.3s ease,
-    transform 0.3s ease;
 
-  &:hover {
-    background: $text-secondary;
+  &::before {
+    content: '';
+    display: block;
+    height: 2px;
+    background-color: $line;
+    transition: background-color 0.15s $ease;
   }
 
-  &.dotActive {
-    background: $text-main;
-    transform: scaleX(1.1);
+  &:hover::before {
+    background-color: $text-muted;
+  }
+}
+
+.dotActive::before,
+.dotActive:hover::before {
+  background-color: $brand;
+}
+
+.arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: $text-main;
+  font-size: 18px;
+  line-height: 1;
+  background-color: transparent;
+  border: $border;
+  border-radius: $radius;
+  cursor: pointer;
+  transition:
+    color 0.15s $ease,
+    background-color 0.15s $ease,
+    border-color 0.15s $ease;
+
+  &:hover {
+    color: $text-inverse;
+    background-color: $ink;
+    border-color: $ink;
   }
 }

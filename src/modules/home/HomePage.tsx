@@ -1,8 +1,8 @@
 import styles from './HomePage.module.scss';
+import { Hero } from './components/Hero';
 import { ChooseLevel } from './components/ChooseLevel';
 import { PictureSlider } from './components/PictureSlider';
 import { About } from './components/About';
-import { FindLevel } from './components/FindLevel';
 import { ContactUs } from './components/ContactUs';
 import { getLevels } from '../../services/levels';
 import { Loader } from '../shared/components/Loader';
@@ -19,17 +19,17 @@ export const HomePage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        {loading && <Loader />}
-
-        <h1 className={styles.title}>Ласкаво просимо до BETWEEN!</h1>
-
-        <FindLevel />
+        <Hero />
 
         <PictureSlider />
 
+        {loading && <Loader />}
+
         {Boolean(error) && <Alert>Не вдалося завантажити рівні тестів.</Alert>}
 
-        <ChooseLevel title='Виберіть свій рівень' levels={levels ?? []} />
+        {levels && levels.length > 0 && (
+          <ChooseLevel title='Виберіть свій рівень' levels={levels} />
+        )}
 
         <About />
 

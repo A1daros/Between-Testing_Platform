@@ -13,9 +13,9 @@ export const getResultsColumns = (): ColumnConfig<Result>[] => [
     label: 'Тест',
     render: (result) => (
       <>
-        {result.tests.title}{' '}
+        {result.tests.title}
         {isResultOutdated(result.created_at, result.tests.content_updated_at) && (
-          <OutdatedBadge />
+          <OutdatedBadge inline />
         )}
       </>
     ),

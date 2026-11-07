@@ -5,75 +5,85 @@
   @include section-container;
 }
 
-.title {
-  color: $text-main;
-  margin-bottom: 30px;
-  text-align: center;
-  @include h2-font-mobile;
-
-  @media (min-width: $breakpoint-s) {
-    @include h2-font;
-  }
-}
-
-.wrapper {
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
   list-style: none;
-  margin: 0;
+  border-top: $border;
+  border-left: $border;
 
-  @media (min-width: $breakpoint-s) {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  @media (min-width: $breakpoint-m) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-.levelItem {
-  background-color: $surface-1;
-  border: $card-border;
-  border-radius: 8px;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: $shadow;
-  }
+.cell {
+  border-right: $border;
+  border-bottom: $border;
 }
 
 .link {
-  display: block;
-  padding: 24px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.itemWrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   gap: 8px;
-}
-
-.itemLevel {
-  margin: 0;
-  color: $red;
-  text-transform: uppercase;
-
-  @include h3-font-mobile;
-
-  @media (min-width: $breakpoint-s) {
-    @include h3-font;
-  }
-}
-
-.itemTitle {
-  margin: 0;
+  min-height: 168px;
+  height: 100%;
+  padding: 20px;
   color: $text-main;
+  text-decoration: none;
+  transition: background-color 0.15s $ease;
 
-  @include h3-font-mobile;
+  &:hover {
+    background-color: $surface;
+  }
 
   @media (min-width: $breakpoint-s) {
-    @include h3-font;
+    min-height: 240px;
+    padding: 32px;
   }
+}
+
+.arrow {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: $text-muted;
+  font-size: 20px;
+  line-height: 1;
+  transition:
+    color 0.15s $ease,
+    transform 0.25s $ease;
+
+  .link:hover & {
+    color: $brand;
+    transform: translate(4px, -4px);
+  }
+
+  @media (min-width: $breakpoint-s) {
+    top: 32px;
+    right: 32px;
+  }
+}
+
+.code {
+  color: $text-main;
+  transition: color 0.15s $ease;
+
+  @include display-font-mobile;
+
+  .link:hover & {
+    color: $brand;
+  }
+
+  @media (min-width: $breakpoint-s) {
+    @include display-font;
+  }
+}
+
+.title {
+  color: $text-secondary;
+
+  @include body-small;
 }

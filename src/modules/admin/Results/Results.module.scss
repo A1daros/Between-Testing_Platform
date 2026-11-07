@@ -47,24 +47,24 @@
 }
 
 .searchInfo {
-  border: $card-border;
-  border-radius: 8px;
-  background-color: $surface-2;
+  border: $border;
+  border-radius: $radius;
+  background-color: $surface;
   color: $text-main;
-  padding: 6px 12px;
+  padding: 8px 12px;
   cursor: pointer;
   text-align: center;
   flex: 1;
 
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    background-color 0.15s $ease,
+    color 0.15s $ease,
+    border-color 0.15s $ease;
 
   @include buttons;
 
   &:hover {
-    background-color: $surface-1;
+    background-color: $surface;
     border-color: $text-secondary;
   }
 
@@ -75,12 +75,12 @@
 }
 
 .activeSort {
-  background-color: $accent;
-  border-color: $accent;
+  background-color: $ink;
+  border-color: $ink;
   color: $background;
 
   &:hover {
-    background-color: $accent;
+    background-color: $ink;
     color: $background;
   }
 }

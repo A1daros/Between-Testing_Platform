@@ -2,6 +2,7 @@ import { Link, generatePath } from 'react-router-dom';
 import styles from './ChooseLevel.module.scss';
 import type { Level } from '../../../../types/database';
 import { ROUTES } from '../../../../constants/routes';
+import { SectionHeader } from '../../../shared/components/SectionHeader';
 
 type ChooseLevelProps = {
   title: string;
@@ -10,26 +11,27 @@ type ChooseLevelProps = {
 
 export const ChooseLevel = ({ title, levels }: ChooseLevelProps) => {
   return (
-    <div className={styles.page}>
-      <h2 className={styles.title}>{title}</h2>
+    <section className={styles.page}>
+      <SectionHeader label='BETWEEN / LEVELS' title={title} />
 
-      <ul className={styles.wrapper}>
+      <ul className={styles.grid}>
         {levels.map((level) => (
-          <li key={level.id} className={styles.levelItem}>
+          <li key={level.id} className={styles.cell}>
             <Link
               to={generatePath(ROUTES.testsByLevel, {
                 levelId: String(level.id),
               })}
               className={styles.link}
             >
-              <div className={styles.itemWrapper}>
-                <h3 className={styles.itemLevel}>{level.code}</h3>
-                <h3 className={styles.itemTitle}>{level.title}</h3>
-              </div>
+              <span className={styles.arrow} aria-hidden='true'>
+                ↗
+              </span>
+              <span className={styles.code}>{level.code}</span>
+              <span className={styles.title}>{level.title}</span>
             </Link>
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };

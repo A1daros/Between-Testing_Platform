@@ -1,28 +1,8 @@
 @use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .programsSection {
-  display: flex;
-  flex-direction: column;
-}
-
-.sectionLabel {
-  color: $accent;
-  @include uppercase;
-}
-
-.sectionTitle {
-  @include h2-font-mobile;
-  margin: 16px 0;
-  color: $text-main;
-
-  @media (min-width: $breakpoint-s) {
-    @include h2-font;
-  }
-}
-
-.sectionSubtitle {
-  color: $text-secondary;
-  @include body-font;
-  margin-bottom: 24px;
+  @include section-container;
 }
 
 .programsContainer {
@@ -38,27 +18,27 @@
 .programCard {
   display: flex;
   flex-direction: column;
-  background-color: $surface-1;
-  border: $card-border;
-  border-radius: 8px;
-  padding: 16px;
+  padding: 24px;
+  border: $border;
+  border-radius: $radius;
 
   @media (min-width: $breakpoint-s) {
-    padding: 24px;
+    padding: 32px;
   }
 }
 
 .ageBadge {
-  align-self: flex-start;
-  color: $accent;
+  @include tag;
 
-  @include small-text;
+  align-self: flex-start;
+  margin-bottom: 24px;
 }
 
 .programTitle {
-  @include h3-font-mobile;
-  margin-bottom: 12px;
+  margin: 0 0 12px;
   color: $text-main;
+
+  @include h3-font-mobile;
 
   @media (min-width: $breakpoint-s) {
     @include h3-font;
@@ -66,57 +46,52 @@
 }
 
 .programDescription {
+  margin: 0 0 32px;
   color: $text-secondary;
+
   @include body-font;
-  margin-bottom: 12px;
 }
 
 .formatList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 32px;
   margin-top: auto;
+  margin-bottom: 32px;
+  border-top: $border;
 }
 
 .formatItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   padding: 16px 0;
-  position: relative;
+  border-bottom: $border;
 }
 
 .popularFormat {
-  border-color: $accent;
-  border-radius: 8px;
-  background-color: rgba($accent, 0.02);
+  border-bottom-color: $brand;
 }
 
 .popularTag {
-  position: absolute;
-  top: -10px;
-  right: 12px;
-  background-color: $accent;
-  color: $background;
-  padding: 4px 8px;
-  border: $card-border;
-  border-radius: 8px;
+  margin-left: 12px;
+  color: $brand;
   text-transform: uppercase;
+  white-space: nowrap;
 
-  @include small-text;
+  @include uppercase;
 }
 
 .formatMeta {
   display: flex;
   flex-direction: column;
   gap: 4px;
-
-  @include body-font;
 }
 
 .formatType {
   color: $text-main;
+
+  @include h4-font-mobile;
 }
 
 .formatTimeline {
@@ -126,7 +101,10 @@
 }
 
 .formatPrice {
+  margin: 0;
   color: $text-main;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 
   @include h4-font-mobile;
 
@@ -136,22 +114,7 @@
 }
 
 .cardButton {
+  @include button-primary;
+
   width: 100%;
-  padding: 14px;
-  background-color: $accent;
-  color: $background;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: $accent-hover;
-  }
-
-  @include buttons;
 }

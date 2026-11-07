@@ -9,18 +9,18 @@
 }
 
 .button {
-  padding: 6px 12px;
-  border: $card-border;
-  border-radius: 8px;
-  background-color: $surface-2;
+  padding: 8px 12px;
+  border: $border;
+  border-radius: $radius;
+  background-color: $surface;
   color: $text-main;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.15s $ease;
 
   @include buttons;
 
   &:hover:not(:disabled) {
-    background-color: $surface-1;
+    background-color: $surface;
   }
 
   &:disabled {

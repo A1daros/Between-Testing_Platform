@@ -1,6 +1,7 @@
 import styles from './ProgramsSection.module.scss';
 import type { Program, ProgramFormat } from '../../../../types/database';
 import { SCHOOL_INSTAGRAM_URL } from '../../../../constants/school';
+import { SectionHeader } from '../../../shared/components/SectionHeader';
 
 type ProgramsSectionProps = {
   programsData: Program[];
@@ -13,14 +14,11 @@ export const ProgramsSection = ({
 }: ProgramsSectionProps) => {
   return (
     <section className={styles.programsSection}>
-      <div className={styles.sectionHeader}>
-        <span className={styles.sectionLabel}>BETWEEN / PROGRAMS</span>
-        <h2 className={styles.sectionTitle}>Напрямки навчання та вартість</h2>
-        <p className={styles.sectionSubtitle}>
-          Обирайте формат, який найліпше підходить під цілі та графік вашої
-          дитини
-        </p>
-      </div>
+      <SectionHeader
+        label='BETWEEN / PROGRAMS'
+        title='Напрямки навчання та вартість'
+        description='Обирайте формат, який найліпше підходить під цілі та графік вашої дитини'
+      />
 
       <div className={styles.programsContainer}>
         {programsData.map((program) => (
@@ -44,21 +42,21 @@ export const ProgramsSection = ({
                       key={format.id}
                       className={`${styles.formatItem} ${format.is_popular ? styles.popularFormat : ''}`}
                     >
-                      {format.is_popular && (
-                        <span className={styles.popularTag}>
-                          Популярний вибір
-                        </span>
-                      )}
                       <div className={styles.formatMeta}>
-                        <strong className={styles.formatType}>{format.type}</strong>
+                        <strong className={styles.formatType}>
+                          {format.type}
+                          {format.is_popular && (
+                            <span className={styles.popularTag}>
+                              Популярний вибір
+                            </span>
+                          )}
+                        </strong>
                         <span className={styles.formatTimeline}>
                           {format.lessons_per_month} занять / міс ·{' '}
                           {format.duration_minutes}хв
                         </span>
                       </div>
-                      <div className={styles.formatPrice}>
-                        <p>{correctPrice} грн</p>
-                      </div>
+                      <p className={styles.formatPrice}>{correctPrice} грн</p>
                     </div>
                   );
                 })}

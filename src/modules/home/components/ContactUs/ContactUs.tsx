@@ -11,9 +11,26 @@ import {
   SCHOOL_PHONE_LABEL,
 } from '../../../../constants/school';
 import { getErrorMessage } from '../../../../utils/getErrorMessage';
+import { padNumber } from '../../../../utils/padNumber';
 import { FormField } from '../../../shared/components/FormField';
 import { FormTextarea } from '../../../shared/components/FormTextarea';
 import { Alert } from '../../../shared/components/Alert';
+import { SectionHeader } from '../../../shared/components/SectionHeader';
+
+const STEPS = [
+  {
+    title: 'Залиште заявку',
+    description: 'Опрацювання протягом 15 хвилин.',
+  },
+  {
+    title: 'Дзвінок менеджера',
+    description: 'Підбір зручного часу та безкоштовний урок.',
+  },
+  {
+    title: 'Старт навчання',
+    description: 'Реєстрація та початок навчання.',
+  },
+];
 
 export const ContactUs = () => {
   const [firstName, setFirstName] = useState('');
@@ -65,8 +82,8 @@ export const ContactUs = () => {
   };
 
   return (
-    <div id={CONTACTS_SECTION_ID} className={styles.page}>
-      <h2 className={styles.title}>Зв'язатися з нами</h2>
+    <section id={CONTACTS_SECTION_ID} className={styles.page}>
+      <SectionHeader label='BETWEEN / CONTACT' title="Зв'язатися з нами" />
 
       <div className={styles.container}>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -173,62 +190,49 @@ export const ContactUs = () => {
         </form>
 
         <div className={styles.additionalInfo}>
-          <address className={styles.address}>
-            <div className={styles.addressBlock}>
-              <span className={styles.addressTitle}>Тел:</span>
-              <a
-                href={`tel:${SCHOOL_PHONE}`}
-                className={styles.addressDescription}
-              >
+          <address className={styles.contacts}>
+            <div className={styles.contactRow}>
+              <span className={styles.contactLabel}>Телефон</span>
+              <a href={`tel:${SCHOOL_PHONE}`} className={styles.contactValue}>
                 {SCHOOL_PHONE_LABEL}
               </a>
             </div>
 
-            <div className={styles.addressBlock}>
-              <span className={styles.addressTitle}>Email:</span>
-              <a
-                href={`mailto:${SCHOOL_EMAIL}`}
-                className={styles.addressDescription}
-              >
+            <div className={styles.contactRow}>
+              <span className={styles.contactLabel}>Email</span>
+              <a href={`mailto:${SCHOOL_EMAIL}`} className={styles.contactValue}>
                 {SCHOOL_EMAIL}
               </a>
             </div>
 
-            <div className={styles.addressBlock}>
-              <span className={styles.addressTitle}>Instagram:</span>
+            <div className={styles.contactRow}>
+              <span className={styles.contactLabel}>Instagram</span>
               <a
                 href={SCHOOL_INSTAGRAM_URL}
                 target='_blank'
                 rel='noopener noreferrer'
-                className={styles.addressDescription}
+                className={styles.contactValue}
               >
                 {SCHOOL_INSTAGRAM_HANDLE}
               </a>
             </div>
           </address>
 
-          <div className={styles.info}>
-            <div className={styles.infoBlock}>
-              <span className={styles.infoTitle}>1. Залиште заявку</span>
-              <p className={styles.infoDescription}>
-                Опрацювання протягом 15 хвилин.
-              </p>
-            </div>
-            <div className={styles.infoBlock}>
-              <span className={styles.infoTitle}>2. Дзвінок менеджера</span>
-              <p className={styles.infoDescription}>
-                Підбір зручного часу та безкоштовний урок.
-              </p>
-            </div>
-            <div className={styles.infoBlock}>
-              <span className={styles.infoTitle}>3. Старт навчання</span>
-              <p className={styles.infoDescription}>
-                Реєстрація та початок навчання.
-              </p>
-            </div>
-          </div>
+          <ol className={styles.steps}>
+            {STEPS.map((step, index) => (
+              <li key={step.title} className={styles.step}>
+                <span className={styles.stepNumber}>
+                  {padNumber(index + 1)}
+                </span>
+                <div>
+                  <h3 className={styles.stepTitle}>{step.title}</h3>
+                  <p className={styles.stepDescription}>{step.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

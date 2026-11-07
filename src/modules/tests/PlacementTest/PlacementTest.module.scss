@@ -1,117 +1,86 @@
 @use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
 
 .page {
-  min-height: 100vh;
   background-color: $background;
 }
 
 .container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 16px;
-
-  @media (min-width: $breakpoint-s) {
-    padding: 0 32px;
-  }
-
-  @media (min-width: $breakpoint-l) {
-    padding: 0 120px;
-  }
+  @include page-container;
 }
 
 .wrapper {
   display: flex;
   flex-direction: column;
-
-  padding: 48px 0;
+  padding: 32px 0 64px;
 
   @media (min-width: $breakpoint-s) {
-    padding: 72px 0;
+    padding: 56px 0 96px;
   }
 }
 
-/* =========================
-   COMMON
-========================= */
-
 .sectionLabel {
-  color: $accent;
-
-  @include uppercase;
+  @include section-label;
 }
 
 .questionCounter {
-  color: $text-secondary;
+  color: $text-main;
+  font-variant-numeric: tabular-nums;
 
   @include uppercase;
 }
 
-/* =========================
-   QUIZ HEADER
-========================= */
-
 .quizHeader {
-  border-bottom: $card-border;
+  display: flex;
+  flex-direction: column;
 }
 
 .headerTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding-bottom: 16px;
-
-  border-bottom: $card-border;
+  border-bottom: $border;
 }
 
 .headerContent {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
-
-  padding: 32px 0;
+  gap: 24px;
+  padding: 24px 0;
 
   @media (min-width: $breakpoint-s) {
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: 1fr 320px;
+    align-items: end;
     gap: 64px;
-
-    padding: 40px 0;
+    padding: 40px 0 32px;
   }
 }
 
 .testTitle {
   margin: 0;
-
   color: $text-main;
 
   @include h2-font-mobile;
 
   @media (min-width: $breakpoint-s) {
-    @include h2-font;
+    @include h1-font;
   }
 }
 
 .testDescription {
-  max-width: 620px;
-
+  max-width: 680px;
   margin: 16px 0 0;
-
   color: $text-secondary;
 
   @include body-font;
-
-  line-height: 1.7;
 }
 
-/* =========================
-   QUESTION
-========================= */
-
 .questionSection {
-  padding: 40px 0;
+  padding: 40px 0 0;
 
   @media (min-width: $breakpoint-s) {
-    padding: 64px 0;
+    padding: 64px 0 0;
   }
 }
 
@@ -119,12 +88,15 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  margin-bottom: 24px;
 
-  margin-bottom: 40px;
+  @media (min-width: $breakpoint-s) {
+    margin-bottom: 40px;
+  }
 }
 
 .partNumber {
-  color: $text-icons;
+  color: $text-muted;
 
   @include uppercase;
 }
@@ -132,64 +104,50 @@
 .partTitle {
   color: $text-secondary;
 
-  @include small-text;
+  @include uppercase;
 
   &::before {
     content: '/';
-
     margin-right: 16px;
-
-    color: $text-icons;
+    color: $text-muted;
   }
 }
 
 .questionContent {
-  max-width: 900px;
+  max-width: 960px;
 }
 
 .questionDescription {
+  max-width: 680px;
   margin: 0 0 16px;
-
   color: $text-secondary;
 
-  @include small-text;
+  @include body-small;
 }
 
 .question {
   margin: 0;
-
   color: $text-main;
 
   @include h2-font-mobile;
 
   @media (min-width: $breakpoint-s) {
     @include h2-font;
-
-    font-size: 30px;
-    line-height: 1.35;
   }
 }
-
-/* =========================
-   RESULT
-========================= */
 
 .resultSection {
   display: flex;
   flex-direction: column;
-
-  border-top: $card-border;
-  border-bottom: $card-border;
+  border-bottom: $border;
 }
 
 .resultHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  padding: 16px 0;
-
-  border-bottom: $card-border;
+  padding-bottom: 16px;
+  border-bottom: $border;
 }
 
 .resultStatus {
@@ -201,31 +159,31 @@
 .resultContent {
   display: grid;
   grid-template-columns: 1fr;
-
   gap: 16px;
-
   padding: 40px 0 32px;
 
   @media (min-width: $breakpoint-s) {
     grid-template-columns: 80px minmax(0, 1fr);
-
     gap: 0 32px;
-
     padding: 64px 0 48px;
   }
 }
 
 .resultNumber {
-  color: $text-icons;
+  color: $brand;
 
   @include uppercase;
+
+  line-height: 40px;
+
+  @media (min-width: $breakpoint-s) {
+    line-height: 60px;
+  }
 }
 
 .resultTitle {
   max-width: 800px;
-
   margin: 0;
-
   color: $text-main;
 
   @include h1-font-mobile;
@@ -236,116 +194,94 @@
 }
 
 .resultDescription {
-  grid-column: auto;
-
-  max-width: 620px;
-
+  max-width: 680px;
   margin: 20px 0 0;
-
   color: $text-secondary;
 
   @include body-font;
-
-  line-height: 1.8;
 
   @media (min-width: $breakpoint-s) {
     grid-column: 2;
   }
 }
 
-/* =========================
-   LEVEL RESULT
-========================= */
-
 .levelResult {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding: 40px 0;
+  border-top: $border;
+  border-bottom: $border;
 
-  padding: 64px 24px;
-
-  background-color: $surface-1;
-
-  border-top: $card-border;
-  border-bottom: $card-border;
-
-  text-align: center;
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: 80px auto 1fr;
+    grid-template-rows: auto auto;
+    align-items: end;
+    gap: 0 32px;
+    padding: 64px 0;
+  }
 }
 
 .levelLabel {
-  color: $text-secondary;
+  color: $text-muted;
 
   @include uppercase;
+
+  @media (min-width: $breakpoint-s) {
+    grid-column: 2 / 4;
+    margin-bottom: 8px;
+  }
 }
 
 .levelBadge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 140px;
-  height: 140px;
-
-  margin-top: 24px;
-
-  background-color: $accent;
-
-  border-radius: 50%;
-
   @media (min-width: $breakpoint-s) {
-    width: 180px;
-    height: 180px;
+    grid-column: 2;
   }
 }
 
 .levelCode {
-  color: $text-on-accent;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 36px;
+  display: block;
+  color: $brand;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 800;
-  line-height: 1;
+  font-size: 120px;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
 
   @media (min-width: $breakpoint-s) {
-    font-size: 48px;
+    font-size: 200px;
   }
 }
 
 .levelName {
-  margin: 24px 0 0;
-
+  margin: 0;
   color: $text-main;
 
   @include h3-font-mobile;
 
   @media (min-width: $breakpoint-s) {
-    @include h3-font;
+    grid-column: 3;
+    padding-bottom: 16px;
+
+    @include h2-font;
   }
 }
-
-/* =========================
-   PHILOSOPHY
-========================= */
 
 .philosophy {
   display: grid;
   grid-template-columns: 1fr;
-
   gap: 16px;
-
   padding: 40px 0;
 
   @media (min-width: $breakpoint-s) {
-    grid-template-columns: 80px minmax(0, 700px);
-
+    grid-template-columns: 80px minmax(0, 680px);
     gap: 32px;
-
     padding: 64px 0;
   }
 }
 
 .philosophyNumber {
-  color: $text-icons;
+  color: $brand;
 
   @include uppercase;
 }
@@ -353,17 +289,13 @@
 .philosophyContent {
   display: flex;
   flex-direction: column;
-
   gap: 20px;
 
   p {
     margin: 0;
-
     color: $text-secondary;
 
     @include body-font;
-
-    line-height: 1.8;
   }
 
   strong {
@@ -371,62 +303,17 @@
   }
 }
 
-/* =========================
-   RESULT ACTIONS
-========================= */
-
 .resultActions {
   display: flex;
   justify-content: flex-start;
-
   padding: 24px 0;
-
-  border-top: $card-border;
+  border-top: $border;
 }
 
 .button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  @include button-primary;
 
   width: 100%;
-  min-height: 52px;
-
-  padding: 14px 32px;
-
-  color: $text-on-accent;
-  background-color: $accent;
-
-  border: 1px solid $accent;
-
-  text-decoration: none;
-  cursor: pointer;
-
-  @include buttons;
-
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-
-  &:hover {
-    background-color: $accent-hover;
-
-    transform: translate(-4px, -4px);
-
-    box-shadow: 4px 4px 0 $text-main;
-  }
-
-  &:active {
-    transform: translate(0, 0);
-
-    box-shadow: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid $accent;
-    outline-offset: 3px;
-  }
 
   @media (min-width: $breakpoint-s) {
     width: auto;

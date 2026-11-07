@@ -13,6 +13,10 @@
   @include header;
 }
 
+.label {
+  @include auth-badge;
+}
+
 .title {
   @include form-title;
 }
@@ -64,16 +68,16 @@
   height: 16px;
   margin-top: 2px;
   cursor: pointer;
-  accent-color: $accent;
+  accent-color: $ink;
 }
 
 .legalLink {
   color: $text-main;
   text-decoration: underline;
   text-underline-offset: 2px;
-  transition: color 0.2s ease;
+  transition: color 0.15s $ease;
 
   &:hover {
-    color: $accent-hover;
+    color: $brand;
   }
 }

@@ -8,14 +8,12 @@ type PostListProps = {
 
 export const PostList = ({ posts }: PostListProps) => {
   return (
-    <div className={styles.container}>
-      <ul className={styles.productList}>
-        {posts.map((post) => (
-          <li key={post.id} className={styles.listItem} data-card>
-            <PostCard post={post} />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className={styles.productList}>
+      {posts.map((post) => (
+        <li key={post.id}>
+          <PostCard post={post} />
+        </li>
+      ))}
+    </ul>
   );
 };

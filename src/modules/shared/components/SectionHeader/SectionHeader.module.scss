@@ -1,0 +1,55 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+
+  @media (min-width: $breakpoint-s) {
+    margin-bottom: 48px;
+  }
+}
+
+.pageHeader {
+  gap: 24px;
+  padding: 48px 0 32px;
+  border-bottom: $border;
+
+  @media (min-width: $breakpoint-s) {
+    padding: 80px 0 48px;
+  }
+}
+
+.label {
+  @include section-label;
+}
+
+.title {
+  max-width: 880px;
+  margin: 0;
+  color: $text-main;
+
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+.pageTitle {
+  max-width: 960px;
+  margin: 0;
+  color: $text-main;
+
+  @include h1-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h1-font;
+  }
+}
+
+.description {
+  @include section-description;
+}

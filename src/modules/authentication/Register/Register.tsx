@@ -67,6 +67,7 @@ export const Register = () => {
     <div className={styles.wrapper}>
       <form onSubmit={handleSignUp} className={styles.registerForm}>
         <div className={styles.header}>
+          <span className={styles.label}>BETWEEN / ACCOUNT</span>
           <h1 className={styles.title}>Створити акаунт</h1>
           <p className={styles.subtitle}>
             Введіть свої дані нижче, щоб зареєструватися

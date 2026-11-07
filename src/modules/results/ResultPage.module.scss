@@ -4,7 +4,6 @@
 
 .page {
   background-color: $background;
-  transition: background-color 0.3s ease;
 }
 
 .container {
@@ -38,8 +37,8 @@
 .resultSection {
   display: flex;
   flex-direction: column;
-  border-top: $card-border;
-  border-bottom: $card-border;
+  border-top: $border;
+  border-bottom: $border;
 }
 
 .resultHeader {
@@ -49,7 +48,7 @@
   gap: 8px;
   padding: 16px 0;
 
-  border-bottom: $card-border;
+  border-bottom: $border;
 
   @media (min-width: $breakpoint-s) {
     gap: 16px;
@@ -57,8 +56,7 @@
 }
 
 .sectionLabel {
-  color: $accent;
-  @include uppercase;
+  @include section-label;
 }
 
 .resultStatus {
@@ -71,7 +69,7 @@
   flex-direction: column;
   gap: 24px;
   padding: 24px 0;
-  border-bottom: $card-border;
+  border-bottom: $border;
 
   @media (min-width: $breakpoint-s) {
     flex-direction: row;
@@ -132,21 +130,34 @@
 }
 
 .score {
-  @include h2-font;
+  color: $text-main;
+  font-variant-numeric: tabular-nums;
+
+  @include display-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include display-font;
+  }
 }
 
 .divider {
   margin: 0 8px;
-  color: $text-icons;
+  color: $text-muted;
 }
 
 .total {
-  color: $text-secondary;
-  @include h3-font;
+  color: $text-muted;
+  font-variant-numeric: tabular-nums;
+
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
 }
 
 .percentage {
-  color: $accent;
+  color: $brand;
   @include h3-font-mobile;
 
   @media (min-width: $breakpoint-s) {
@@ -177,15 +188,13 @@
 }
 
 .inlineLink {
-  color: $accent;
+  color: $text-main;
   text-decoration: underline;
-  text-transform: uppercase;
-  text-underline-offset: 2px;
-  transition: color 0.2s ease;
-  @include body-font;
+  text-underline-offset: 4px;
+  transition: color 0.15s $ease;
 
   &:hover {
-    color: $accent-hover;
+    color: $brand;
   }
 }
 
@@ -195,7 +204,7 @@
   align-items: stretch;
   gap: 12px;
   padding: 24px 0;
-  border-top: $card-border;
+  border-top: $border;
 
   @media (min-width: $breakpoint-s) {
     flex-direction: row;
@@ -204,61 +213,10 @@
   }
 }
 
-.button,
-.secondaryButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px 32px;
-  cursor: pointer;
-  border: $card-border;
-  border-radius: 8px;
-  text-decoration: none;
-
-  @include buttons;
-
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-
-  &:focus-visible {
-    outline: 2px solid $accent;
-    outline-offset: 3px;
-  }
-
-  &:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
-
-  @media (min-width: $breakpoint-s) {
-    width: auto;
-  }
-}
-
 .button {
-  color: $text-on-accent;
-  background-color: $accent;
-
-  &:hover {
-    color: $text-main;
-    background-color: transparent;
-  }
-
-  &:active {
-    transform: translate(0, 0);
-    box-shadow: none;
-  }
+  @include button-primary;
 }
 
 .secondaryButton {
-  color: $text-main;
-  background-color: transparent;
-
-  &:hover {
-    color: $text-on-accent;
-    background-color: $text-main;
-  }
+  @include button-secondary;
 }

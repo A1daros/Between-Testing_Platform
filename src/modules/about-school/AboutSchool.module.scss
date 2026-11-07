@@ -3,98 +3,98 @@
 
 .page {
   background-color: $background;
-  transition: background-color 0.3s ease;
-}
-
-.title {
-  margin: 24px 0;
-  color: $text-main;
-
-  @include h1-font-mobile;
-
-  @media (min-width: $breakpoint-m) {
-    margin: 32px 0;
-
-    @include h1-font;
-  }
-
-  @media (min-width: $breakpoint-l) {
-    margin: 56px 0;
-  }
 }
 
 .container {
   @include page-container;
 }
 
-.wrapper {
+.hero {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
+  padding: 48px 0 40px;
+  margin-bottom: 64px;
+  border-bottom: $border;
 
   @media (min-width: $breakpoint-s) {
-    gap: 40px;
+    padding: 80px 0 56px;
+    margin-bottom: 96px;
   }
-
-  @media (min-width: $breakpoint-m) {
-    gap: 50px;
-  }
-}
-
-.heroSection {
-  display: flex;
-  flex-direction: column;
 }
 
 .sectionLabel {
-  color: $accent;
+  @include section-label;
+}
+
+.title {
+  max-width: 1040px;
+  margin: 0;
+  color: $text-main;
+
+  @include display-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include display-font;
+  }
+}
+
+.heroDescription {
+  @include section-description;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  @include section-container;
+}
+
+.values {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: $border;
+
+  @media (min-width: $breakpoint-m) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.value {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 0;
+  border-bottom: $border;
+
+  @media (min-width: $breakpoint-m) {
+    padding: 32px;
+    border-bottom: none;
+    border-left: $border;
+
+    &:first-child {
+      padding-left: 0;
+      border-left: none;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+}
+
+.valueNumber {
+  color: $brand;
+
   @include uppercase;
 }
 
-.sectionTitle {
-  @include h2-font-mobile;
-  margin: 16px 0;
+.valueTitle {
+  margin: 0;
   color: $text-main;
 
-  @media (min-width: $breakpoint-s) {
-    @include h2-font;
-  }
-}
-
-.sectionDescription {
-  color: $text-secondary;
-  @include body-font;
-}
-
-.infoSection {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  @media (min-width: $breakpoint-s) {
-    flex-direction: row;
-    align-items: stretch;
-    gap: 32px;
-  }
-}
-
-.storyBlock {
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  border: $card-border;
-  border-radius: 8px;
-  flex: 1;
-}
-
-.storySectionNumber {
-  @include buttons;
-  color: $accent;
-}
-
-.storyTitle {
-  color: $text-main;
-  margin-bottom: 8px;
   @include h3-font-mobile;
 
   @media (min-width: $breakpoint-s) {
@@ -102,235 +102,183 @@
   }
 }
 
-.storyDescription {
+.valueDescription {
+  margin: 0;
   color: $text-secondary;
+
   @include body-font;
 }
 
-.heroLine {
-  width: 100%;
-  height: 1px;
-  border-bottom: $card-border;
-  margin-top: 24px;
-}
-
-.ctaSection {
-  display: flex;
-  flex-direction: column;
-}
-
 .ctaBlock {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 24px;
+  padding-top: 32px;
+  border-top: $border;
 
-  @media (min-width: $breakpoint-s) {
-    flex-direction: row;
+  @media (min-width: $breakpoint-m) {
+    grid-template-columns: 1fr auto auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 40px;
+    gap: 48px;
   }
 }
 
 .ctaDescription {
-  flex: 1;
+  @include section-description;
 }
 
-.ctaBadges {
+.ctaFacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+}
+
+.fact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: $text-main;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  @include uppercase;
+
+  &::before {
+    content: '';
+    width: 16px;
+    height: 1px;
+    background-color: $brand;
+  }
+}
+
+.button {
+  @include button-primary;
+}
+
+.progress {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 32px 0;
+  border-top: $border;
+  border-bottom: $border;
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: auto 1fr auto;
+    gap: 48px;
+    padding: 48px 0;
+  }
+}
+
+.stat {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.badge {
-  @include body-font;
-  white-space: nowrap;
-}
-
-.button {
-  display: inline-block;
-  width: 100%;
-  border: $card-border;
-  border-radius: 8px;
-  color: $surface-1;
-  background-color: $accent;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
-
-  &:hover {
-    background-color: $accent-hover;
-    transform: scale(1.05);
-    box-shadow: $shadow;
-  }
-
-  @include buttons;
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  @media (min-width: $breakpoint-s) {
-    width: fit-content;
-  }
-}
-
-.progressSection {
-  display: flex;
-  flex-direction: column;
-
-  @media (min-width: $breakpoint-s) {
-    gap: 48px;
-  }
-}
-
-.progressText {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-
-.progressMetrics {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-
-  @media (min-width: $breakpoint-s) {
-    flex-direction: row;
-    gap: 32px;
-  }
-}
-
-.statBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 24px;
-  border-radius: 12px;
-  border: $card-border;
-  background-color: $background;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
-
-  &Accent {
-    border-color: $accent;
-    box-shadow: $shadow;
-
-    .statCircle {
-      background-color: $accent;
-      color: $surface-1;
-    }
-
-    .statLabel {
-      color: $accent;
-    }
-  }
-}
-
 .statLabel {
-  @include uppercase;
-  color: $text-secondary;
-}
+  color: $text-muted;
+  text-transform: uppercase;
 
-.statCircle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background-color: $surface-1;
-  border: 2px solid $card-border;
-  transition: all 0.2s ease;
+  @include uppercase;
 }
 
 .statLevel {
-  @include h3-font;
+  color: $text-main;
+
+  @include display-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include display-font;
+  }
 }
 
 .statCaption {
-  @include body-font;
-  color: $text-secondary;
   margin: 0;
+  color: $text-secondary;
+
+  @include body-small;
 }
 
-.statArrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: $accent;
-  padding: 8px;
-
-  svg {
-    transform: rotate(90deg);
-    transition: transform 0.2s ease;
-
-    @media (min-width: $breakpoint-s) {
-      transform: rotate(0deg);
-    }
+.statAccent {
+  .statLabel,
+  .statLevel {
+    color: $brand;
   }
 }
 
-.finalSection {
-  display: flex;
-  flex-direction: column;
-}
-
-.finalCard {
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-
-  padding: 24px 16px;
-  background-image: url(../../assets/bg-imgs/final-section_bg-img.webp);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  border: $card-border;
-  border-radius: 8px;
+.statLine {
+  display: none;
 
   @media (min-width: $breakpoint-s) {
-    padding: 32px;
+    display: block;
+    height: 1px;
+    background-color: $ink;
+  }
+}
+
+.final {
+  padding: 64px 0;
+  color: $text-inverse;
+  background-color: $ink;
+
+  @media (min-width: $breakpoint-s) {
+    padding: 96px 0;
   }
 
   @media (min-width: $breakpoint-m) {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 48px;
-    padding: 48px;
-    align-items: center;
-    background-position: center;
+    padding: 128px 0;
   }
+}
 
-  .sectionTitle {
-    margin: 0 0 16px 0;
+.finalContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @include page-container;
+}
+
+.finalLabel {
+  @include section-label;
+}
+
+.finalTitle {
+  max-width: 960px;
+  margin: 0;
+  color: $text-inverse;
+
+  @include h1-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h1-font;
   }
+}
 
-  .sectionDescription {
-    margin: 0;
+.finalContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-top: 16px;
+  padding-top: 32px;
+  border-top: 1px solid rgba($text-inverse, 0.2);
 
-    strong {
-      color: $text-main;
-    }
+  @media (min-width: $breakpoint-m) {
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+  }
+}
+
+.finalDescription {
+  margin: 0;
+  color: rgba($text-inverse, 0.75);
+
+  @include body-font;
+
+  strong {
+    color: $text-inverse;
   }
 }
 
@@ -338,23 +286,16 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
-
-  .button {
-    width: 100%;
-  }
+  gap: 24px;
 }
 
 .finalButton {
-  @extend .button;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @include body-font;
+  @include button-brand;
 }
 
 .thankYouNote {
-  color: $text-main;
-  @include body-font;
+  margin: 0;
+  color: rgba($text-inverse, 0.6);
+
+  @include body-small;
 }

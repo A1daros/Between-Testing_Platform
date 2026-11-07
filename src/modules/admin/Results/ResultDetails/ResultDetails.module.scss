@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 2px solid $surface-2;
+  border-bottom: 2px solid $line;
   padding-bottom: 16px;
   margin-bottom: 24px;
   gap: 16px;
@@ -15,7 +15,7 @@
   @include uppercase;
   color: $text-secondary;
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .pageTitle {
@@ -31,22 +31,22 @@
 .pageDescription {
   margin: 0;
   color: $text-secondary;
-  @include body-font;
+  @include body-small;
 }
 
 .btnSecondary {
   @include buttons;
-  background-color: $surface-2;
+  background-color: $surface;
   color: $text-main;
   border: none;
-  border-radius: 6px;
+  border-radius: $radius;
   padding: 8px 16px;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.15s $ease;
 
   &:hover {
-    background-color: $elements;
+    background-color: $line;
   }
 }
 
@@ -63,11 +63,11 @@
 }
 
 .partDivider {
-  background-color: $surface-1;
-  border-left: 4px solid $accent;
+  background-color: $surface;
+  border-left: 4px solid $ink;
   padding: 12px 16px;
   margin-top: 12px;
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 $radius $radius 0;
 
   h3 {
     margin: 0 0 4px 0;
@@ -84,28 +84,28 @@
 
 .questionCard {
   background-color: $background;
-  border: 1px solid $surface-2;
-  border-radius: 8px;
+  border: 1px solid $line;
+  border-radius: $radius;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 
-  border-left: 5px solid $surface-2;
+  border-left: 5px solid $line;
 
   &.correct {
-    border-left-color: $green;
+    border-left-color: $success;
     .statusBadge {
-      color: $green;
-      background-color: rgba($green, 0.1);
+      color: $success;
+      background-color: rgba($success, 0.1);
     }
   }
 
   &.incorrect {
-    border-left-color: $red;
+    border-left-color: $error;
     .statusBadge {
-      color: $red;
-      background-color: rgba($red, 0.1);
+      color: $error;
+      background-color: rgba($error, 0.1);
     }
   }
 }
@@ -130,7 +130,7 @@
 .questionText {
   margin: 0;
   color: $text-main;
-  @include body-font;
+  @include body-small;
 }
 
 .answersGrid {
@@ -145,10 +145,10 @@
 }
 
 .answerBox {
-  background-color: $surface-1;
-  border: $card-border;
-  border-radius: 6px;
-  padding: 10px 12px;
+  background-color: $surface;
+  border: $border;
+  border-radius: $radius;
+  padding: 12px 12px;
 }
 
 .boxLabel {
@@ -161,5 +161,5 @@
 .boxText {
   margin: 0;
   color: $text-main;
-  @include body-font;
+  @include body-small;
 }

@@ -5,11 +5,82 @@
   @include section-container;
 }
 
-.title {
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 48px;
+  list-style: none;
+  border-top: $border;
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 16px;
+  padding: 24px 0;
+  border-bottom: $border;
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: 64px 1fr;
+    padding: 32px 0;
+  }
+}
+
+.number {
+  color: $brand;
+
+  @include uppercase;
+
+  line-height: 28px;
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itemTitle {
+  margin: 0;
   color: $text-main;
-  margin-top: 40px;
-  margin-bottom: 30px;
-  text-align: center;
+
+  @include h3-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
+  }
+}
+
+.itemDescription {
+  margin: 0;
+  color: $text-secondary;
+
+  @include body-font;
+}
+
+.statement {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 64px;
+  padding: 32px 0 0;
+  border-top: 2px solid $ink;
+
+  @media (min-width: $breakpoint-m) {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 96px;
+  }
+}
+
+.statementTitle {
+  margin: 0;
+  color: $text-main;
+
   @include h2-font-mobile;
 
   @media (min-width: $breakpoint-s) {
@@ -17,114 +88,20 @@
   }
 }
 
-.wrapper {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(250px, 1fr));
-  gap: 20px;
-  margin: 0 0 40px 0;
-
-  @media (min-width: $breakpoint-s) {
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
-  }
-}
-
-.sectionCard {
+.statementContent {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  padding: 24px;
-  background-color: $surface-1;
-  border: $card-border;
-  border-radius: 8px;
+  align-items: flex-start;
+  gap: 32px;
 }
 
-.sectionTitle {
-  margin: 0;
-  color: $text-main;
-  @include h3-font-mobile;
-
-  @media (min-width: $breakpoint-s) {
-    @include h3-font;
-  }
-}
-
-.sectionDescription {
+.statementText {
   margin: 0;
   color: $text-secondary;
-  @include body-font;
-}
-
-.about {
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
-  margin: 20px auto 0;
-  justify-self: center;
-  text-align: center;
-  padding: 24px;
-  gap: 24px;
-  background: radial-gradient(
-    ellipse at center,
-    $surface-1 0%,
-    $accent-soft-light 70%,
-    $accent-soft-dark 100%
-  );
-
-  border: 1px solid $accent-soft-dark;
-  border-radius: 8px;
-}
-
-.aboutTitle {
-  color: $text-main;
-  margin: 0;
-  padding: 0;
-
-  @include h3-font-mobile;
-
-  @media (min-width: $breakpoint-s) {
-    @include h3-font;
-  }
-}
-
-.aboutDescription {
-  margin: 0;
-  padding: 0;
-  color: $text-main;
 
   @include body-font;
 }
 
-.buttonBlock {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto 0;
-}
-
-.ctaButton {
-  display: inline-block;
-  text-decoration: none;
-  background-color: $accent;
-  color: $text-on-accent;
-  padding: 12px 32px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  @include buttons;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
-
-  &:hover {
-    background-color: $accent-hover;
-    transform: scale(1.05);
-    box-shadow: $shadow;
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
+.link {
+  @include button-secondary;
 }

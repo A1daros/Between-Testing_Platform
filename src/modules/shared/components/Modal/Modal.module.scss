@@ -8,8 +8,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background-color: rgba($text-main, 0.4);
-  backdrop-filter: blur(4px);
+  background-color: rgba($ink, 0.5);
 }
 
 .dialog {
@@ -17,11 +16,11 @@
   max-width: 420px;
   padding: 32px 24px;
   background-color: $background;
-  border: $form-border;
-  border-radius: 16px;
-  box-shadow: $shadow;
+  border: $border;
+  border-radius: $radius;
+  box-shadow: $shadow-hard;
   outline: none;
-  animation: modalAppear 0.2s ease-out;
+  animation: modalAppear 0.25s $ease;
 
   @media (min-width: $breakpoint-m) {
     padding: 40px 32px;

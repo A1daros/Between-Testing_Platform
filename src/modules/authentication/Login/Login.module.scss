@@ -13,6 +13,10 @@
   @include header;
 }
 
+.label {
+  @include auth-badge;
+}
+
 .title {
   @include form-title;
 }
@@ -39,8 +43,11 @@
 
 .link {
   color: $text-secondary;
-  text-decoration: none;
-  transition: color 0.2s;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.15s $ease;
+
+  @include body-small;
 
   &:hover {
     color: $text-main;
@@ -52,16 +59,19 @@
 }
 
 .signupLink {
-  text-align: center;
+  padding-top: 24px;
+  border-top: $border;
+
   @include form-subtitle;
 }
 
 .linkAccent {
   color: $text-main;
-  font-weight: 500;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.15s $ease;
 
   &:hover {
-    text-decoration: underline;
+    color: $brand;
   }
 }

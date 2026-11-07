@@ -1,163 +1,215 @@
 @use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
 
 .header {
   position: sticky;
-  width: 100%;
-  max-width: 1440px;
-  background-color: $background;
-  border-bottom: 1px solid $surface-2;
-  box-shadow: $shadow;
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+  top: 0;
   z-index: 100;
+  width: 100%;
+  background-color: $background;
+  border-bottom: $border;
 }
 
 .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  height: 48px;
-  padding: 0 16px;
-  margin: 0 auto;
+  gap: 24px;
+  height: 56px;
+
+  @include page-container;
 
   @media (min-width: $breakpoint-m) {
-    height: 64px;
-    padding: 0 32px;
-    flex-wrap: nowrap;
+    height: 72px;
   }
 }
 
-.headerContent {
+.logoLink {
   display: flex;
-  align-items: center;
-  height: 100%;
+  flex-shrink: 0;
 }
 
 .logo {
+  display: block;
   width: 40px;
   height: 40px;
-  display: block;
-  transition:
-    transform 0.2s ease-in-out,
-    opacity 0.3s ease,
-    filter 0.3s ease;
+  transition: opacity 0.15s $ease;
 
   &:hover {
-    transform: scale(1.05);
+    opacity: 0.7;
   }
 
   @media (min-width: $breakpoint-m) {
-    width: 64px;
-    height: 64px;
+    width: 52px;
+    height: 52px;
   }
 }
 
 .nav {
   position: fixed;
-  top: 48px;
-  right: 0;
-  width: 100%;
-  height: calc(100vh - 48px);
-  background-color: $background;
-  padding: 24px;
-  box-sizing: border-box;
+  top: 56px;
+  left: 0;
   z-index: 99;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+  width: 100%;
+  height: calc(100dvh - 56px);
+  padding: 32px 16px;
   overflow-y: auto;
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-
-  &.navOpen {
-    transform: translateX(0);
-  }
+  background-color: $background;
+  visibility: hidden;
+  transform: translateY(-8px);
+  opacity: 0;
+  transition:
+    opacity 0.25s $ease,
+    transform 0.25s $ease,
+    visibility 0.25s $ease;
 
   @media (min-width: $breakpoint-s) {
+    padding: 48px 32px;
+  }
+
+  @media (min-width: $breakpoint-m) {
     position: static;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
     width: auto;
     height: 100%;
-    background-color: transparent;
     padding: 0;
-    margin: 0 24px;
     overflow: visible;
+    background-color: transparent;
+    visibility: visible;
     transform: none;
+    opacity: 1;
   }
+}
+
+.navOpen {
+  visibility: visible;
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 24px;
   list-style: none;
-  margin: 0;
-  padding: 0;
+  counter-reset: nav-item;
 
-  @media (min-width: $breakpoint-s) {
+  @media (min-width: $breakpoint-m) {
     flex-direction: row;
+    gap: 40px;
     height: 100%;
-    gap: 32px;
+    margin-left: 48px;
+  }
+}
+
+.item {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: $border;
+  counter-increment: nav-item;
+
+  &::before {
+    content: counter(nav-item, decimal-leading-zero);
+    color: $text-muted;
+
+    @include uppercase;
+  }
+
+  &:first-child {
+    border-top: $border;
   }
 
   @media (min-width: $breakpoint-m) {
-    gap: 48px;
+    height: 100%;
+    padding: 0;
+    border-bottom: none;
+
+    &::before {
+      content: none;
+    }
+
+    &:first-child {
+      border-top: none;
+    }
   }
 }
 
 .link {
   display: flex;
   align-items: center;
-  width: fit-content;
-  height: 100%;
-  padding-bottom: 8px;
-  text-decoration: none;
-  text-transform: uppercase;
   color: $text-main;
-  border-bottom: 3px solid transparent;
-  transition:
-    color 0.2s ease,
-    border-color 0.2s ease;
+  text-decoration: none;
+  transition: color 0.15s $ease;
+
+  @include h2-font-mobile;
 
   &:hover {
-    color: $text-secondary;
+    color: $brand;
   }
 
-  @include buttons;
+  @media (min-width: $breakpoint-m) {
+    height: 100%;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    text-transform: uppercase;
 
-  @media (min-width: $breakpoint-s) {
-    padding: 0;
+    @include buttons;
   }
 }
 
 .isActive {
-  color: $text-main;
-  color: $accent;
+  color: $brand;
 
-  @media (min-width: $breakpoint-s) {
-    border-bottom-color: $accent;
+  @media (min-width: $breakpoint-m) {
+    color: $text-main;
+    border-bottom-color: $brand;
   }
 }
 
-.logoutBtn {
-  background: none;
-  border: none;
-  padding: 0;
+.userList {
   display: flex;
   align-items: center;
-  cursor: pointer;
-  color: $text-main;
-  transition: color 0.2s ease;
+  gap: 24px;
+  list-style: none;
 
-  &:hover {
-    color: $red;
+  .link {
+    text-transform: uppercase;
+
+    @include buttons;
   }
+
+  @media (min-width: $breakpoint-m) {
+    height: 100%;
+  }
+}
+
+.loginLink {
+  @include button-primary;
+
+  min-height: 40px;
+  padding: 8px 20px;
+}
+
+.logoutBtn {
+  padding: 0;
+  color: $text-secondary;
+  background: none;
+  border: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s $ease;
 
   @include buttons;
 
-  @media (min-width: $breakpoint-s) {
-    height: 64px;
-    border-bottom: 3px solid transparent;
-    padding: 0 4px;
+  &:hover {
+    color: $brand;
   }
 }
 
@@ -166,40 +218,40 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
+  margin-right: -8px;
+  padding: 0;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
-  z-index: 101;
 
   span,
   span::before,
   span::after {
     content: '';
     position: absolute;
-    width: 20px;
+    width: 24px;
     height: 2px;
-    background-color: $text-main;
-    transition:
-      transform 0.2s ease,
-      opacity 0.2s ease;
+    background-color: $ink;
+    transition: transform 0.25s $ease;
   }
 
   span {
-    left: calc(50% - 10px);
+    left: calc(50% - 12px);
   }
+
   span::before {
-    top: -6px;
-    left: 0;
-  }
-  span::after {
-    top: 6px;
+    top: -7px;
     left: 0;
   }
 
-  @media (min-width: $breakpoint-s) {
+  span::after {
+    top: 7px;
+    left: 0;
+  }
+
+  @media (min-width: $breakpoint-m) {
     display: none;
   }
 }
@@ -208,12 +260,14 @@
   span {
     background-color: transparent;
   }
+
   span::before {
+    top: 0;
     transform: rotate(45deg);
-    top: 0;
   }
+
   span::after {
-    transform: rotate(-45deg);
     top: 0;
+    transform: rotate(-45deg);
   }
 }

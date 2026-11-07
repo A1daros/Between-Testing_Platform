@@ -1,125 +1,150 @@
 $background: #fff;
+$surface: #f5f3f0;
 
-$surface-1: #fafbfc;
-$surface-2: #e4e6eb;
-
-$elements: #e2e6e9;
-
-$text-main: #313237;
+$ink: #141518;
+$ink-hover: #3a3b40;
+$text-main: #141518;
 $text-secondary: #5f6b73;
-$text-icons: #b4bdc3;
+$text-muted: #8a949b;
+$text-inverse: #fff;
 
-$accent: #313237;
-$accent-hover: #4b4d54;
-$accent-soft: #ead8dc;
-$accent-soft-light: #f6eeec;
-$accent-soft-dark: #e7dbd7;
-$text-on-accent: #fff;
+$line: #e2e6e9;
+$border: 1px solid $line;
 
-$card-border: 1px solid #e2e6e9;
-$form-border: 1px solid rgb(228, 228, 231);
+$brand: #d42a20;
+$brand-hover: #b3221a;
 
-$shadow: 0 8px 32px rgba(49, 50, 55, 0.08);
+$success: #27ae60;
+$error: #d42a20;
+
+$radius: 4px;
+
+$shadow: 0 8px 32px rgba($ink, 0.08);
+$shadow-hard: 4px 4px 0 $ink;
 $filter: brightness(0) invert(1);
 
-$green: #27ae60;
-$red: #eb5757;
+$ease: cubic-bezier(0.2, 0, 0, 1);
 
 $breakpoint-s: 768px;
 $breakpoint-m: 1024px;
 $breakpoint-l: 1200px;
 
-@mixin h1-font {
-  font-family: 'Montserrat', sans-serif;
+@mixin display-font {
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 96px;
+  line-height: 96px;
+  letter-spacing: -0.03em;
+}
+
+@mixin display-font-mobile {
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 800;
   font-size: 48px;
-  line-height: 56px;
-  letter-spacing: -0.01em;
+  line-height: 52px;
+  letter-spacing: -0.03em;
+}
+
+@mixin h1-font {
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 60px;
+  letter-spacing: -0.02em;
 }
 
 @mixin h2-font {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 800;
-  font-size: 32px;
-  line-height: 41px;
+  font-size: 36px;
+  line-height: 44px;
   letter-spacing: -0.01em;
 }
 
 @mixin h3-font {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+  font-weight: 700;
   font-size: 22px;
-  line-height: 31px;
+  line-height: 28px;
 }
 
 @mixin h4-font {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 20px;
   line-height: 26px;
 }
 
 @mixin uppercase {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+  font-weight: 700;
   font-size: 12px;
-  line-height: 11px;
-  letter-spacing: 0.04em;
+  line-height: 16px;
+  letter-spacing: 0.08em;
 }
 
 @mixin buttons {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 14px;
-  line-height: 21px;
+  line-height: 20px;
+  letter-spacing: 0.04em;
 }
 
 @mixin body-font {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+@mixin body-small {
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+  font-weight: 500;
   font-size: 14px;
-  line-height: 21px;
+  line-height: 22px;
 }
 
 @mixin small-text {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+  font-weight: 600;
   font-size: 12px;
-  line-height: 15px;
+  line-height: 16px;
 }
 
 @mixin input-text {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 400;
-  font-size: 15px;
-  line-height: normal;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 @mixin h1-font-mobile {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 800;
-  font-size: 32px;
-  line-height: 41px;
-  letter-spacing: -0.01em;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: -0.02em;
 }
 
 @mixin h2-font-mobile {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 800;
-  font-size: 22px;
-  line-height: 31px;
+  font-size: 26px;
+  line-height: 32px;
+  letter-spacing: -0.01em;
 }
 
 @mixin h3-font-mobile {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 20px;
   line-height: 26px;
 }
 
 @mixin h4-font-mobile {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 16px;
-  line-height: 20px;
+  line-height: 22px;
 }

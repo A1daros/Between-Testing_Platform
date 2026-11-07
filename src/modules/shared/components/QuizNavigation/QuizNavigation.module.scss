@@ -1,64 +1,24 @@
 @use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
 
 .navigation {
   display: flex;
   flex-direction: column-reverse;
   align-items: stretch;
-  gap: 24px;
+  gap: 16px;
   padding: 24px 0;
-  border-top: $card-border;
 
   @media (min-width: $breakpoint-s) {
     flex-direction: row;
     justify-content: space-between;
-    padding: 36px 0;
-  }
-}
-
-.backButton,
-.nextButton {
-  min-height: 48px;
-  padding: 12px 24px;
-  border: 1px solid $accent;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-
-  @include buttons;
-
-  &:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-
-    transform: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid $accent;
-    outline-offset: 3px;
+    padding: 40px 0;
   }
 }
 
 .backButton {
-  color: $text-main;
-  background-color: transparent;
-
-  &:not(:disabled):hover {
-    color: $text-on-accent;
-    background-color: $accent;
-  }
+  @include button-secondary;
 }
 
 .nextButton {
-  color: $text-on-accent;
-  background-color: $accent;
-
-  &:not(:disabled):hover {
-    background-color: $accent-hover;
-
-    transform: translateY(-2px);
-  }
+  @include button-primary;
 }
-

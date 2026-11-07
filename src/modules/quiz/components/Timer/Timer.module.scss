@@ -2,23 +2,34 @@
 
 .timer {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 4px;
+
+  @media (min-width: $breakpoint-s) {
+    align-items: flex-end;
+  }
 }
 
 .timerLabel {
-  color: $text-secondary;
+  color: $text-muted;
+
   @include uppercase;
 }
 
 .timerValue {
   color: $text-main;
   font-variant-numeric: tabular-nums;
-  @include body-font;
+
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
 }
 
 .timerUrgent {
-  color: $red;
+  color: $error;
   animation: pulse 1s ease-in-out infinite;
 }
 

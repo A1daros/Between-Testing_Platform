@@ -44,6 +44,7 @@ export const Login = () => {
     <div className={styles.wrapper}>
       <div className={styles.loginContainer}>
         <div className={styles.header}>
+          <span className={styles.label}>BETWEEN / ACCOUNT</span>
           <h1 className={styles.title}>З поверненням</h1>
           <p className={styles.subtitle}>
             Введіть свої дані, щоб увійти в обліковий запис
