@@ -1,57 +1,49 @@
 import styles from './MyResults.module.scss';
+import { useCallback } from 'react';
 import { Link, generatePath } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
-import { useEffect, useState } from 'react';
-import type { Result } from '../../../types/database';
-import { Loader } from '../../shared/components/Loader';
-import { getResultsByUserId } from '../../../services/results';
+import { useAsyncData } from '../../../hooks/useAsyncData';
 import { usePageMeta } from '../../../hooks/usePageMeta';
+import { Loader } from '../../shared/components/Loader';
+import { ErrorState } from '../../shared/components/ErrorState';
+import { OutdatedBadge } from '../../shared/components/OutdatedBadge';
+import { getResultsByUserId } from '../../../services/results';
 import { ROUTES } from '../../../constants/routes';
 import { formatDate, formatTime } from '../../../utils/formatDate';
+import { padNumber } from '../../../utils/padNumber';
+import { isResultOutdated } from '../../../utils/isResultOutdated';
 import { getTestTypeLabel } from '../../../constants/testTypes';
 
 export const MyResults = () => {
   usePageMeta({ title: 'Мої результати', noindex: true });
 
-  const [results, setResults] = useState<Result[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
-
   const { user } = useAuth();
+  const userId = user?.id;
 
-  useEffect(() => {
-    const loadResults = async () => {
-      if (!user) {
-        return;
-      }
+  const loadResults = useCallback(
+    () => getResultsByUserId(userId as string),
+    [userId],
+  );
 
-      setLoading(true);
-      setErrorMessage('');
-
-      try {
-        const data = await getResultsByUserId(user.id);
-
-        setResults(data);
-      } catch (error) {
-        console.error('Failed to load results', error);
-        setErrorMessage('Не вдалось завантажити результати!');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadResults();
-  }, [user]);
+  const {
+    data: results,
+    loading,
+    error,
+    reload,
+  } = useAsyncData(userId ? loadResults : null);
 
   if (loading) {
     return <Loader />;
   }
 
-  if (errorMessage) {
+  if (error || !results) {
     return (
       <div className={styles.page}>
-        <div className={styles.errorCard}>
-          <div className={styles.errorText}>{errorMessage}</div>
+        <div className={styles.container}>
+          <ErrorState
+            message='Не вдалося завантажити результати.'
+            onAction={reload}
+          />
         </div>
       </div>
     );
@@ -75,7 +67,7 @@ export const MyResults = () => {
               <span>ЗАВЕРШЕНІ ТЕСТИ</span>
 
               <span className={styles.heroBadge}>
-                {String(results.length).padStart(2, '0')}
+                {padNumber(results.length)}
               </span>
             </div>
           </section>
@@ -84,23 +76,25 @@ export const MyResults = () => {
             <section className={styles.resultsSection}>
               <div className={styles.resultsList}>
                 {results.map((result, index) => {
-                  const formattedDate = formatDate(result.created_at);
-                  const formattedTime = formatTime(result.created_at);
+                  const testTitle = result.tests?.title ?? 'Невідомий тест';
 
                   return (
                     <article key={result.id} className={styles.resultItem}>
                       <span className={styles.resultNumber}>
-                        {String(index + 1).padStart(2, '0')}
+                        {padNumber(index + 1)}
                       </span>
 
                       <div className={styles.testInfo}>
-                        <h3 className={styles.testTitle}>
-                          {result.tests?.title ?? 'Невідомий тест'}
-                        </h3>
+                        <h3 className={styles.testTitle}>{testTitle}</h3>
 
                         <span className={styles.testType}>
                           {getTestTypeLabel(result.tests?.test_type)}
                         </span>
+
+                        {isResultOutdated(
+                          result.created_at,
+                          result.tests?.content_updated_at,
+                        ) && <OutdatedBadge />}
                       </div>
 
                       <div className={styles.score}>
@@ -120,8 +114,8 @@ export const MyResults = () => {
                         className={styles.date}
                         dateTime={result.created_at}
                       >
-                        {formattedDate}
-                        <span>{formattedTime}</span>
+                        {formatDate(result.created_at)}
+                        <span>{formatTime(result.created_at)}</span>
                       </time>
 
                       <Link
@@ -129,7 +123,7 @@ export const MyResults = () => {
                           resultId: String(result.id),
                         })}
                         className={styles.resultLink}
-                        aria-label={`Переглянути результат: ${result.tests?.title ?? 'Невідомий тест'}`}
+                        aria-label={`Переглянути результат: ${testTitle}`}
                       >
                         <span>Переглянути</span>
                         <span className={styles.arrow} aria-hidden='true'>

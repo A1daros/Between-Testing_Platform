@@ -1,0 +1,119 @@
+@use '../../../../styles/variables' as *;
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+
+  @media (min-width: $breakpoint-s) {
+    margin-top: 36px;
+  }
+}
+
+.answer {
+  display: grid;
+  grid-template-columns: 40px 1fr 28px;
+  gap: 12px;
+  min-height: 64px;
+  padding: 14px 12px;
+  align-items: center;
+  color: $text-main;
+  background-color: transparent;
+  border: none;
+  border-top: $card-border;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background-color 0.2s ease,
+    padding 0.2s ease,
+    color 0.2s ease;
+
+  @include body-font;
+
+  &:hover {
+    padding-left: 16px;
+  }
+
+  &:last-child {
+    border-bottom: $card-border;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $accent;
+    outline-offset: -2px;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: 64px 1fr 40px;
+    gap: 20px;
+    min-height: 72px;
+    padding: 16px 20px;
+
+    &:hover {
+      padding-left: 28px;
+
+      background-color: $surface-1;
+    }
+  }
+}
+
+.answerNumber {
+  color: $text-icons;
+  @include uppercase;
+}
+
+.answerText {
+  color: inherit;
+  @include body-font;
+}
+
+.answerIndicator {
+  color: $text-icons;
+  font-size: 22px;
+  text-align: right;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.answer:hover {
+  .answerIndicator {
+    color: $accent;
+
+    transform: translateX(4px);
+  }
+}
+
+.answerSelected {
+  color: $text-on-accent;
+  background-color: $accent;
+  border-color: $accent;
+
+  &:last-child {
+    border-bottom-color: $accent;
+  }
+
+  &:hover {
+    padding-left: 28px;
+    background-color: $accent;
+  }
+
+  .answerNumber,
+  .answerIndicator {
+    color: $text-on-accent;
+  }
+
+  .answerIndicator {
+    transform: rotate(45deg);
+  }
+
+  & + .answer {
+    border-top-color: $accent;
+  }
+}
+

@@ -1,39 +1,44 @@
 import styles from './EditProfileForm.module.scss';
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { updateProfile } from '../../../../services/profile';
-import { AvatarUpload } from '../AvatarUpload/AvatarUpload';
 import type { Profile } from '../../../../types/database';
 import { useAuth } from '../../../../hooks/useAuth';
+import { FormField } from '../../../shared/components/FormField';
+import { Alert } from '../../../shared/components/Alert';
+import { AvatarUpload } from '../AvatarUpload';
+
+const SUCCESS_MESSAGE_TIMEOUT_MS = 3000;
 
 type EditProfileFormProps = {
-  userId: string;
   profile: Profile;
-  onSaveSuccess?: (updatedProfile: Profile) => void;
 };
 
-export const EditProfileForm = ({
-  userId,
-  profile,
-  onSaveSuccess,
-}: EditProfileFormProps) => {
+export const EditProfileForm = ({ profile }: EditProfileFormProps) => {
   const [displayName, setDisplayName] = useState(profile.display_name || '');
   const [birthDate, setBirthDate] = useState(profile.birth_date || '');
-  const [currentAvatarUrl, setCurrentAvatarUrl] = useState<string | null>(
-    profile.avatar_url,
-  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const { user: currentUser } = useAuth();
+  const { user, refreshProfile } = useAuth();
 
-  const handleAvatarSuccess = (updatedProfile: Profile) => {
-    setCurrentAvatarUrl(updatedProfile.avatar_url);
+  useEffect(() => {
+    if (!successMessage) {
+      return;
+    }
+
+    const timeoutId = setTimeout(
+      () => setSuccessMessage(''),
+      SUCCESS_MESSAGE_TIMEOUT_MS,
+    );
+
+    return () => clearTimeout(timeoutId);
+  }, [successMessage]);
+
+  const handleAvatarSuccess = async () => {
     setSuccessMessage('Аватар успішно оновлено.');
-    onSaveSuccess?.(updatedProfile);
-
-    setTimeout(() => setSuccessMessage(''), 3000);
+    await refreshProfile();
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -43,17 +48,13 @@ export const EditProfileForm = ({
     setIsLoading(true);
 
     try {
-      const updatedProfile = await updateProfile(userId, {
-        display_name: displayName,
+      await updateProfile(profile.id, {
+        display_name: displayName.trim(),
         birth_date: birthDate || null,
       });
+      await refreshProfile();
 
-      if (updatedProfile) {
-        setSuccessMessage('Дані профілю успішно оновлено.');
-        if (onSaveSuccess) {
-          onSaveSuccess(updatedProfile);
-        }
-      }
+      setSuccessMessage('Дані профілю успішно оновлено.');
     } catch (error) {
       console.error('Failed to update profile:', error);
       setErrorMessage('Під час збереження вашого профілю щось пішло не так.');
@@ -73,70 +74,44 @@ export const EditProfileForm = ({
 
       <div className={styles.avatarSection}>
         <AvatarUpload
-          userId={userId}
-          avatarUrl={currentAvatarUrl}
+          userId={profile.id}
+          avatarUrl={profile.avatar_url}
           onUploadSuccess={handleAvatarSuccess}
         />
       </div>
 
-      {successMessage && (
-        <div className={styles.successCard}>
-          <p className={styles.successText}>✓ {successMessage}</p>
-        </div>
-      )}
-
-      {errorMessage && (
-        <div className={styles.errorCard}>
-          <p className={styles.errorText}>{errorMessage}</p>
-        </div>
-      )}
+      {successMessage && <Alert type='success'>{successMessage}</Alert>}
+      {errorMessage && <Alert>{errorMessage}</Alert>}
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputGroup}>
-          <div className={styles.inputContainer}>
-            <input
-              id='profile-name'
-              type='text'
-              name='displayName'
-              value={displayName}
-              placeholder=' '
-              required
-              className={styles.input}
-              onChange={(event) => setDisplayName(event.target.value)}
-            />
-            <label htmlFor='profile-name' className={styles.inputLabel}>
-              Повне ім'я
-            </label>
-          </div>
+          <FormField
+            id='profile-name'
+            type='text'
+            name='displayName'
+            label="Повне ім'я"
+            autoComplete='name'
+            value={displayName}
+            onChange={(event) => setDisplayName(event.target.value)}
+            required
+          />
 
-          <div className={styles.inputContainer}>
-            <input
-              id='profile-email'
-              type='email'
-              value={currentUser?.email || ''}
-              placeholder=' '
-              disabled
-              className={styles.input}
-            />
-            <label htmlFor='profile-email' className={styles.inputLabel}>
-              Електронна пошта користувача
-            </label>
-          </div>
+          <FormField
+            id='profile-email'
+            type='email'
+            label='Електронна пошта користувача'
+            value={user?.email ?? ''}
+            disabled
+          />
 
-          <div className={styles.inputContainer}>
-            <input
-              id='profile-birth'
-              type='date'
-              name='birthDate'
-              value={birthDate}
-              placeholder=' '
-              className={styles.input}
-              onChange={(event) => setBirthDate(event.target.value)}
-            />
-            <label htmlFor='profile-birth' className={styles.inputLabel}>
-              Дата народження
-            </label>
-          </div>
+          <FormField
+            id='profile-birth'
+            type='date'
+            name='birthDate'
+            label='Дата народження'
+            value={birthDate}
+            onChange={(event) => setBirthDate(event.target.value)}
+          />
         </div>
 
         <button className={styles.btnSubmit} type='submit' disabled={isLoading}>

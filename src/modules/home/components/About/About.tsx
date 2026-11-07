@@ -1,10 +1,8 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './About.module.scss';
 import { ROUTES } from '../../../../constants/routes';
 
 export const About = () => {
-  const navigate = useNavigate();
-
   return (
     <article className={styles.page}>
       <h2 className={styles.title}>Що ми пропонуємо</h2>
@@ -51,12 +49,9 @@ export const About = () => {
         </p>
 
         <div className={styles.buttonBlock}>
-          <button
-            onClick={() => navigate(ROUTES.aboutSchool)}
-            className={styles.ctaButton}
-          >
+          <Link to={ROUTES.aboutSchool} className={styles.ctaButton}>
             Про школу
-          </button>
+          </Link>
         </div>
       </div>
     </article>

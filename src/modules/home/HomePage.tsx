@@ -1,46 +1,25 @@
 import styles from './HomePage.module.scss';
 import { ChooseLevel } from './components/ChooseLevel';
 import { PictureSlider } from './components/PictureSlider';
-import { About } from './components/About/About.tsx';
-import { FindLevel } from './components/FindLevel/FindLevel.tsx';
-import { ContactUs } from './components/ContactUs/ContactUs.tsx';
-import { useEffect, useState } from 'react';
-import type { Level } from '../../types/database.ts';
-import { getLevels } from '../../services/levels.ts';
-import { Loader } from '../shared/components/Loader/Loader.tsx';
+import { About } from './components/About';
+import { FindLevel } from './components/FindLevel';
+import { ContactUs } from './components/ContactUs';
+import { getLevels } from '../../services/levels';
+import { Loader } from '../shared/components/Loader';
+import { Alert } from '../shared/components/Alert';
+import { useAsyncData } from '../../hooks/useAsyncData';
 import { usePageMeta } from '../../hooks/usePageMeta';
 import { ROUTES } from '../../constants/routes';
 
 export const HomePage = () => {
   usePageMeta({ path: ROUTES.home });
 
-  const [levels, setLevels] = useState<Level[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    const loadLevels = async () => {
-      setIsLoading(true);
-      setErrorMessage('');
-
-      try {
-        const data = await getLevels();
-        setLevels(data);
-      } catch (error) {
-        console.error('Failed to load levels:', error);
-        setErrorMessage('Не вдалось завантажити рівні тестів!');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadLevels();
-  }, []);
+  const { data: levels, loading, error } = useAsyncData(getLevels);
 
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        {isLoading && <Loader />}
+        {loading && <Loader />}
 
         <h1 className={styles.title}>Ласкаво просимо до BETWEEN!</h1>
 
@@ -48,13 +27,9 @@ export const HomePage = () => {
 
         <PictureSlider />
 
-        {errorMessage && (
-          <div className={styles.errorCard} role='alert' aria-live='assertive'>
-            <p className={styles.errorText}>{errorMessage}</p>
-          </div>
-        )}
+        {Boolean(error) && <Alert>Не вдалося завантажити рівні тестів.</Alert>}
 
-        <ChooseLevel title='Виберіть свій рівень' levels={levels} />
+        <ChooseLevel title='Виберіть свій рівень' levels={levels ?? []} />
 
         <About />
 

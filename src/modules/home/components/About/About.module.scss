@@ -104,6 +104,8 @@
 }
 
 .ctaButton {
+  display: inline-block;
+  text-decoration: none;
   background-color: $accent;
   color: $text-on-accent;
   padding: 12px 32px;

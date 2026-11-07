@@ -1,20 +1,28 @@
 import styles from './AboutSchool.module.scss';
-import { Link, useNavigate } from 'react-router-dom';
-
-import { posts } from '../../data/posts.data.ts';
-import { companyValues } from '../../data/companyValues.data.ts';
-
+import { Link } from 'react-router-dom';
+import { posts } from '../../data/posts.data';
+import { companyValues } from '../../data/companyValues.data';
 import { TeachersSection } from './components/TeachersSection';
 import { ProgramsSection } from './components/ProgramsSection';
-import { PostList } from '../shared/components/PostList';
-import { useEffect, useState } from 'react';
-import type { Program, ProgramFormat, Teacher } from '../../types/database.ts';
-import { loadTeachers } from '../../services/teachers.ts';
-import { Loader } from '../shared/components/Loader/Loader.tsx';
-import { loadProgramFormats, loadPrograms } from '../../services/programs.ts';
-import { SCHOOL_INSTAGRAM_URL } from '../../constants/constants';
-import { usePageMeta } from '../../hooks/usePageMeta';
+import { PostList } from './components/PostList';
+import { Loader } from '../shared/components/Loader';
+import { Alert } from '../shared/components/Alert';
+import { loadTeachers } from '../../services/teachers';
+import { loadProgramFormats, loadPrograms } from '../../services/programs';
+import { SCHOOL_INSTAGRAM_URL } from '../../constants/school';
 import { ROUTES } from '../../constants/routes';
+import { useAsyncData } from '../../hooks/useAsyncData';
+import { usePageMeta } from '../../hooks/usePageMeta';
+
+const loadPageData = async () => {
+  const [teachers, programs, programFormats] = await Promise.all([
+    loadTeachers(),
+    loadPrograms(),
+    loadProgramFormats(),
+  ]);
+
+  return { teachers, programs, programFormats };
+};
 
 export const AboutSchool = () => {
   usePageMeta({
@@ -24,49 +32,14 @@ export const AboutSchool = () => {
     path: ROUTES.aboutSchool,
   });
 
-  const [teacher, setTeacher] = useState<Teacher[]>([]);
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [programFormats, setProgramFormats] = useState<ProgramFormat[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true);
-      setErrorMessage('');
-
-      try {
-        const [teachersData, programsData, programFormatsData] =
-          await Promise.all([
-            loadTeachers(),
-            loadPrograms(),
-            loadProgramFormats(),
-          ]);
-
-        setTeacher(teachersData);
-        setPrograms(programsData);
-        setProgramFormats(programFormatsData);
-      } catch (error) {
-        console.error(error);
-        setErrorMessage('Не вдалось завантажити дані сторінки!');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-  }, []);
+  const { data, loading, error } = useAsyncData(loadPageData);
 
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        {isLoading && <Loader />}
-        {errorMessage && (
-          <div className={styles.errorCard} role='alert' aria-live='assertive'>
-            <p className={styles.errorText}>{errorMessage}</p>
-          </div>
+        {loading && <Loader />}
+        {Boolean(error) && (
+          <Alert>Не вдалося завантажити дані сторінки.</Alert>
         )}
         <h1 className={styles.title}>Про школу англійської мови BETWEEN</h1>
 
@@ -117,12 +90,9 @@ export const AboutSchool = () => {
                 <span className={styles.badge}>📊 Автоматичний результат</span>
               </div>
 
-              <button
-                className={styles.button}
-                onClick={() => navigate(ROUTES.placementTest)}
-              >
+              <Link to={ROUTES.placementTest} className={styles.button}>
                 Пройти безкоштовний тест
-              </button>
+              </Link>
             </div>
           </section>
 
@@ -155,6 +125,7 @@ export const AboutSchool = () => {
                   fill='none'
                   stroke='currentColor'
                   strokeWidth='2'
+                  aria-hidden='true'
                 >
                   <path d='M5 12h14M12 5l7 7-7 7' />
                 </svg>
@@ -172,11 +143,11 @@ export const AboutSchool = () => {
             </div>
           </section>
 
-          <TeachersSection teachers={teacher} />
+          <TeachersSection teachers={data?.teachers ?? []} />
 
           <ProgramsSection
-            programsData={programs}
-            programFormats={programFormats}
+            programsData={data?.programs ?? []}
+            programFormats={data?.programFormats ?? []}
           />
 
           <section className={styles.postsSection}>
@@ -205,14 +176,14 @@ export const AboutSchool = () => {
               </p>
 
               <div className={styles.finalActions}>
-                <Link
-                  to={SCHOOL_INSTAGRAM_URL}
+                <a
+                  href={SCHOOL_INSTAGRAM_URL}
                   className={styles.finalButton}
                   target='_blank'
                   rel='noopener noreferrer'
                 >
                   Записатися на рівень
-                </Link>
+                </a>
 
                 <p className={styles.thankYouNote}>
                   Дякуємо, що обираєте BETWEEN! Ми цінуємо вашу довіру та готові

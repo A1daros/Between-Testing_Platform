@@ -1,7 +1,10 @@
-import { useState, type FormEvent } from 'react';
 import styles from './ChangePasswordForm.module.scss';
-import { updatePassword } from '../../../../services/profile';
-import { MIN_PASSWORD_LENGTH } from '../../../../constants/constants';
+import { useState, type FormEvent } from 'react';
+import { updatePassword } from '../../../../services/auth';
+import { getErrorMessage } from '../../../../utils/getErrorMessage';
+import { validatePassword } from '../../../../utils/validatePassword';
+import { PasswordFields } from '../../../shared/components/PasswordFields';
+import { Alert } from '../../../shared/components/Alert';
 
 export const ChangePasswordForm = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -13,20 +16,16 @@ export const ChangePasswordForm = () => {
   const handleChangePassword = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setErrorMessage('');
     setSuccessMessage('');
 
-    if (newPassword !== confirmPassword) {
-      setErrorMessage('Паролі не збігаються.');
-      return;
-    }
-    if (newPassword.length < MIN_PASSWORD_LENGTH) {
-      setErrorMessage(
-        `Пароль має містити щонайменше ${MIN_PASSWORD_LENGTH} символів.`,
-      );
+    const validationError = validatePassword(newPassword, confirmPassword);
+
+    if (validationError) {
+      setErrorMessage(validationError);
       return;
     }
 
+    setErrorMessage('');
     setIsLoading(true);
 
     try {
@@ -37,11 +36,7 @@ export const ChangePasswordForm = () => {
       setConfirmPassword('');
     } catch (error) {
       console.error('Failed to change password:', error);
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
-      );
+      setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);
     }
@@ -56,58 +51,18 @@ export const ChangePasswordForm = () => {
         </p>
       </header>
 
-      {successMessage && (
-        <div className={styles.successCard}>
-          <p className={styles.successText}>✓ {successMessage}</p>
-        </div>
-      )}
-
-      {errorMessage && (
-        <div className={styles.errorCard}>
-          <p className={styles.errorText}>{errorMessage}</p>
-        </div>
-      )}
+      {successMessage && <Alert type='success'>{successMessage}</Alert>}
+      {errorMessage && <Alert>{errorMessage}</Alert>}
 
       <form onSubmit={handleChangePassword} className={styles.form}>
         <div className={styles.inputGroup}>
-          <div className={styles.inputContainer}>
-            <input
-              id='change-new-password'
-              type='password'
-              name='new-password'
-              value={newPassword}
-              placeholder=' '
-              required
-              minLength={MIN_PASSWORD_LENGTH}
-              autoComplete='new-password'
-              className={styles.input}
-              onChange={(event) => setNewPassword(event.target.value)}
-            />
-            <label htmlFor='change-new-password' className={styles.inputLabel}>
-              Новий пароль
-            </label>
-          </div>
-
-          <div className={styles.inputContainer}>
-            <input
-              id='change-confirm-password'
-              type='password'
-              name='confirm-password'
-              value={confirmPassword}
-              placeholder=' '
-              required
-              minLength={MIN_PASSWORD_LENGTH}
-              autoComplete='new-password'
-              className={styles.input}
-              onChange={(event) => setConfirmPassword(event.target.value)}
-            />
-            <label
-              htmlFor='change-confirm-password'
-              className={styles.inputLabel}
-            >
-              Підтвердьте новий пароль
-            </label>
-          </div>
+          <PasswordFields
+            idPrefix='change'
+            password={newPassword}
+            confirmPassword={confirmPassword}
+            onPasswordChange={setNewPassword}
+            onConfirmPasswordChange={setConfirmPassword}
+          />
         </div>
 
         <button type='submit' className={styles.btnSubmit} disabled={isLoading}>

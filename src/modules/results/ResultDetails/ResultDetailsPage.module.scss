@@ -1,6 +1,5 @@
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
-@use '../../../styles/mixins/auth-form' as *;
 
 .page {
   background-color: $background;
@@ -248,6 +247,7 @@
   border-radius: 8px;
   color: $text-on-accent;
   background-color: $accent;
+  text-decoration: none;
 
   @include buttons;
 
@@ -280,12 +280,4 @@
   @media (min-width: $breakpoint-s) {
     width: auto;
   }
-}
-
-.errorCard {
-  @include error-card;
-}
-
-.errorText {
-  @include error-text;
 }

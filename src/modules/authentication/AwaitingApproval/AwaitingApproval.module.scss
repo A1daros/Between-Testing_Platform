@@ -1,5 +1,5 @@
 @use '../../../styles/variables' as *;
-@use '../../../styles/mixins/auth-form' as *;
+@use '../../../styles/mixins/form' as *;
 
 .wrapper {
   @include wrapper;
@@ -41,14 +41,6 @@
   @include form-btn-secondary-submit;
 
   margin-top: 0;
-}
-
-.errorCard {
-  @include error-card;
-}
-
-.errorText {
-  @include error-text;
 }
 
 .infoCard {

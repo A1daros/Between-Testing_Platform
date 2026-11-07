@@ -1,0 +1,101 @@
+@use '../variables.scss' as *;
+
+@mixin field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@mixin field-label {
+  color: $text-main;
+
+  @include body-font;
+}
+
+@mixin field-control {
+  width: 100%;
+  padding: 12px 16px;
+  color: $text-main;
+  background-color: $background;
+  border: $card-border;
+  border-radius: 8px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  @include input-text;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba($accent, 0.1);
+  }
+
+  &::placeholder {
+    color: $text-secondary;
+    opacity: 0.8;
+  }
+}
+
+@mixin field-textarea {
+  @include field-control;
+
+  min-height: 120px;
+  resize: vertical;
+}
+
+@mixin field-select {
+  @include field-control;
+
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2389939a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  cursor: pointer;
+  appearance: none;
+}
+
+@mixin dynamic-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px 24px 24px 24px;
+  background-color: $surface-1;
+  border: $card-border;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba($text-main, 0.02);
+}
+
+@mixin remove-button {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 4px;
+  color: $text-icons;
+  font-size: 18px;
+  line-height: 1;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    color: $red;
+    transform: scale(1.15);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@mixin choice-input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: $accent;
+}

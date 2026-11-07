@@ -1,40 +1,33 @@
 import styles from './ResultPage.module.scss';
-import {
-  Link,
-  generatePath,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Link, generatePath, useLocation, useParams } from 'react-router-dom';
 import { usePageMeta } from '../../hooks/usePageMeta';
 import { ROUTES } from '../../constants/routes';
+import type { QuizResultState } from '../../types/quiz';
+import { ErrorState } from '../shared/components/ErrorState';
 
 export const ResultPage = () => {
   usePageMeta({ title: 'Результат тесту', noindex: true });
 
   const location = useLocation();
-  const navigate = useNavigate();
   const { testId } = useParams<{ testId: string }>();
 
-  if (!location.state) {
+  const result = location.state as QuizResultState | null;
+
+  if (!result) {
     return (
       <div className={styles.page}>
-        <div className={styles.errorCard}>
-          <h2 className={styles.errorText}>Не знайдено жодного результату</h2>
+        <div className={styles.container}>
+          <ErrorState message='Не знайдено жодного результату.' />
 
-          <button
-            type='button'
-            className={styles.button}
-            onClick={() => navigate(ROUTES.home)}
-          >
-            Повернутись на головну →
-          </button>
+          <Link to={ROUTES.home} className={styles.button}>
+            Повернутися на головну →
+          </Link>
         </div>
       </div>
     );
   }
 
-  const { score, totalScore } = location.state;
+  const { score, totalScore } = result;
 
   const percentage = totalScore ? Math.round((score / totalScore) * 100) : 0;
 
@@ -91,35 +84,26 @@ export const ResultPage = () => {
                   Ви можете переглянути більше інформації та детальну аналітику
                   на{' '}
                   <Link to={ROUTES.myResults} className={styles.inlineLink}>
-                    ваша сторінка результатів.
+                    сторінці ваших результатів.
                   </Link>
                 </p>
               </div>
             </div>
 
             <footer className={styles.actions}>
-              <button
-                type='button'
-                className={styles.button}
-                disabled={!testId}
-                onClick={() => {
-                  if (testId) {
-                    navigate(generatePath(ROUTES.quiz, { testId }));
-                  }
-                }}
-              >
-                Спробуйте ще раз
-              </button>
+              {testId && (
+                <Link
+                  to={generatePath(ROUTES.quiz, { testId })}
+                  replace
+                  className={styles.button}
+                >
+                  Спробуйте ще раз
+                </Link>
+              )}
 
-              <button
-                type='button'
-                className={styles.secondaryButton}
-                onClick={() => {
-                  navigate(ROUTES.home);
-                }}
-              >
+              <Link to={ROUTES.home} className={styles.secondaryButton}>
                 Повернутися на головну
-              </button>
+              </Link>
             </footer>
           </section>
         </div>

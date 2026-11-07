@@ -1,0 +1,41 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins/admin-form' as *;
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkbox {
+  @include choice-input;
+}
+
+.checkboxLabel {
+  margin: 0;
+  cursor: pointer;
+
+  @include field-label;
+}
+
+.timerFields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fieldGroup {
+  @include field-group;
+}
+
+.label {
+  @include field-label;
+}
+
+.input {
+  @include field-control;
+}
+
+.select {
+  @include field-select;
+}

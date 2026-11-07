@@ -1,63 +1,49 @@
-import { Link, NavLink, generatePath, useNavigate } from 'react-router-dom';
 import styles from './Header.module.scss';
-import { useAuth } from '../../../../../hooks/useAuth';
-import { ROUTES } from '../../../../../constants/routes';
 import { useEffect, useState } from 'react';
-import type { MouseEvent } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../../../hooks/useAuth';
+import { useEscapeKey } from '../../../../../hooks/useEscapeKey';
+import { ROUTES } from '../../../../../constants/routes';
+
+const getLinkClass = ({ isActive }: { isActive: boolean }) =>
+  `${styles.link} ${isActive ? styles.isActive : ''}`;
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const getLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `${styles.link} ${isActive ? styles.isActive : ''} `.trim();
 
   const { signOut, user, profile, loading } = useAuth();
 
   const navigate = useNavigate();
 
-  const handleSignOut = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    signOut();
-    setIsMenuOpen(false);
-    navigate(ROUTES.home);
-  };
+  const closeMenu = () => setIsMenuOpen(false);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsMenuOpen(false);
-      }
-    };
-
-    if (isMenuOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isMenuOpen]);
+  useEscapeKey(isMenuOpen, closeMenu);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+
     return () => {
       document.body.style.overflow = '';
     };
   }, [isMenuOpen]);
 
-  if (loading) {
-    return null;
-  }
+  const handleSignOut = async () => {
+    closeMenu();
+
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Failed to sign out:', error);
+    }
+
+    navigate(ROUTES.home);
+  };
 
   return (
     <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.headerContent}>
-          <Link
-            to={ROUTES.home}
-            aria-label='На головну'
-            onClick={() => setIsMenuOpen(false)}
-          >
+          <Link to={ROUTES.home} aria-label='На головну' onClick={closeMenu}>
             <img
               className={styles.logo}
               src='/img/icons/logo.svg'
@@ -70,7 +56,7 @@ export const Header = () => {
           id='primary-nav'
           className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}
         >
-          <ul className={styles.list} onClick={() => setIsMenuOpen(false)}>
+          <ul className={styles.list} onClick={closeMenu}>
             <li>
               <NavLink to={ROUTES.home} end className={getLinkClass}>
                 Головна
@@ -87,40 +73,45 @@ export const Header = () => {
               </NavLink>
             </li>
 
-            {profile?.role === 'student' ? (
+            {profile?.role === 'student' && (
               <li>
                 <NavLink to={ROUTES.myResults} className={getLinkClass}>
                   Мої результати
                 </NavLink>
               </li>
-            ) : profile?.role === 'admin' ? (
+            )}
+
+            {profile?.role === 'admin' && (
               <li>
                 <NavLink to={ROUTES.admin} className={getLinkClass}>
                   Адмін панель
                 </NavLink>
               </li>
-            ) : null}
+            )}
 
-            {user && (
+            {!loading && user && (
               <li>
-                <NavLink
-                  to={generatePath(ROUTES.profile, { userId: user.id })}
-                  className={getLinkClass}
-                >
+                <NavLink to={ROUTES.profile} className={getLinkClass}>
                   Профіль
                 </NavLink>
               </li>
             )}
 
-            {!user ? (
+            {!loading && !user && (
               <li>
                 <NavLink to={ROUTES.login} className={getLinkClass}>
                   Увійти
                 </NavLink>
               </li>
-            ) : (
+            )}
+
+            {!loading && user && (
               <li>
-                <button onClick={handleSignOut} className={styles.logoutBtn}>
+                <button
+                  type='button'
+                  onClick={handleSignOut}
+                  className={styles.logoutBtn}
+                >
                   Вийти
                 </button>
               </li>
@@ -131,7 +122,7 @@ export const Header = () => {
         <button
           type='button'
           className={`${styles.burger} ${isMenuOpen ? styles.burgerActive : ''}`}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
           aria-label='Меню'
           aria-controls='primary-nav'
           aria-expanded={isMenuOpen}

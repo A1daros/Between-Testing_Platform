@@ -4,9 +4,8 @@ import { supabase } from '../lib/supabase';
 import { AuthContext } from './AuthContext';
 import type { Profile } from '../types/database';
 import { getProfile } from '../services/profile';
+import { signOut as signOutUser } from '../services/auth';
 
-// Profile is stored together with the id it was loaded for, so a stale
-// profile is never exposed while the next user's profile is loading.
 type LoadedProfile = {
   userId: string;
   profile: Profile | null;
@@ -23,9 +22,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const userId = user?.id ?? null;
 
   useEffect(() => {
-    // The callback must stay synchronous: awaiting Supabase calls inside it
-    // can deadlock the auth client. It also fires INITIAL_SESSION on
-    // subscribe, so a separate getSession() call is not needed.
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -38,7 +34,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  // Keyed by user id, so token refreshes don't refetch the profile.
   useEffect(() => {
     if (!userId) {
       return;
@@ -71,10 +66,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     !authReady || (userId !== null && loadedProfile?.userId !== userId);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    await signOutUser();
   };
 
-  // Re-reads the profile, e.g. to pick up a status changed by an admin.
   const refreshProfile = async () => {
     if (!userId) {
       return;

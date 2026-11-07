@@ -1,0 +1,105 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: start;
+  }
+}
+
+.searchSystems {
+  display: flex;
+  margin: 24px 0;
+  gap: 16px;
+  padding: 0;
+}
+
+.actionButton {
+  border: $card-border;
+  border-radius: 8px;
+  color: $surface-1;
+  background-color: $accent;
+  padding: 6px 12px;
+  white-space: nowrap;
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+
+  &:hover {
+    background-color: $accent-hover;
+    color: $background;
+  }
+
+  @include buttons;
+}
+
+.title {
+  color: $text-main;
+  white-space: nowrap;
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.confirmBox {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.warningMessage {
+  margin: 0;
+  color: $text-main;
+  @include body-font;
+}
+
+.confirmButton,
+.nonConfirmButton {
+  padding: 10px 20px;
+  color: $text-on-accent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  @include buttons;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.confirmButton {
+  background-color: $green;
+}
+
+.nonConfirmButton {
+  background-color: $red;
+}

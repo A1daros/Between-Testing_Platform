@@ -1,5 +1,5 @@
 @use '../../../../styles/variables' as *;
-@use '../../../../styles/mixins/auth-form' as *;
+@use '../../../../styles/mixins/form' as *;
 
 .container {
   @include container;
@@ -29,42 +29,6 @@
 
 .inputGroup {
   @include input-group;
-}
-
-.inputContainer {
-  @include input-container;
-}
-
-.input {
-  @include input;
-
-  &:disabled {
-    background-color: $surface-1;
-    border-color: $form-border;
-    color: $text-secondary;
-    cursor: not-allowed;
-    opacity: 0.8;
-  }
-}
-
-.inputLabel {
-  @include input-label;
-}
-
-.errorCard {
-  @include error-card;
-}
-
-.errorText {
-  @include error-text;
-}
-
-.successCard {
-  @include success-card;
-}
-
-.successText {
-  @include success-text;
 }
 
 .btnSubmit {

@@ -27,11 +27,12 @@ import { ROUTES } from './constants/routes';
 import { ChunkError } from './modules/shared/components/ChunkError';
 import { ProfilePage } from './modules/profile';
 import { NotFoundPage } from './modules/not-found';
+import { PrivacyPage, TermsPage } from './modules/legal';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 
 const AdminRoutes = lazy(() =>
-  import('./modules/admin/AdminRoutes').then((module) => ({
+  import('./modules/admin').then((module) => ({
     default: module.AdminRoutes,
   })),
 );
@@ -54,6 +55,8 @@ export const App = () => {
                   path={ROUTES.placementTest}
                   element={<PlacementTest />}
                 />
+                <Route path={ROUTES.terms} element={<TermsPage />} />
+                <Route path={ROUTES.privacy} element={<PrivacyPage />} />
                 <Route path={ROUTES.login} element={<Login />} />
                 <Route path={ROUTES.register} element={<Register />} />
                 <Route

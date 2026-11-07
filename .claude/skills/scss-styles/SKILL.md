@@ -12,7 +12,8 @@ description: Правила стилів проєкту (SCSS Modules) — ст�
 - Спільні файли в `src/styles`:
   - `variables.scss` — кольори, бордери, тіні, брейкпоінти **і типографічні міксини**;
   - `mixins.scss` — `page-container`, `section-container`;
-  - `mixins/auth-form.scss` — міксини форм (wrapper, container, input, кнопки, картки помилки та успіху).
+  - `mixins/form.scss` — міксини форм (wrapper, container, input, кнопки, картки помилки та успіху);
+  - `mixins/admin-form.scss` — поля форм адмінки (`field-group`, `field-label`, `field-control`, `field-textarea`, `field-select`, `dynamic-card`, `remove-button`, `choice-input`).
 - Підключення тільки через `@use` з відносним шляхом, без розширення, `as *`. `@import` не використовується. `@use` не реекспортує змінні, тому `variables` треба підключати явно навіть разом із `mixins`:
 
   ```scss
@@ -60,7 +61,7 @@ description: Правила стилів проєкту (SCSS Modules) — ст�
 - Тільки mobile-first: базові стилі для мобільних, розширення через `@media (min-width: $breakpoint-s | $breakpoint-m | $breakpoint-l)` (768 / 1024 / 1200). Без `max-width`-медіа і без чисел замість змінних.
 - `@media` вкладається всередину класу, а не виноситься в кінець файлу.
 - Сторінка використовує `@include page-container`, секція всередині неї — `@include section-container`.
-- Сторінки авторизації та форми профілю збираються з міксинів `auth-form.scss`: кожен клас робить один `@include`.
+- Сторінки авторизації та форми профілю збираються з міксинів `form.scss`: кожен клас робить один `@include`. Поле з плаваючим лейблом, картки помилки/успіху та стан помилки сторінки вже є компонентами (`FormField`, `FormTextarea`, `Alert`, `ErrorState` у `modules/shared/components`), тому класи `input`/`inputLabel`/`errorCard` у нових модулях не дублюються.
 
 ## Порядок усередині правила
 
@@ -68,5 +69,5 @@ layout (display/flex/grid/gap/padding/розміри) → кольори, бор
 
 ## Стани та анімації
 
-- `transition` задається тільки для конкретних властивостей (`background-color 0.2s ease`), без `all`. Виняток — інпути в `auth-form.scss`. Один `transition` на правило.
+- `transition` задається тільки для конкретних властивостей (`background-color 0.2s ease`), без `all`. Виняток — інпути в `form.scss`. Один `transition` на правило.
 - Hover акцентної кнопки: `background-color: $accent-hover`.

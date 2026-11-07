@@ -1,5 +1,5 @@
 @use '../../../../styles/variables' as *;
-@use '../../../../styles/mixins/auth-form' as *;
+@use '../../../../styles/mixins/form' as *;
 
 .formContainer {
   @include container;
@@ -24,34 +24,6 @@
 
 .inputGroup {
   @include input-group;
-}
-
-.inputContainer {
-  @include input-container;
-}
-
-.input {
-  @include input;
-}
-
-.inputLabel {
-  @include input-label;
-}
-
-.errorCard {
-  @include error-card;
-}
-
-.errorText {
-  @include error-text;
-}
-
-.successCard {
-  @include success-card;
-}
-
-.successText {
-  @include success-text;
 }
 
 .btnSubmit {

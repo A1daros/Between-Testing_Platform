@@ -6,64 +6,45 @@ import type {
   SaveQuizResultInput,
   SubmitQuizResult,
 } from '../types/database';
+import { unwrap, unwrapCount } from './helpers';
 
-export const getResultsByUserId = async (
-  userId: string,
-): Promise<Result[]> => {
-  const { data, error } = await supabase
-    .from('results')
-    .select(`*, tests(title, test_type)`)
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
+const RESULT_SELECT = `*,
+  tests(title, test_type, content_updated_at),
+  profiles(display_name)`;
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
+export const getResultsByUserId = async (userId: string): Promise<Result[]> =>
+  unwrap(
+    await supabase
+      .from('results')
+      .select(RESULT_SELECT)
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false }),
+  );
 
 export const saveQuizResult = async ({
   testId,
   userAnswers,
-}: SaveQuizResultInput): Promise<SubmitQuizResult> => {
-  const { data, error } = await supabase.rpc('submit_quiz', {
-    p_test_id: testId,
-    p_answers: userAnswers,
-  });
+}: SaveQuizResultInput): Promise<SubmitQuizResult> =>
+  unwrap(
+    await supabase.rpc('submit_quiz', {
+      p_test_id: testId,
+      p_answers: userAnswers,
+    }),
+  );
 
-  if (error) {
-    throw new Error(error.message);
-  }
+export const loadRecentResults = async (): Promise<Result[]> =>
+  unwrap(
+    await supabase
+      .from('results')
+      .select(RESULT_SELECT)
+      .order('created_at', { ascending: false })
+      .limit(6),
+  );
 
-  return data;
-};
-
-export const loadRecentResults = async (): Promise<Result[]> => {
-  const { data, error } = await supabase
-    .from('results')
-    .select(`*, tests(title), profiles(display_name)`)
-    .order('created_at', { ascending: false })
-    .limit(6);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
-
-export const loadAttemptResults = async (): Promise<number> => {
-  const { count, error } = await supabase
-    .from('results')
-    .select('*', { count: 'exact', head: true });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return count ?? 0;
-};
+export const loadAttemptResults = async (): Promise<number> =>
+  unwrapCount(
+    await supabase.from('results').select('*', { count: 'exact', head: true }),
+  );
 
 type GetAdminResultsParams = {
   query: string;
@@ -77,17 +58,12 @@ export const getAdminResults = async ({
   sort,
   page,
   pageSize,
-}: GetAdminResultsParams): Promise<AdminResultsPage> => {
-  const { data, error } = await supabase.rpc('get_admin_results', {
-    p_query: query,
-    p_sort: sort,
-    p_limit: pageSize,
-    p_offset: (page - 1) * pageSize,
-  });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
+}: GetAdminResultsParams): Promise<AdminResultsPage> =>
+  unwrap(
+    await supabase.rpc('get_admin_results', {
+      p_query: query,
+      p_sort: sort,
+      p_limit: pageSize,
+      p_offset: (page - 1) * pageSize,
+    }),
+  );

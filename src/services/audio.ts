@@ -1,9 +1,13 @@
+// MAX_AUDIO_SIZE and ALLOWED_AUDIO_TYPES must match file_size_limit and
+// allowed_mime_types of the test-audio bucket. The signed URL lives long
+// enough for a timed test, but too short to work as a public link.
 import { supabase } from '../lib/supabase';
+import { unwrap } from './helpers';
 
 const AUDIO_BUCKET = 'test-audio';
 
-// Must match file_size_limit / allowed_mime_types of the bucket.
 export const MAX_AUDIO_SIZE = 20 * 1024 * 1024;
+
 export const ALLOWED_AUDIO_TYPES = [
   'audio/mpeg',
   'audio/mp4',
@@ -15,7 +19,6 @@ export const ALLOWED_AUDIO_TYPES = [
   'audio/webm',
 ];
 
-// Long enough for a timed test, short enough not to work as a public link.
 const SIGNED_URL_TTL_SECONDS = 2 * 60 * 60;
 
 export const validateAudioFile = (file: File): string | null => {
@@ -40,13 +43,11 @@ export const uploadTestAudio = async (file: File): Promise<string> => {
   const extension = file.name.split('.').pop()?.toLowerCase() ?? 'audio';
   const filePath = `parts/${crypto.randomUUID()}.${extension}`;
 
-  const { error } = await supabase.storage
-    .from(AUDIO_BUCKET)
-    .upload(filePath, file, { contentType: file.type });
-
-  if (error) {
-    throw new Error(error.message);
-  }
+  unwrap(
+    await supabase.storage
+      .from(AUDIO_BUCKET)
+      .upload(filePath, file, { contentType: file.type }),
+  );
 
   return filePath;
 };
@@ -56,21 +57,15 @@ export const removeTestAudio = async (paths: string[]): Promise<void> => {
     return;
   }
 
-  const { error } = await supabase.storage.from(AUDIO_BUCKET).remove(paths);
-
-  if (error) {
-    throw new Error(error.message);
-  }
+  unwrap(await supabase.storage.from(AUDIO_BUCKET).remove(paths));
 };
 
 export const getTestAudioUrl = async (path: string): Promise<string> => {
-  const { data, error } = await supabase.storage
-    .from(AUDIO_BUCKET)
-    .createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
-
-  if (error) {
-    throw new Error(error.message);
-  }
+  const data = unwrap(
+    await supabase.storage
+      .from(AUDIO_BUCKET)
+      .createSignedUrl(path, SIGNED_URL_TTL_SECONDS),
+  );
 
   return data.signedUrl;
 };

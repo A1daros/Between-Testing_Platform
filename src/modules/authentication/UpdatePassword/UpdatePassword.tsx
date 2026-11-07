@@ -1,11 +1,13 @@
-import { useState, type FormEvent } from 'react';
 import styles from './UpdatePassword.module.scss';
-import { updatePassword } from '../../../services/profile';
+import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { updatePassword } from '../../../services/auth';
 import { ROUTES } from '../../../constants/routes';
-
-import { MIN_PASSWORD_LENGTH } from '../../../constants/constants';
 import { usePageMeta } from '../../../hooks/usePageMeta';
+import { getErrorMessage } from '../../../utils/getErrorMessage';
+import { validatePassword } from '../../../utils/validatePassword';
+import { PasswordFields } from '../../shared/components/PasswordFields';
+import { Alert } from '../../shared/components/Alert';
 
 export const UpdatePassword = () => {
   usePageMeta({ title: 'Новий пароль', noindex: true });
@@ -19,36 +21,25 @@ export const UpdatePassword = () => {
   const handleUpdatePassword = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const validationError = validatePassword(newPassword, confirmPassword);
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
+
     setErrorMessage('');
-
-    if (newPassword !== confirmPassword) {
-      setErrorMessage('Паролі не збігаються.');
-      return;
-    }
-    if (newPassword.length < MIN_PASSWORD_LENGTH) {
-      setErrorMessage(
-        `Пароль має містити щонайменше ${MIN_PASSWORD_LENGTH} символів.`,
-      );
-      return;
-    }
-
     setIsLoading(true);
 
     try {
       await updatePassword(newPassword);
 
       setIsPasswordUpdated(true);
-
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
       console.error('Failed to update password:', error);
-
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
-      );
+      setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);
     }
@@ -85,57 +76,19 @@ export const UpdatePassword = () => {
             </header>
 
             <div aria-live='polite'>
-              {errorMessage && (
-                <div className={styles.errorCard} role='alert'>
-                  <p className={styles.errorText}>{errorMessage}</p>
-                </div>
-              )}
+              {errorMessage && <Alert>{errorMessage}</Alert>}
             </div>
 
             <form onSubmit={handleUpdatePassword} className={styles.form}>
               <div className={styles.inputGroup}>
-                <div className={styles.inputContainer}>
-                  <input
-                    id='new-password'
-                    type='password'
-                    name='new-password'
-                    value={newPassword}
-                    placeholder=' '
-                    required
-                    minLength={MIN_PASSWORD_LENGTH}
-                    autoComplete='new-password'
-                    className={styles.input}
-                    onChange={(event) => setNewPassword(event.target.value)}
-                  />
-
-                  <label htmlFor='new-password' className={styles.inputLabel}>
-                    Новий пароль
-                  </label>
-                </div>
-              </div>
-
-              <div className={styles.inputGroup}>
-                <div className={styles.inputContainer}>
-                  <input
-                    id='confirm-password'
-                    type='password'
-                    name='confirm-password'
-                    value={confirmPassword}
-                    placeholder=' '
-                    required
-                    minLength={MIN_PASSWORD_LENGTH}
-                    autoComplete='new-password'
-                    className={styles.input}
-                    onChange={(event) => setConfirmPassword(event.target.value)}
-                  />
-
-                  <label
-                    htmlFor='confirm-password'
-                    className={styles.inputLabel}
-                  >
-                    Підтвердити пароль
-                  </label>
-                </div>
+                <PasswordFields
+                  idPrefix='update'
+                  password={newPassword}
+                  confirmPassword={confirmPassword}
+                  confirmLabel='Підтвердити пароль'
+                  onPasswordChange={setNewPassword}
+                  onConfirmPasswordChange={setConfirmPassword}
+                />
               </div>
 
               <button

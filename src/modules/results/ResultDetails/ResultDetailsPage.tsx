@@ -1,84 +1,71 @@
 import styles from './ResultDetailsPage.module.scss';
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import type { ResultAnswerDetails } from '../../../types/database';
+import { useCallback } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Loader } from '../../shared/components/Loader';
+import { ErrorState } from '../../shared/components/ErrorState';
+import { OutdatedBadge } from '../../shared/components/OutdatedBadge';
 import { getResultDetails } from '../../../services/resultAnswers';
+import { useAsyncData } from '../../../hooks/useAsyncData';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { ROUTES } from '../../../constants/routes';
+import { buildResultReview } from '../../../utils/buildResultReview';
+import { isResultOutdated } from '../../../utils/isResultOutdated';
+import { padNumber } from '../../../utils/padNumber';
 
 export const ResultDetailsPage = () => {
   usePageMeta({ title: 'Розбір результату', noindex: true });
 
-  const [resultDetails, setResultDetails] = useState<ResultAnswerDetails[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
-
   const { resultId } = useParams();
+  const numericResultId = Number(resultId);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadResultDetails = async () => {
-      setLoading(true);
-      setErrorMessage('');
+  const loadDetails = useCallback(
+    () => getResultDetails(numericResultId),
+    [numericResultId],
+  );
 
-      try {
-        const data = await getResultDetails(Number(resultId));
-
-        setResultDetails(data);
-      } catch (error) {
-        console.error('Failed to load result answers:', error);
-        setErrorMessage('Не вдалось завантажити деталі результату!');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadResultDetails();
-  }, [resultId]);
-
-  if (!resultId) {
-    return;
-  }
+  const { data, loading, error, reload } = useAsyncData(
+    Number.isInteger(numericResultId) ? loadDetails : null,
+  );
 
   if (loading) {
     return <Loader />;
   }
 
-  if (errorMessage) {
+  if (error) {
     return (
       <div className={styles.page}>
-        <div className={styles.errorCard}>
-          <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
-
-          <h1 className={styles.errorText}>{errorMessage}</h1>
+        <div className={styles.container}>
+          <ErrorState
+            message='Не вдалося завантажити деталі результату.'
+            onAction={reload}
+          />
         </div>
       </div>
     );
   }
 
-  if (!resultDetails.length) {
+  if (!data || data.length === 0) {
     return (
       <div className={styles.page}>
-        <div className={styles.errorCard}>
-          <span className={styles.sectionLabel}>BETWEEN / RESULT</span>
-
-          <h1 className={styles.errorText}>Відповідей не знайдено</h1>
-
-          <button
-            type='button'
-            className={styles.button}
-            onClick={() => navigate(-1)}
-          >
-            Повернутися назад
-          </button>
+        <div className={styles.container}>
+          <ErrorState
+            message='Відповідей не знайдено.'
+            actionLabel='Повернутися назад'
+            onAction={() => navigate(-1)}
+          />
         </div>
       </div>
     );
   }
 
-  const test = resultDetails[0]?.questions?.tests;
+  const test = data[0].questions.tests;
+  const isOutdated = isResultOutdated(
+    data[0].results.created_at,
+    test.content_updated_at,
+  );
+  const reviewItems = buildResultReview(data);
 
   return (
     <div className={styles.page}>
@@ -101,116 +88,81 @@ export const ResultDetailsPage = () => {
               </button>
             </div>
 
-            <div>
-              <div className={styles.heroContent}>
-                <h2 className={styles.heroTitle}>{test.title}</h2>
+            <div className={styles.heroContent}>
+              <h2 className={styles.heroTitle}>{test.title}</h2>
 
-                {test?.description && (
-                  <p className={styles.heroDescription}>{test.description}</p>
-                )}
-              </div>
+              {test.description && (
+                <p className={styles.heroDescription}>{test.description}</p>
+              )}
+
+              {isOutdated && <OutdatedBadge />}
             </div>
           </section>
 
           <section className={styles.answersSection}>
-            {resultDetails.map((item, index) => {
-              const correctAnswer = item.questions.answers?.find(
-                (answer) => answer.id === item.correct_answer_id,
-              );
+            {reviewItems.map((item) => (
+              <div key={item.id}>
+                {item.part && (
+                  <section className={styles.partSection}>
+                    <span className={styles.partNumber} aria-hidden='true'>
+                      {padNumber(item.part.number)}
+                    </span>
 
-              const prevItem = resultDetails[index - 1];
-              const isNewPart =
-                item.questions.part_id !== prevItem?.questions?.part_id;
+                    <div className={styles.partContent}>
+                      <h2 className={styles.partTitle}>{item.part.title}</h2>
 
-              const isCorrect = item.answers.id === correctAnswer?.id;
-              const partNumber = resultDetails
-                .slice(0, index + 1)
-                .filter((currentItem, currentIndex) => {
-                  const previousItem = resultDetails[currentIndex - 1];
+                      <p className={styles.partInstruction}>
+                        {item.part.instruction}
+                      </p>
+                    </div>
+                  </section>
+                )}
 
-                  return (
-                    currentItem.questions.part_id !==
-                      previousItem?.questions?.part_id &&
-                    Boolean(currentItem.questions?.test_parts)
-                  );
-                }).length;
+                <article className={styles.questionBlock}>
+                  <div className={styles.questionMeta}>
+                    <span>ЗАПИТАННЯ</span>
 
-              return (
-                <div key={item.id}>
-                  {isNewPart && item.questions?.test_parts && (
-                    <section className={styles.partSection}>
-                      <span className={styles.partNumber} aria-hidden='true'>
-                        {String(partNumber).padStart(2, '0')}
-                      </span>
+                    <span aria-label={`Питання ${item.number}`}>
+                      {padNumber(item.number)}
+                    </span>
+                  </div>
 
-                      <div className={styles.partContent}>
-                        <h2 className={styles.partTitle}>
-                          {item.questions.test_parts.title}
-                        </h2>
+                  <h3 className={styles.question}>{item.question}</h3>
 
-                        <p className={styles.partInstruction}>
-                          {item.questions.test_parts.instruction}
-                        </p>
-                      </div>
-                    </section>
-                  )}
+                  <div className={styles.answerGrid}>
+                    <div
+                      className={`${styles.answerBlock} ${
+                        item.isCorrect
+                          ? styles.answerCorrect
+                          : styles.answerIncorrect
+                      }`}
+                    >
+                      <span className={styles.answerLabel}>ВАША ВІДПОВІДЬ</span>
 
-                  <article className={styles.questionBlock}>
-                    <div className={styles.questionMeta}>
-                      <span>ЗАПИТАННЯ</span>
-
-                      <span aria-label={`Питання ${index + 1}`}>
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
+                      <p className={styles.answerText}>{item.studentAnswer}</p>
                     </div>
 
-                    <h3 className={styles.question}>
-                      {item.questions.question}
-                    </h3>
+                    <div
+                      className={`${styles.answerBlock} ${styles.correctAnswer}`}
+                    >
+                      <span className={styles.answerLabel}>
+                        ПРАВИЛЬНА ВІДПОВІДЬ
+                      </span>
 
-                    <div className={styles.answerGrid}>
-                      <div
-                        className={`${styles.answerBlock} ${
-                          isCorrect
-                            ? styles.answerCorrect
-                            : styles.answerIncorrect
-                        }`}
-                      >
-                        <span className={styles.answerLabel}>
-                          ВАША ВІДПОВІДЬ
-                        </span>
-
-                        <p className={styles.answerText}>
-                          {item.answers.answer_text}
-                        </p>
-                      </div>
-
-                      <div
-                        className={`${styles.answerBlock} ${styles.correctAnswer}`}
-                      >
-                        <span className={styles.answerLabel}>
-                          ПРАВИЛЬНА ВІДПОВІДЬ
-                        </span>
-
-                        <p className={styles.answerText}>
-                          {correctAnswer?.answer_text ?? '—'}
-                        </p>
-                      </div>
+                      <p className={styles.answerText}>
+                        {item.correctAnswer ?? '—'}
+                      </p>
                     </div>
-                  </article>
-                </div>
-              );
-            })}
+                  </div>
+                </article>
+              </div>
+            ))}
           </section>
 
           <section className={styles.footer}>
-            <button
-              type='button'
-              className={styles.button}
-              onClick={() => navigate(ROUTES.myResults)}
-            >
+            <Link to={ROUTES.myResults} className={styles.button}>
               Повернутися до моїх результатів
-            </button>
+            </Link>
           </section>
         </div>
       </div>

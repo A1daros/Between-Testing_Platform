@@ -1,38 +1,51 @@
 import styles from './QuizPage.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 import type { QuestionWithAnswers } from '../../types/database';
+import type { QuizResultState } from '../../types/quiz';
 import { useQuiz } from '../../hooks/useQuiz';
-
-import { useAuth } from '../../hooks/useAuth';
+import { useAsyncData } from '../../hooks/useAsyncData';
+import { usePageMeta } from '../../hooks/usePageMeta';
 import { Loader } from '../shared/components/Loader';
+import { ErrorState } from '../shared/components/ErrorState';
+import { AnswerList } from '../shared/components/AnswerList';
+import { QuizProgress } from '../shared/components/QuizProgress';
+import { QuizNavigation } from '../shared/components/QuizNavigation';
 import { getQuestionsWithAnswersByTestId } from '../../services/questions';
 import { saveQuizResult } from '../../services/results';
 import { Timer } from './components/Timer';
 import { AudioPlayer } from './components/AudioPlayer';
-import { MAX_AUDIO_PLAYS } from '../../constants/constants';
-import { usePageMeta } from '../../hooks/usePageMeta';
+import { MAX_AUDIO_PLAYS } from '../../constants/quiz';
 import { ROUTES } from '../../constants/routes';
+import { padNumber } from '../../utils/padNumber';
+
+const NO_QUESTIONS: QuestionWithAnswers[] = [];
 
 export const QuizPage = () => {
-  const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
+  const { testId } = useParams<{ testId: string }>();
+  const numericTestId = Number(testId);
+  const isValidTestId = Number.isInteger(numericTestId) && numericTestId > 0;
 
-  const [timerEnabled, setTimerEnabled] = useState(false);
-  const [timerType, setTimerType] = useState<'test' | 'question' | null>(null);
-  const [timerDuration, setTimerDuration] = useState(0);
+  const loadQuestions = useCallback(
+    () => getQuestionsWithAnswersByTestId(numericTestId),
+    [numericTestId],
+  );
 
-  const [loading, setLoading] = useState(true);
+  const {
+    data,
+    loading,
+    error: loadError,
+    reload,
+  } = useAsyncData(isValidTestId ? loadQuestions : null);
+
+  const questions = data ?? NO_QUESTIONS;
+
   const [isSaving, setIsSaving] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
+  const [saveError, setSaveError] = useState('');
   const [audioPlays, setAudioPlays] = useState<Record<number, number>>({});
 
-  const { testId } = useParams<{ testId: string }>();
-  const { user } = useAuth();
-
+  const isSavingRef = useRef(false);
   const navigate = useNavigate();
-
-  const isSavingRef = useRef<boolean>(false);
 
   const {
     currentQuestion,
@@ -40,7 +53,6 @@ export const QuizPage = () => {
     selectedAnswerId,
     userAnswers,
     total,
-    isFinished,
     handleChooseAnswer,
     handlePrevQuestion,
     handleNextQuestion,
@@ -49,129 +61,103 @@ export const QuizPage = () => {
 
   usePageMeta({ title: currentQuestion?.tests.title ?? 'Тест', noindex: true });
 
-  useEffect(() => {
-    const loadQuestions = async () => {
-      if (!testId) {
-        return;
-      }
+  const test = questions[0]?.tests;
+  const timerType = test?.timer_enabled ? test.timer_type : null;
+  const timerDuration = test?.timer_duration ?? 0;
 
-      setLoading(true);
-      setErrorMessage('');
-
-      try {
-        const data = await getQuestionsWithAnswersByTestId(Number(testId));
-
-        setQuestions(data);
-
-        if (data.length > 0) {
-          const test = data[0].tests;
-
-          setTimerEnabled(test.timer_enabled);
-          setTimerType(test.timer_type);
-          setTimerDuration(test.timer_duration ?? 0);
-        }
-      } catch (error) {
-        console.error('Failed to load questions:', error);
-        setErrorMessage('Не вдалося завантажити тест!');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadQuestions();
-  }, [testId]);
-
-  useEffect(() => {
-    if (!testId || total === 0) {
+  const sendResults = useCallback(async () => {
+    if (isSavingRef.current) {
       return;
     }
 
-    if (!isFinished) {
-      return;
+    isSavingRef.current = true;
+    setIsSaving(true);
+    setSaveError('');
+
+    try {
+      const result = await saveQuizResult({
+        testId: numericTestId,
+        userAnswers,
+      });
+
+      const state: QuizResultState = {
+        score: result.score,
+        totalScore: result.total,
+      };
+
+      navigate(
+        generatePath(ROUTES.testResult, { testId: String(numericTestId) }),
+        { state, replace: true },
+      );
+    } catch (error) {
+      console.error('Failed to save quiz results:', error);
+      setSaveError(
+        'Не вдалося зберегти результати. Перевірте підключення до інтернету й надішліть відповіді ще раз.',
+      );
+      isSavingRef.current = false;
+      setIsSaving(false);
     }
+  }, [numericTestId, userAnswers, navigate]);
 
-    if (!user?.id || isSavingRef.current) {
-      return;
-    }
-
-    const sendResults = async () => {
-      isSavingRef.current = true;
-
-      setIsSaving(true);
-      setErrorMessage('');
-
-      try {
-        const result = await saveQuizResult({
-          testId: Number(testId),
-          userAnswers,
-        });
-
-        navigate(generatePath(ROUTES.testResult, { testId }), {
-          state: { score: result.score, totalScore: result.total, userAnswers },
-          replace: true,
-        });
-      } catch (error) {
-        console.error('Failed to save quiz results:', error);
-        setErrorMessage('Не вдалося зберегти результати!');
-
-        isSavingRef.current = false;
-
-        setIsSaving(false);
-      }
-    };
-
+  const finishQuiz = () => {
+    handleFinishQuiz();
     sendResults();
-  }, [isFinished, testId, total, userAnswers, navigate, user]);
+  };
+
+  const isLastQuestion = currentQuestionIndex === total - 1;
 
   const handleTimerExpire = () => {
-    if (timerType === 'test') {
-      handleFinishQuiz();
+    if (timerType === 'test' || isLastQuestion) {
+      finishQuiz();
       return;
     }
 
-    if (currentQuestionIndex === total - 1) {
-      handleFinishQuiz();
-    } else {
-      handleNextQuestion();
-    }
+    handleNextQuestion();
   };
 
   const handleAudioPlayStart = (partId: number) => {
     setAudioPlays((prev) => ({ ...prev, [partId]: (prev[partId] ?? 0) + 1 }));
   };
 
-  const currentAnswers = currentQuestion?.answers ?? [];
-  const currentPart = currentQuestion?.test_parts ?? null;
-
   if (loading || isSaving) {
     return <Loader />;
   }
 
-  if (errorMessage) {
+  if (loadError) {
     return (
       <div className={styles.page}>
-        <div className={styles.errorCard}>
-          <p className={styles.errorText}>{errorMessage}</p>
+        <div className={styles.container}>
+          <ErrorState message='Не вдалося завантажити тест.' onAction={reload} />
         </div>
       </div>
     );
   }
 
-  if (!questions.length) {
+  if (saveError) {
     return (
       <div className={styles.page}>
-        <div className={styles.errorCard}>
-          <p className={styles.errorText}>Питання не знайдено.</p>
+        <div className={styles.container}>
+          <ErrorState
+            message={saveError}
+            actionLabel='Надіслати ще раз'
+            onAction={sendResults}
+          />
         </div>
       </div>
     );
   }
 
   if (!currentQuestion) {
-    return <Loader />;
+    return (
+      <div className={styles.page}>
+        <div className={styles.container}>
+          <ErrorState message='Питання не знайдено.' />
+        </div>
+      </div>
+    );
   }
 
-  const progress = total > 0 ? ((currentQuestionIndex + 1) / total) * 100 : 0;
+  const currentPart = currentQuestion.test_parts;
 
   return (
     <div className={styles.page}>
@@ -184,8 +170,7 @@ export const QuizPage = () => {
               <span className={styles.sectionLabel}>BETWEEN / TEST</span>
 
               <span className={styles.questionCounter}>
-                {String(currentQuestionIndex + 1).padStart(2, '0')} /{' '}
-                {String(total).padStart(2, '0')}
+                {padNumber(currentQuestionIndex + 1)} / {padNumber(total)}
               </span>
             </div>
 
@@ -202,141 +187,67 @@ export const QuizPage = () => {
                 )}
               </div>
 
-              {timerEnabled && timerDuration > 0 && (
+              {timerType && timerDuration > 0 && (
                 <Timer
-                  key={timerType === 'test' ? testId : currentQuestion.id}
+                  key={timerType === 'test' ? numericTestId : currentQuestion.id}
                   durationSeconds={timerDuration}
                   onExpire={handleTimerExpire}
                 />
               )}
 
-              <div className={styles.progressWrapper}>
-                <div
-                  className={styles.progressTrack}
-                  role='progressbar'
-                  aria-valuenow={Math.round(progress)}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-label='Прогрес тесту'
-                >
-                  <div
-                    className={styles.progressBar}
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-              </div>
+              <QuizProgress current={currentQuestionIndex + 1} total={total} />
             </div>
           </section>
 
-          {!currentQuestion ? (
-            <div className={styles.loaderCenter}>
-              <Loader />
+          <section>
+            <div className={styles.partHeader}>
+              <span className={styles.partNumber}>ПИТАННЯ</span>
+
+              {currentPart?.title && (
+                <span className={styles.partTitle}>{currentPart.title}</span>
+              )}
             </div>
-          ) : (
-            <section className={styles.questionSection}>
-              <div className={styles.partHeader}>
-                <span className={styles.partNumber}>ПИТАННЯ</span>
 
-                {currentQuestion.test_parts?.title && (
-                  <span className={styles.partTitle}>
-                    {currentQuestion.test_parts.title}
-                  </span>
-                )}
-              </div>
+            {currentPart?.instruction && (
+              <p className={styles.instruction}>{currentPart.instruction}</p>
+            )}
 
-              {currentQuestion.test_parts?.instruction && (
-                <p className={styles.instruction}>
-                  {currentQuestion.test_parts.instruction}
+            {currentPart?.audio_path && (
+              <AudioPlayer
+                key={currentPart.id}
+                path={currentPart.audio_path}
+                maxPlays={MAX_AUDIO_PLAYS}
+                playsUsed={audioPlays[currentPart.id] ?? 0}
+                onPlayStart={() => handleAudioPlayStart(currentPart.id)}
+              />
+            )}
+
+            <div>
+              {currentQuestion.description && (
+                <p className={styles.questionDescription}>
+                  {currentQuestion.description}
                 </p>
               )}
 
-              {currentPart?.audio_path && (
-                <AudioPlayer
-                  key={currentPart.id}
-                  path={currentPart.audio_path}
-                  maxPlays={MAX_AUDIO_PLAYS}
-                  playsUsed={audioPlays[currentPart.id] ?? 0}
-                  onPlayStart={() => handleAudioPlayStart(currentPart.id)}
-                />
-              )}
+              <h3 className={styles.question}>{currentQuestion.question}</h3>
+            </div>
 
-              <div className={styles.questionContent}>
-                {currentQuestion.description !== null && (
-                  <p className={styles.questionDescription}>
-                    {currentQuestion.description}
-                  </p>
-                )}
-
-                <h3 className={styles.question}>{currentQuestion.question}</h3>
-              </div>
-
-              <div
-                className={styles.answers}
-                role='radiogroup'
-                aria-label='Варіанти відповіді'
-              >
-                {currentAnswers.map((answer, index) => {
-                  const isSelected = selectedAnswerId === answer.id;
-
-                  return (
-                    <button
-                      key={answer.id}
-                      type='button'
-                      className={`${styles.answer} ${
-                        isSelected ? styles.answerSelected : ''
-                      }`}
-                      onClick={() => handleChooseAnswer(answer)}
-                      aria-checked={isSelected}
-                      role='radio'
-                    >
-                      <span className={styles.answerNumber}>
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-
-                      <span className={styles.answerText}>
-                        {answer.answer_text}
-                      </span>
-
-                      <span
-                        className={styles.answerIndicator}
-                        aria-hidden='true'
-                      >
-                        {isSelected ? '✓' : '→'}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          <section className={styles.navigation}>
-            {timerType !== 'question' && (
-              <button
-                type='button'
-                className={styles.backButton}
-                disabled={currentQuestionIndex === 0}
-                onClick={handlePrevQuestion}
-              >
-                ← Назад
-              </button>
-            )}
-
-            <button
-              type='button'
-              className={styles.nextButton}
-              disabled={!selectedAnswerId}
-              onClick={
-                currentQuestionIndex === total - 1
-                  ? handleFinishQuiz
-                  : handleNextQuestion
-              }
-            >
-              {currentQuestionIndex === total - 1
-                ? 'Завершити тест'
-                : 'Наступне питання →'}
-            </button>
+            <AnswerList
+              answers={currentQuestion.answers}
+              selectedAnswerId={selectedAnswerId}
+              onSelect={handleChooseAnswer}
+            />
           </section>
+
+          <QuizNavigation
+            isFirst={currentQuestionIndex === 0}
+            isLast={isLastQuestion}
+            canGoNext={selectedAnswerId !== null}
+            showBack={timerType !== 'question'}
+            onPrev={handlePrevQuestion}
+            onNext={handleNextQuestion}
+            onFinish={finishQuiz}
+          />
         </div>
       </div>
     </div>

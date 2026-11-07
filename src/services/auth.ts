@@ -2,15 +2,19 @@ import { supabase } from '../lib/supabase';
 import { ROUTES } from '../constants/routes';
 import { getAuthErrorMessage } from '../utils/getAuthErrorMessage';
 
+const throwAuthError = (error: { code?: string } | null) => {
+  if (error) {
+    throw new Error(getAuthErrorMessage(error));
+  }
+};
+
 export const signIn = async (email: string, password: string) => {
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) {
-    throw new Error(getAuthErrorMessage(error));
-  }
+  throwAuthError(error);
 };
 
 type SignUpInput = {
@@ -38,11 +42,15 @@ export const signUp = async ({
     },
   });
 
-  if (error) {
-    throw new Error(getAuthErrorMessage(error));
-  }
+  throwAuthError(error);
 
   return { hasSession: Boolean(data.session) };
+};
+
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+
+  throwAuthError(error);
 };
 
 export const sendPasswordResetEmail = async (email: string) => {
@@ -50,7 +58,21 @@ export const sendPasswordResetEmail = async (email: string) => {
     redirectTo: `${window.location.origin}${ROUTES.updatePassword}`,
   });
 
-  if (error) {
-    throw new Error(getAuthErrorMessage(error));
-  }
+  throwAuthError(error);
+};
+
+export const updatePassword = async (newPassword: string) => {
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  throwAuthError(error);
+};
+
+export const updateEmail = async (newEmail: string) => {
+  const { error } = await supabase.auth.updateUser({
+    email: newEmail,
+  });
+
+  throwAuthError(error);
 };
