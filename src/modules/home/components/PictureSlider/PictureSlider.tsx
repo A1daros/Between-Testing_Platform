@@ -11,11 +11,14 @@ const prefersReducedMotion = () =>
 export const PictureSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [hasChanged, setHasChanged] = useState(false);
   const totalSlides = BANNERS.length;
 
   const goTo = useCallback(
-    (index: number) =>
-      setCurrentIndex((index + totalSlides) % totalSlides),
+    (index: number) => {
+      setHasChanged(true);
+      setCurrentIndex((index + totalSlides) % totalSlides);
+    },
     [totalSlides],
   );
 
@@ -51,7 +54,7 @@ export const PictureSlider = () => {
           fetchPriority='high'
           src={banner.src}
           alt={banner.alt}
-          className={styles.slideImage}
+          className={`${styles.slideImage} ${hasChanged ? styles.slideImageAnimated : ''}`}
         />
       </div>
 

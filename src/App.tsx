@@ -1,41 +1,72 @@
 import styles from './styles/App.module.scss';
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { QuizPage } from './modules/quiz';
-import { ResultPage } from './modules/results';
-import { Login } from './modules/authentication/Login';
-import { Register } from './modules/authentication/Register';
-import { MyResults } from './modules/results/MyResults';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { HomePage } from './modules/home';
-import { ResultDetailsPage } from './modules/results/ResultDetails';
 import { AdminRoute } from './routes/AdminRoute';
 import { ApprovedRoute } from './routes/ApprovedRoute';
-import { AwaitingApproval } from './modules/authentication/AwaitingApproval';
 import { Header } from './modules/shared/components/Layout/Header';
 import { Footer } from './modules/shared/components/Layout/Footer';
-import { TestsPage } from './modules/tests';
-import { TestsByLevel } from './modules/tests/TestsByLevel';
-import { PlacementTest } from './modules/tests/PlacementTest';
-import { AboutSchool } from './modules/about-school';
 import { ScrollToTop } from './modules/shared/components/ScrollToTop';
-import { ForgotPassword } from './modules/authentication/ForgotPassword';
-import { UpdatePassword } from './modules/authentication/UpdatePassword';
 import { Loader } from './modules/shared/components/Loader';
 import { ROUTES } from './constants/routes';
 import { ChunkError } from './modules/shared/components/ChunkError';
-import { ProfilePage } from './modules/profile';
-import { NotFoundPage } from './modules/not-found';
-import { PrivacyPage, TermsPage } from './modules/legal';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import { lazyPage } from './utils/lazyPage';
 
-const AdminRoutes = lazy(() =>
-  import('./modules/admin').then((module) => ({
-    default: module.AdminRoutes,
-  })),
+const QuizPage = lazyPage(() => import('./modules/quiz'), 'QuizPage');
+const ResultPage = lazyPage(() => import('./modules/results'), 'ResultPage');
+const Login = lazyPage(
+  () => import('./modules/authentication/Login'),
+  'Login',
 );
+const Register = lazyPage(
+  () => import('./modules/authentication/Register'),
+  'Register',
+);
+const MyResults = lazyPage(
+  () => import('./modules/results/MyResults'),
+  'MyResults',
+);
+const ResultDetailsPage = lazyPage(
+  () => import('./modules/results/ResultDetails'),
+  'ResultDetailsPage',
+);
+const AwaitingApproval = lazyPage(
+  () => import('./modules/authentication/AwaitingApproval'),
+  'AwaitingApproval',
+);
+const TestsPage = lazyPage(() => import('./modules/tests'), 'TestsPage');
+const TestsByLevel = lazyPage(
+  () => import('./modules/tests/TestsByLevel'),
+  'TestsByLevel',
+);
+const PlacementTest = lazyPage(
+  () => import('./modules/tests/PlacementTest'),
+  'PlacementTest',
+);
+const AboutSchool = lazyPage(
+  () => import('./modules/about-school'),
+  'AboutSchool',
+);
+const ForgotPassword = lazyPage(
+  () => import('./modules/authentication/ForgotPassword'),
+  'ForgotPassword',
+);
+const UpdatePassword = lazyPage(
+  () => import('./modules/authentication/UpdatePassword'),
+  'UpdatePassword',
+);
+const ProfilePage = lazyPage(() => import('./modules/profile'), 'ProfilePage');
+const NotFoundPage = lazyPage(
+  () => import('./modules/not-found'),
+  'NotFoundPage',
+);
+const PrivacyPage = lazyPage(() => import('./modules/legal'), 'PrivacyPage');
+const TermsPage = lazyPage(() => import('./modules/legal'), 'TermsPage');
+const AdminRoutes = lazyPage(() => import('./modules/admin'), 'AdminRoutes');
 
 export const App = () => {
   return (
