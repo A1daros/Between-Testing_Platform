@@ -1,0 +1,87 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins/auth-form' as *;
+
+.wrapper {
+  @include wrapper;
+}
+
+.loginContainer {
+  @include container;
+}
+
+.header {
+  @include header;
+}
+
+.title {
+  @include form-title;
+}
+
+.subtitle {
+  @include form-subtitle;
+}
+
+.form {
+  @include form;
+}
+
+.inputGroup {
+  @include input-group;
+}
+
+.inputContainer {
+  @include input-container;
+}
+
+.input {
+  @include input;
+}
+
+.inputLabel {
+  @include input-label;
+}
+
+.formActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.link {
+  color: $text-secondary;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $text-main;
+  }
+}
+
+.submitBtn {
+  @include form-btn-submit;
+}
+
+.signupLink {
+  text-align: center;
+  @include form-subtitle;
+}
+
+.linkAccent {
+  color: $text-main;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.errorCard {
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
+}

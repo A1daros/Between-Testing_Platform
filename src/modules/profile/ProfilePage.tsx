@@ -4,8 +4,9 @@ import { EditProfileForm } from './components/EditProfileForm';
 import styles from './ProfilePage.module.scss';
 import type { Profile } from '../../types/database';
 import { getProfile } from '../../services/profile';
-import { useParams } from 'react-router-dom';
-import { Loader } from '../Loader';
+import { Navigate, generatePath, useParams } from 'react-router-dom';
+import { ROUTES } from '../../constants/routes';
+import { Loader } from '../shared/components/Loader';
 import { useAuth } from '../../hooks/useAuth';
 import { ChangeEmailForm } from './components/ChangeEmailForm';
 import { usePageMeta } from '../../hooks/usePageMeta';
@@ -14,7 +15,7 @@ export const ProfilePage = () => {
   usePageMeta({ title: 'Профіль', noindex: true });
 
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
   const { userId } = useParams();
@@ -23,6 +24,10 @@ export const ProfilePage = () => {
   const isOwnProfile = currentUser?.id === userId;
 
   useEffect(() => {
+    if (!isOwnProfile) {
+      return;
+    }
+
     const loadProfile = async () => {
       setLoading(true);
       setErrorMessage('');
@@ -40,7 +45,16 @@ export const ProfilePage = () => {
     };
 
     loadProfile();
-  }, [userId]);
+  }, [userId, isOwnProfile]);
+
+  if (currentUser && !isOwnProfile) {
+    return (
+      <Navigate
+        to={generatePath(ROUTES.profile, { userId: currentUser.id })}
+        replace
+      />
+    );
+  }
 
   if (loading) {
     return <Loader />;
@@ -64,20 +78,18 @@ export const ProfilePage = () => {
 
   return (
     <div className={styles.page}>
-      {isOwnProfile && (
-        <div className={styles.formsContainer}>
-          <EditProfileForm
-            userId={profile.id}
-            profile={profile}
-            onSaveSuccess={(updatedProfile) => setProfile(updatedProfile)}
-          />
+      <div className={styles.formsContainer}>
+        <EditProfileForm
+          userId={profile.id}
+          profile={profile}
+          onSaveSuccess={(updatedProfile) => setProfile(updatedProfile)}
+        />
 
-          <div className={styles.rightColumn}>
-            <ChangePasswordForm />
-            <ChangeEmailForm />
-          </div>
+        <div className={styles.rightColumn}>
+          <ChangePasswordForm />
+          <ChangeEmailForm currentEmail={currentUser?.email} />
         </div>
-      )}
+      </div>
     </div>
   );
 };

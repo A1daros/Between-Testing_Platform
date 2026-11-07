@@ -36,8 +36,10 @@ BETWEEN — сайт англомовної школи та платформа �
   - Тригер на оновлення `auth.users.email` синхронізує `profiles.email`.
   - Edge-функції (Deno) лежать у `supabase/functions`: `send-contact-email` (форма зв'язку) і `notify-profile-status` (листи про нову заявку й рішення щодо неї; викликається Database Webhook на `profiles`). Налаштування `.vscode` вмикають Deno лише для `supabase/functions`.
 - **Модель контенту.** levels → submodules → tests (`placement_test` / `submodule_quiz` / `final_test`) → test_parts → questions → answers. Результати зберігаються в `results` + `result_answers`. Програми/формати для лендингу та викладачі вантажаться із Supabase (див. `services/programs.ts`, `services/teachers.ts`). Статичний маркетинговий контент лежить у `src/data`.
-- **UI-модулі.** `src/modules/<feature>/` (home, tests, quiz, results, profile, authentication, admin, about-school, shared), стилі `.module.scss` лежать поруч із компонентами.
-  - Спільний layout — у `modules/shared/components/Layuot`. Назва папки саме така, з опечаткою «Layuot».
+- **UI-модулі.** `src/modules/<feature>/` (home, tests, quiz, results, profile, authentication, admin, about-school, not-found, shared), стилі `.module.scss` лежать поруч із компонентами.
+  - Іменування: папка модуля — kebab-case; головна сторінка модуля лежить у його корені, додаткові сторінки — у підпапках PascalCase (`tests/PlacementTest`, `results/MyResults`, `authentication/Login`); дрібні компоненти сторінки — у `components/<PascalCase>/`. Кожна папка компонента має `index.ts`.
+  - Спільні компоненти (`Loader`, `ScrollToTop`, `ChunkError`, `PostCard`…) — у `modules/shared/components`. Типи, потрібні лише адмінці, — у `modules/admin/types`.
+  - Спільний layout (Header, Footer) — у `modules/shared/components/Layout`.
   - Логіка стану квізу й таймера — у `hooks/useQuiz.ts` та `hooks/useCountdown.ts`.
   - Спільні SCSS-змінні та міксини — у `src/styles`.
 
@@ -48,10 +50,12 @@ BETWEEN — сайт англомовної школи та платформа �
 ## Конвенції коду
 
 - **Мова.** Увесь текст інтерфейсу — українською. Код, ідентифікатори, коментарі та повідомлення комітів — англійською. Сайт має `<html lang="uk">`.
-- **Дані.** Компоненти й хуки не імпортують клієнт Supabase напряму: додай або розшир функцію в `src/services/<domain>.ts`. Наявні винятки, які ще не перенесені: сторінки `modules/authentication/*` і `ContactUs.tsx` викликають `supabase` напряму. Новий код так не пишеться.
+- **Дані.** Компоненти й хуки не імпортують клієнт Supabase напряму: додай або розшир функцію в `src/services/<domain>.ts` (авторизація — `services/auth.ts`, форма зв'язку — `services/contact.ts`). Виняток — `context/AuthProvider.tsx`, який підписується на `onAuthStateChange`.
+- **Помилки для користувача.** Повідомлення Supabase англійською не показуються в UI: помилки Auth перекладає `utils/getAuthErrorMessage.ts` (за `error.code`), для решти компонент показує власний український текст.
 - **Помилки сервісів.** Сервіси кидають помилку (`throw`), якщо Supabase повертає `error`. Помилки обробляються в хуках або компонентах.
 - **Типи.** Типи рядків БД беруться з `src/types/database.ts`. Не оголошуй їх заново в компонентах.
-- **Маршрути.** Не прописуй шляхи вручну, використовуй `ROUTES` / `ADMIN_ROUTES`. У частині компонентів ще лишилися рядки на кшталт `navigate('/')`. Якщо редагуєш такий компонент, заміни їх на константи.
+- **Маршрути.** Не прописуй шляхи вручну, використовуй `ROUTES` / `ADMIN_ROUTES`. Шлях із параметрами — через `generatePath(ROUTES.quiz, { testId })`; абсолютний шлях адмінки — через `getAdminPath(ADMIN_ROUTES.testEdit, { testId })` (`utils/getAdminPath.ts`).
+- **Форматування.** Дати — `utils/formatDate.ts` (локаль `uk-UA`), відмінювання з числом — `utils/pluralize.ts`, назви типів тестів — `constants/testTypes.ts`.
 - **Компоненти.** Функціональні компоненти з іменованим типом пропсів (`type XProps = { … }`, як у наявному коді). Один компонент на файл, у відповідній папці `src/modules/<feature>/`.
 - **Новий публічний маршрут.** Додай його в `ROUTES` і `App.tsx`, а також у `public/sitemap.xml` (оновлюється вручну).
 - **Мета-теги сторінки.** Кожна сторінка викликає `usePageMeta` (`hooks/usePageMeta.ts`) на початку компонента: `title` без бренду, `description` і `path` для публічних сторінок, `noindex: true` для службових і закритих. Хук оновлює теги з `index.html`, а не рендерить нові, тож не вставляй `<title>`/`<meta>` у JSX.
@@ -98,7 +102,6 @@ BETWEEN — сайт англомовної школи та платформа �
 - Не додавай `.env` / `.env.local` у git.
 - Не додавай нові залежності без попереднього узгодження.
 - Не редагуй `dist/` (артефакт збірки, ігнорується git).
-- Не «виправляй» написання шляху `Layuot` попутно з іншими задачами. Перейменування — окрема зміна.
 
 ## Перед завершенням завдання
 

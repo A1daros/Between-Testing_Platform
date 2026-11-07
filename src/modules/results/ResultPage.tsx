@@ -1,6 +1,13 @@
 import styles from './ResultPage.module.scss';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import {
+  Link,
+  generatePath,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import { usePageMeta } from '../../hooks/usePageMeta';
+import { ROUTES } from '../../constants/routes';
 
 export const ResultPage = () => {
   usePageMeta({ title: 'Результат тесту', noindex: true });
@@ -18,7 +25,7 @@ export const ResultPage = () => {
           <button
             type='button'
             className={styles.button}
-            onClick={() => navigate('/')}
+            onClick={() => navigate(ROUTES.home)}
           >
             Повернутись на головну →
           </button>
@@ -83,7 +90,7 @@ export const ResultPage = () => {
                 <p className={styles.subtext}>
                   Ви можете переглянути більше інформації та детальну аналітику
                   на{' '}
-                  <Link to='/my-results' className={styles.inlineLink}>
+                  <Link to={ROUTES.myResults} className={styles.inlineLink}>
                     ваша сторінка результатів.
                   </Link>
                 </p>
@@ -96,7 +103,9 @@ export const ResultPage = () => {
                 className={styles.button}
                 disabled={!testId}
                 onClick={() => {
-                  navigate(`/tests/${testId}`);
+                  if (testId) {
+                    navigate(generatePath(ROUTES.quiz, { testId }));
+                  }
                 }}
               >
                 Спробуйте ще раз
@@ -106,7 +115,7 @@ export const ResultPage = () => {
                 type='button'
                 className={styles.secondaryButton}
                 onClick={() => {
-                  navigate('/');
+                  navigate(ROUTES.home);
                 }}
               >
                 Повернутися на головну

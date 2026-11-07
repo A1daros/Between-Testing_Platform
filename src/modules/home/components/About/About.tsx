@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './About.module.scss';
+import { ROUTES } from '../../../../constants/routes';
 
 export const About = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export const About = () => {
 
         <div className={styles.buttonBlock}>
           <button
-            onClick={() => navigate('/about-school')}
+            onClick={() => navigate(ROUTES.aboutSchool)}
             className={styles.ctaButton}
           >
             Про школу

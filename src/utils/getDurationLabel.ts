@@ -1,9 +1,22 @@
 import type { Test } from '../types/database';
 
-export const getDurationLabel = (test: Test) => {
-  if (test.timer_type === null) {
+const formatDuration = (totalSeconds: number): string => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  if (minutes === 0) {
+    return `${seconds} с`;
+  }
+
+  return seconds === 0 ? `${minutes} хв` : `${minutes} хв ${seconds} с`;
+};
+
+export const getDurationLabel = (test: Test): string => {
+  if (test.timer_type === null || !test.timer_duration) {
     return 'Без таймера';
   }
 
-  return test.timer_type === 'test' ? 'на весь тест' : 'на кожне питання';
+  const scope = test.timer_type === 'test' ? 'на весь тест' : 'на кожне питання';
+
+  return `${formatDuration(test.timer_duration)} ${scope}`;
 };

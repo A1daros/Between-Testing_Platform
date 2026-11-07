@@ -1,0 +1,291 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/mixins/auth-form' as *;
+
+.page {
+  background-color: $background;
+  transition: background-color 0.3s ease;
+}
+
+.container {
+  @include page-container;
+  margin-bottom: 24px;
+
+  @media (min-width: $breakpoint-s) {
+    margin-bottom: 32px;
+  }
+
+  @media (min-width: $breakpoint-m) {
+    margin-bottom: 56px;
+  }
+}
+
+.pageTitle {
+  margin: 24px 0;
+  color: $text-main;
+
+  @include h1-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    margin: 32px 0;
+
+    @include h1-font;
+  }
+
+  @media (min-width: $breakpoint-m) {
+    margin: 56px 0;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.heroSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.heroTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  border-top: $card-border;
+  border-bottom: $card-border;
+
+  @media (min-width: $breakpoint-s) {
+    gap: 24px;
+  }
+}
+
+.sectionLabel {
+  color: $accent;
+  @include uppercase;
+}
+
+.backButton {
+  padding: 0;
+  color: $text-secondary;
+  background: none;
+  border: none;
+  cursor: pointer;
+  @include buttons;
+
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $text-main;
+  }
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: $breakpoint-s) {
+    gap: 24px;
+  }
+}
+
+.heroTitle {
+  margin: 0;
+  color: $text-main;
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+.heroDescription {
+  margin: 0;
+  color: $text-secondary;
+  @include body-font;
+}
+
+.partSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 0;
+  margin-top: 16px;
+  border-top: 2px solid $text-main;
+  border-bottom: $card-border;
+
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 32px 0;
+  }
+}
+
+.partNumber {
+  color: $accent;
+  @include uppercase;
+}
+
+.partContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.partTitle {
+  margin: 0;
+  color: $text-main;
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h2-font;
+  }
+}
+
+.partInstruction {
+  margin: 0;
+  color: $text-secondary;
+  @include body-font;
+}
+
+.questionBlock {
+  padding: 24px 0;
+  border-top: $card-border;
+
+  @media (min-width: $breakpoint-s) {
+    padding: 32px 0;
+  }
+}
+
+.questionMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: $text-secondary;
+  @include uppercase;
+}
+
+.question {
+  margin: 0;
+  color: $text-main;
+  @include h3-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
+  }
+}
+
+.answerGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 24px;
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 32px;
+  }
+}
+
+.answerBlock {
+  padding: 12px;
+  background-color: $surface-1;
+  border: $card-border;
+  border-left-width: 4px;
+
+  @media (min-width: $breakpoint-s) {
+    padding: 16px;
+  }
+}
+
+.answerCorrect {
+  border-left-color: $green;
+}
+
+.answerIncorrect {
+  border-left-color: $red;
+}
+
+.correctAnswer {
+  border-left-color: $green;
+}
+
+.answerLabel {
+  display: block;
+  color: $text-secondary;
+  @include uppercase;
+}
+
+.answerText {
+  margin-top: 12px;
+  color: $text-main;
+  @include body-font;
+
+  @media (min-width: $breakpoint-s) {
+    margin-top: 16px;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  cursor: pointer;
+  border: $card-border;
+  border-radius: 8px;
+  color: $text-on-accent;
+  background-color: $accent;
+
+  @include buttons;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:focus-visible {
+    outline: 2px solid $accent;
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    color: $text-main;
+    background-color: transparent;
+  }
+
+  &:active {
+    transform: translate(0, 0);
+    box-shadow: none;
+  }
+
+  @media (min-width: $breakpoint-s) {
+    width: auto;
+  }
+}
+
+.errorCard {
+  @include error-card;
+}
+
+.errorText {
+  @include error-text;
+}

@@ -2,10 +2,10 @@ import { supabase } from '../lib/supabase';
 import type {
   Profile,
   ProfileStatus,
-  StudentDetails,
+  StudentWithResults,
   StudentProfile,
 } from '../types/database';
-import { getPasswordErrorMessage } from '../utils/getPasswordErrorMessage';
+import { getAuthErrorMessage } from '../utils/getAuthErrorMessage';
 
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
@@ -54,7 +54,7 @@ export const updatePassword = async (newPassword: string) => {
   });
 
   if (error) {
-    throw new Error(getPasswordErrorMessage(error));
+    throw new Error(getAuthErrorMessage(error));
   }
 };
 
@@ -64,7 +64,7 @@ export const updateEmail = async (newEmail: string) => {
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error(getAuthErrorMessage(error));
   }
 };
 
@@ -77,7 +77,7 @@ export const uploadAvatar = async (
   }
 
   if (file.size > MAX_AVATAR_SIZE) {
-    throw new Error('Файл занадто великий (максимум 2MB)');
+    throw new Error('Файл занадто великий (максимум 2 МБ)');
   }
 
   const filePath = `${userId}/${Date.now()}-${file.name}`;
@@ -167,11 +167,13 @@ export const loadStudents = async (): Promise<StudentProfile[]> => {
 
 export const loadStudentDetails = async (
   studentId: string,
-): Promise<StudentDetails[]> => {
+): Promise<StudentWithResults | null> => {
   const { data, error } = await supabase
     .from('profiles')
-    .select(`*,  results(id, score, total, created_at, tests(id, title))`)
-    .eq('id', studentId);
+    .select(`*, results(id, score, total, created_at, tests(id, title))`)
+    .eq('id', studentId)
+    .order('created_at', { referencedTable: 'results', ascending: false })
+    .maybeSingle();
 
   if (error) {
     throw new Error(error.message);

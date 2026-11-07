@@ -20,8 +20,10 @@ export const ChangePasswordForm = () => {
       setErrorMessage('Паролі не збігаються.');
       return;
     }
-    if (newPassword.length < 10) {
-      setErrorMessage('Пароль має містити щонайменше 10 символів.');
+    if (newPassword.length < MIN_PASSWORD_LENGTH) {
+      setErrorMessage(
+        `Пароль має містити щонайменше ${MIN_PASSWORD_LENGTH} символів.`,
+      );
       return;
     }
 
@@ -34,9 +36,11 @@ export const ChangePasswordForm = () => {
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
-      console.error('Failed to change password::', error);
+      console.error('Failed to change password:', error);
       setErrorMessage(
-        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
+        error instanceof Error
+          ? error.message
+          : 'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
       );
     } finally {
       setIsLoading(false);

@@ -1,8 +1,14 @@
 import { supabase } from '../lib/supabase';
-import type { EditTest, PublicAnswer, Question, Test, TestWithLevels } from '../types/database';
+import type {
+  EditableTest,
+  PublicAnswer,
+  Question,
+  Test,
+  TestWithLevels,
+} from '../types/database';
 import { getCorrectAnswers } from './answers';
 
-type TestRow = Omit<EditTest, 'questions'> & {
+type TestRow = Omit<EditableTest, 'questions'> & {
   questions: (Question & { answers: PublicAnswer[] })[];
 };
 
@@ -19,7 +25,7 @@ export const getTests = async (): Promise<Test[]> => {
   return data;
 };
 
-export const getTestById = async (testId: number): Promise<EditTest> => {
+export const getTestById = async (testId: number): Promise<EditableTest> => {
   const { data, error } = await supabase
     .from('tests')
     .select(
@@ -71,12 +77,26 @@ export const getTestsWithLevel = async (): Promise<TestWithLevels[]> => {
 export const getTestsByLevelId = async (levelId: number): Promise<Test[]> => {
   const { data, error } = await supabase
     .from('tests')
-    .select(`*, levels(id), questions(count)`)
-    .eq('level_id', levelId);
+    .select(`*, levels(code), questions(count)`)
+    .eq('level_id', levelId)
+    .neq('test_type', 'placement_test');
 
   if (error) {
     throw new Error(error.message);
   }
 
   return data;
+};
+
+export const loadCountTests = async (): Promise<number> => {
+  const { count, error } = await supabase
+    .from('tests')
+    .select('*', { count: 'exact', head: true })
+    .neq('test_type', 'placement_test');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return count ?? 0;
 };

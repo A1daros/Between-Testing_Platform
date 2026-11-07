@@ -1,13 +1,12 @@
-import type React from 'react';
 import styles from './StatCard.module.scss';
 
-type Props = {
+type StatCardProps = {
   label: string;
   value: number | string | null;
   iconPath: string;
 };
 
-export const StatCard: React.FC<Props> = ({ label, value, iconPath }) => {
+export const StatCard = ({ label, value, iconPath }: StatCardProps) => {
   return (
     <li className={styles.item}>
       <div className={styles.section}>

@@ -35,5 +35,4 @@ export const ADMIN_ROUTES = {
   studentDetails: 'students/student-details/:studentId',
 } as const;
 
-// Anchor of the contact form section on the home page.
 export const CONTACTS_SECTION_ID = 'contacts';

@@ -1,12 +1,12 @@
 import styles from './ResultDetails.module.scss';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import type { ResultDetails } from '../../../../../../../types/database';
-import { Loader } from '../../../../../../Loader';
+import type { ResultAnswerDetails } from '../../../../../../../types/database';
+import { Loader } from '../../../../../../shared/components/Loader';
 import { getResultDetails } from '../../../../../../../services/resultAnswers';
 
-export const ResultDetailsOverview = () => {
-  const [resultDetails, setResultDetails] = useState<ResultDetails[]>([]);
+export const ResultDetails = () => {
+  const [resultDetails, setResultDetails] = useState<ResultAnswerDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 

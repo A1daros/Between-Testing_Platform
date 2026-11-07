@@ -1,3 +1,5 @@
+import { getAdminPath } from '../../../../../../../utils/getAdminPath';
+import { ADMIN_ROUTES } from '../../../../../../../constants/routes';
 import type { NavigateFunction } from 'react-router-dom';
 import type { ColumnConfig } from '../../../../../types/table';
 import type { TestWithLevels } from '../../../../../../../types/database';
@@ -27,7 +29,7 @@ export const getTestsColumns = (
         className={styles.actionButton}
         onClick={(event) => {
           event.stopPropagation();
-          navigate(`/admin/tests/${test.id}/edit`);
+          navigate(getAdminPath(ADMIN_ROUTES.testEdit, { testId: test.id }));
         }}
       >
         Редагувати

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './PictureSlider.module.scss';
 import { BANNERS } from '../../../../constants/constants';
 
-export const PicturesSlider = () => {
+export const PictureSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalSlides = BANNERS.length;
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);

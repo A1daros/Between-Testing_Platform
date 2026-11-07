@@ -1,8 +1,8 @@
 import { createTest } from '../../../../../../../services/testsForm';
-import type { NewTestPayload } from '../../types/testForm';
+import type { NewTestPayload } from '../../../../../../../types/testForm';
 import { TestForm } from '../TestForm/TestForm';
 
-export const CreateTestForm = () => {
+export const CreateTest = () => {
   const handleSubmit = (payload: NewTestPayload) => createTest(payload);
 
   return (

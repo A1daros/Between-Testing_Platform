@@ -18,7 +18,7 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
     setErrorMessage('');
     setSuccessMessage('');
 
-    if (newEmail === currentEmail) {
+    if (newEmail.trim().toLowerCase() === currentEmail?.toLowerCase()) {
       setErrorMessage('Нова електронна адреса має відрізнятися від поточної.');
       return;
     }
@@ -35,7 +35,9 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
     } catch (error) {
       console.error('Failed to change email:', error);
       setErrorMessage(
-        'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
+        error instanceof Error
+          ? error.message
+          : 'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
       );
     } finally {
       setIsLoading(false);

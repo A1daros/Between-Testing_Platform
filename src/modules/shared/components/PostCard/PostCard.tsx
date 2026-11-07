@@ -1,11 +1,11 @@
 import type { Post } from '../../../../types/landing';
 import styles from './PostCard.module.scss';
 
-type Props = {
+type PostCardProps = {
   post: Post;
 };
 
-export const PostCard: React.FC<Props> = ({ post }) => {
+export const PostCard = ({ post }: PostCardProps) => {
   return (
     <article className={styles.card}>
       <div className={styles.wrapper}>

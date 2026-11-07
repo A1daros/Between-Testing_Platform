@@ -1,13 +1,13 @@
 import styles from './HomePage.module.scss';
 import { ChooseLevel } from './components/ChooseLevel';
-import { PicturesSlider } from './components/PictureSlider';
+import { PictureSlider } from './components/PictureSlider';
 import { About } from './components/About/About.tsx';
 import { FindLevel } from './components/FindLevel/FindLevel.tsx';
 import { ContactUs } from './components/ContactUs/ContactUs.tsx';
 import { useEffect, useState } from 'react';
 import type { Level } from '../../types/database.ts';
-import { getLevelsById } from '../../services/levels.ts';
-import { Loader } from '../Loader/Loader.tsx';
+import { getLevels } from '../../services/levels.ts';
+import { Loader } from '../shared/components/Loader/Loader.tsx';
 import { usePageMeta } from '../../hooks/usePageMeta';
 import { ROUTES } from '../../constants/routes';
 
@@ -24,7 +24,7 @@ export const HomePage = () => {
       setErrorMessage('');
 
       try {
-        const data = await getLevelsById();
+        const data = await getLevels();
         setLevels(data);
       } catch (error) {
         console.error('Failed to load levels:', error);
@@ -46,7 +46,7 @@ export const HomePage = () => {
 
         <FindLevel />
 
-        <PicturesSlider />
+        <PictureSlider />
 
         {errorMessage && (
           <div className={styles.errorCard} role='alert' aria-live='assertive'>

@@ -1,7 +1,7 @@
-import { supabase } from "../lib/supabase";
-import type { Level } from "../types/database";
+import { supabase } from '../lib/supabase';
+import type { Level } from '../types/database';
 
-export const getLevelsById = async (): Promise<Level[]> => {
+export const getLevels = async (): Promise<Level[]> => {
   const { data, error } = await supabase
     .from('levels')
     .select('*')

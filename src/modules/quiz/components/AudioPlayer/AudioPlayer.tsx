@@ -2,21 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { getTestAudioUrl } from '../../../../services/audio';
 import styles from './AudioPlayer.module.scss';
 
-type Props = {
+type AudioPlayerProps = {
   path: string;
   maxPlays: number;
   playsUsed: number;
   onPlayStart: () => void;
 };
 
-// No native controls on purpose: the recording can only be started from the
-// beginning (counted as a play), paused and resumed, not seeked.
 export const AudioPlayer = ({
   path,
   maxPlays,
   playsUsed,
   onPlayStart,
-}: Props) => {
+}: AudioPlayerProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const [src, setSrc] = useState<string | null>(null);

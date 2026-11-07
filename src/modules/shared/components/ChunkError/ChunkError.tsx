@@ -4,12 +4,13 @@ export const ChunkError = () => {
   return (
     <div className={styles.container}>
       <p className={styles.errorText}>Не вдалося завантажити сторінку.</p>
-      <div
+      <button
+        type='button'
         className={styles.errorButton}
         onClick={() => window.location.reload()}
       >
         Оновити
-      </div>
+      </button>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Loader } from '../modules/Loader';
+import { Loader } from '../modules/shared/components/Loader';
+import { ROUTES } from '../constants/routes';
 
 export const AdminRoute = () => {
   const { loading, profile } = useAuth();
@@ -9,12 +10,8 @@ export const AdminRoute = () => {
     return <Loader />;
   }
 
-  if (!profile) {
-    return <Navigate to='/' replace />;
-  }
-
-  if (profile.role !== 'admin') {
-    return <Navigate to='/' replace />;
+  if (profile?.role !== 'admin') {
+    return <Navigate to={ROUTES.home} replace />;
   }
 
   return <Outlet />;

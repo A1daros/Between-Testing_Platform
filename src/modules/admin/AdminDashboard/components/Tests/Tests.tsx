@@ -1,3 +1,5 @@
+import { getAdminPath } from '../../../../../utils/getAdminPath';
+import { ADMIN_ROUTES } from '../../../../../constants/routes';
 import { useEffect, useMemo, useState } from 'react';
 import type { TestWithLevels } from '../../../../../types/database';
 import { TestsList } from './components/TestsList/TestsList';
@@ -5,7 +7,7 @@ import styles from './Tests.module.scss';
 import { getTestsWithLevel } from '../../../../../services/tests';
 import { useNavigate } from 'react-router-dom';
 import { SearchInput } from '../common/SearchInput/SearchInput';
-import { Loader } from '../../../../Loader';
+import { Loader } from '../../../../shared/components/Loader';
 import { deleteTest } from '../../../../../services/testsForm';
 
 export const Tests = () => {
@@ -23,7 +25,7 @@ export const Tests = () => {
 
   const navigate = useNavigate();
 
-  const handleAddTest = () => navigate('/admin/tests/create');
+  const handleAddTest = () => navigate(getAdminPath(ADMIN_ROUTES.testCreate));
 
   useEffect(() => {
     const loadTests = async () => {
@@ -46,9 +48,7 @@ export const Tests = () => {
 
   const filteredTests = useMemo(() => {
     return testsWithLevels.filter((test) => {
-      const title = test.title.toLowerCase() ?? '';
-
-      return title.includes(query.toLowerCase());
+      return (test.title ?? '').toLowerCase().includes(query.toLowerCase());
     });
   }, [testsWithLevels, query]);
 
@@ -58,15 +58,15 @@ export const Tests = () => {
   };
 
   const handleConfirmDelete = async () => {
-    if (!activeDeleteId) {
-      throw new Error('Test ID is missing');
+    if (activeDeleteId === null) {
+      return;
     }
 
     try {
       setIsDeleting(true);
       setIsDeletingError('');
 
-      await deleteTest(Number(activeDeleteId));
+      await deleteTest(activeDeleteId);
       setTestsWithLevels((prev) =>
         prev.filter((test) => test.id !== activeDeleteId),
       );

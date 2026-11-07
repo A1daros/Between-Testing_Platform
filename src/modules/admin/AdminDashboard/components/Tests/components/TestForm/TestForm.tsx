@@ -1,9 +1,11 @@
-import React, { useEffect, useState, type FormEvent } from 'react';
+import { getAdminPath } from '../../../../../../../utils/getAdminPath';
+import { ADMIN_ROUTES } from '../../../../../../../constants/routes';
+import { useEffect, useState, type FormEvent } from 'react';
 import type { Level } from '../../../../../../../types/database';
 import { useNavigate } from 'react-router-dom';
-import type { NewTestPayload, UIPart, UIQuestion } from '../../types/testForm';
+import type { NewTestPayload, UIPart, UIQuestion } from '../../../../../../../types/testForm';
 import styles from './TestForm.module.scss';
-import { getLevelsById } from '../../../../../../../services/levels';
+import { getLevels } from '../../../../../../../services/levels';
 import { validateQuestions } from '../../../../../../../utils/validateQuestions';
 import {
   ALLOWED_AUDIO_TYPES,
@@ -12,7 +14,7 @@ import {
   validateAudioFile,
 } from '../../../../../../../services/audio';
 
-type Props = {
+type TestFormProps = {
   initialData?: {
     title: string;
     description: string;
@@ -26,7 +28,7 @@ type Props = {
   onSubmit: (payload: NewTestPayload) => Promise<void>;
 };
 
-export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
+export const TestForm = ({ initialData, onSubmit }: TestFormProps) => {
   const [title, setTitle] = useState(initialData?.title ?? '');
   const [description, setDescription] = useState(
     initialData?.description ?? '',
@@ -63,14 +65,12 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
       setErrorMessage('');
 
       try {
-        const data = await getLevelsById();
+        const data = await getLevels();
 
         setLevels(data);
       } catch (error) {
         console.error('Failed to load level data', error);
-        setErrorMessage(
-          error instanceof Error ? error.message : 'Не вдалося завантажити рівні.',
-        );
+        setErrorMessage('Не вдалося завантажити рівні.');
       }
     };
 
@@ -233,7 +233,6 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
     setIsSubmiting(true);
     setErrorMessage('');
 
-    // Files uploaded in this attempt; removed again if saving fails.
     const uploadedAudioPaths: string[] = [];
 
     try {
@@ -282,7 +281,6 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
 
       await onSubmit(payload);
 
-      // Audio that was replaced or belonged to a removed part.
       const keptAudioPaths = new Set(savedParts.map((part) => part.audioPath));
       const obsoleteAudioPaths = initialAudioPaths.filter(
         (path) => !keptAudioPaths.has(path),
@@ -294,19 +292,15 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
         console.error('Failed to remove obsolete audio:', removeError);
       }
 
-      navigate('/admin/tests');
+      navigate(getAdminPath(ADMIN_ROUTES.tests));
     } catch (error) {
-      console.error('Failed to create test:', error);
+      console.error('Failed to save test:', error);
 
       removeTestAudio(uploadedAudioPaths).catch((removeError) =>
         console.error('Failed to remove uploaded audio:', removeError),
       );
 
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Не вдалося зберегти тест. Спробуйте ще раз.',
-      );
+      setErrorMessage('Не вдалося зберегти тест. Спробуйте ще раз.');
     } finally {
       setIsSubmiting(false);
     }
@@ -375,6 +369,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                 <button
                   type='button'
                   className={styles.removeButton}
+                  aria-label='Видалити частину'
                   onClick={() => handleRemovePart(part.uiId)}
                 >
                   ✕
@@ -429,6 +424,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                     id={`points-${part.uiId}`}
                     className={styles.input}
                     type='number'
+                    min='1'
                     value={part.points}
                     onChange={(event) =>
                       handleUpdatePart(part.uiId, {
@@ -465,7 +461,6 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                   )}
 
                   <input
-                    // Remount to clear the native file input after removal.
                     key={part.audioFile?.name ?? part.audioPath ?? 'empty'}
                     id={`audio-${part.uiId}`}
                     type='file'
@@ -501,6 +496,7 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                 <button
                   type='button'
                   className={styles.removeButton}
+                  aria-label='Видалити питання'
                   onClick={() => handleRemoveQuestion(question.uiId)}
                 >
                   ✕
@@ -586,12 +582,14 @@ export const TestForm: React.FC<Props> = ({ initialData, onSubmit }) => {
                         className={styles.radio}
                         name={`correct-answer-${question.uiId}`}
                         checked={answer.isCorrect}
+                        aria-label={`Відповідь ${index + 1} правильна`}
                         onChange={() =>
                           handleSelectCorrectAnswer(question.uiId, index)
                         }
                       />
                       <input
                         type='text'
+                        aria-label={`Текст відповіді ${index + 1}`}
                         className={styles.input}
                         value={answer.text}
                         onChange={(event) =>

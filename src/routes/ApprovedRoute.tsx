@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Loader } from '../modules/Loader';
+import { Loader } from '../modules/shared/components/Loader';
 import { ROUTES } from '../constants/routes';
 import { isProfileApproved } from '../utils/isProfileApproved';
 

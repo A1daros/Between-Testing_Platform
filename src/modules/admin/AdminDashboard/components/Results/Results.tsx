@@ -5,29 +5,29 @@ import { Pagination } from '../common/Pagination';
 import styles from './Results.module.scss';
 import type {
   AdminResultsSort,
-  Results,
+  Result,
 } from '../../../../../types/database';
-import { generatePath, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getAdminResults } from '../../../../../services/results';
-import { ADMIN_ROUTES, ROUTES } from '../../../../../constants/routes';
-import { Loader } from '../../../../Loader';
+import { ADMIN_ROUTES } from '../../../../../constants/routes';
+import { getAdminPath } from '../../../../../utils/getAdminPath';
+import { Loader } from '../../../../shared/components/Loader';
 
 const PAGE_SIZE = 20;
 const SEARCH_DEBOUNCE_MS = 300;
 
-export const ResultsOverview = () => {
+export const Results = () => {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [sortBy, setSortBy] = useState<AdminResultsSort>('date');
   const [page, setPage] = useState(1);
 
-  const [results, setResults] = useState<Results[]>([]);
+  const [results, setResults] = useState<Result[]>([]);
   const [total, setTotal] = useState(0);
 
   const [initialLoading, setInitialLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { resultId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export const ResultsOverview = () => {
     return () => {
       cancelled = true;
     };
-  }, [debouncedQuery, sortBy, page, resultId]);
+  }, [debouncedQuery, sortBy, page]);
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
@@ -84,11 +84,7 @@ export const ResultsOverview = () => {
   };
 
   const handleCheckDetails = (id: number) => {
-    navigate(
-      `${ROUTES.admin}/${generatePath(ADMIN_ROUTES.resultDetails, {
-        resultId: String(id),
-      })}`,
-    );
+    navigate(getAdminPath(ADMIN_ROUTES.resultDetails, { resultId: id }));
   };
 
   if (initialLoading) {

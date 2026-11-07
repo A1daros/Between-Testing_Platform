@@ -2,14 +2,14 @@ import { supabase } from '../lib/supabase';
 import type {
   AdminResultsPage,
   AdminResultsSort,
-  Results,
+  Result,
   SaveQuizResultInput,
   SubmitQuizResult,
 } from '../types/database';
 
 export const getResultsByUserId = async (
   userId: string,
-): Promise<Results[]> => {
+): Promise<Result[]> => {
   const { data, error } = await supabase
     .from('results')
     .select(`*, tests(title, test_type)`)
@@ -39,7 +39,7 @@ export const saveQuizResult = async ({
   return data;
 };
 
-export const loadRecentResults = async (): Promise<Results[]> => {
+export const loadRecentResults = async (): Promise<Result[]> => {
   const { data, error } = await supabase
     .from('results')
     .select(`*, tests(title), profiles(display_name)`)

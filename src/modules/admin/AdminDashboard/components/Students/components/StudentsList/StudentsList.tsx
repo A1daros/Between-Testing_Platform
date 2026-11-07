@@ -1,4 +1,3 @@
-import React from 'react';
 import type {
   ProfileStatus,
   StudentProfile,
@@ -6,19 +5,19 @@ import type {
 import { getStudentsColumns } from './studentsColumns';
 import { Table } from '../../../common/Table';
 
-type Props = {
+type StudentsListProps = {
   students: StudentProfile[];
   checkDetails: (studentId: string) => void;
   onChangeStatus: (studentId: string, status: ProfileStatus) => void;
   updatingId: string | null;
 };
 
-export const StudentList: React.FC<Props> = ({
+export const StudentsList = ({
   students,
   checkDetails,
   onChangeStatus,
   updatingId,
-}) => {
+}: StudentsListProps) => {
   const columns = getStudentsColumns(onChangeStatus, updatingId);
 
   return (
