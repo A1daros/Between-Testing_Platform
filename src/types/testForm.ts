@@ -1,26 +1,48 @@
 // `id` is set for rows that already exist in the DB, so save_test updates them
-// in place instead of recreating them.
+// in place instead of recreating them. UIPart.audioPath is the path already
+// saved in the test-audio bucket; audioFile is a newly picked file that is
+// uploaded on submit and replaces it. UIQuestion.description is the reading
+// text shown above the question (questions.description).
+import type { TimerType } from './database';
+
 export type UIAnswer = {
   id?: number;
   text: string;
   isCorrect: boolean;
 };
 
-export type NewTestPayload = {
+export type UIPart = {
+  id?: number;
+  uiId: string;
+  title: string;
+  instruction: string;
+  points: number;
+  audioPath: string | null;
+  audioFile: File | null;
+};
+
+export type UIQuestion = {
+  id?: number;
+  uiId: string;
+  partUiId: string | null;
+  question: string;
+  description: string;
+  answers: UIAnswer[];
+};
+
+export type TestFormData = {
   title: string;
   description: string;
   levelId: string;
   timerEnabled: boolean;
-  timerType: 'test' | 'question' | null;
+  timerType: TimerType | null;
   timerDuration: number | null;
-  parts: {
-    id?: number;
-    uiId: string;
-    title: string;
-    instruction: string;
-    points: number;
-    audioPath: string | null;
-  }[];
+  parts: UIPart[];
+  questions: UIQuestion[];
+};
+
+export type NewTestPayload = Omit<TestFormData, 'parts' | 'questions'> & {
+  parts: Omit<UIPart, 'audioFile'>[];
   questions: {
     id?: number;
     partId: string | null;
@@ -29,25 +51,3 @@ export type NewTestPayload = {
     answers: UIAnswer[];
   }[];
 };
-
-export interface UIPart {
-  id?: number;
-  uiId: string;
-  title: string;
-  instruction: string;
-  points: number;
-  // Path in the test-audio bucket that is already saved for this part.
-  audioPath: string | null;
-  // A newly picked file; uploaded on submit and replaces audioPath.
-  audioFile: File | null;
-}
-
-export interface UIQuestion {
-  id?: number;
-  uiId: string;
-  partUiId: string | null;
-  question: string;
-  // Reading text shown above the question (questions.description).
-  description: string;
-  answers: UIAnswer[];
-}

@@ -1,19 +1,19 @@
 import { Navigate, Routes, Route } from 'react-router-dom';
-import { AdminPage } from './AdminPage';
 import { ADMIN_ROUTES } from '../../constants/routes';
-import { Overview } from './AdminDashboard/components/Overview';
-import { Tests } from './AdminDashboard/components/Tests';
-import { CreateTest } from './AdminDashboard/components/Tests/components/CreateTest';
-import { EditTest } from './AdminDashboard/components/Tests/components/EditTest';
-import { Results } from './AdminDashboard/components/Results';
-import { ResultDetails } from './AdminDashboard/components/Results/components/ResultDetails/ResultDetails';
-import { Students } from './AdminDashboard/components/Students/Students';
-import { StudentDetails } from './AdminDashboard/components/Students/components/StudentDetails/StudentDetails';
+import { AdminLayout } from './AdminLayout';
+import { Overview } from './Overview';
+import { Tests } from './Tests';
+import { CreateTest } from './Tests/CreateTest';
+import { EditTest } from './Tests/EditTest';
+import { Results } from './Results';
+import { ResultDetails } from './Results/ResultDetails';
+import { Students } from './Students';
+import { StudentDetails } from './Students/StudentDetails';
 
 export const AdminRoutes = () => {
   return (
     <Routes>
-      <Route element={<AdminPage />}>
+      <Route element={<AdminLayout />}>
         <Route
           index
           element={<Navigate to={ADMIN_ROUTES.overview} replace />}

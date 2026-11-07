@@ -1,7 +1,6 @@
 import styles from './ProgramsSection.module.scss';
-import { Link } from 'react-router-dom';
 import type { Program, ProgramFormat } from '../../../../types/database';
-import { SCHOOL_INSTAGRAM_URL } from '../../../../constants/constants';
+import { SCHOOL_INSTAGRAM_URL } from '../../../../constants/school';
 
 type ProgramsSectionProps = {
   programsData: Program[];
@@ -65,14 +64,14 @@ export const ProgramsSection = ({
                 })}
             </div>
 
-            <Link
-              to={SCHOOL_INSTAGRAM_URL}
+            <a
+              href={SCHOOL_INSTAGRAM_URL}
               className={styles.cardButton}
               target='_blank'
               rel='noopener noreferrer'
             >
               Записатися на рівень
-            </Link>
+            </a>
           </article>
         ))}
       </div>

@@ -1,16 +1,26 @@
 import styles from './PlacementTest.module.scss';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Loader } from '../../shared/components/Loader';
-import { SCHOOL_INSTAGRAM_URL } from '../../../constants/constants';
+import { ErrorState } from '../../shared/components/ErrorState';
+import { AnswerList } from '../../shared/components/AnswerList';
+import { QuizProgress } from '../../shared/components/QuizProgress';
+import { QuizNavigation } from '../../shared/components/QuizNavigation';
+import { SCHOOL_INSTAGRAM_URL } from '../../../constants/school';
 import { useQuiz } from '../../../hooks/useQuiz';
-import { getPlacementTest } from '../../../services/questions';
+import { useAsyncData } from '../../../hooks/useAsyncData';
+import {
+  calculatePlacementLevel,
+  getPlacementQuestions,
+} from '../../../services/placement';
 import type {
   PlacementQuestion,
   PlacementResult,
 } from '../../../types/database';
-import { calculatePlacementLevel } from '../../../services/placement';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { ROUTES } from '../../../constants/routes';
+import { padNumber } from '../../../utils/padNumber';
+
+const NO_QUESTIONS: PlacementQuestion[] = [];
 
 export const PlacementTest = () => {
   usePageMeta({
@@ -20,13 +30,17 @@ export const PlacementTest = () => {
     path: ROUTES.placementTest,
   });
 
-  const [questions, setQuestions] = useState<PlacementQuestion[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
+  const {
+    data,
+    loading,
+    error: loadError,
+    reload,
+  } = useAsyncData(getPlacementQuestions);
+
+  const questions = data ?? NO_QUESTIONS;
 
   const [placementResult, setPlacementResult] =
     useState<PlacementResult | null>(null);
-  const [isCalculating, setIsCalculating] = useState(false);
   const [resultError, setResultError] = useState('');
 
   const {
@@ -42,85 +56,43 @@ export const PlacementTest = () => {
     handleFinishQuiz,
   } = useQuiz(questions);
 
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      setErrorMessage('');
-      try {
-        const questionsData = await getPlacementTest();
+  const loadResult = useCallback(async () => {
+    setResultError('');
 
-        setQuestions(questionsData);
-      } catch (error) {
-        console.error('Failed to load quiz data!', error);
-        setErrorMessage('Не вдалось завантажити тест!');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadData();
-  }, []);
-
-  useEffect(() => {
-    if (!isFinished) {
-      return;
+    try {
+      setPlacementResult(await calculatePlacementLevel(userAnswers));
+    } catch (error) {
+      console.error('Failed to calculate placement level:', error);
+      setResultError(
+        'Не вдалося розрахувати ваш рівень. Будь ласка, спробуйте ще раз.',
+      );
     }
+  }, [userAnswers]);
 
-    let isCancelled = false;
-
-    const loadResult = async () => {
-      setIsCalculating(true);
-      setResultError('');
-
-      try {
-        const result = await calculatePlacementLevel(userAnswers);
-
-        if (!isCancelled) {
-          setPlacementResult(result);
-        }
-      } catch (error) {
-        console.error('Не вдалося визначити рівень розміщення:', error);
-
-        if (!isCancelled) {
-          setResultError(
-            'Не вдалося розрахувати ваш рівень. Будь ласка, спробуйте ще раз.',
-          );
-        }
-      } finally {
-        if (!isCancelled) {
-          setIsCalculating(false);
-        }
-      }
-    };
-
+  const finishQuiz = () => {
+    handleFinishQuiz();
     loadResult();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [isFinished, userAnswers]);
+  };
 
   if (loading) {
     return <Loader />;
   }
 
-  if (errorMessage) {
+  if (loadError) {
     return (
       <div className={styles.page}>
         <div className={styles.container}>
-          <div className={styles.error}>{errorMessage}</div>
+          <ErrorState message='Не вдалося завантажити тест.' onAction={reload} />
         </div>
       </div>
     );
   }
 
-  if (!questions.length) {
+  if (!currentQuestion) {
     return (
       <div className={styles.page}>
         <div className={styles.container}>
-          <div className={styles.emptyState}>
-            <p>Питань не знайдено.</p>
-          </div>
+          <ErrorState message='Питань не знайдено.' />
         </div>
       </div>
     );
@@ -130,19 +102,18 @@ export const PlacementTest = () => {
     return (
       <div className={styles.page}>
         <div className={styles.container}>
-          <div className={styles.error}>{resultError}</div>
+          <ErrorState message={resultError} onAction={loadResult} />
         </div>
       </div>
     );
   }
 
-  if (isFinished && isCalculating) {
+  if (isFinished && !placementResult) {
     return <Loader />;
   }
 
-  if (isFinished) {
-    const level = placementResult?.level_code;
-    const levelName = `${placementResult?.level_title} ${level}`;
+  if (isFinished && placementResult) {
+    const { level_code: levelCode, level_title: levelTitle } = placementResult;
 
     return (
       <div className={styles.page}>
@@ -172,10 +143,12 @@ export const PlacementTest = () => {
                 </span>
 
                 <div className={styles.levelBadge}>
-                  <span className={styles.levelCode}>{level}</span>
+                  <span className={styles.levelCode}>{levelCode}</span>
                 </div>
 
-                <h2 className={styles.levelName}>{levelName}</h2>
+                <h2 className={styles.levelName}>
+                  {levelTitle} {levelCode}
+                </h2>
               </div>
 
               <div className={styles.philosophy}>
@@ -212,14 +185,6 @@ export const PlacementTest = () => {
     );
   }
 
-  const currentAnswers = currentQuestion?.answers ?? [];
-
-  if (!currentQuestion) {
-    return null;
-  }
-
-  const progress = ((currentQuestionIndex + 1) / total) * 100;
-
   return (
     <div className={styles.page}>
       <div className={styles.container}>
@@ -229,8 +194,7 @@ export const PlacementTest = () => {
               <span className={styles.sectionLabel}>BETWEEN / PLACEMENT</span>
 
               <span className={styles.questionCounter}>
-                {String(currentQuestionIndex + 1).padStart(2, '0')} /{' '}
-                {String(total).padStart(2, '0')}
+                {padNumber(currentQuestionIndex + 1)} / {padNumber(total)}
               </span>
             </div>
 
@@ -247,14 +211,7 @@ export const PlacementTest = () => {
                 )}
               </div>
 
-              <div className={styles.progressWrapper}>
-                <div className={styles.progressTrack}>
-                  <div
-                    className={styles.progressBar}
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-              </div>
+              <QuizProgress current={currentQuestionIndex + 1} total={total} />
             </div>
           </header>
 
@@ -266,7 +223,7 @@ export const PlacementTest = () => {
             </div>
 
             <div className={styles.questionContent}>
-              {currentQuestion.description !== null && (
+              {currentQuestion.description && (
                 <p className={styles.questionDescription}>
                   {currentQuestion.description}
                 </p>
@@ -275,66 +232,21 @@ export const PlacementTest = () => {
               <h2 className={styles.question}>{currentQuestion.question}</h2>
             </div>
 
-            <div className={styles.answers}>
-              {currentAnswers.map((answer, index) => {
-                const isSelected = selectedAnswerId === answer.id;
-
-                return (
-                  <button
-                    key={answer.id}
-                    type='button'
-                    className={`${styles.answer} ${
-                      isSelected ? styles.answerSelected : ''
-                    }`}
-                    onClick={() => handleChooseAnswer(answer)}
-                  >
-                    <span className={styles.answerNumber}>
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-
-                    <span className={styles.answerText}>
-                      {answer.answer_text}
-                    </span>
-
-                    <span className={styles.answerIndicator}>
-                      {isSelected ? '×' : '→'}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            <AnswerList
+              answers={currentQuestion.answers}
+              selectedAnswerId={selectedAnswerId}
+              onSelect={handleChooseAnswer}
+            />
           </section>
 
-          <footer className={styles.navigation}>
-            <button
-              type='button'
-              className={styles.backButton}
-              disabled={currentQuestionIndex === 0}
-              onClick={handlePrevQuestion}
-            >
-              ← Назад
-            </button>
-
-            {currentQuestionIndex === total - 1 ? (
-              <button
-                type='button'
-                className={styles.nextButton}
-                disabled={!selectedAnswerId}
-                onClick={handleFinishQuiz}
-              >
-                Завершити тест →
-              </button>
-            ) : (
-              <button
-                type='button'
-                className={styles.nextButton}
-                disabled={!selectedAnswerId}
-                onClick={handleNextQuestion}
-              >
-                Наступне питання →
-              </button>
-            )}
-          </footer>
+          <QuizNavigation
+            isFirst={currentQuestionIndex === 0}
+            isLast={currentQuestionIndex === total - 1}
+            canGoNext={selectedAnswerId !== null}
+            onPrev={handlePrevQuestion}
+            onNext={handleNextQuestion}
+            onFinish={finishQuiz}
+          />
         </div>
       </div>
     </div>

@@ -1,11 +1,15 @@
 import styles from './Register.module.scss';
 import { useState, type FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { signUp } from '../../../services/auth';
-import { useNavigate } from 'react-router-dom';
-
-import { MIN_PASSWORD_LENGTH } from '../../../constants/constants';
+import { MIN_PASSWORD_LENGTH } from '../../../constants/auth';
 import { ROUTES } from '../../../constants/routes';
 import { usePageMeta } from '../../../hooks/usePageMeta';
+import { getErrorMessage } from '../../../utils/getErrorMessage';
+import { validatePassword } from '../../../utils/validatePassword';
+import { FormField } from '../../shared/components/FormField';
+import { Alert } from '../../shared/components/Alert';
+import { Modal } from '../../shared/components/Modal';
 
 export const Register = () => {
   usePageMeta({ title: 'Реєстрація', noindex: true });
@@ -14,24 +18,26 @@ export const Register = () => {
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
+  const goToLogin = () => navigate(ROUTES.login);
+
   const handleSignUp = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setErrorMessage('');
+    const validationError = validatePassword(password);
 
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      setErrorMessage(
-        `Пароль має містити щонайменше ${MIN_PASSWORD_LENGTH} символів.`,
-      );
+    if (validationError) {
+      setErrorMessage(validationError);
       return;
     }
 
+    setErrorMessage('');
     setIsLoading(true);
 
     try {
@@ -48,14 +54,10 @@ export const Register = () => {
       setSurname('');
       setEmail('');
       setPassword('');
+      setAgreeToTerms(false);
     } catch (error) {
       console.error('Failed to sign up:', error);
-
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
-      );
+      setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);
     }
@@ -71,82 +73,78 @@ export const Register = () => {
           </p>
         </div>
 
-        {errorMessage && (
-          <div className={styles.errorCard} role='alert' aria-live='assertive'>
-            <p className={styles.errorText}>{errorMessage}</p>
-          </div>
-        )}
+        {errorMessage && <Alert>{errorMessage}</Alert>}
 
         <div className={styles.inputGroup}>
-          <div className={styles.inputContainer}>
-            <input
-              id='reg-name'
-              type='text'
-              name='name'
-              value={name}
-              placeholder=' '
-              required
-              autoComplete='given-name'
-              className={styles.input}
-              onChange={(event) => setName(event.target.value)}
-            />
-            <label htmlFor='reg-name' className={styles.inputLabel}>
-              Ім'я
-            </label>
-          </div>
+          <FormField
+            id='reg-name'
+            type='text'
+            name='name'
+            label="Ім'я"
+            autoComplete='given-name'
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            required
+          />
 
-          <div className={styles.inputContainer}>
-            <input
-              id='reg-surname'
-              type='text'
-              name='surname'
-              value={surname}
-              placeholder=' '
-              required
-              autoComplete='family-name'
-              className={styles.input}
-              onChange={(event) => setSurname(event.target.value)}
-            />
-            <label htmlFor='reg-surname' className={styles.inputLabel}>
-              Прізвище
-            </label>
-          </div>
+          <FormField
+            id='reg-surname'
+            type='text'
+            name='surname'
+            label='Прізвище'
+            autoComplete='family-name'
+            value={surname}
+            onChange={(event) => setSurname(event.target.value)}
+            required
+          />
 
-          <div className={styles.inputContainer}>
-            <input
-              id='reg-email'
-              type='email'
-              name='email'
-              value={email}
-              placeholder=' '
-              required
-              autoComplete='email'
-              className={styles.input}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <label htmlFor='reg-email' className={styles.inputLabel}>
-              Електронна пошта
-            </label>
-          </div>
+          <FormField
+            id='reg-email'
+            type='email'
+            name='email'
+            label='Електронна пошта'
+            autoComplete='email'
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+          />
 
-          <div className={styles.inputContainer}>
-            <input
-              id='reg-password'
-              type='password'
-              name='password'
-              value={password}
-              placeholder=' '
-              required
-              minLength={MIN_PASSWORD_LENGTH}
-              autoComplete='new-password'
-              className={styles.input}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <label htmlFor='reg-password' className={styles.inputLabel}>
-              Пароль
-            </label>
-          </div>
+          <FormField
+            id='reg-password'
+            type='password'
+            name='password'
+            label='Пароль'
+            autoComplete='new-password'
+            minLength={MIN_PASSWORD_LENGTH}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+          />
         </div>
+
+        <label className={styles.consent}>
+          <input
+            type='checkbox'
+            className={styles.checkbox}
+            checked={agreeToTerms}
+            onChange={(event) => setAgreeToTerms(event.target.checked)}
+            required
+          />
+          <span>
+            Я погоджуюся з{' '}
+            <Link to={ROUTES.terms} target='_blank' className={styles.legalLink}>
+              Умовами користування
+            </Link>{' '}
+            та{' '}
+            <Link
+              to={ROUTES.privacy}
+              target='_blank'
+              className={styles.legalLink}
+            >
+              Політикою конфіденційності
+            </Link>
+          </span>
+        </label>
 
         <button className={styles.btnSubmit} type='submit' disabled={isLoading}>
           {isLoading ? 'Виконується...' : 'Створити акаунт'}
@@ -154,35 +152,28 @@ export const Register = () => {
       </form>
 
       {isConfirmationModalOpen && (
-        <div className={styles.modalOverlay} role='presentation'>
-          <div
-            className={styles.modal}
-            role='dialog'
-            aria-modal='true'
-            aria-labelledby='confirmation-title'
+        <Modal labelledBy='confirmation-title' onClose={goToLogin}>
+          <span className={styles.modalLabel}>BETWEEN / ACCOUNT</span>
+
+          <h2 id='confirmation-title' className={styles.modalTitle}>
+            Перевірте ваш email
+          </h2>
+
+          <p className={styles.modalDescription}>
+            Ми надіслали посилання для підтвердження на вашу електронну адресу.
+            Будь ласка, підтвердьте свій обліковий запис перед входом. Після
+            цього адміністратор школи перевірить акаунт і відкриє доступ до
+            тестів.
+          </p>
+
+          <button
+            type='button'
+            className={styles.modalButton}
+            onClick={goToLogin}
           >
-            <span className={styles.modalLabel}>BETWEEN / ACCOUNT</span>
-
-            <h2 id='confirmation-title' className={styles.modalTitle}>
-              Перевірте ваш email
-            </h2>
-
-            <p className={styles.modalDescription}>
-              Ми надіслали посилання для підтвердження на вашу електронну
-              адресу. Будь ласка, підтвердьте свій обліковий запис перед входом.
-              Після цього адміністратор школи перевірить акаунт і відкриє доступ
-              до тестів.
-            </p>
-
-            <button
-              type='button'
-              className={styles.modalButton}
-              onClick={() => navigate(ROUTES.login)}
-            >
-              Зрозуміло →
-            </button>
-          </div>
-        </div>
+            Зрозуміло →
+          </button>
+        </Modal>
       )}
     </div>
   );

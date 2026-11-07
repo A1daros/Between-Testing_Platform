@@ -7,6 +7,8 @@ export const ROUTES = {
   forgotPassword: '/forgot-password',
   updatePassword: '/update-password',
   awaitingApproval: '/awaiting-approval',
+  terms: '/terms',
+  privacy: '/privacy',
 
   tests: '/tests',
   testsByLevel: '/tests/level/:levelId',
@@ -16,7 +18,7 @@ export const ROUTES = {
   myResults: '/my-results',
   myResultDetails: '/my-results/:resultId',
 
-  profile: '/profile/:userId',
+  profile: '/profile',
 
   admin: '/admin',
   adminWildcard: '/admin/*',

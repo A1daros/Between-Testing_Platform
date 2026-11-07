@@ -1,0 +1,64 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins/admin-form' as *;
+
+.card {
+  @include dynamic-card;
+}
+
+.removeButton {
+  @include remove-button;
+}
+
+.fieldGroup {
+  @include field-group;
+}
+
+.label {
+  @include field-label;
+}
+
+.input {
+  @include field-control;
+}
+
+.textarea {
+  @include field-textarea;
+}
+
+.select {
+  @include field-select;
+}
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.subTitle {
+  margin: 8px 0 0 0;
+  padding: 0;
+  color: $text-main;
+
+  @include h4-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h4-font;
+  }
+}
+
+.answerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.radio {
+  flex-shrink: 0;
+
+  @include choice-input;
+}

@@ -1,4 +1,5 @@
-import { MIN_PASSWORD_LENGTH } from '../constants/constants';
+import { MIN_PASSWORD_LENGTH } from '../constants/auth';
+import { DEFAULT_ERROR_MESSAGE } from './getErrorMessage';
 
 const AUTH_ERROR_MESSAGES: Record<string, string> = {
   invalid_credentials: 'Невірна електронна пошта або пароль.',
@@ -15,8 +16,5 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
     'Забагато запитів. Спробуйте ще раз за кілька хвилин.',
 };
 
-const DEFAULT_AUTH_ERROR =
-  'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.';
-
 export const getAuthErrorMessage = (error: { code?: string }): string =>
-  (error.code && AUTH_ERROR_MESSAGES[error.code]) ?? DEFAULT_AUTH_ERROR;
+  (error.code && AUTH_ERROR_MESSAGES[error.code]) || DEFAULT_ERROR_MESSAGE;

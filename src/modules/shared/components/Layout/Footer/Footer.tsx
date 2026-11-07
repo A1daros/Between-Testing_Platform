@@ -4,7 +4,7 @@ import {
   CONTACTS_SECTION_ID,
   ROUTES,
 } from '../../../../../constants/routes';
-import { SCHOOL_INSTAGRAM_URL } from '../../../../../constants/constants';
+import { SCHOOL_INSTAGRAM_URL } from '../../../../../constants/school';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -49,6 +49,16 @@ export const Footer = () => {
               </Link>
             </li>
             <li>
+              <Link to={ROUTES.privacy} className={styles.link}>
+                Конфіденційність
+              </Link>
+            </li>
+            <li>
+              <Link to={ROUTES.terms} className={styles.link}>
+                Умови
+              </Link>
+            </li>
+            <li>
               <span className={styles.copyright}>© {CURRENT_YEAR} BETWEEN</span>
             </li>
           </ul>
@@ -57,9 +67,10 @@ export const Footer = () => {
         <div className={styles.backTop}>
           <span className={styles.buttonTopText}>Повернутися на початок</span>
           <button
+            type='button'
             className={styles.backTopButton}
             onClick={scrollTop}
-            aria-label='Повернуться на початок'
+            aria-label='Повернутися на початок'
           >
             <div className={styles.iconWrapper}>
               <img

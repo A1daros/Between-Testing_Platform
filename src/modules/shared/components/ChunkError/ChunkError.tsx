@@ -1,16 +1,11 @@
-import styles from './ChunkError.module.scss';
+import { ErrorState } from '../ErrorState';
 
 export const ChunkError = () => {
   return (
-    <div className={styles.container}>
-      <p className={styles.errorText}>Не вдалося завантажити сторінку.</p>
-      <button
-        type='button'
-        className={styles.errorButton}
-        onClick={() => window.location.reload()}
-      >
-        Оновити
-      </button>
-    </div>
+    <ErrorState
+      message='Не вдалося завантажити сторінку.'
+      actionLabel='Оновити'
+      onAction={() => window.location.reload()}
+    />
   );
 };

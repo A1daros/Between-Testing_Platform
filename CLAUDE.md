@@ -20,11 +20,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 BETWEEN — сайт англомовної школи та платформа тестування за рівнями CEFR (A1–B2). SPA на React 19 + TypeScript + Vite, SCSS Modules, React Router v7. Деплой на Vercel: `vercel.json` переписує всі шляхи на `index.html`. Увесь бекенд — Supabase (Postgres + Auth + Storage + RLS), власного сервера немає.
 
 - **Точка входу / маршрутизація.** `src/main.tsx` обгортає `App` в `AuthProvider`. `src/App.tsx` оголошує всі маршрути через константи `ROUTES` із `src/constants/routes.ts`. Адмін-підмаршрути лежать у `ADMIN_ROUTES` і рахуються відносно `/admin/*`.
-  - Публічні маршрути: головна, «про школу», placement test, сторінки авторизації.
+  - Публічні маршрути: головна, «про школу», placement test, умови користування й політика конфіденційності (`modules/legal`, тексти — чернетка в `src/data/legal.data.ts` з плейсхолдерами для юриста), сторінки авторизації.
   - Решта маршрутів закрита `routes/ProtectedRoute`, адмінка — ще й `routes/AdminRoute`.
   - Адмін-модуль вантажиться ліниво (lazy), обгорнутий в `ErrorBoundary` (`ChunkError`) + `Suspense`.
 - **Авторизація.** `context/AuthProvider.tsx` зберігає сесію Supabase, користувача та рядок із `profiles`. У цьому рядку є роль, за якою перевіряється доступ до адмінки. Отримувати ці дані слід через `hooks/useAuth.ts`.
-- **Доступ до даних.** Усі запити до Supabase зібрані в `src/services/*.ts`, по одному файлу на домен: tests, questions, answers, results, resultAnswers, profile, programs, teachers, levels тощо. Усі вони використовують єдиний клієнт із `src/lib/supabase.ts`. Типи рядків БД — у `src/types/database.ts`.
+- **Доступ до даних.** Усі запити до Supabase зібрані в `src/services/*.ts`, по одному файлу на домен: tests (зокрема створення/редагування/видалення), questions, answers, results, resultAnswers, placement, profile, auth, programs, teachers, levels тощо. Усі вони використовують єдиний клієнт із `src/lib/supabase.ts` і хелпери `unwrap` / `unwrapCount` із `services/helpers.ts`. Типи рядків БД — у `src/types/database.ts`.
 - **Серверна логіка.** Уся чутлива логіка — в RPC-функціях Postgres. Клієнт ніколи не отримує `is_correct` разом із питаннями.
   - `get_placement_questions`, `calculate_placement_level` — placement test. Рівень рахується на сервері, результат не зберігається.
   - `submit_quiz` — перевірка відповідей, підрахунок балу, запис `results` + `result_answers`.
@@ -33,14 +33,17 @@ BETWEEN — сайт англомовної школи та платформа �
   - Тригер на `auth.users` створює рядок у `profiles` з метаданих `signUp` (`name`, `surname`, `display_name`).
   - Доступ обмежується через RLS, а не лише в UI. Storage: бакети `avatars`, `teachers` і приватний `test-audio` (аудіо listening-частин, signed URL).
   - `get_admin_results` — сторінка результатів в адмінці (пошук, сортування, пагінація).
+  - Тригери на `test_parts`, `questions`, `answers` оновлюють `tests.content_updated_at`. Бал спроби після редагування тесту не перераховується; спроби, зроблені до зміни, позначаються в UI як «Тест змінено».
   - Тригер на оновлення `auth.users.email` синхронізує `profiles.email`.
   - Edge-функції (Deno) лежать у `supabase/functions`: `send-contact-email` (форма зв'язку) і `notify-profile-status` (листи про нову заявку й рішення щодо неї; викликається Database Webhook на `profiles`). Налаштування `.vscode` вмикають Deno лише для `supabase/functions`.
 - **Модель контенту.** levels → submodules → tests (`placement_test` / `submodule_quiz` / `final_test`) → test_parts → questions → answers. Результати зберігаються в `results` + `result_answers`. Програми/формати для лендингу та викладачі вантажаться із Supabase (див. `services/programs.ts`, `services/teachers.ts`). Статичний маркетинговий контент лежить у `src/data`.
-- **UI-модулі.** `src/modules/<feature>/` (home, tests, quiz, results, profile, authentication, admin, about-school, not-found, shared), стилі `.module.scss` лежать поруч із компонентами.
+- **UI-модулі.** `src/modules/<feature>/` (home, tests, quiz, results, profile, authentication, admin, about-school, legal, not-found, shared), стилі `.module.scss` лежать поруч із компонентами.
   - Іменування: папка модуля — kebab-case; головна сторінка модуля лежить у його корені, додаткові сторінки — у підпапках PascalCase (`tests/PlacementTest`, `results/MyResults`, `authentication/Login`); дрібні компоненти сторінки — у `components/<PascalCase>/`. Кожна папка компонента має `index.ts`.
-  - Спільні компоненти (`Loader`, `ScrollToTop`, `ChunkError`, `PostCard`…) — у `modules/shared/components`. Типи, потрібні лише адмінці, — у `modules/admin/types`.
+  - Спільні компоненти — у `modules/shared/components`: `Loader`, `ErrorState` (помилка сторінки з кнопкою повтору), `Alert` (картка помилки/успіху), `FormField` / `FormTextarea` / `PasswordFields` (поля з плаваючим лейблом), `Modal` (Escape, фокус), `AnswerList` / `QuizProgress` / `QuizNavigation` (спільні для квізу й placement test), `OutdatedBadge`, `ScrollToTop`, `ChunkError`.
+  - Адмінка: сторінки (`Overview`, `Tests`, `Tests/CreateTest`, `Tests/EditTest`, `Results`, `Results/ResultDetails`, `Students`, `Students/StudentDetails`) лежать у корені `modules/admin`, layout із сайдбаром — `AdminLayout`, спільні компоненти адмінки (`Table`, `Pagination`, `SearchInput`, `StatCard`) — у `modules/admin/components`. Типи, потрібні лише адмінці, — у `modules/admin/types`.
   - Спільний layout (Header, Footer) — у `modules/shared/components/Layout`.
   - Логіка стану квізу й таймера — у `hooks/useQuiz.ts` та `hooks/useCountdown.ts`.
+  - Завантаження даних у сторінках — через `hooks/useAsyncData.ts` (loading / error / reload / setData, скасування при розмонтуванні); функцію завантаження передавай стабільною (модульна функція або `useCallback`). Також є `useDebouncedValue` і `useEscapeKey`.
   - Спільні SCSS-змінні та міксини — у `src/styles`.
 
 ## Стилі
@@ -51,11 +54,11 @@ BETWEEN — сайт англомовної школи та платформа �
 
 - **Мова.** Увесь текст інтерфейсу — українською. Код, ідентифікатори, коментарі та повідомлення комітів — англійською. Сайт має `<html lang="uk">`.
 - **Дані.** Компоненти й хуки не імпортують клієнт Supabase напряму: додай або розшир функцію в `src/services/<domain>.ts` (авторизація — `services/auth.ts`, форма зв'язку — `services/contact.ts`). Виняток — `context/AuthProvider.tsx`, який підписується на `onAuthStateChange`.
-- **Помилки для користувача.** Повідомлення Supabase англійською не показуються в UI: помилки Auth перекладає `utils/getAuthErrorMessage.ts` (за `error.code`), для решти компонент показує власний український текст.
+- **Помилки для користувача.** Повідомлення Supabase англійською не показуються в UI: помилки Auth перекладає `utils/getAuthErrorMessage.ts` (за `error.code`), для решти компонент показує власний український текст. Текст помилки, яку вже кинув сервіс українською, бери через `utils/getErrorMessage.ts`; перевірка пароля — `utils/validatePassword.ts`.
 - **Помилки сервісів.** Сервіси кидають помилку (`throw`), якщо Supabase повертає `error`. Помилки обробляються в хуках або компонентах.
 - **Типи.** Типи рядків БД беруться з `src/types/database.ts`. Не оголошуй їх заново в компонентах.
 - **Маршрути.** Не прописуй шляхи вручну, використовуй `ROUTES` / `ADMIN_ROUTES`. Шлях із параметрами — через `generatePath(ROUTES.quiz, { testId })`; абсолютний шлях адмінки — через `getAdminPath(ADMIN_ROUTES.testEdit, { testId })` (`utils/getAdminPath.ts`).
-- **Форматування.** Дати — `utils/formatDate.ts` (локаль `uk-UA`), відмінювання з числом — `utils/pluralize.ts`, назви типів тестів — `constants/testTypes.ts`.
+- **Форматування.** Дати — `utils/formatDate.ts` (локаль `uk-UA`), відмінювання з числом — `utils/pluralize.ts`, двозначні номери (`01`) — `utils/padNumber.ts`, назви типів тестів — `constants/testTypes.ts`. Контакти школи — `constants/school.ts`.
 - **Компоненти.** Функціональні компоненти з іменованим типом пропсів (`type XProps = { … }`, як у наявному коді). Один компонент на файл, у відповідній папці `src/modules/<feature>/`.
 - **Новий публічний маршрут.** Додай його в `ROUTES` і `App.tsx`, а також у `public/sitemap.xml` (оновлюється вручну).
 - **Мета-теги сторінки.** Кожна сторінка викликає `usePageMeta` (`hooks/usePageMeta.ts`) на початку компонента: `title` без бренду, `description` і `path` для публічних сторінок, `noindex: true` для службових і закритих. Хук оновлює теги з `index.html`, а не рендерить нові, тож не вставляй `<title>`/`<meta>` у JSX.
@@ -89,6 +92,7 @@ BETWEEN — сайт англомовної школи та платформа �
 На запуску замовниця створює нові платні проєкти Supabase і Vercel з чистою базою:
 - Застосувати міграції (`supabase link` + `supabase db push`). Те, що з них піднімається порожня база, ще не перевірено (`supabase db reset` локально, потрібен Docker).
 - Внести довідники: `levels` (A1–B2) обов'язкові для placement test, форми тесту й фільтра за рівнем; також програми, формати й викладачі лендингу. Placement test створюється лише напряму в БД: форма в адмінці робить тільки `final_test`.
+- Заповнити плейсхолдери в `src/data/legal.data.ts` (власник, реквізити, дата, строки зберігання) після погодження текстів із юристом.
 - Призначити першого адміна вручну: `update public.profiles set role = 'admin', status = 'approved' where email = '…';`
 - Поза репозиторієм: Site URL і Redirect URLs в Auth, SMTP/Resend, секрети й деплой edge-функцій (`RESEND_API_KEY`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `CONTACT_TO_EMAIL`; для `notify-profile-status` ще `WEBHOOK_SECRET`, `SITE_URL`, опційно `NOTIFY_FROM_EMAIL`), Database Webhook на `public.profiles` (INSERT, UPDATE) → `notify-profile-status` із заголовком `x-webhook-secret`, нові `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` у Vercel, фото викладачів у бакеті `teachers` (через дашборд), `preconnect` на новий Supabase-домен в `index.html`.
 

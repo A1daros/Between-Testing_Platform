@@ -1,9 +1,12 @@
-import { useState, type FormEvent } from 'react';
 import styles from './ForgotPassword.module.scss';
-import { sendPasswordResetEmail } from '../../../services/auth';
+import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { sendPasswordResetEmail } from '../../../services/auth';
 import { ROUTES } from '../../../constants/routes';
 import { usePageMeta } from '../../../hooks/usePageMeta';
+import { getErrorMessage } from '../../../utils/getErrorMessage';
+import { FormField } from '../../shared/components/FormField';
+import { Alert } from '../../shared/components/Alert';
 
 export const ForgotPassword = () => {
   usePageMeta({ title: 'Відновлення пароля', noindex: true });
@@ -25,12 +28,7 @@ export const ForgotPassword = () => {
       setIsEmailSent(true);
     } catch (error) {
       console.error('Failed to send password reset email:', error);
-
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
-      );
+      setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);
     }
@@ -69,29 +67,18 @@ export const ForgotPassword = () => {
             </header>
 
             <form onSubmit={handleResetPassword} className={styles.form}>
-              {errorMessage && (
-                <div className={styles.errorCard}>
-                  <p className={styles.errorText}>{errorMessage}</p>
-                </div>
-              )}
+              {errorMessage && <Alert>{errorMessage}</Alert>}
 
-              <div className={styles.inputContainer}>
-                <input
-                  id='reset-email'
-                  type='email'
-                  name='email'
-                  value={email}
-                  placeholder=' '
-                  required
-                  autoComplete='email'
-                  className={styles.input}
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-
-                <label htmlFor='reset-email' className={styles.inputLabel}>
-                  Електронна пошта
-                </label>
-              </div>
+              <FormField
+                id='reset-email'
+                type='email'
+                name='email'
+                label='Електронна пошта'
+                autoComplete='email'
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
 
               <button
                 type='submit'

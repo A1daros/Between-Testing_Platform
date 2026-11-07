@@ -27,7 +27,7 @@ export const TeachersSection = ({ teachers }: TeachersSectionProps) => {
 
               <div className={styles.teacherInfo}>
                 <p className={styles.characteristics}>
-                  <strong>Вік:</strong>
+                  <strong>Вік:</strong>{' '}
                   {teacher.age}
                 </p>
                 <p className={styles.characteristics}>

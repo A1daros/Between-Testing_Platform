@@ -1,12 +1,35 @@
-export interface Test {
+export type TimerType = 'test' | 'question';
+
+export type TestType = 'placement_test' | 'submodule_quiz' | 'final_test';
+
+export type ProfileRole = 'student' | 'admin';
+
+export type ProfileStatus = 'pending' | 'approved' | 'rejected';
+
+export type Level = {
+  id: number;
+  code: string;
+  title: string;
+  sort_order: number;
+};
+
+export type TestPart = {
   id: number;
   title: string;
-  description: string;
-  level_id: number;
-  submodule_id: number;
-  test_type: string;
+  instruction: string;
+  points: number;
+  audio_path: string | null;
+};
+
+export type Test = {
+  id: number;
+  title: string;
+  description: string | null;
+  level_id: number | null;
+  submodule_id: number | null;
+  test_type: TestType;
   timer_enabled: boolean;
-  timer_type: 'test' | 'question' | null;
+  timer_type: TimerType | null;
   timer_duration: number | null;
 
   levels: {
@@ -15,83 +38,55 @@ export interface Test {
 
   questions: {
     count: number;
-  } | null;
-}
+  }[];
+};
 
-export interface TestWithLevels extends Test {
-  levels: {
-    code: string;
-  } | null;
-
-  questions: {
-    count: number;
-  } | null;
-}
-
-export interface Level {
-  id: number;
-  code: string;
-  title: string;
-  sort_order: number;
-}
-
-export interface PublicAnswer {
+export type PublicAnswer = {
   id: number;
   question_id: number;
   answer_text: string;
-}
+};
 
-export interface Answer extends PublicAnswer {
+export type Answer = PublicAnswer & {
   is_correct: boolean;
-}
+};
 
-export interface CorrectAnswer {
+export type CorrectAnswer = {
   question_id: number;
   answer_id: number;
-}
+};
 
-export interface Question {
+export type Question = {
   id: number;
   test_id: number;
   question: string;
-  title: string;
+  title: string | null;
   description: string | null;
   sort_order: number;
-  part_id: number;
-}
+  part_id: number | null;
+};
 
-export interface QuestionWithAnswers extends Question {
+export type QuestionWithAnswers = Question & {
   answers: PublicAnswer[];
 
   tests: {
     title: string;
-    description: string;
+    description: string | null;
     timer_enabled: boolean;
-    timer_type: 'test' | 'question' | null;
+    timer_type: TimerType | null;
     timer_duration: number | null;
   };
 
-  test_parts: {
-    id: number;
-    title: string;
-    instruction: string;
-    points: number;
-    audio_path: string | null;
-  } | null;
+  test_parts: TestPart | null;
+};
 
-  levels: {
-    code: string;
-  } | null;
-}
+export type ResultTest = {
+  title: string;
+  test_type: TestType;
+  content_updated_at: string | null;
+};
 
-export interface ResultInput {
-  test_id: number;
-  user_id: string;
-  score: number;
-  total: number;
-}
-
-export interface Result {
+export type Result = {
   id: number;
   test_id: number;
   user_id: string;
@@ -99,51 +94,67 @@ export interface Result {
   total: number;
   created_at: string;
 
-  tests: {
-    title: string;
-    test_type: string;
-  };
+  tests: ResultTest;
 
   profiles: {
     display_name: string;
   } | null;
-}
+};
 
 export type AdminResultsSort = 'date' | 'test' | 'student';
 
-export interface AdminResultsPage {
+export type AdminResultsPage = {
   items: Result[];
   total: number;
-}
+};
 
-export interface ResultAnswerDetails {
+export type ResultAnswerDetails = {
   id: number;
   result_id: number;
   question_id: number;
   answer_id: number;
 
-  questions: QuestionWithAnswers;
-  answers: PublicAnswer;
-  correct_answer_id: number | null;
-}
+  questions: Question & {
+    answers: PublicAnswer[];
 
-export interface SaveQuizResultInput {
+    tests: {
+      title: string;
+      description: string | null;
+      content_updated_at: string | null;
+    };
+
+    test_parts: {
+      title: string;
+      instruction: string;
+    } | null;
+  };
+
+  answers: PublicAnswer;
+
+  results: {
+    created_at: string;
+  };
+
+  correct_answer_id: number | null;
+};
+
+export type SaveQuizResultInput = {
   testId: number;
   userAnswers: Record<number, number>;
-}
+};
 
-export interface SubmitQuizResult {
+export type SubmitQuizResult = {
   result_id: number;
   score: number;
   total: number;
-}
+};
 
-export interface PlacementAnswer {
+export type PlacementAnswer = {
   id: number;
   answer_text: string;
-}
+};
 
-export interface PlacementQuestion {
+export type PlacementQuestion = {
   id: number;
   question: string;
   description: string | null;
@@ -152,94 +163,74 @@ export interface PlacementQuestion {
     title: string;
     description: string | null;
   };
-  levels: {
-    code: string | null;
-  } | null;
   answers: PlacementAnswer[];
-}
+};
 
-export interface PlacementResult {
+export type PlacementResult = {
   level_code: string;
   level_title: string;
-}
+};
 
-export interface EditableTest {
+export type EditableTest = {
   id: number;
   title: string;
-  description: string;
-  level_id: number;
+  description: string | null;
+  level_id: number | null;
   timer_enabled: boolean;
-  timer_type: 'test' | 'question' | null;
+  timer_type: TimerType | null;
   timer_duration: number | null;
 
-  test_parts: {
-    id: number;
-    title: string;
-    instruction: string;
-    points: number;
-    audio_path: string | null;
-  }[];
+  test_parts: TestPart[];
 
   questions: (Question & {
     answers: Answer[];
   })[];
-}
+};
 
-export interface StudentResults {
+export type StudentResult = {
   id: number;
   score: number;
   total: number;
   created_at: string;
-  tests: Test | null;
-}
-
-export interface StudentWithResults {
-  id: string;
-  name: string;
-  surname: string;
-  email: string;
-  birth_date: string;
-
-  results: StudentResults[];
-}
-
-export type ProfileStatus = 'pending' | 'approved' | 'rejected';
-
-export interface Profile {
-  id: string;
-  role: 'student' | 'admin';
-  status: ProfileStatus;
-  display_name: string;
-  name: string;
-  surname: string;
-  email: string;
-  avatar_url: string;
-  birth_date: string;
-
   tests: {
+    id: number;
     title: string;
-  };
+    content_updated_at: string | null;
+  } | null;
+};
 
-  results: Result[];
-}
-
-export interface StudentProfile {
+export type StudentWithResults = {
   id: string;
-  role: 'student';
+  name: string;
+  surname: string;
+  email: string;
+  birth_date: string | null;
+
+  results: StudentResult[];
+};
+
+export type Profile = {
+  id: string;
+  role: ProfileRole;
   status: ProfileStatus;
   display_name: string;
+  name: string;
+  surname: string;
   email: string;
-  avatar_url: string;
-  birth_date: string;
+  avatar_url: string | null;
+  birth_date: string | null;
+  created_at: string;
+};
 
-  results:
-    | {
-        count: number;
-      }[]
-    | null;
-}
+export type StudentProfile = Profile & {
+  role: 'student';
 
-export interface Teacher {
+  results: {
+    count: number;
+  }[];
+};
+
+export type Teacher = {
   id: string;
   name: string;
   age: number;
@@ -247,17 +238,17 @@ export interface Teacher {
   experience: string;
   specialties: string;
   photo_url: string;
-}
+};
 
-export interface Program {
+export type Program = {
   id: string;
   age_group: string;
   title: string;
   description: string;
   sort_order: number;
-}
+};
 
-export interface ProgramFormat {
+export type ProgramFormat = {
   id: number;
   program_id: string;
   type: string;
@@ -266,4 +257,4 @@ export interface ProgramFormat {
   price: number;
   is_popular: boolean;
   sort_order: number;
-}
+};

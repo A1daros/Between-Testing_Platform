@@ -1,6 +1,9 @@
-import { useState, type FormEvent } from 'react';
 import styles from './ChangeEmailForm.module.scss';
-import { updateEmail } from '../../../../services/profile';
+import { useState, type FormEvent } from 'react';
+import { updateEmail } from '../../../../services/auth';
+import { getErrorMessage } from '../../../../utils/getErrorMessage';
+import { FormField } from '../../../shared/components/FormField';
+import { Alert } from '../../../shared/components/Alert';
 
 type ChangeEmailFormProps = {
   currentEmail?: string;
@@ -26,7 +29,7 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
     setIsLoading(true);
 
     try {
-      await updateEmail(newEmail);
+      await updateEmail(newEmail.trim());
 
       setSuccessMessage(
         'Посилання для підтвердження надіслано! Будь ласка, перевірте як стару, так і нову електронні адреси, щоб підтвердити зміну.',
@@ -34,11 +37,7 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
       setNewEmail('');
     } catch (error) {
       console.error('Failed to change email:', error);
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
-      );
+      setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);
     }
@@ -54,36 +53,21 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
         </p>
       </header>
 
-      {successMessage && (
-        <div className={styles.successCard}>
-          <p className={styles.successText}>✓ {successMessage}</p>
-        </div>
-      )}
-
-      {errorMessage && (
-        <div className={styles.errorCard}>
-          <p className={styles.errorText}>{errorMessage}</p>
-        </div>
-      )}
+      {successMessage && <Alert type='success'>{successMessage}</Alert>}
+      {errorMessage && <Alert>{errorMessage}</Alert>}
 
       <form onSubmit={handleChangeEmail} className={styles.form}>
         <div className={styles.inputGroup}>
-          <div className={styles.inputContainer}>
-            <input
-              id='change-new-email'
-              type='email'
-              name='new-email'
-              value={newEmail}
-              placeholder=' '
-              required
-              autoComplete='email'
-              className={styles.input}
-              onChange={(event) => setNewEmail(event.target.value)}
-            />
-            <label htmlFor='change-new-email' className={styles.inputLabel}>
-              Нова електронна адреса
-            </label>
-          </div>
+          <FormField
+            id='change-new-email'
+            type='email'
+            name='new-email'
+            label='Нова електронна адреса'
+            autoComplete='email'
+            value={newEmail}
+            onChange={(event) => setNewEmail(event.target.value)}
+            required
+          />
         </div>
 
         <button type='submit' className={styles.btnSubmit} disabled={isLoading}>

@@ -74,7 +74,12 @@
 
   @media (min-width: $breakpoint-s) {
     flex-direction: row;
-    gap: 96px;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+
+  @media (min-width: $breakpoint-l) {
+    gap: 64px;
   }
 }
 

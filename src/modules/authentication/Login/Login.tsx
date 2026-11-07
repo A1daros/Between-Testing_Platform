@@ -1,9 +1,13 @@
 import styles from './Login.module.scss';
 import { useState, type FormEvent } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { signIn } from '../../../services/auth';
-import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
+import type { LoginRedirectState } from '../../../types/auth';
 import { usePageMeta } from '../../../hooks/usePageMeta';
+import { getErrorMessage } from '../../../utils/getErrorMessage';
+import { FormField } from '../../shared/components/FormField';
+import { Alert } from '../../shared/components/Alert';
 
 export const Login = () => {
   usePageMeta({ title: 'Вхід', noindex: true });
@@ -14,6 +18,10 @@ export const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirectTo =
+    (location.state as LoginRedirectState | null)?.from ?? ROUTES.home;
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,15 +31,10 @@ export const Login = () => {
     try {
       await signIn(email, password);
 
-      navigate(ROUTES.home);
+      navigate(redirectTo, { replace: true });
     } catch (error) {
       console.error('Failed to sign in:', error);
-
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Щось пішло не так. Будь ласка, спробуйте ще раз пізніше.',
-      );
+      setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);
     }
@@ -48,46 +51,32 @@ export const Login = () => {
         </div>
 
         <div aria-live='polite'>
-          {errorMessage && (
-            <div className={styles.errorCard} role='alert'>
-              <p className={styles.errorText}>{errorMessage}</p>
-            </div>
-          )}
+          {errorMessage && <Alert>{errorMessage}</Alert>}
         </div>
 
         <form onSubmit={handleLogin} className={styles.form}>
           <div className={styles.inputGroup}>
-            <div className={styles.inputContainer}>
-              <input
-                type='email'
-                id='email'
-                name='email'
-                value={email}
-                placeholder=' '
-                required
-                className={styles.input}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-              <label htmlFor='email' className={styles.inputLabel}>
-                Електронна пошта
-              </label>
-            </div>
+            <FormField
+              id='login-email'
+              type='email'
+              name='email'
+              label='Електронна пошта'
+              autoComplete='email'
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
 
-            <div className={styles.inputContainer}>
-              <input
-                type='password'
-                id='password'
-                name='password'
-                value={password}
-                placeholder=' '
-                required
-                className={styles.input}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-              <label htmlFor='password' className={styles.inputLabel}>
-                Пароль
-              </label>
-            </div>
+            <FormField
+              id='login-password'
+              type='password'
+              name='password'
+              label='Пароль'
+              autoComplete='current-password'
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
           </div>
 
           <div className={styles.formActions}>

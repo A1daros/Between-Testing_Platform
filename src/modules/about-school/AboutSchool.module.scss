@@ -1,6 +1,5 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
-@use '../../styles/mixins/auth-form' as *;
 
 .page {
   background-color: $background;
@@ -149,12 +148,15 @@
 }
 
 .button {
+  display: inline-block;
   width: 100%;
   border: $card-border;
   border-radius: 8px;
   color: $surface-1;
   background-color: $accent;
   padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
 
   transition:
@@ -355,12 +357,4 @@
 .thankYouNote {
   color: $text-main;
   @include body-font;
-}
-
-.errorCard {
-  @include error-card;
-}
-
-.errorText {
-  @include error-text;
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './PictureSlider.module.scss';
-import { BANNERS } from '../../../../constants/constants';
+import { BANNERS } from '../../../../data/banners.data';
 
 export const PictureSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

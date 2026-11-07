@@ -1,11 +1,12 @@
 import styles from './AwaitingApproval.module.scss';
 import { useState } from 'react';
-import { Link, Navigate, generatePath } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { ROUTES } from '../../../constants/routes';
-import { SCHOOL_INSTAGRAM_URL } from '../../../constants/constants';
+import { SCHOOL_INSTAGRAM_URL } from '../../../constants/school';
 import { isProfileApproved } from '../../../utils/isProfileApproved';
 import { Loader } from '../../shared/components/Loader';
+import { Alert } from '../../shared/components/Alert';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 
 export const AwaitingApproval = () => {
@@ -61,11 +62,7 @@ export const AwaitingApproval = () => {
           </p>
         </header>
 
-        {errorMessage && (
-          <div className={styles.errorCard} role='alert'>
-            <p className={styles.errorText}>{errorMessage}</p>
-          </div>
-        )}
+        {errorMessage && <Alert>{errorMessage}</Alert>}
 
         {message && (
           <div className={styles.infoCard} role='status'>
@@ -96,7 +93,7 @@ export const AwaitingApproval = () => {
 
           {user && (
             <Link
-              to={generatePath(ROUTES.profile, { userId: user.id })}
+              to={ROUTES.profile}
               className={styles.btnSecondary}
             >
               Мій профіль

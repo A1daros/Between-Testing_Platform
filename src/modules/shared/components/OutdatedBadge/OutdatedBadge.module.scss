@@ -1,0 +1,15 @@
+@use '../../../../styles/variables' as *;
+
+.badge {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  padding: 4px 8px;
+  color: $text-secondary;
+  background-color: $accent-soft-light;
+  border: 1px solid $accent-soft-dark;
+  border-radius: 8px;
+  white-space: nowrap;
+
+  @include small-text;
+}

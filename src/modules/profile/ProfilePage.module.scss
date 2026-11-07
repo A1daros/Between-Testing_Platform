@@ -31,19 +31,3 @@
   gap: 36px;
   width: 100%;
 }
-
-.infoMessage {
-  text-align: center;
-  margin-top: 72px;
-  color: $text-secondary;
-
-  @include body-font;
-}
-
-.errorMessage {
-  @include body-font;
-
-  text-align: center;
-  margin-top: 72px;
-  color: $red;
-}

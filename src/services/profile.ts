@@ -5,24 +5,44 @@ import type {
   StudentWithResults,
   StudentProfile,
 } from '../types/database';
-import { getAuthErrorMessage } from '../utils/getAuthErrorMessage';
+import { unwrap, unwrapCount } from './helpers';
 
+const AVATAR_BUCKET = 'avatars';
+const AVATAR_PUBLIC_PATH = `/object/public/${AVATAR_BUCKET}/`;
 const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
-const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
 
-export const getProfile = async (userId: string): Promise<Profile | null> => {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', userId)
-    .single();
+export const ALLOWED_AVATAR_TYPES: Record<string, string> = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/webp': 'webp',
+};
 
-  if (error) {
-    throw new Error(error.message);
+export const validateAvatarFile = (file: File): string | null => {
+  if (!(file.type in ALLOWED_AVATAR_TYPES)) {
+    return 'Дозволені формати: PNG, JPEG, WebP';
   }
 
-  return data;
+  if (file.size > MAX_AVATAR_SIZE) {
+    return 'Файл занадто великий (максимум 2 МБ)';
+  }
+
+  return null;
 };
+
+const getAvatarPath = (avatarUrl: string | null): string | null => {
+  const index = avatarUrl?.indexOf(AVATAR_PUBLIC_PATH) ?? -1;
+
+  if (!avatarUrl || index === -1) {
+    return null;
+  }
+
+  return decodeURIComponent(avatarUrl.slice(index + AVATAR_PUBLIC_PATH.length));
+};
+
+export const getProfile = async (userId: string): Promise<Profile | null> =>
+  unwrap(
+    await supabase.from('profiles').select('*').eq('id', userId).maybeSingle(),
+  );
 
 export const updateProfile = async (
   userId: string,
@@ -33,151 +53,113 @@ export const updateProfile = async (
     display_name: string;
     birth_date: string | null;
   },
-): Promise<Profile | null> => {
-  const { data, error } = await supabase
-    .from('profiles')
-    .update({ display_name, birth_date })
-    .eq('id', userId)
-    .select('*')
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
-
-export const updatePassword = async (newPassword: string) => {
-  const { error } = await supabase.auth.updateUser({
-    password: newPassword,
-  });
-
-  if (error) {
-    throw new Error(getAuthErrorMessage(error));
-  }
-};
-
-export const updateEmail = async (newEmail: string) => {
-  const { error } = await supabase.auth.updateUser({
-    email: newEmail,
-  });
-
-  if (error) {
-    throw new Error(getAuthErrorMessage(error));
-  }
-};
+): Promise<Profile> =>
+  unwrap(
+    await supabase
+      .from('profiles')
+      .update({ display_name, birth_date })
+      .eq('id', userId)
+      .select('*')
+      .single(),
+  );
 
 export const uploadAvatar = async (
   userId: string,
   file: File,
-): Promise<Profile | null> => {
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    throw new Error('Дозволені формати: PNG, JPEG, WebP');
+  previousAvatarUrl: string | null,
+): Promise<Profile> => {
+  const validationError = validateAvatarFile(file);
+
+  if (validationError) {
+    throw new Error(validationError);
   }
 
-  if (file.size > MAX_AVATAR_SIZE) {
-    throw new Error('Файл занадто великий (максимум 2 МБ)');
-  }
+  const filePath = `${userId}/${crypto.randomUUID()}.${ALLOWED_AVATAR_TYPES[file.type]}`;
 
-  const filePath = `${userId}/${Date.now()}-${file.name}`;
-
-  const { error: uploadError } = await supabase.storage
-    .from('avatars')
-    .upload(filePath, file, { upsert: true });
-
-  if (uploadError) {
-    throw new Error(uploadError.message);
-  }
+  unwrap(
+    await supabase.storage
+      .from(AVATAR_BUCKET)
+      .upload(filePath, file, { contentType: file.type }),
+  );
 
   const { data: urlData } = supabase.storage
-    .from('avatars')
+    .from(AVATAR_BUCKET)
     .getPublicUrl(filePath);
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .update({ avatar_url: urlData.publicUrl })
-    .eq('id', userId)
-    .select('*')
-    .single();
+  const profile = unwrap<Profile>(
+    await supabase
+      .from('profiles')
+      .update({ avatar_url: urlData.publicUrl })
+      .eq('id', userId)
+      .select('*')
+      .single(),
+  );
 
-  if (error) {
-    throw new Error(error.message);
+  const previousPath = getAvatarPath(previousAvatarUrl);
+
+  if (previousPath) {
+    const { error } = await supabase.storage
+      .from(AVATAR_BUCKET)
+      .remove([previousPath]);
+
+    if (error) {
+      console.error('Failed to remove previous avatar:', error);
+    }
   }
 
-  return data;
+  return profile;
 };
 
-export const loadCountStudents = async (): Promise<number> => {
-  const { count, error } = await supabase
-    .from('profiles')
-    .select('*', { count: 'exact', head: true })
-    .eq('role', 'student');
+export const loadCountStudents = async (): Promise<number> =>
+  unwrapCount(
+    await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'student'),
+  );
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return count ?? 0;
-};
-
-export const loadCountPendingStudents = async (): Promise<number> => {
-  const { count, error } = await supabase
-    .from('profiles')
-    .select('*', { count: 'exact', head: true })
-    .eq('role', 'student')
-    .eq('status', 'pending');
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return count ?? 0;
-};
+export const loadCountPendingStudents = async (): Promise<number> =>
+  unwrapCount(
+    await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'student')
+      .eq('status', 'pending'),
+  );
 
 export const setProfileStatus = async (
   userId: string,
   status: ProfileStatus,
 ): Promise<ProfileStatus> => {
-  const { data, error } = await supabase.rpc('set_profile_status', {
-    p_user_id: userId,
-    p_status: status,
-  });
+  const data = unwrap<{ status: ProfileStatus }>(
+    await supabase.rpc('set_profile_status', {
+      p_user_id: userId,
+      p_status: status,
+    }),
+  );
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return (data as { status: ProfileStatus }).status;
+  return data.status;
 };
 
-export const loadStudents = async (): Promise<StudentProfile[]> => {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select(`*, results(count)`)
-    .eq('role', 'student')
-    .order('created_at', { ascending: false, nullsFirst: false });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
+export const loadStudents = async (): Promise<StudentProfile[]> =>
+  unwrap(
+    await supabase
+      .from('profiles')
+      .select(`*, results(count)`)
+      .eq('role', 'student')
+      .order('created_at', { ascending: false, nullsFirst: false }),
+  );
 
 export const loadStudentDetails = async (
   studentId: string,
-): Promise<StudentWithResults | null> => {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select(`*, results(id, score, total, created_at, tests(id, title))`)
-    .eq('id', studentId)
-    .order('created_at', { referencedTable: 'results', ascending: false })
-    .maybeSingle();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
+): Promise<StudentWithResults | null> =>
+  unwrap(
+    await supabase
+      .from('profiles')
+      .select(
+        `*, results(id, score, total, created_at, tests(id, title, content_updated_at))`,
+      )
+      .eq('id', studentId)
+      .order('created_at', { referencedTable: 'results', ascending: false })
+      .maybeSingle(),
+  );

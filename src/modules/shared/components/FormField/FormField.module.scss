@@ -1,0 +1,20 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins/form' as *;
+
+.inputContainer {
+  @include input-container;
+}
+
+.input {
+  @include input;
+
+  &:disabled {
+    color: $text-secondary;
+    background-color: $surface-1;
+    cursor: not-allowed;
+  }
+}
+
+.inputLabel {
+  @include input-label;
+}

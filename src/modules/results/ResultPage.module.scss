@@ -1,6 +1,6 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
-@use '../../styles/mixins/auth-form' as *;
+@use '../../styles/mixins/form' as *;
 
 .page {
   background-color: $background;
@@ -213,6 +213,7 @@
   cursor: pointer;
   border: $card-border;
   border-radius: 8px;
+  text-decoration: none;
 
   @include buttons;
 
@@ -260,12 +261,4 @@
     color: $text-on-accent;
     background-color: $text-main;
   }
-}
-
-.errorCard {
-  @include error-card;
-}
-
-.errorText {
-  @include error-text;
 }

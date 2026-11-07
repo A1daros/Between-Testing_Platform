@@ -1,0 +1,18 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins/form' as *;
+
+.inputContainer {
+  @include input-container;
+}
+
+.textarea {
+  @include input;
+
+  height: 120px;
+  padding-top: 20px;
+  resize: none;
+}
+
+.inputLabel {
+  @include input-label;
+}

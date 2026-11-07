@@ -1,5 +1,5 @@
 @use '../../../../styles/variables' as *;
-@use '../../../../styles/mixins/auth-form' as *;
+@use '../../../../styles/mixins/form' as *;
 
 .avatarWrapper {
   display: flex;
@@ -91,16 +91,4 @@
   color: $text-secondary;
 
   @include small-text;
-}
-
-.errorCard {
-  @include error-card;
-  width: 100%;
-  max-width: 320px;
-}
-
-.errorText {
-  @include error-text;
-  text-align: center;
-  width: 100%;
 }
