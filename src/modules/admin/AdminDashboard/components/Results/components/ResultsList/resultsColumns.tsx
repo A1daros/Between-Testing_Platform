@@ -1,7 +1,8 @@
+import { formatDate } from '../../../../../../../utils/formatDate';
 import type { ColumnConfig } from '../../../../../types/table';
-import type { Results } from '../../../../../../../types/database';
+import type { Result } from '../../../../../../../types/database';
 
-export const getResultsColumns = (): ColumnConfig<Results>[] => [
+export const getResultsColumns = (): ColumnConfig<Result>[] => [
   {
     label: 'Учень',
     render: (result) => result.profiles?.display_name ?? '',
@@ -16,6 +17,6 @@ export const getResultsColumns = (): ColumnConfig<Results>[] => [
   },
   {
     label: 'Дата',
-    render: (result) => new Date(result.created_at).toLocaleDateString(),
+    render: (result) => formatDate(result.created_at),
   },
 ];

@@ -1,17 +1,18 @@
 import styles from './QuizPage.module.scss';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { generatePath, useNavigate, useParams } from 'react-router-dom';
 import type { QuestionWithAnswers } from '../../types/database';
 import { useQuiz } from '../../hooks/useQuiz';
 
 import { useAuth } from '../../hooks/useAuth';
-import { Loader } from '../Loader';
+import { Loader } from '../shared/components/Loader';
 import { getQuestionsWithAnswersByTestId } from '../../services/questions';
 import { saveQuizResult } from '../../services/results';
 import { Timer } from './components/Timer';
 import { AudioPlayer } from './components/AudioPlayer';
 import { MAX_AUDIO_PLAYS } from '../../constants/constants';
 import { usePageMeta } from '../../hooks/usePageMeta';
+import { ROUTES } from '../../constants/routes';
 
 export const QuizPage = () => {
   const [questions, setQuestions] = useState<QuestionWithAnswers[]>([]);
@@ -24,7 +25,6 @@ export const QuizPage = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Plays per test part, kept here so they survive moving between questions.
   const [audioPlays, setAudioPlays] = useState<Record<number, number>>({});
 
   const { testId } = useParams<{ testId: string }>();
@@ -72,7 +72,7 @@ export const QuizPage = () => {
         }
       } catch (error) {
         console.error('Failed to load questions:', error);
-        setErrorMessage('Не вдалося завантажити квіз!');
+        setErrorMessage('Не вдалося завантажити тест!');
       } finally {
         setLoading(false);
       }
@@ -106,13 +106,13 @@ export const QuizPage = () => {
           userAnswers,
         });
 
-        navigate(`/tests/${testId}/results`, {
+        navigate(generatePath(ROUTES.testResult, { testId }), {
           state: { score: result.score, totalScore: result.total, userAnswers },
           replace: true,
         });
       } catch (error) {
         console.error('Failed to save quiz results:', error);
-        setErrorMessage('Не вдалося зберегти резульати!');
+        setErrorMessage('Не вдалося зберегти результати!');
 
         isSavingRef.current = false;
 
@@ -251,8 +251,6 @@ export const QuizPage = () => {
               )}
 
               {currentPart?.audio_path && (
-                // Keyed by part: stays mounted (and keeps playing) while the
-                // student moves between questions of the same part.
                 <AudioPlayer
                   key={currentPart.id}
                   path={currentPart.audio_path}

@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import styles from './TestsByLevel.module.scss';
 import type { Level, Test } from '../../../types/database';
 import { getTestsByLevelId } from '../../../services/tests';
-import { getLevelsById } from '../../../services/levels';
-import { Loader } from '../../Loader';
-import { Link, useParams } from 'react-router-dom';
+import { getLevels } from '../../../services/levels';
+import { Loader } from '../../shared/components/Loader';
+import { Link, generatePath, useParams } from 'react-router-dom';
 import { getDurationLabel } from '../../../utils/getDurationLabel';
 import { usePageMeta } from '../../../hooks/usePageMeta';
+import { ROUTES } from '../../../constants/routes';
+import { QUESTION_FORMS, pluralize } from '../../../utils/pluralize';
 
 export const TestsByLevel = () => {
   usePageMeta({ title: 'Тести рівня', noindex: true });
@@ -19,38 +21,43 @@ export const TestsByLevel = () => {
   const { levelId } = useParams();
 
   useEffect(() => {
-    const loadTests = async () => {
-      try {
-        const data = await getTestsByLevelId(Number(levelId));
+    let cancelled = false;
 
-        setTestsByLevel(data);
+    const loadData = async () => {
+      setLoading(true);
+      setErrorMessage('');
+
+      try {
+        const [testsData, levelsData] = await Promise.all([
+          getTestsByLevelId(Number(levelId)),
+          getLevels(),
+        ]);
+
+        if (!cancelled) {
+          setTestsByLevel(testsData);
+          setLevels(levelsData);
+        }
       } catch (error) {
-        console.error('Failed to load tests:', error);
-        setErrorMessage('Не вдалось завантажити тести!');
+        console.error('Failed to load tests by level:', error);
+
+        if (!cancelled) {
+          setErrorMessage('Не вдалось завантажити тести!');
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
-    loadTests();
+    loadData();
+
+    return () => {
+      cancelled = true;
+    };
   }, [levelId]);
 
-  useEffect(() => {
-    const loadLevels = async () => {
-      try {
-        const data = await getLevelsById();
-
-        setLevels(data);
-      } catch (error) {
-        console.error('Failed to load levels:', error);
-        setErrorMessage('Failed to load levels');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadLevels();
-  }, []);
+  const currentLevel = levels.find((level) => String(level.id) === levelId);
 
   if (loading) {
     return <Loader />;
@@ -76,13 +83,9 @@ export const TestsByLevel = () => {
         <div className={styles.wrapper}>
           <section className={styles.heroSection}>
             <span className={styles.sectionLabel}>BETWEEN / LEVEL</span>
-            {levels
-              .filter((level) => String(level.id) === String(levelId))
-              .map((level) => (
-                <div key={level.id} className={styles.level}>
-                  {level.code}
-                </div>
-              ))}
+            {currentLevel && (
+              <div className={styles.level}>{currentLevel.code}</div>
+            )}
 
             <div className={styles.heroContent}>
               <h2 className={styles.heroTitle}>
@@ -116,7 +119,9 @@ export const TestsByLevel = () => {
                   return (
                     <li key={test.id} className={styles.testItem}>
                       <Link
-                        to={`/tests/${test.id}`}
+                        to={generatePath(ROUTES.quiz, {
+                          testId: String(test.id),
+                        })}
                         className={styles.testCard}
                         aria-labelledby={testId}
                       >
@@ -137,25 +142,14 @@ export const TestsByLevel = () => {
 
                         <div className={styles.testInfo}>
                           <div className={styles.metaBox}>
-                            <span
-                              className={styles.metaBadge}
-                              aria-label={
-                                test.timer_duration
-                                  ? `Тривалість: ${test.timer_duration} с`
-                                  : 'Без обмеження часу'
-                              }
-                            >
-                              {test.timer_duration !== null
-                                ? `${test.timer_duration}с `
-                                : ''}
+                            <span className={styles.metaBadge}>
                               {getDurationLabel(test)}
                             </span>
                             <span
                               className={styles.metaBadge}
-                              aria-label={`${questionCount} questions`}
                             >
                               {questionCount}{' '}
-                              {questionCount > 4 ? 'питань' : 'питання'}
+                              {pluralize(questionCount, QUESTION_FORMS)}
                             </span>
                           </div>
                         </div>
@@ -166,7 +160,9 @@ export const TestsByLevel = () => {
               </ul>
             ) : (
               <div className={styles.errorCard}>
-                <p className={styles.errorText}>{errorMessage}</p>
+                <p className={styles.errorText}>
+                  Для цього рівня поки немає тестів.
+                </p>
               </div>
             )}
           </section>

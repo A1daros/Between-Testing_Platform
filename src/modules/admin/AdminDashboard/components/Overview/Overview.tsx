@@ -1,24 +1,25 @@
 import { useEffect, useState } from 'react';
 import styles from './Overview.module.scss';
-import type { Results, Test } from '../../../../../types/database';
+import type { Result } from '../../../../../types/database';
 import {
   loadCountPendingStudents,
   loadCountStudents,
 } from '../../../../../services/profile';
-import { getTests } from '../../../../../services/tests';
+import { loadCountTests } from '../../../../../services/tests';
+import { formatDate } from '../../../../../utils/formatDate';
 import {
   loadAttemptResults,
   loadRecentResults,
 } from '../../../../../services/results';
 import { StatCard } from '../common/StatCard';
 import { useAuth } from '../../../../../hooks/useAuth';
-import { Loader } from '../../../../Loader';
+import { Loader } from '../../../../shared/components/Loader';
 
 export const Overview = () => {
-  const [tests, setTests] = useState<Test[]>([]);
+  const [totalTests, setTotalTests] = useState(0);
   const [totalStudents, setTotalStudents] = useState<number | null>(null);
   const [attemptResults, setAttemptResults] = useState<number>(0);
-  const [recentResults, setRecentResults] = useState<Results[]>([]);
+  const [recentResults, setRecentResults] = useState<Result[]>([]);
   const [pendingStudents, setPendingStudents] = useState<number>(0);
 
   const [loading, setLoading] = useState(false);
@@ -45,20 +46,20 @@ export const Overview = () => {
         setErrorMessage('');
 
         const [
-          testsData,
+          totalTestsData,
           totalStudentsData,
           attemptResultsData,
           recentResultsData,
           pendingStudentsData,
         ] = await Promise.all([
-          getTests(),
+          loadCountTests(),
           loadCountStudents(),
           loadAttemptResults(),
           loadRecentResults(),
           loadCountPendingStudents(),
         ]);
 
-        setTests(testsData);
+        setTotalTests(totalTestsData);
         setTotalStudents(totalStudentsData);
         setAttemptResults(attemptResultsData);
         setRecentResults(recentResultsData);
@@ -109,7 +110,7 @@ export const Overview = () => {
 
       <div className={styles.container}>
         <ul className={styles.list}>
-          <StatCard label='Тести' value={tests.length} iconPath={testsIcon} />
+          <StatCard label='Тести' value={totalTests} iconPath={testsIcon} />
           <StatCard
             label='Учні'
             value={totalStudents}
@@ -132,8 +133,7 @@ export const Overview = () => {
 
           <ul className={styles.recentList}>
             {recentResults.map((student) => {
-              const date = new Date(student.created_at);
-              const formattedDate = date.toLocaleDateString();
+              const formattedDate = formatDate(student.created_at);
 
               return (
                 <li key={student.id} className={styles.recentItem}>
@@ -141,7 +141,7 @@ export const Overview = () => {
                     <div className={styles.infoCard}>
                       <span className={styles.label}>Учень:</span>
                       <p className={styles.studentDescription}>
-                        {student.profiles?.display_name || student.id}
+                        {student.profiles?.display_name || '—'}
                       </p>
                     </div>
 

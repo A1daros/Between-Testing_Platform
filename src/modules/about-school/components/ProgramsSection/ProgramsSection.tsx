@@ -1,18 +1,17 @@
-import type React from 'react';
 import styles from './ProgramsSection.module.scss';
 import { Link } from 'react-router-dom';
 import type { Program, ProgramFormat } from '../../../../types/database';
 import { SCHOOL_INSTAGRAM_URL } from '../../../../constants/constants';
 
-type Props = {
+type ProgramsSectionProps = {
   programsData: Program[];
   programFormats: ProgramFormat[];
 };
 
-export const ProgramsSection: React.FC<Props> = ({
+export const ProgramsSection = ({
   programsData,
   programFormats,
-}) => {
+}: ProgramsSectionProps) => {
   return (
     <section className={styles.programsSection}>
       <div className={styles.sectionHeader}>

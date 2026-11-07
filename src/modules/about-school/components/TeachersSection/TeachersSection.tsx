@@ -1,12 +1,11 @@
 import type { Teacher } from '../../../../types/database';
 import styles from './TeachersSection.module.scss';
-import type React from 'react';
 
-type Props = {
+type TeachersSectionProps = {
   teachers: Teacher[];
 };
 
-export const TeachersSection: React.FC<Props> = ({ teachers }) => {
+export const TeachersSection = ({ teachers }: TeachersSectionProps) => {
   return (
     <section className={styles.teachersSection}>
       <div className={styles.sectionHeader}>

@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { NewTestPayload } from '../modules/admin/AdminDashboard/components/Tests/types/testForm';
+import type { NewTestPayload } from '../types/testForm';
 import { removeTestAudio } from './audio';
 
 export const createTest = async (payload: NewTestPayload) => {
@@ -28,8 +28,6 @@ export const updateTest = async (testId: number, payload: NewTestPayload) => {
 };
 
 export const deleteTest = async (testId: number) => {
-  // delete_test only removes rows, so audio files are collected beforehand
-  // and removed from Storage afterwards.
   const { data: parts, error: partsError } = await supabase
     .from('test_parts')
     .select('audio_path')
@@ -52,7 +50,6 @@ export const deleteTest = async (testId: number) => {
   try {
     await removeTestAudio(audioPaths);
   } catch (removeError) {
-    // The test is already deleted; a leftover file is not worth failing for.
     console.error('Failed to remove test audio:', removeError);
   }
 };

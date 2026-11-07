@@ -10,7 +10,7 @@ import { PostList } from '../shared/components/PostList';
 import { useEffect, useState } from 'react';
 import type { Program, ProgramFormat, Teacher } from '../../types/database.ts';
 import { loadTeachers } from '../../services/teachers.ts';
-import { Loader } from '../Loader/Loader.tsx';
+import { Loader } from '../shared/components/Loader/Loader.tsx';
 import { loadProgramFormats, loadPrograms } from '../../services/programs.ts';
 import { SCHOOL_INSTAGRAM_URL } from '../../constants/constants';
 import { usePageMeta } from '../../hooks/usePageMeta';
@@ -119,7 +119,7 @@ export const AboutSchool = () => {
 
               <button
                 className={styles.button}
-                onClick={() => navigate('/placement-test')}
+                onClick={() => navigate(ROUTES.placementTest)}
               >
                 Пройти безкоштовний тест
               </button>

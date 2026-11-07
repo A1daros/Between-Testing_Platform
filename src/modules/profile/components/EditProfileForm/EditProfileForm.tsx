@@ -1,6 +1,6 @@
 import styles from './EditProfileForm.module.scss';
 import { useState, type FormEvent } from 'react';
-import { updateProfile } from '../../../../services/profile'; // Скоригуйте шлях до сервісів
+import { updateProfile } from '../../../../services/profile';
 import { AvatarUpload } from '../AvatarUpload/AvatarUpload';
 import type { Profile } from '../../../../types/database';
 import { useAuth } from '../../../../hooks/useAuth';

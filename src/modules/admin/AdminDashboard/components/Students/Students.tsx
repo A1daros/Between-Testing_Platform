@@ -1,3 +1,5 @@
+import { getAdminPath } from '../../../../../utils/getAdminPath';
+import { ADMIN_ROUTES } from '../../../../../constants/routes';
 import { useEffect, useMemo, useState } from 'react';
 import { SearchInput } from '../common/SearchInput/SearchInput';
 import type {
@@ -5,11 +7,11 @@ import type {
   StudentProfile,
 } from '../../../../../types/database';
 import { loadStudents, setProfileStatus } from '../../../../../services/profile';
-import { StudentList } from './components/StudentsList/StudentsList';
+import { StudentsList } from './components/StudentsList/StudentsList';
 import { useNavigate } from 'react-router-dom';
 import styles from './Students.module.scss';
-import type { SortOrder } from '../Tests/types/admin';
-import { Loader } from '../../../../Loader';
+import type { SortOrder } from '../../../types/sort';
+import { Loader } from '../../../../shared/components/Loader';
 
 type StatusFilter = 'all' | ProfileStatus;
 
@@ -36,7 +38,7 @@ export const Students = () => {
   const navigate = useNavigate();
 
   const handleCheckDetails = (id: string) => {
-    navigate(`/admin/students/student-details/${id}`);
+    navigate(getAdminPath(ADMIN_ROUTES.studentDetails, { studentId: id }));
   };
 
   const handleChangeStatus = async (
@@ -173,7 +175,7 @@ export const Students = () => {
       )}
 
       <div>
-        <StudentList
+        <StudentsList
           students={filteredSudents}
           checkDetails={handleCheckDetails}
           onChangeStatus={handleChangeStatus}

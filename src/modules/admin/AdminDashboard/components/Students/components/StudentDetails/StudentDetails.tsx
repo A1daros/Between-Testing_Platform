@@ -1,15 +1,18 @@
+import { getAdminPath } from '../../../../../../../utils/getAdminPath';
+import { ADMIN_ROUTES } from '../../../../../../../constants/routes';
 import { useEffect, useState } from 'react';
 import styles from './StudentDetails.module.scss';
-import type { StudentDetails } from '../../../../../../../types/database';
+import type { StudentWithResults } from '../../../../../../../types/database';
 import { useNavigate, useParams } from 'react-router-dom';
 import { loadStudentDetails } from '../../../../../../../services/profile';
 import { Table } from '../../../common/Table';
-import { getStudentDetailsColumns } from './StudentDetailsColumns';
-import { Loader } from '../../../../../../Loader';
+import { getStudentDetailsColumns } from './studentDetailsColumns';
+import { Loader } from '../../../../../../shared/components/Loader';
 import { SearchInput } from '../../../common/SearchInput/SearchInput';
+import { formatDate } from '../../../../../../../utils/formatDate';
 
-export const StudentDetailsOverview = () => {
-  const [studentDetails, setStudentDetails] = useState<StudentDetails[]>([]);
+export const StudentDetails = () => {
+  const [student, setStudent] = useState<StudentWithResults | null>(null);
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -18,7 +21,7 @@ export const StudentDetailsOverview = () => {
   const navigate = useNavigate();
 
   const handleCheckDetails = (resultId: number) => {
-    navigate(`/admin/results/result-details/${resultId}`);
+    navigate(getAdminPath(ADMIN_ROUTES.resultDetails, { resultId }));
   };
 
   useEffect(() => {
@@ -33,7 +36,7 @@ export const StudentDetailsOverview = () => {
       try {
         const data = await loadStudentDetails(studentId);
 
-        setStudentDetails(data);
+        setStudent(data);
       } catch (error) {
         console.error('Failed to load student details:', error);
         setErrorMessage('Не вдалося завантажити дані учня.');
@@ -65,7 +68,7 @@ export const StudentDetailsOverview = () => {
     );
   }
 
-  if (!studentDetails.length) {
+  if (!student) {
     return (
       <div className={styles.page}>
         <div className={styles.container}>
@@ -86,6 +89,10 @@ export const StudentDetailsOverview = () => {
       </div>
     );
   }
+
+  const filteredResults = student.results.filter((result) =>
+    (result.tests?.title ?? '').toLowerCase().includes(query.toLowerCase()),
+  );
 
   return (
     <div className={styles.page}>
@@ -110,47 +117,36 @@ export const StudentDetailsOverview = () => {
         </div>
       </div>
 
-      <div>
-        {studentDetails.map((student) => {
-          const mappedStudent = student.results;
-          const filteredResults = mappedStudent.filter((result) => {
-            const name = result.tests?.title.toLowerCase() ?? '';
+      <div className={styles.studentInfo}>
+        <div className={styles.infoContainer}>
+          <div className={styles.infoBlock}>
+            <h3 className={styles.infoTitle}>Імʼя:</h3>
+            <p className={styles.infoDescription}>{student.name}</p>
+          </div>
 
-            return name.includes(query.toLowerCase());
-          });
+          <div className={styles.infoBlock}>
+            <h3 className={styles.infoTitle}>Прізвище:</h3>
+            <p className={styles.infoDescription}>{student.surname}</p>
+          </div>
 
-          return (
-            <div key={student.id} className={styles.studentInfo}>
-              <div className={styles.infoContainer}>
-                <div className={styles.infoBlock}>
-                  <h3 className={styles.infoTitle}>Імʼя:</h3>
-                  <p className={styles.infoDescription}> {student.name}</p>
-                </div>
+          <div className={styles.infoBlock}>
+            <h3 className={styles.infoTitle}>Пошта:</h3>
+            <p className={styles.infoDescription}>{student.email}</p>
+          </div>
 
-                <div className={styles.infoBlock}>
-                  <h3 className={styles.infoTitle}>Прізвище:</h3>
-                  <p className={styles.infoDescription}>{student.surname}</p>
-                </div>
+          <div className={styles.infoBlock}>
+            <h3 className={styles.infoTitle}>Дата народження:</h3>
+            <p className={styles.infoDescription}>
+              {student.birth_date ? formatDate(student.birth_date) : '—'}
+            </p>
+          </div>
+        </div>
 
-                <div className={styles.infoBlock}>
-                  <h3 className={styles.infoTitle}>Пошта:</h3>
-                  <p className={styles.infoDescription}>{student.email}</p>
-                </div>
-
-                <div className={styles.infoBlock}>
-                  <h3 className={styles.infoTitle}>Дата народження:</h3>
-                  <p className={styles.infoDescription}>{student.birth_date}</p>
-                </div>
-              </div>
-
-              <Table
-                columns={columns}
-                rows={filteredResults}
-                onRowClick={(row) => handleCheckDetails(row.id)}
-              />
-            </div>
-          );
-        })}
+        <Table
+          columns={columns}
+          rows={filteredResults}
+          onRowClick={(row) => handleCheckDetails(row.id)}
+        />
       </div>
     </div>
   );

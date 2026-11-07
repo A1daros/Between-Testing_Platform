@@ -108,10 +108,13 @@ export default {
         message.length <= MAX.message;
 
       if (!valid) {
-        return new Response(JSON.stringify({ error: 'Invalid input' }), {
-          headers: rateHeaders,
-          status: 400,
-        });
+        return new Response(
+          JSON.stringify({ error: 'Перевірте правильність заповнення полів.' }),
+          {
+            headers: rateHeaders,
+            status: 400,
+          },
+        );
       }
 
       const response = await fetch('https://api.resend.com/emails', {
@@ -154,10 +157,15 @@ export default {
     } catch (error) {
       console.error(error);
 
-      return new Response(JSON.stringify({ error: 'Internal error' }), {
-        headers: jsonHeaders,
-        status: 500,
-      });
+      return new Response(
+        JSON.stringify({
+          error: 'Сталася помилка. Спробуйте ще раз пізніше.',
+        }),
+        {
+          headers: jsonHeaders,
+          status: 500,
+        },
+      );
     }
   },
 };

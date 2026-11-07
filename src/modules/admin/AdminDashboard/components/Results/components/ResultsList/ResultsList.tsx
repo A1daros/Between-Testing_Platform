@@ -1,18 +1,17 @@
-import type React from 'react';
-import type { Results } from '../../../../../../../types/database';
+import type { Result } from '../../../../../../../types/database';
 import styles from './ResultsList.module.scss';
 import { getResultsColumns } from './resultsColumns';
 import { Table } from '../../../common/Table';
 
-type Props = {
-  allStudentResults: Results[];
+type ResultsListProps = {
+  allStudentResults: Result[];
   checkDetails: (resultId: number) => void;
 };
 
-export const ResultsList: React.FC<Props> = ({
+export const ResultsList = ({
   allStudentResults,
   checkDetails,
-}) => {
+}: ResultsListProps) => {
   const columns = getResultsColumns();
 
   return (

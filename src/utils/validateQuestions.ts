@@ -1,4 +1,4 @@
-import type { UIQuestion } from "../modules/admin/AdminDashboard/components/Tests/types/testForm";
+import type { UIQuestion } from '../types/testForm';
 
 export const validateQuestions = (questions: UIQuestion[]): string | null => {
   if (questions.length === 0) {

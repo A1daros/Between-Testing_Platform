@@ -53,7 +53,7 @@ export const AvatarUpload = ({
           />
         ) : (
           <div className={styles.avatarPlaceholder}>
-            <span>NO_IMG</span>
+            <span>Немає фото</span>
           </div>
         )}
 
@@ -76,7 +76,7 @@ export const AvatarUpload = ({
           className={styles.hiddenInput}
           onChange={handleFileChange}
         />
-        <p className={styles.hint}>PNG, JPEG or WebP. Максимально 2MB.</p>
+        <p className={styles.hint}>PNG, JPEG або WebP. Максимум 2 МБ.</p>
       </div>
 
       {errorMessage && (

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import styles from './TestsPage.module.scss';
 import type { Test } from '../../types/database';
-import { Loader } from '../Loader';
-import { Link } from 'react-router-dom';
+import { Loader } from '../shared/components/Loader';
+import { Link, generatePath } from 'react-router-dom';
 import { getTests } from '../../services/tests';
 import { getDurationLabel } from '../../utils/getDurationLabel';
 import { usePageMeta } from '../../hooks/usePageMeta';
+import { ROUTES } from '../../constants/routes';
+import { QUESTION_FORMS, pluralize } from '../../utils/pluralize';
 
 export const TestsPage = () => {
   usePageMeta({ title: 'Тести', noindex: true });
@@ -85,7 +87,9 @@ export const TestsPage = () => {
                 return (
                   <li key={test.id} className={styles.testItem}>
                     <Link
-                      to={`/tests/${test.id}`}
+                      to={generatePath(ROUTES.quiz, {
+                        testId: String(test.id),
+                      })}
                       className={styles.testCard}
                       aria-labelledby={testId}
                     >
@@ -106,25 +110,14 @@ export const TestsPage = () => {
 
                       <div className={styles.testInfo}>
                         <div className={styles.metaBox}>
-                          <span
-                            className={styles.metaBadge}
-                            aria-label={
-                              test.timer_duration
-                                ? `Тривалість: ${test.timer_duration} с`
-                                : 'Без обмеження часу'
-                            }
-                          >
-                            {test.timer_duration !== null
-                              ? `${test.timer_duration}с `
-                              : ''}
+                          <span className={styles.metaBadge}>
                             {getDurationLabel(test)}
                           </span>
                           <span
                             className={styles.metaBadge}
-                            aria-label={`${questionCount} questions`}
                           >
                             {questionCount}{' '}
-                            {questionCount > 4 ? 'питань' : 'питання'}
+                            {pluralize(questionCount, QUESTION_FORMS)}
                           </span>
                         </div>
                       </div>

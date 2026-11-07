@@ -1,6 +1,6 @@
 import styles from './PlacementTest.module.scss';
 import { useEffect, useState } from 'react';
-import { Loader } from '../../Loader';
+import { Loader } from '../../shared/components/Loader';
 import { SCHOOL_INSTAGRAM_URL } from '../../../constants/constants';
 import { useQuiz } from '../../../hooks/useQuiz';
 import { getPlacementTest } from '../../../services/questions';

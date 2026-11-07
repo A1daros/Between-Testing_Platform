@@ -1,15 +1,15 @@
 import { useParams } from 'react-router-dom';
 import { TestForm } from '../TestForm';
 import { useEffect, useState } from 'react';
-import type { EditTest } from '../../../../../../../types/database';
+import type { EditableTest } from '../../../../../../../types/database';
 import { getTestById } from '../../../../../../../services/tests';
-import type { NewTestPayload, UIPart, UIQuestion } from '../../types/testForm';
-import { Loader } from '../../../../../../Loader';
+import type { NewTestPayload, UIPart, UIQuestion } from '../../../../../../../types/testForm';
+import { Loader } from '../../../../../../shared/components/Loader';
 import styles from './EditTest.module.scss';
 import { updateTest } from '../../../../../../../services/testsForm';
 
-export const EditTestForm = () => {
-  const [editTest, setEditTest] = useState<EditTest | null>(null);
+export const EditTest = () => {
+  const [editTest, setEditTest] = useState<EditableTest | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');

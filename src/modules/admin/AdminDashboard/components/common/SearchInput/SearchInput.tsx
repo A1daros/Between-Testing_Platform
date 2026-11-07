@@ -1,23 +1,22 @@
-import type React from 'react';
 import styles from './SearchInput.module.scss';
 
-type Props = {
+type SearchInputProps = {
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
 };
 
-export const SearchInput: React.FC<Props> = ({
+export const SearchInput = ({
   placeholder,
   value,
   onChange,
-}) => {
+}: SearchInputProps) => {
   return (
     <div className={styles.searchContainer}>
       <input
-        id='input-id'
         type='search'
         placeholder={placeholder}
+        aria-label={placeholder}
         className={styles.input}
         value={value}
         onChange={(event) => onChange(event.target.value)}

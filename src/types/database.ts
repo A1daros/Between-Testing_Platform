@@ -91,7 +91,7 @@ export interface ResultInput {
   total: number;
 }
 
-export interface Results {
+export interface Result {
   id: number;
   test_id: number;
   user_id: string;
@@ -112,11 +112,11 @@ export interface Results {
 export type AdminResultsSort = 'date' | 'test' | 'student';
 
 export interface AdminResultsPage {
-  items: Results[];
+  items: Result[];
   total: number;
 }
 
-export interface ResultDetails {
+export interface ResultAnswerDetails {
   id: number;
   result_id: number;
   question_id: number;
@@ -163,7 +163,7 @@ export interface PlacementResult {
   level_title: string;
 }
 
-export interface EditTest {
+export interface EditableTest {
   id: number;
   title: string;
   description: string;
@@ -193,7 +193,7 @@ export interface StudentResults {
   tests: Test | null;
 }
 
-export interface StudentDetails {
+export interface StudentWithResults {
   id: string;
   name: string;
   surname: string;
@@ -220,7 +220,7 @@ export interface Profile {
     title: string;
   };
 
-  results: Results[];
+  results: Result[];
 }
 
 export interface StudentProfile {

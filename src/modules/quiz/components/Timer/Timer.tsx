@@ -1,14 +1,14 @@
 import { useCountdown } from '../../../../hooks/useCountdown';
 import styles from './Timer.module.scss';
 
-type Props = {
+type TimerProps = {
   durationSeconds: number;
   onExpire: () => void;
 };
 
 const URGENT_THRESHOLD_SECONDS = 10;
 
-export const Timer = ({ durationSeconds, onExpire }: Props) => {
+export const Timer = ({ durationSeconds, onExpire }: TimerProps) => {
   const secondsLeft = useCountdown(durationSeconds, onExpire);
 
   const minutes = Math.floor(secondsLeft / 60);

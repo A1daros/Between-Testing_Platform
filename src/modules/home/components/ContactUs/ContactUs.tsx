@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styles from './ContactUs.module.scss';
-import { supabase } from '../../../../lib/supabase';
-import { FunctionsHttpError } from '@supabase/supabase-js';
+import { sendContactMessage } from '../../../../services/contact';
 import { CONTACTS_SECTION_ID } from '../../../../constants/routes';
+import { SCHOOL_INSTAGRAM_URL } from '../../../../constants/constants';
 
 export const ContactUs = () => {
   const [firstName, setFirstName] = useState('');
@@ -24,13 +24,13 @@ export const ContactUs = () => {
     setIsSuccess(false);
 
     try {
-      const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: { firstName, lastName, email, message, website },
+      await sendContactMessage({
+        firstName,
+        lastName,
+        email,
+        message,
+        website,
       });
-
-      if (error) {
-        throw error;
-      }
 
       setIsSuccess(true);
 
@@ -40,14 +40,13 @@ export const ContactUs = () => {
       setMessage('');
       setAgreeToTerms(false);
     } catch (error) {
-      console.error('Resolve error:', error);
-      let text = 'Failed to send the message. Please try again later.';
+      console.error('Failed to send contact message:', error);
 
-      if (error instanceof FunctionsHttpError) {
-        const payload = await error.context.json().catch(() => null);
-        if (payload?.error) text = payload.error;
-      }
-      setErrorMessage(text);
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Не вдалося надіслати повідомлення. Спробуйте ще раз пізніше.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -196,7 +195,9 @@ export const ContactUs = () => {
             <div className={styles.addressBlock}>
               <span className={styles.addressTitle}>Instagram:</span>
               <a
-                href='https://www.instagram.com/school.between?stkn=eDk5a3F0emltaWRl'
+                href={SCHOOL_INSTAGRAM_URL}
+                target='_blank'
+                rel='noopener noreferrer'
                 className={styles.addressDescription}
               >
                 school.between

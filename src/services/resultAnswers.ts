@@ -1,12 +1,12 @@
 import { supabase } from '../lib/supabase';
-import type { ResultDetails } from '../types/database';
+import type { ResultAnswerDetails } from '../types/database';
 import { getCorrectAnswers } from './answers';
 
-type ResultAnswerRow = Omit<ResultDetails, 'correct_answer_id'>;
+type ResultAnswerRow = Omit<ResultAnswerDetails, 'correct_answer_id'>;
 
 export const getResultDetails = async (
   resultId: number,
-): Promise<ResultDetails[]> => {
+): Promise<ResultAnswerDetails[]> => {
   const { data, error } = await supabase
     .from('result_answers')
     .select(

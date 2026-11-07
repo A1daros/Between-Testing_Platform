@@ -2,11 +2,11 @@ import type { Post } from '../../../../types/landing';
 import { PostCard } from '../PostCard';
 import styles from './PostList.module.scss';
 
-type Props = {
+type PostListProps = {
   posts: Post[];
 };
 
-export const PostList: React.FC<Props> = ({ posts }) => {
+export const PostList = ({ posts }: PostListProps) => {
   return (
     <div className={styles.container}>
       <ul className={styles.productList}>

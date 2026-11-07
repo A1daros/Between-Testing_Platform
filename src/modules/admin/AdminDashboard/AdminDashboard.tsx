@@ -1,3 +1,5 @@
+import { getAdminPath } from '../../../utils/getAdminPath';
+import { ADMIN_ROUTES } from '../../../constants/routes';
 import { useState } from 'react';
 import styles from './AdminDashboard.module.scss';
 import { NavLink, Outlet } from 'react-router-dom';
@@ -46,28 +48,28 @@ export const AdminDashboard = () => {
 
         <nav className={styles.nav}>
           <NavLink
-            to={`/admin/overview`}
+            to={getAdminPath(ADMIN_ROUTES.overview)}
             className={linkIsActive}
             onClick={closeMenu}
           >
             Огляд
           </NavLink>
           <NavLink
-            to={`/admin/tests`}
+            to={getAdminPath(ADMIN_ROUTES.tests)}
             className={linkIsActive}
             onClick={closeMenu}
           >
             Тести
           </NavLink>
           <NavLink
-            to={`/admin/results`}
+            to={getAdminPath(ADMIN_ROUTES.results)}
             className={linkIsActive}
             onClick={closeMenu}
           >
             Результати
           </NavLink>
           <NavLink
-            to={`/admin/students`}
+            to={getAdminPath(ADMIN_ROUTES.students)}
             className={linkIsActive}
             onClick={closeMenu}
           >
