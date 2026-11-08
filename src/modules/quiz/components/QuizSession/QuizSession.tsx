@@ -120,6 +120,10 @@ export const QuizSession = ({
 
   useEffect(() => {
     const warnBeforeLeaving = (event: BeforeUnloadEvent) => {
+      if (isSavingRef.current) {
+        return;
+      }
+
       event.preventDefault();
     };
 
