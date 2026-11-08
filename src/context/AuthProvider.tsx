@@ -9,6 +9,7 @@ import { signOut as signOutUser } from '../services/auth';
 type LoadedProfile = {
   userId: string;
   profile: Profile | null;
+  failed: boolean;
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loadedProfile, setLoadedProfile] = useState<LoadedProfile | null>(
     null,
   );
+  const [loadRequestId, setLoadRequestId] = useState(0);
 
   const user = session?.user ?? null;
   const userId = user?.id ?? null;
@@ -44,26 +46,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     getProfile(userId)
       .then((profile) => {
         if (!cancelled) {
-          setLoadedProfile({ userId, profile });
+          setLoadedProfile({ userId, profile, failed: false });
         }
       })
       .catch((error) => {
         console.error(error);
 
         if (!cancelled) {
-          setLoadedProfile({ userId, profile: null });
+          setLoadedProfile({ userId, profile: null, failed: true });
         }
       });
 
     return () => {
       cancelled = true;
     };
-  }, [userId]);
+  }, [userId, loadRequestId]);
 
-  const profile =
-    userId && loadedProfile?.userId === userId ? loadedProfile.profile : null;
-  const loading =
-    !authReady || (userId !== null && loadedProfile?.userId !== userId);
+  const isCurrentProfile = userId !== null && loadedProfile?.userId === userId;
+  const profile = isCurrentProfile ? loadedProfile.profile : null;
+  const profileLoadFailed = isCurrentProfile && loadedProfile.failed;
+  const loading = !authReady || (userId !== null && !isCurrentProfile);
 
   const signOut = async () => {
     await signOutUser();
@@ -76,7 +78,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const profile = await getProfile(userId);
 
-    setLoadedProfile({ userId, profile });
+    setLoadedProfile({ userId, profile, failed: false });
+  };
+
+  const retryProfileLoad = () => {
+    setLoadedProfile(null);
+    setLoadRequestId((id) => id + 1);
   };
 
   return (
@@ -86,8 +93,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         profile,
         session,
         loading,
+        profileLoadFailed,
         signOut,
         refreshProfile,
+        retryProfileLoad,
       }}
     >
       {children}

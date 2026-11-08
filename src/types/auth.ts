@@ -6,8 +6,10 @@ export type AuthContextType = {
   profile: Profile | null;
   session: Session | null;
   loading: boolean;
+  profileLoadFailed: boolean;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  retryProfileLoad: () => void;
 };
 
 export type LoginRedirectState = {
