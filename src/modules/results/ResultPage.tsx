@@ -27,7 +27,8 @@ export const ResultPage = () => {
     );
   }
 
-  const { score, totalScore } = result;
+  const { score, totalScore, attemptsLeft } = result;
+  const canRetake = attemptsLeft === null || attemptsLeft > 0;
 
   const percentage = totalScore ? Math.round((score / totalScore) * 100) : 0;
 
@@ -87,11 +88,19 @@ export const ResultPage = () => {
                     сторінці ваших результатів.
                   </Link>
                 </p>
+
+                {attemptsLeft !== null && (
+                  <p className={styles.subtext}>
+                    {attemptsLeft > 0
+                      ? `Залишилось спроб: ${attemptsLeft}. Правильні відповіді відкриються після останньої спроби.`
+                      : 'Спроби вичерпано. Правильні відповіді вже доступні в розборі результату.'}
+                  </p>
+                )}
               </div>
             </div>
 
             <footer className={styles.actions}>
-              {testId && (
+              {testId && canRetake && (
                 <Link
                   to={generatePath(ROUTES.quiz, { testId })}
                   replace

@@ -1,0 +1,34 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.title {
+  margin: 0;
+  color: $text-main;
+
+  @include h3-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
+  }
+}
+
+.note {
+  max-width: 680px;
+  margin: 0;
+  color: $text-secondary;
+
+  @include body-small;
+}
+
+.button {
+  @include button-secondary;
+
+  white-space: nowrap;
+}

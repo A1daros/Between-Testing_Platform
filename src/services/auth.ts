@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { LEGAL_VERSION } from '../constants/legal';
 import { ROUTES } from '../constants/routes';
 import { getAuthErrorMessage } from '../utils/getAuthErrorMessage';
 
@@ -38,6 +39,7 @@ export const signUp = async ({
         display_name: `${name} ${surname}`,
         name,
         surname,
+        terms_version: LEGAL_VERSION,
       },
     },
   });

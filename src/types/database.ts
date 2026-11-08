@@ -89,7 +89,7 @@ export type ResultTest = {
 export type Result = {
   id: number;
   test_id: number;
-  user_id: string;
+  user_id: string | null;
   score: number;
   total: number;
   created_at: string;
@@ -138,15 +138,42 @@ export type ResultAnswerDetails = {
   correct_answer_id: number | null;
 };
 
-export type SaveQuizResultInput = {
-  testId: number;
-  userAnswers: Record<number, number>;
+export type ResultDetailsData = {
+  rows: ResultAnswerDetails[];
+  isKeyLocked: boolean;
 };
 
 export type SubmitQuizResult = {
   result_id: number;
   score: number;
   total: number;
+  attempts_used: number;
+  attempts_allowed: number | null;
+};
+
+export type QuizAttempt = {
+  id: number;
+  answers: Record<number, number>;
+  audio_plays: Record<number, number>;
+  question_index: number;
+  seconds_left: number | null;
+  question_seconds_left: number | null;
+};
+
+export type QuizAttemptState = {
+  attempt: QuizAttempt | null;
+  expired_result: SubmitQuizResult | null;
+  attempts_used: number;
+  attempts_allowed: number | null;
+};
+
+export type QuizProgressStatus = 'active' | 'expired' | 'finished';
+
+export type StudentAttempts = {
+  test_id: number;
+  title: string;
+  attempts_used: number;
+  attempts_allowed: number | null;
 };
 
 export type PlacementAnswer = {
@@ -205,6 +232,8 @@ export type StudentWithResults = {
   surname: string;
   email: string;
   birth_date: string | null;
+  terms_accepted_at: string | null;
+  terms_version: string | null;
 
   results: StudentResult[];
 };
@@ -219,6 +248,8 @@ export type Profile = {
   email: string;
   avatar_url: string | null;
   birth_date: string | null;
+  terms_accepted_at: string | null;
+  terms_version: string | null;
   created_at: string;
 };
 

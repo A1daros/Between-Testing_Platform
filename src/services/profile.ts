@@ -141,6 +141,16 @@ export const setProfileStatus = async (
   return data.status;
 };
 
+export const deleteStudent = async (studentId: string): Promise<void> => {
+  const { error } = await supabase.functions.invoke('delete-student', {
+    body: { userId: studentId },
+  });
+
+  if (error) {
+    throw error;
+  }
+};
+
 export const loadStudents = async (): Promise<StudentProfile[]> =>
   unwrap(
     await supabase

@@ -6,7 +6,7 @@ type AudioPlayerProps = {
   path: string;
   maxPlays: number;
   playsUsed: number;
-  onPlayStart: () => void;
+  onPlayStart: () => Promise<void>;
 };
 
 export const AudioPlayer = ({
@@ -16,6 +16,7 @@ export const AudioPlayer = ({
   onPlayStart,
 }: AudioPlayerProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const isPlayRejectedRef = useRef(false);
 
   const [src, setSrc] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
@@ -71,7 +72,15 @@ export const AudioPlayer = ({
 
       audio.currentTime = 0;
       await audio.play();
-      onPlayStart();
+
+      try {
+        await onPlayStart();
+      } catch (error) {
+        isPlayRejectedRef.current = true;
+        audio.pause();
+        audio.currentTime = 0;
+        throw error;
+      }
     } catch (error) {
       console.error('Failed to play audio:', error);
       setErrorMessage('Не вдалося відтворити аудіо.');
@@ -115,7 +124,10 @@ export const AudioPlayer = ({
           }}
           onPause={(event) => {
             setIsPlaying(false);
-            setIsPaused(!event.currentTarget.ended);
+            setIsPaused(
+              !event.currentTarget.ended && !isPlayRejectedRef.current,
+            );
+            isPlayRejectedRef.current = false;
           }}
           onEnded={() => {
             setIsPlaying(false);

@@ -1,0 +1,76 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 32px 0 64px;
+
+  @media (min-width: $breakpoint-s) {
+    padding: 56px 0 96px;
+  }
+}
+
+.label {
+  @include section-label;
+}
+
+.title {
+  margin: 0;
+  color: $text-main;
+
+  @include h2-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h1-font;
+  }
+}
+
+.description,
+.note {
+  max-width: 680px;
+  margin: 0;
+  color: $text-secondary;
+
+  @include body-font;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  margin: 0;
+  border-top: $border;
+
+  @media (min-width: $breakpoint-s) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0;
+  border-bottom: $border;
+}
+
+.factLabel {
+  color: $text-secondary;
+
+  @include uppercase;
+}
+
+.factValue {
+  margin: 0;
+  color: $text-main;
+  font-variant-numeric: tabular-nums;
+
+  @include body-font;
+}
+
+.button {
+  @include button-primary;
+}

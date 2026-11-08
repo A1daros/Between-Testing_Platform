@@ -32,7 +32,7 @@ description: Правила роботи зі схемою Supabase/Postgres —
   - нову колонку в `answers`, яку має читати клієнт, відкривай окремим `grant select (col)`;
   - у клієнті `answers(*)` / `select('*')` по `answers` впаде з помилкою доступу. Завжди перелічуй колонки, як у `resultAnswers.ts`.
 - **`profiles`**: клієнт може оновлювати лише `display_name`, `birth_date`, `avatar_url` (колонковий грант). `role`, `status` (схвалення: `pending`/`approved`/`rejected`) і будь-які службові поля **не** додавай у цей грант — їх змінює тільки RPC/адмін (`status` — через `set_profile_status`). Нове поле, яке редагує сам користувач, додавай окремим `grant update (col)`.
-- **`results` / `result_answers`**: `insert` для клієнта відкликано, записи робить лише `submit_quiz`. Не повертай клієнтського insert-у й не створюй RPC, що приймає `user_id` чи `score` від клієнта (з цієї причини видалено `save_quiz_result`).
+- **`results` / `result_answers`**: `insert` для клієнта відкликано, записи робить лише `submit_quiz_attempt`. `quiz_attempts` і `test_attempt_grants` клієнт змінює лише через RPC. Не повертай клієнтського insert-у й не створюй RPC, що приймає `user_id` чи `score` від клієнта (з цієї причини видалено `save_quiz_result`).
 
 ## RLS-політики
 
@@ -74,19 +74,20 @@ description: Правила роботи зі схемою Supabase/Postgres —
 - Коди помилок: `28000` — не автентифікований, `42501` — немає прав, `P0002` — не знайдено, `22023` — невалідний параметр. Повідомлення англійською. UI перекладає їх у хуках/компонентах.
 - Повертай `jsonb` (`jsonb_build_object`, `coalesce(jsonb_agg(...), '[]'::jsonb)`), щоб порожній результат не був `null`.
 - Ключі JSON-пейлоаду, які шле клієнт, — у camelCase (`levelId`, `timerEnabled`, `parts[].uiId`, `parts[].audioPath`, `questions[].partId`, `questions[].description`, `answers[].isCorrect`). Ключі відповіді — у snake_case (`result_id`, `level_code`).
-- Ніколи не повертай клієнту `is_correct` разом із питаннями. Правильні відповіді віддає лише `get_correct_answers`: адміну або тому, хто вже здавав тест.
+- Ніколи не повертай клієнту `is_correct` разом із питаннями. Правильні відповіді віддає лише `get_correct_answers`: адміну або учню, який використав усі спроби й не має незавершеної.
 - Зміна сигнатури (типи чи кількість параметрів) створює **нову перегрузку**. Стару функцію треба явно видалити: `drop function if exists public.fn(old_types)`.
 
 ## Модель і зв'язки (що варто пам'ятати)
 
 - `tests.check_test_relations`: `final_test` → `level_id` обов'язковий і `submodule_id` = null; `submodule_quiz` → навпаки; `placement_test` → обидва null.
-- Бал: кожне питання дає `test_parts.points` (або 1, якщо частини немає). `score` і `total` рахує `submit_quiz`.
+- Бал: кожне питання дає `test_parts.points` (або 1, якщо частини немає). `score` і `total` рахує `private.finalize_quiz_attempt`.
+- Спроби: `quiz_attempts` тримає дедлайни, чернетку `answers`, `audio_plays` і позицію; порядок питань — `sort_order, id`, клієнт сортує так само. Використані спроби — це `results` плюс незавершена спроба; ліміт — 2 плюс `test_attempt_grants.extra_attempts`, для адміна без ліміту (`null`). `quiz_attempts` і `test_attempt_grants` каскадно видаляються разом із тестом і користувачем.
 - Більшість FK **без `on delete cascade`** (`answers→questions`, `questions→tests`, `results→tests`, `result_answers→*`). Тому `delete_test` і `save_test` видаляють дочірні рядки вручну в порядку `result_answers → results → answers → questions → test_parts → tests`. Нова дочірня таблиця тестів = оновлення обох функцій (або `cascade` на новому FK).
 - **`save_test` оновлює тест на місці**: частини/питання/відповіді з `id` у пейлоаді оновлюються (id не змінюються), без `id` — створюються, відсутні в пейлоаді — видаляються разом із `result_answers`, що на них посилаються (`results` лишаються). Оновлюються лише колонки, які шле форма; решта (`questions.description`, `level_id`, `title`) зберігається. Нове поле, яке редагується у формі (аудіо, reading-текст), треба додати і в пейлоад, і в `update`/`insert` функції. `save_test` — `security definer` і при створенні завжди ставить `test_type = 'final_test'`.
 - **Бал результату не перераховується** після редагування тесту. Тригери `private.touch_test_content()` на `test_parts`, `questions`, `answers` (insert/delete і update лише за реальної зміни рядка) ставлять `tests.content_updated_at = now()`. UI позначає спроби, створені раніше (`results.created_at < tests.content_updated_at`), як «Тест змінено» (`utils/isResultOutdated.ts`). Нова дочірня таблиця контенту тесту отримує такий самий тригер.
-- `results.user_id` має два FK: на `auth.users` і на `profiles`. Другий потрібен PostgREST для вкладення `results → profiles(display_name)`, тож не видаляй його.
-- `profiles.id → auth.users` без cascade: видалення користувача з Auth упреться в профіль і його результати.
-- Тригер `on_auth_user_created` → `public.handle_new_user()` заповнює `profiles` з `raw_user_meta_data` (`display_name`, `name`, `surname`). Нову обов'язкову колонку в `profiles` давай з `default` або заповнюй у цій функції, інакше реєстрація впаде.
+- `results.user_id` має два FK: на `auth.users` і на `profiles`, обидва `on delete set null` (результат лишається анонімним, `user_id` може бути `null`). Другий потрібен PostgREST для вкладення `results → profiles(display_name)`, тож не видаляй його.
+- `profiles.id → auth.users` з `on delete cascade`. Акаунт видаляє лише edge-функція `delete-student`, вона ж прибирає файли аватара.
+- Тригер `on_auth_user_created` → `public.handle_new_user()` заповнює `profiles` з `raw_user_meta_data` (`display_name`, `name`, `surname`, `terms_version`; `terms_accepted_at` — час сервера). Нову обов'язкову колонку в `profiles` давай з `default` або заповнюй у цій функції, інакше реєстрація впаде.
 - Бакети: `avatars` (public, 2 МБ, png/jpeg/webp, політики на власника, зокрема delete: клієнт видаляє попередній файл після завантаження нового), `teachers` (public, без обмежень і без політик, файли — через дашборд) і `test-audio` (private, 20 МБ, аудіо; читання — `is_approved()` через signed URL, запис/видалення — `is_admin()`). Шлях аудіо зберігається в `test_parts.audio_path`; SQL не видаляє файли зі Storage, тому прибирає їх клієнт (`services/audio.ts`, `deleteTest`, `TestForm`). Новий бакет одразу отримує ліміт розміру й `allowed_mime_types`.
 
 ## Чекліст для нової міграції

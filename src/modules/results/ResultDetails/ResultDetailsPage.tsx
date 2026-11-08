@@ -46,7 +46,7 @@ export const ResultDetailsPage = () => {
     );
   }
 
-  if (!data || data.length === 0) {
+  if (!data || data.rows.length === 0) {
     return (
       <div className={styles.page}>
         <div className={styles.container}>
@@ -60,12 +60,13 @@ export const ResultDetailsPage = () => {
     );
   }
 
-  const test = data[0].questions.tests;
+  const { rows, isKeyLocked } = data;
+  const test = rows[0].questions.tests;
   const isOutdated = isResultOutdated(
-    data[0].results.created_at,
+    rows[0].results.created_at,
     test.content_updated_at,
   );
-  const reviewItems = buildResultReview(data);
+  const reviewItems = buildResultReview(rows);
 
   return (
     <div className={styles.page}>
@@ -96,6 +97,13 @@ export const ResultDetailsPage = () => {
               )}
 
               {isOutdated && <OutdatedBadge />}
+
+              {isKeyLocked && (
+                <p className={styles.keyNotice}>
+                  Правильні відповіді відкриються після останньої спроби. Поки
+                  що тут показано лише ваші відповіді.
+                </p>
+              )}
             </div>
           </section>
 
@@ -132,9 +140,11 @@ export const ResultDetailsPage = () => {
                   <div className={styles.answerGrid}>
                     <div
                       className={`${styles.answerBlock} ${
-                        item.isCorrect
-                          ? styles.answerCorrect
-                          : styles.answerIncorrect
+                        isKeyLocked
+                          ? ''
+                          : item.isCorrect
+                            ? styles.answerCorrect
+                            : styles.answerIncorrect
                       }`}
                     >
                       <span className={styles.answerLabel}>ВАША ВІДПОВІДЬ</span>
@@ -142,17 +152,19 @@ export const ResultDetailsPage = () => {
                       <p className={styles.answerText}>{item.studentAnswer}</p>
                     </div>
 
-                    <div
-                      className={`${styles.answerBlock} ${styles.correctAnswer}`}
-                    >
-                      <span className={styles.answerLabel}>
-                        ПРАВИЛЬНА ВІДПОВІДЬ
-                      </span>
+                    {!isKeyLocked && (
+                      <div
+                        className={`${styles.answerBlock} ${styles.correctAnswer}`}
+                      >
+                        <span className={styles.answerLabel}>
+                          ПРАВИЛЬНА ВІДПОВІДЬ
+                        </span>
 
-                      <p className={styles.answerText}>
-                        {item.correctAnswer ?? '—'}
-                      </p>
-                    </div>
+                        <p className={styles.answerText}>
+                          {item.correctAnswer ?? '—'}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </article>
               </div>
