@@ -11,6 +11,7 @@ import { ROUTES } from '../../constants/routes';
 import { getQuizResultState } from '../../utils/getQuizResultState';
 import { QuizSession } from './components/QuizSession';
 import { QuizStart } from './components/QuizStart';
+import { captureError } from '../../utils/captureError';
 
 export const QuizPage = () => {
   const { testId } = useParams<{ testId: string }>();
@@ -60,7 +61,7 @@ export const QuizPage = () => {
 
       setData((prev) => prev && { ...prev, attemptState });
     } catch (startAttemptError) {
-      console.error('Failed to start quiz attempt:', startAttemptError);
+      captureError(startAttemptError);
       setStartError('Не вдалося почати тест. Спробуйте ще раз.');
     } finally {
       setIsStarting(false);

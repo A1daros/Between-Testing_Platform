@@ -6,6 +6,7 @@ import { deleteStudent } from '../../../../../services/profile';
 import { getAdminPath } from '../../../../../utils/getAdminPath';
 import { Alert } from '../../../../shared/components/Alert';
 import { Modal } from '../../../../shared/components/Modal';
+import { captureError } from '../../../../../utils/captureError';
 
 type DeleteStudentProps = {
   studentId: string;
@@ -36,7 +37,7 @@ export const DeleteStudent = ({
       await deleteStudent(studentId);
       navigate(getAdminPath(ADMIN_ROUTES.students), { replace: true });
     } catch (error) {
-      console.error('Failed to delete student:', error);
+      captureError(error);
       setDeleteError('Не вдалося видалити акаунт. Спробуйте ще раз.');
       setIsDeleting(false);
     }

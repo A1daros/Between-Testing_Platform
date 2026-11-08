@@ -27,7 +27,6 @@ export const ForgotPassword = () => {
 
       setIsEmailSent(true);
     } catch (error) {
-      console.error('Failed to send password reset email:', error);
       setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);

@@ -19,6 +19,7 @@ import { getQuizResultState } from '../../../../utils/getQuizResultState';
 import { padNumber } from '../../../../utils/padNumber';
 import { Timer } from '../Timer';
 import { AudioPlayer } from '../AudioPlayer';
+import { captureError } from '../../../../utils/captureError';
 
 type QuizSessionProps = {
   testId: number;
@@ -82,7 +83,7 @@ export const QuizSession = ({
         replace: true,
       });
     } catch (error) {
-      console.error('Failed to save quiz results:', error);
+      captureError(error);
       setSaveError(
         'Не вдалося зберегти результати. Перевірте підключення до інтернету й надішліть відповіді ще раз.',
       );
@@ -114,7 +115,7 @@ export const QuizSession = ({
         }
       })
       .catch((error) => {
-        console.error('Failed to save quiz progress:', error);
+        captureError(error);
       });
   }, [attempt.id, userAnswers, currentQuestionIndex]);
 

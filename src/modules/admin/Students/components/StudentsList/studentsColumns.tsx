@@ -38,11 +38,17 @@ export const getStudentsColumns = (
   {
     label: 'Статус',
     render: (student) => (
-      <span
-        className={`${styles.statusBadge} ${STATUS_CLASSES[student.status]}`}
-      >
-        {STATUS_LABELS[student.status]}
-      </span>
+      <div className={styles.statusCell}>
+        <span
+          className={`${styles.statusBadge} ${STATUS_CLASSES[student.status]}`}
+        >
+          {STATUS_LABELS[student.status]}
+        </span>
+
+        {!student.email_confirmed_at && (
+          <span className={styles.statusBadge}>Пошта не підтверджена</span>
+        )}
+      </div>
     ),
   },
   {
@@ -58,7 +64,7 @@ export const getStudentsColumns = (
 
       return (
         <div className={styles.actions}>
-          {student.status !== 'approved' && (
+          {student.status !== 'approved' && student.email_confirmed_at && (
             <button
               type='button'
               className={tableStyles.actionButton}

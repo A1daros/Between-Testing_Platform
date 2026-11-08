@@ -11,6 +11,7 @@ import { Loader } from '../../../../shared/components/Loader';
 import { Table } from '../../../components/Table';
 import type { ColumnConfig } from '../../../types/table';
 import type { StudentAttempts as StudentAttemptsRow } from '../../../../../types/database';
+import { captureError } from '../../../../../utils/captureError';
 
 type StudentAttemptsProps = {
   studentId: string;
@@ -37,7 +38,7 @@ export const StudentAttempts = ({ studentId }: StudentAttemptsProps) => {
       await grantExtraAttempt(studentId, testId);
       reload();
     } catch (grantAttemptError) {
-      console.error('Failed to grant extra attempt:', grantAttemptError);
+      captureError(grantAttemptError);
       setGrantError('Не вдалося додати спробу. Спробуйте ще раз.');
     } finally {
       setGrantingTestId(null);

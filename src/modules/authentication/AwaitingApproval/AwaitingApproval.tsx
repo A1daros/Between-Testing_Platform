@@ -8,6 +8,7 @@ import { isProfileApproved } from '../../../utils/isProfileApproved';
 import { Loader } from '../../shared/components/Loader';
 import { Alert } from '../../shared/components/Alert';
 import { usePageMeta } from '../../../hooks/usePageMeta';
+import { captureError } from '../../../utils/captureError';
 
 export const AwaitingApproval = () => {
   usePageMeta({ title: 'Очікування підтвердження', noindex: true });
@@ -38,7 +39,7 @@ export const AwaitingApproval = () => {
 
       setMessage('Статус поки не змінився. Спробуйте пізніше.');
     } catch (error) {
-      console.error('Failed to refresh profile:', error);
+      captureError(error);
       setErrorMessage('Не вдалося перевірити статус. Спробуйте ще раз.');
     } finally {
       setIsChecking(false);

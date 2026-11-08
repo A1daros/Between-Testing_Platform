@@ -19,6 +19,7 @@ import type {
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { ROUTES } from '../../../constants/routes';
 import { padNumber } from '../../../utils/padNumber';
+import { captureError } from '../../../utils/captureError';
 
 const NO_QUESTIONS: PlacementQuestion[] = [];
 
@@ -62,7 +63,7 @@ export const PlacementTest = () => {
     try {
       setPlacementResult(await calculatePlacementLevel(userAnswers));
     } catch (error) {
-      console.error('Failed to calculate placement level:', error);
+      captureError(error);
       setResultError(
         'Не вдалося розрахувати ваш рівень. Будь ласка, спробуйте ще раз.',
       );

@@ -68,8 +68,6 @@ export const ContactUs = () => {
       setMessage('');
       setAgreeToTerms(false);
     } catch (error) {
-      console.error('Failed to send contact message:', error);
-
       setErrorMessage(
         getErrorMessage(
           error,

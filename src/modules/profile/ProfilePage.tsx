@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { usePageMeta } from '../../hooks/usePageMeta';
 import { ErrorState } from '../shared/components/ErrorState';
 import { SectionHeader } from '../shared/components/SectionHeader';
+import { captureError } from '../../utils/captureError';
 
 export const ProfilePage = () => {
   usePageMeta({ title: 'Профіль', noindex: true });
@@ -18,9 +19,7 @@ export const ProfilePage = () => {
         <ErrorState
           message='Не вдалося завантажити профіль.'
           onAction={() => {
-            refreshProfile().catch((error) =>
-              console.error('Failed to reload profile:', error),
-            );
+            refreshProfile().catch(captureError);
           }}
         />
       </div>

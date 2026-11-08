@@ -33,7 +33,6 @@ export const Login = () => {
 
       navigate(redirectTo, { replace: true });
     } catch (error) {
-      console.error('Failed to sign in:', error);
       setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);

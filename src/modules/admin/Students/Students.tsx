@@ -12,6 +12,7 @@ import { useAsyncData } from '../../../hooks/useAsyncData';
 import { Loader } from '../../shared/components/Loader';
 import { ErrorState } from '../../shared/components/ErrorState';
 import { Alert } from '../../shared/components/Alert';
+import { captureError } from '../../../utils/captureError';
 
 type StatusFilter = 'all' | ProfileStatus;
 
@@ -74,7 +75,7 @@ export const Students = () => {
         ),
       );
     } catch (changeError) {
-      console.error('Failed to change student status:', changeError);
+      captureError(changeError);
       setStatusError('Не вдалося змінити статус. Спробуйте ще раз.');
     } finally {
       setUpdatingId(null);

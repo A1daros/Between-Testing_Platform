@@ -38,7 +38,6 @@ export const UpdatePassword = () => {
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
-      console.error('Failed to update password:', error);
       setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);

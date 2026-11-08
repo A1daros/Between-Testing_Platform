@@ -234,6 +234,7 @@ export type StudentWithResults = {
   birth_date: string | null;
   terms_accepted_at: string | null;
   terms_version: string | null;
+  email_confirmed_at: string | null;
 
   results: StudentResult[];
 };
@@ -250,6 +251,7 @@ export type Profile = {
   birth_date: string | null;
   terms_accepted_at: string | null;
   terms_version: string | null;
+  email_confirmed_at: string | null;
   created_at: string;
 };
 
