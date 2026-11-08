@@ -15,5 +15,6 @@ export const getQuestionsWithAnswersByTestId = async (
         test_parts(id, title, instruction, points, audio_path)`,
       )
       .eq('test_id', testId)
-      .order('sort_order', { ascending: true }),
+      .order('sort_order', { ascending: true })
+      .order('id', { ascending: true }),
   );

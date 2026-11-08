@@ -10,6 +10,8 @@ import { Table } from '../../components/Table';
 import { SearchInput } from '../../components/SearchInput';
 import { Loader } from '../../../shared/components/Loader';
 import { ErrorState } from '../../../shared/components/ErrorState';
+import { DeleteStudent } from '../components/DeleteStudent';
+import { StudentAttempts } from '../components/StudentAttempts';
 import { getStudentDetailsColumns } from './studentDetailsColumns';
 
 export const StudentDetails = () => {
@@ -104,7 +106,18 @@ export const StudentDetails = () => {
               {student.birth_date ? formatDate(student.birth_date) : '—'}
             </p>
           </div>
+
+          <div className={styles.infoBlock}>
+            <h3 className={styles.infoTitle}>Згода з умовами:</h3>
+            <p className={styles.infoDescription}>
+              {student.terms_accepted_at
+                ? `${formatDate(student.terms_accepted_at)}, версія ${student.terms_version}`
+                : 'Не зафіксована'}
+            </p>
+          </div>
         </div>
+
+        <StudentAttempts studentId={student.id} />
 
         <Table
           columns={getStudentDetailsColumns()}
@@ -117,6 +130,11 @@ export const StudentDetails = () => {
           getRowLabel={(result) =>
             `Відкрити результат: ${result.tests?.title ?? 'тест'}`
           }
+        />
+
+        <DeleteStudent
+          studentId={student.id}
+          studentName={`${student.name} ${student.surname}`}
         />
       </div>
     </div>

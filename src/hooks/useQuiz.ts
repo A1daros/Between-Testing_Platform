@@ -2,11 +2,21 @@ import { useState } from 'react';
 
 type WithId = { id: number };
 
-export const useQuiz = <TQuestion extends WithId>(questions: TQuestion[]) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+type UseQuizOptions = {
+  initialAnswers?: Record<number, number>;
+  initialIndex?: number;
+};
+
+export const useQuiz = <TQuestion extends WithId>(
+  questions: TQuestion[],
+  { initialAnswers = {}, initialIndex = 0 }: UseQuizOptions = {},
+) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] =
+    useState(initialIndex);
   const [isFinished, setIsFinished] = useState(false);
 
-  const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
+  const [userAnswers, setUserAnswers] =
+    useState<Record<number, number>>(initialAnswers);
 
   const currentQuestion = questions[currentQuestionIndex];
 

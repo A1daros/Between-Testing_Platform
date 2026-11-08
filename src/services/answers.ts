@@ -11,3 +11,19 @@ export const getCorrectAnswers = async (
 
   return data ?? [];
 };
+
+const ACCESS_DENIED_CODE = '42501';
+
+export const getCorrectAnswersIfUnlocked = async (
+  testId: number,
+): Promise<CorrectAnswer[] | null> => {
+  const { data, error } = await supabase.rpc('get_correct_answers', {
+    p_test_id: testId,
+  });
+
+  if (error?.code === ACCESS_DENIED_CODE) {
+    return null;
+  }
+
+  return unwrap<CorrectAnswer[] | null>({ data, error }) ?? [];
+};

@@ -1,0 +1,46 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: $border;
+}
+
+.confirmBox {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  margin: 0;
+  color: $text-main;
+
+  @include h3-font-mobile;
+
+  @media (min-width: $breakpoint-s) {
+    @include h3-font;
+  }
+}
+
+.description {
+  margin: 0;
+  color: $text-secondary;
+
+  @include body-small;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button {
+  @include button-secondary;
+}
+
+.confirmButton {
+  @include button-primary;
+}

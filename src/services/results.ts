@@ -3,8 +3,6 @@ import type {
   AdminResultsPage,
   AdminResultsSort,
   Result,
-  SaveQuizResultInput,
-  SubmitQuizResult,
 } from '../types/database';
 import { unwrap, unwrapCount } from './helpers';
 
@@ -19,17 +17,6 @@ export const getResultsByUserId = async (userId: string): Promise<Result[]> =>
       .select(RESULT_SELECT)
       .eq('user_id', userId)
       .order('created_at', { ascending: false }),
-  );
-
-export const saveQuizResult = async ({
-  testId,
-  userAnswers,
-}: SaveQuizResultInput): Promise<SubmitQuizResult> =>
-  unwrap(
-    await supabase.rpc('submit_quiz', {
-      p_test_id: testId,
-      p_answers: userAnswers,
-    }),
   );
 
 export const loadRecentResults = async (): Promise<Result[]> =>

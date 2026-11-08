@@ -107,6 +107,13 @@
   @include body-font;
 }
 
+.keyNotice {
+  max-width: 680px;
+  margin: 0;
+  color: $text-main;
+  @include body-small;
+}
+
 .partSection {
   display: flex;
   flex-direction: column;

@@ -34,7 +34,7 @@ export const ResultDetails = () => {
     );
   }
 
-  if (!data || data.length === 0) {
+  if (!data || data.rows.length === 0) {
     return (
       <ErrorState
         message='Результат не знайдено.'
@@ -44,8 +44,9 @@ export const ResultDetails = () => {
     );
   }
 
-  const test = data[0].questions.tests;
-  const reviewItems = buildResultReview(data);
+  const { rows } = data;
+  const test = rows[0].questions.tests;
+  const reviewItems = buildResultReview(rows);
 
   return (
     <div className={styles.pageContainer}>
@@ -57,7 +58,7 @@ export const ResultDetails = () => {
             <p className={styles.pageDescription}>{test.description}</p>
           )}
           {isResultOutdated(
-            data[0].results.created_at,
+            rows[0].results.created_at,
             test.content_updated_at,
           ) && <OutdatedBadge />}
         </div>

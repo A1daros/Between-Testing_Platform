@@ -11,7 +11,9 @@ const formatDuration = (totalSeconds: number): string => {
   return seconds === 0 ? `${minutes} хв` : `${minutes} хв ${seconds} с`;
 };
 
-export const getDurationLabel = (test: Test): string => {
+export const getDurationLabel = (
+  test: Pick<Test, 'timer_type' | 'timer_duration'>,
+): string => {
   if (test.timer_type === null || !test.timer_duration) {
     return 'Без таймера';
   }

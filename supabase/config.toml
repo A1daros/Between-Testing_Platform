@@ -15,3 +15,10 @@ enabled = true
 verify_jwt = false
 import_map = "./functions/notify-profile-status/deno.json"
 entrypoint = "./functions/notify-profile-status/index.ts"
+
+[functions.delete-student]
+enabled = true
+# Checks the caller's token and admin role inside the function.
+verify_jwt = false
+import_map = "./functions/delete-student/deno.json"
+entrypoint = "./functions/delete-student/index.ts"
