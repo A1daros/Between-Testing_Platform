@@ -7,6 +7,7 @@ import {
 } from '../../../../services/profile';
 import { getErrorMessage } from '../../../../utils/getErrorMessage';
 import { Alert } from '../../../shared/components/Alert';
+import { captureError } from '../../../../utils/captureError';
 
 type AvatarUploadProps = {
   userId: string;
@@ -46,7 +47,7 @@ export const AvatarUpload = ({
       await uploadAvatar(userId, file, avatarUrl);
       await onUploadSuccess();
     } catch (error) {
-      console.error('Avatar upload failed:', error);
+      captureError(error);
       setErrorMessage(
         getErrorMessage(error, 'Під час завантаження щось пішло не так.'),
       );

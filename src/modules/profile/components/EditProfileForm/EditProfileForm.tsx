@@ -6,6 +6,7 @@ import { useAuth } from '../../../../hooks/useAuth';
 import { FormField } from '../../../shared/components/FormField';
 import { Alert } from '../../../shared/components/Alert';
 import { AvatarUpload } from '../AvatarUpload';
+import { captureError } from '../../../../utils/captureError';
 
 const SUCCESS_MESSAGE_TIMEOUT_MS = 3000;
 
@@ -56,7 +57,7 @@ export const EditProfileForm = ({ profile }: EditProfileFormProps) => {
 
       setSuccessMessage('Дані профілю успішно оновлено.');
     } catch (error) {
-      console.error('Failed to update profile:', error);
+      captureError(error);
       setErrorMessage('Під час збереження вашого профілю щось пішло не так.');
     } finally {
       setIsLoading(false);

@@ -1,7 +1,7 @@
 import '@supabase/functions-js/edge-runtime.d.ts';
 
 // Called by a Database Webhook on public.profiles (INSERT, UPDATE):
-// - a new pending profile notifies the admin about a new application;
+// - a pending profile notifies the admin once its email is confirmed;
 // - a status change to approved/rejected notifies the student.
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
@@ -16,6 +16,7 @@ type ProfileRecord = {
   email: string | null;
   display_name: string | null;
   status: string | null;
+  email_confirmed_at: string | null;
 };
 
 type WebhookPayload = {
@@ -57,7 +58,10 @@ function buildEmail(payload: WebhookPayload): Email | null {
   const name = escapeHtml(record.display_name ?? record.email ?? '');
   const loginUrl = `${SITE_URL}/login`;
 
-  if (type === 'INSERT' && record.status === 'pending') {
+  const isNewlyConfirmed =
+    Boolean(record.email_confirmed_at) && !old_record?.email_confirmed_at;
+
+  if (record.status === 'pending' && isNewlyConfirmed) {
     if (!CONTACT_TO_EMAIL) {
       return null;
     }

@@ -2,6 +2,7 @@
 // useCallback), otherwise the data is reloaded on every render. Pass null to
 // skip loading until the required input (e.g. a route param) is available.
 import { useCallback, useEffect, useState } from 'react';
+import { captureError } from '../utils/captureError';
 
 type AsyncState<T> = {
   data: T | undefined;
@@ -34,7 +35,7 @@ export const useAsyncData = <T>(load: (() => Promise<T>) | null) => {
           setState({ data, error: null, loading: false });
         }
       } catch (error) {
-        console.error('Failed to load data:', error);
+        captureError(error);
 
         if (!cancelled) {
           setState((prev) => ({ ...prev, error, loading: false }));

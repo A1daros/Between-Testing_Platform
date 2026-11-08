@@ -50,6 +50,11 @@ export default defineConfig({
               test: /node_modules[/\\]@supabase[/\\]/,
               priority: 10,
             },
+            {
+              name: 'sentry',
+              test: /node_modules[/\\]@sentry[/\\]/,
+              priority: 10,
+            },
           ],
         },
       },

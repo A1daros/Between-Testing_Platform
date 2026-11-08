@@ -9,6 +9,7 @@ import type { NewTestPayload } from '../types/testForm';
 import { getCorrectAnswers } from './answers';
 import { removeTestAudio } from './audio';
 import { unwrap, unwrapCount } from './helpers';
+import { captureError } from '../utils/captureError';
 
 type TestRow = Omit<EditableTest, 'questions'> & {
   questions: (Question & { answers: PublicAnswer[] })[];
@@ -103,6 +104,6 @@ export const deleteTest = async (testId: number): Promise<void> => {
   try {
     await removeTestAudio(audioPaths);
   } catch (removeError) {
-    console.error('Failed to remove test audio:', removeError);
+    captureError(removeError);
   }
 };

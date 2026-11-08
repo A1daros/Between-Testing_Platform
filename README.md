@@ -90,6 +90,10 @@ their own data, while admins get elevated access via role-based policies.
 - VITE_SUPABASE_URL=
 - VITE_SUPABASE_ANON_KEY=
 
+**Optional:**
+
+- VITE_SENTRY_DSN=
+
 ## 📍 Roadmap
 
 - [ ] Wait for domen to update functions using Uptash and Resend

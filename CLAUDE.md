@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Тест-раннер не налаштований.
 
-Обов'язкові змінні середовища (`.env` / `.env.local`): `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
+Обов'язкові змінні середовища (`.env` / `.env.local`): `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`. Опційна: `VITE_SENTRY_DSN` (без неї звіти про помилки не надсилаються).
 
 ## Архітектура
 
@@ -34,8 +34,8 @@ BETWEEN — сайт англомовної школи та платформа �
   - Доступ обмежується через RLS, а не лише в UI. Storage: бакети `avatars`, `teachers` і приватний `test-audio` (аудіо listening-частин, signed URL).
   - `get_admin_results` — сторінка результатів в адмінці (пошук, сортування, пагінація).
   - Тригери на `test_parts`, `questions`, `answers` оновлюють `tests.content_updated_at`. Бал спроби після редагування тесту не перераховується; спроби, зроблені до зміни, позначаються в UI як «Тест змінено».
-  - Тригер на оновлення `auth.users.email` синхронізує `profiles.email`.
-  - Edge-функції (Deno) лежать у `supabase/functions`: `send-contact-email` (форма зв'язку), `notify-profile-status` (листи про нову заявку й рішення щодо неї; викликається Database Webhook на `profiles`) і `delete-student` (видалення акаунта учня адміном: результати лишаються без прив'язки до людини). Налаштування `.vscode` вмикають Deno лише для `supabase/functions`.
+  - Тригер на оновлення `auth.users.email` синхронізує `profiles.email`, а тригер на `auth.users.email_confirmed_at` — `profiles.email_confirmed_at`. `set_profile_status` не схвалює непідтверджену пошту.
+  - Edge-функції (Deno) лежать у `supabase/functions`: `send-contact-email` (форма зв'язку), `notify-profile-status` (лист адміну, коли заявник підтвердив пошту, і листи про рішення щодо заявки; викликається Database Webhook на `profiles`) і `delete-student` (видалення акаунта учня адміном: результати лишаються без прив'язки до людини). Налаштування `.vscode` вмикають Deno лише для `supabase/functions`.
 - **Модель контенту.** levels → submodules → tests (`placement_test` / `submodule_quiz` / `final_test`) → test_parts → questions → answers. Результати зберігаються в `results` + `result_answers`. Програми/формати для лендингу та викладачі вантажаться із Supabase (див. `services/programs.ts`, `services/teachers.ts`). Статичний маркетинговий контент лежить у `src/data`.
 - **UI-модулі.** `src/modules/<feature>/` (home, tests, quiz, results, profile, authentication, admin, about-school, legal, not-found, shared), стилі `.module.scss` лежать поруч із компонентами.
   - Іменування: папка модуля — kebab-case; головна сторінка модуля лежить у його корені, додаткові сторінки — у підпапках PascalCase (`tests/PlacementTest`, `results/MyResults`, `authentication/Login`); дрібні компоненти сторінки — у `components/<PascalCase>/`. Кожна папка компонента має `index.ts`.
@@ -56,6 +56,7 @@ BETWEEN — сайт англомовної школи та платформа �
 - **Дані.** Компоненти й хуки не імпортують клієнт Supabase напряму: додай або розшир функцію в `src/services/<domain>.ts` (авторизація — `services/auth.ts`, форма зв'язку — `services/contact.ts`). Виняток — `context/AuthProvider.tsx`, який підписується на `onAuthStateChange`.
 - **Помилки для користувача.** Повідомлення Supabase англійською не показуються в UI: помилки Auth перекладає `utils/getAuthErrorMessage.ts` (за `error.code`), для решти компонент показує власний український текст. Текст помилки, яку вже кинув сервіс українською, бери через `utils/getErrorMessage.ts`; перевірка пароля — `utils/validatePassword.ts`.
 - **Помилки сервісів.** Сервіси кидають помилку (`throw`), якщо Supabase повертає `error`. Помилки обробляються в хуках або компонентах.
+- **Моніторинг.** `console.error` у клієнті не використовується. Неочікувану перехоплену помилку передавай у `utils/captureError.ts` (Sentry); очікувані помилки форм (неправильний пароль тощо) не звітуються. Налаштування — `lib/sentry.ts`: у звіти не мають потрапляти персональні дані й токени з URL.
 - **Типи.** Типи рядків БД беруться з `src/types/database.ts`. Не оголошуй їх заново в компонентах.
 - **Маршрути.** Не прописуй шляхи вручну, використовуй `ROUTES` / `ADMIN_ROUTES`. Шлях із параметрами — через `generatePath(ROUTES.quiz, { testId })`; абсолютний шлях адмінки — через `getAdminPath(ADMIN_ROUTES.testEdit, { testId })` (`utils/getAdminPath.ts`).
 - **Форматування.** Дати — `utils/formatDate.ts` (локаль `uk-UA`), відмінювання з числом — `utils/pluralize.ts`, двозначні номери (`01`) — `utils/padNumber.ts`, назви типів тестів — `constants/testTypes.ts`. Контакти школи — `constants/school.ts`.
@@ -93,7 +94,9 @@ BETWEEN — сайт англомовної школи та платформа �
 - Внести довідники: `levels` (A1–B2) обов'язкові для placement test, форми тесту й фільтра за рівнем; також програми, формати й викладачі лендингу. Placement test створюється лише напряму в БД: форма в адмінці робить тільки `final_test`.
 - Заповнити плейсхолдери в `src/data/legal.data.ts` (власник, реквізити, дата, строки зберігання) після погодження текстів із юристом.
 - Призначити першого адміна вручну: `update public.profiles set role = 'admin', status = 'approved' where email = '…';`
-- Поза репозиторієм: деплой `delete-student`; Site URL і Redirect URLs в Auth, SMTP/Resend, секрети й деплой edge-функцій (`RESEND_API_KEY`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `CONTACT_TO_EMAIL`; для `notify-profile-status` ще `WEBHOOK_SECRET`, `SITE_URL`, опційно `NOTIFY_FROM_EMAIL`), Database Webhook на `public.profiles` (INSERT, UPDATE) → `notify-profile-status` із заголовком `x-webhook-secret`, нові `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` у Vercel, фото викладачів у бакеті `teachers` (через дашборд), `preconnect` на новий Supabase-домен в `index.html`.
+- Поза репозиторієм: деплой `delete-student`; Site URL і Redirect URLs в Auth, SMTP/Resend, секрети й деплой edge-функцій (`RESEND_API_KEY`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `CONTACT_TO_EMAIL`; для `notify-profile-status` ще `WEBHOOK_SECRET`, `SITE_URL`, опційно `NOTIFY_FROM_EMAIL`), Database Webhook на `public.profiles` (INSERT, UPDATE) → `notify-profile-status` із заголовком `x-webhook-secret`, нові `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` у Vercel, фото викладачів у бакеті `teachers` (через дашборд), `preconnect` на новий Supabase-домен в `index.html`, новий Supabase-домен у CSP (`vercel.json`), проєкт Sentry і `VITE_SENTRY_DSN` у Vercel.
+- Увімкнути підтвердження email в Auth: без нього новий акаунт одразу вважається підтвердженим.
+- CSP працює в режимі `Content-Security-Policy-Report-Only`. Після перевірки на preview перейменувати заголовок на `Content-Security-Policy` і додати `frame-ancestors 'none'`.
 
 ### Перехід на власний домен
 

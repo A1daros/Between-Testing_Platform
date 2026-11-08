@@ -101,6 +101,15 @@ export const StudentDetails = () => {
           </div>
 
           <div className={styles.infoBlock}>
+            <h3 className={styles.infoTitle}>Пошту підтверджено:</h3>
+            <p className={styles.infoDescription}>
+              {student.email_confirmed_at
+                ? formatDate(student.email_confirmed_at)
+                : 'Ні'}
+            </p>
+          </div>
+
+          <div className={styles.infoBlock}>
             <h3 className={styles.infoTitle}>Дата народження:</h3>
             <p className={styles.infoDescription}>
               {student.birth_date ? formatDate(student.birth_date) : '—'}

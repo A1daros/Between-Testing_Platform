@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { getTestAudioUrl } from '../../../../services/audio';
 import styles from './AudioPlayer.module.scss';
+import { captureError } from '../../../../utils/captureError';
 
 type AudioPlayerProps = {
   path: string;
@@ -36,7 +37,7 @@ export const AudioPlayer = ({
         }
       })
       .catch((error) => {
-        console.error('Failed to load audio:', error);
+        captureError(error);
 
         if (!isCancelled) {
           setErrorMessage('Не вдалося завантажити аудіо.');
@@ -82,7 +83,7 @@ export const AudioPlayer = ({
         throw error;
       }
     } catch (error) {
-      console.error('Failed to play audio:', error);
+      captureError(error);
       setErrorMessage('Не вдалося відтворити аудіо.');
     }
   };

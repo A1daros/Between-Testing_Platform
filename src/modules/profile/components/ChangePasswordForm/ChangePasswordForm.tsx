@@ -35,7 +35,6 @@ export const ChangePasswordForm = () => {
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
-      console.error('Failed to change password:', error);
       setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);

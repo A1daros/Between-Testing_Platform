@@ -4,6 +4,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../../../hooks/useAuth';
 import { useEscapeKey } from '../../../../../hooks/useEscapeKey';
 import { ROUTES } from '../../../../../constants/routes';
+import { captureError } from '../../../../../utils/captureError';
 
 const getLinkClass = ({ isActive }: { isActive: boolean }) =>
   `${styles.link} ${isActive ? styles.isActive : ''}`;
@@ -33,7 +34,7 @@ export const Header = () => {
     try {
       await signOut();
     } catch (error) {
-      console.error('Failed to sign out:', error);
+      captureError(error);
     }
 
     navigate(ROUTES.home);

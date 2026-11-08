@@ -56,7 +56,6 @@ export const Register = () => {
       setPassword('');
       setAgreeToTerms(false);
     } catch (error) {
-      console.error('Failed to sign up:', error);
       setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);

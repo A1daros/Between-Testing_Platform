@@ -36,7 +36,6 @@ export const ChangeEmailForm = ({ currentEmail }: ChangeEmailFormProps) => {
       );
       setNewEmail('');
     } catch (error) {
-      console.error('Failed to change email:', error);
       setErrorMessage(getErrorMessage(error));
     } finally {
       setIsLoading(false);

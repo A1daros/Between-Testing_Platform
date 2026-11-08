@@ -15,6 +15,7 @@ import { ChunkError } from './modules/shared/components/ChunkError';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { lazyPage } from './utils/lazyPage';
+import { captureError } from './utils/captureError';
 
 const QuizPage = lazyPage(() => import('./modules/quiz'), 'QuizPage');
 const ResultPage = lazyPage(() => import('./modules/results'), 'ResultPage');
@@ -77,7 +78,7 @@ export const App = () => {
         <Header />
 
         <main className={styles.mainContent}>
-          <ErrorBoundary fallbackRender={ChunkError}>
+          <ErrorBoundary fallbackRender={ChunkError} onError={captureError}>
             <Suspense fallback={<Loader />}>
               <Routes>
                 <Route path={ROUTES.home} element={<HomePage />} />

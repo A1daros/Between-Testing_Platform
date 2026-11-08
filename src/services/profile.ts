@@ -6,6 +6,7 @@ import type {
   StudentProfile,
 } from '../types/database';
 import { unwrap, unwrapCount } from './helpers';
+import { captureError } from '../utils/captureError';
 
 const AVATAR_BUCKET = 'avatars';
 const AVATAR_PUBLIC_PATH = `/object/public/${AVATAR_BUCKET}/`;
@@ -103,7 +104,7 @@ export const uploadAvatar = async (
       .remove([previousPath]);
 
     if (error) {
-      console.error('Failed to remove previous avatar:', error);
+      captureError(error);
     }
   }
 
@@ -124,7 +125,8 @@ export const loadCountPendingStudents = async (): Promise<number> =>
       .from('profiles')
       .select('*', { count: 'exact', head: true })
       .eq('role', 'student')
-      .eq('status', 'pending'),
+      .eq('status', 'pending')
+      .not('email_confirmed_at', 'is', null),
   );
 
 export const setProfileStatus = async (

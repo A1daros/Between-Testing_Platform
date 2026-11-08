@@ -11,6 +11,7 @@ import { Loader } from '../../shared/components/Loader';
 import { ErrorState } from '../../shared/components/ErrorState';
 import { Alert } from '../../shared/components/Alert';
 import { Modal } from '../../shared/components/Modal';
+import { captureError } from '../../../utils/captureError';
 
 const loadAllTests = () => getTests({ includePlacement: true });
 
@@ -64,7 +65,7 @@ export const Tests = () => {
       setTests((prev) => prev?.filter((test) => test.id !== deleteId));
       setDeleteId(null);
     } catch (deleteTestError) {
-      console.error('Failed to delete test:', deleteTestError);
+      captureError(deleteTestError);
       setDeleteError('Не вдалося видалити тест. Спробуйте ще раз.');
     } finally {
       setIsDeleting(false);

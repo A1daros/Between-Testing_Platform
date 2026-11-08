@@ -15,6 +15,7 @@ import {
   uploadTestAudio,
   validateAudioFile,
 } from '../../../../../services/audio';
+import { captureError } from '../../../../../utils/captureError';
 
 type TestFields = Omit<TestFormData, 'parts' | 'questions'>;
 
@@ -259,16 +260,14 @@ export const useTestForm = (
       try {
         await removeTestAudio(obsoleteAudioPaths);
       } catch (removeError) {
-        console.error('Failed to remove obsolete audio:', removeError);
+        captureError(removeError);
       }
 
       navigate(getAdminPath(ADMIN_ROUTES.tests));
     } catch (error) {
-      console.error('Failed to save test:', error);
+      captureError(error);
 
-      removeTestAudio(uploadedAudioPaths).catch((removeError) =>
-        console.error('Failed to remove uploaded audio:', removeError),
-      );
+      removeTestAudio(uploadedAudioPaths).catch(captureError);
 
       setErrorMessage('Не вдалося зберегти тест. Спробуйте ще раз.');
       setIsSubmitting(false);

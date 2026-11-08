@@ -5,6 +5,7 @@ import { AuthContext } from './AuthContext';
 import type { Profile } from '../types/database';
 import { getProfile } from '../services/profile';
 import { signOut as signOutUser } from '../services/auth';
+import { captureError } from '../utils/captureError';
 
 type LoadedProfile = {
   userId: string;
@@ -50,7 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        captureError(error);
 
         if (!cancelled) {
           setLoadedProfile({ userId, profile: null, failed: true });
