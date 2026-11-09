@@ -1,0 +1,123 @@
+-- Shared fixtures for pgTAP files, included inside each file's transaction, so
+-- everything here is rolled back. Correct answer id = question id + 10000,
+-- wrong answer id = question id + 20000.
+create extension if not exists pgtap with schema extensions;
+
+create schema tests;
+grant usage on schema tests to anon, authenticated;
+
+create function tests.uid(p_name text)
+returns uuid
+language sql
+immutable
+as $$
+  select (case p_name
+    when 'admin' then 'aaaaaaaa-0000-4000-8000-000000000001'
+    when 'student' then 'bbbbbbbb-0000-4000-8000-000000000001'
+    when 'second' then 'bbbbbbbb-0000-4000-8000-000000000002'
+    when 'pending' then 'cccccccc-0000-4000-8000-000000000001'
+    when 'rejected' then 'cccccccc-0000-4000-8000-000000000002'
+    when 'unconfirmed' then 'cccccccc-0000-4000-8000-000000000003'
+  end)::uuid;
+$$;
+
+create function tests.login(p_name text)
+returns void
+language plpgsql
+as $$
+begin
+  perform set_config(
+    'request.jwt.claims',
+    json_build_object('sub', tests.uid(p_name), 'role', 'authenticated')::text,
+    true
+  );
+  set local role authenticated;
+end;
+$$;
+
+create function tests.login_anon()
+returns void
+language plpgsql
+as $$
+begin
+  perform set_config('request.jwt.claims', '{"role":"anon"}', true);
+  set local role anon;
+end;
+$$;
+
+create function tests.logout()
+returns void
+language plpgsql
+as $$
+begin
+  perform set_config('request.jwt.claims', '', true);
+  reset role;
+end;
+$$;
+
+create function tests.attempt(p_test_id bigint, p_user text)
+returns bigint
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select a.id
+  from public.quiz_attempts a
+  where a.test_id = p_test_id
+    and a.user_id = tests.uid(p_user)
+    and a.finished_at is null;
+$$;
+
+insert into auth.users (id, email, email_confirmed_at, raw_user_meta_data, aud, role)
+values
+  (tests.uid('admin'), 'admin@example.test', now(), '{"display_name":"Admin"}', 'authenticated', 'authenticated'),
+  (tests.uid('student'), 'student@example.test', now(), '{"display_name":"Student"}', 'authenticated', 'authenticated'),
+  (tests.uid('second'), 'second@example.test', now(), '{"display_name":"Second"}', 'authenticated', 'authenticated'),
+  (tests.uid('pending'), 'pending@example.test', now(), '{"display_name":"Pending"}', 'authenticated', 'authenticated'),
+  (tests.uid('rejected'), 'rejected@example.test', now(), '{"display_name":"Rejected"}', 'authenticated', 'authenticated'),
+  (tests.uid('unconfirmed'), 'unconfirmed@example.test', null, '{"display_name":"Unconfirmed"}', 'authenticated', 'authenticated');
+
+update public.profiles set role = 'admin' where id = tests.uid('admin');
+update public.profiles set status = 'approved' where id in (tests.uid('student'), tests.uid('second'));
+update public.profiles set status = 'rejected' where id = tests.uid('rejected');
+
+insert into public.levels (id, code, title, sort_order)
+values (901, 'A1', 'Beginner', 1), (902, 'A2', 'Elementary', 2);
+
+insert into public.tests (id, title, level_id, test_type, timer_enabled, timer_type, timer_duration)
+values
+  (1001, 'Plain test', 901, 'final_test', false, null, null),
+  (1002, 'Timed test', 901, 'final_test', true, 'test', 600),
+  (1003, 'Question timer test', 901, 'final_test', true, 'question', 30),
+  (1004, 'Empty test', 901, 'final_test', false, null, null),
+  (1005, 'Placement', null, 'placement_test', false, null, null);
+
+insert into public.test_parts (id, test_id, title, instruction, points, sort_order, audio_path)
+values
+  (2001, 1001, 'Listening', 'Listen', 2, 1, 'parts/listening.mp3'),
+  (2002, 1001, 'Reading', 'Read', 1, 2, null);
+
+insert into public.questions (id, test_id, part_id, level_id, question, sort_order)
+values
+  (3001, 1001, 2001, null, 'Plain 1', 1),
+  (3002, 1001, 2001, null, 'Plain 2', 2),
+  (3003, 1001, null, null, 'Plain 3', 3),
+  (3101, 1002, null, null, 'Timed 1', 1),
+  (3102, 1002, null, null, 'Timed 2', 2),
+  (3201, 1003, null, null, 'Per question 1', 1),
+  (3202, 1003, null, null, 'Per question 2', 2),
+  (3203, 1003, null, null, 'Per question 3', 3),
+  (3301, 1005, null, 901, 'Placement A1 1', 1),
+  (3302, 1005, null, 901, 'Placement A1 2', 2),
+  (3303, 1005, null, 901, 'Placement A1 3', 3),
+  (3304, 1005, null, 902, 'Placement A2 1', 4),
+  (3305, 1005, null, 902, 'Placement A2 2', 5),
+  (3306, 1005, null, 902, 'Placement A2 3', 6);
+
+insert into public.answers (id, question_id, answer_text, is_correct)
+select q.id + 10000, q.id, 'Correct ' || q.id, true from public.questions q
+union all
+select q.id + 20000, q.id, 'Wrong ' || q.id, false from public.questions q;
+
+update public.tests set content_updated_at = null;
