@@ -97,4 +97,6 @@ description: Правила роботи зі схемою Supabase/Postgres —
 3. Нова функція: `security definer` + `search_path = ''` + перевірки всередині + `revoke ... from public, anon` + `grant execute`.
 4. Колонкові гранти (`answers`, `profiles`) перевірено для нових колонок.
 5. Оновлено `src/types/database.ts` і відповідний `src/services/<domain>.ts`.
-6. `npm run build` і `npm run lint`.
+6. Додано pgTAP-тести в `supabase/tests/database` на нову логіку й доступи.
+7. `npx supabase db reset` (лише локально) і `npm run test:db`.
+8. `npm test`, `npm run build` і `npm run lint`.

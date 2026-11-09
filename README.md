@@ -133,8 +133,10 @@ VITE_SENTRY_DSN=
 | `npm run build`   | Type check and production build       |
 | `npm run lint`    | ESLint                                |
 | `npm run preview` | Preview the production build locally  |
+| `npm test`        | Client and edge function tests        |
+| `npm run test:db` | Database tests (local stack only)     |
 
-There are no automated tests, so run `build` and `lint` before every merge.
+Database tests need Docker and a running local stack: `npx supabase start`, then `npx supabase db reset` to apply the migrations to a clean database. Nothing runs these checks automatically yet, so run `test`, `build` and `lint` before every merge, and `test:db` after any change to migrations, RPC functions or RLS.
 
 The contact form and account deletion accept requests only from production and from
 `localhost:5173` / `localhost:4173`. On a Vercel preview they fail with a CORS error.
