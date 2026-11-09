@@ -1,7 +1,6 @@
 import type { NavigateFunction } from 'react-router-dom';
 import { ADMIN_ROUTES } from '../../../../../constants/routes';
 import { getAdminPath } from '../../../../../utils/getAdminPath';
-import { getQuestionCount } from '../../../../../utils/getQuestionCount';
 import type { Test } from '../../../../../types/database';
 import type { ColumnConfig } from '../../../types/table';
 import styles from '../../../components/Table/Table.module.scss';
@@ -20,7 +19,7 @@ export const getTestsColumns = (
   },
   {
     label: 'Питань',
-    render: (test) => getQuestionCount(test),
+    render: (test) => test.question_count,
   },
   {
     label: 'Редагувати',

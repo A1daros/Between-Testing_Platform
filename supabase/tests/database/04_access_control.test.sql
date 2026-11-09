@@ -1,12 +1,15 @@
 begin;
 \ir ../helpers/fixtures.psql
-select plan(44);
+select plan(60);
 
 insert into public.results (id, test_id, user_id, score, total)
 values (9001, 1001, tests.uid('student'), 1, 5), (9002, 1001, tests.uid('second'), 2, 5);
 insert into public.result_answers (result_id, question_id, answer_id)
 values (9001, 3001, 13001), (9002, 3001, 13001);
-insert into storage.objects (bucket_id, name) values ('test-audio', 'parts/listening.mp3');
+insert into public.test_parts (id, test_id, title, instruction, points, sort_order, audio_path)
+values (2101, 1002, 'Timed listening', 'Listen', 1, 1, 'parts/timed.mp3');
+insert into storage.objects (bucket_id, name)
+values ('test-audio', 'parts/listening.mp3'), ('test-audio', 'parts/timed.mp3');
 
 select tests.login_anon();
 select is((select count(*)::int from public.tests where test_type = 'final_test'), 0, 'anon cannot see final tests');
@@ -34,10 +37,10 @@ select is((select count(*)::int from public.tests where test_type = 'final_test'
 
 select tests.login('student');
 select is((select count(*)::int from public.tests where id = 1001), 1, 'an approved student can see tests');
-select is((select count(*)::int from public.answers where question_id = 3001), 2, 'an approved student can see answer texts');
+select is((select count(*)::int from public.answers where question_id = 3001), 2, 'a student with a result can see answer texts');
 select throws_ok('select is_correct from public.answers', '42501', null, 'an approved student cannot select is_correct');
 select throws_ok('select * from public.answers', '42501', null, 'select star on answers fails for an approved student');
-select is((select count(*)::int from storage.objects where bucket_id = 'test-audio'), 1, 'an approved student can see test audio');
+select is((select count(*)::int from storage.objects where bucket_id = 'test-audio'), 0, 'a student without an active attempt cannot see test audio');
 
 select is((select count(*)::int from public.profiles), 1, 'a student sees only their own profile');
 select is((select count(*)::int from public.results), 1, 'a student sees only their own results');
@@ -74,8 +77,42 @@ select is((select count(*)::int from public.profiles), 6, 'an admin sees every p
 select is((select count(*)::int from public.tests where id = 1001), 1, 'an admin with pending status still counts as approved');
 
 select tests.login('student');
-select todo('questions are readable before an attempt starts, which bypasses the timer', 1);
-select is((select count(*)::int from public.questions where test_id = 1001), 0, 'a student without an attempt cannot read questions');
+select is((select count(*)::int from public.questions where test_id = 1002), 0, 'a student without an attempt cannot read questions');
+select is((select count(*)::int from public.answers where question_id = 3101), 0, 'a student without an attempt cannot read answers');
+select is((select count(*)::int from public.test_parts where test_id = 1002), 0, 'a student without an attempt cannot read parts');
+select is((select public.question_count(t) from public.tests t where t.id = 1002), 2, 'a student without an attempt still sees the question count');
+
+select public.start_quiz_attempt(1002);
+select is((select count(*)::int from public.questions where test_id = 1002), 2, 'starting an attempt opens the questions');
+select is((select count(*)::int from public.answers where question_id = 3101), 2, 'starting an attempt opens the answers');
+select is((select count(*)::int from public.test_parts where test_id = 1002), 1, 'starting an attempt opens the parts');
+select is((select count(*)::int from storage.objects where name = 'parts/timed.mp3'), 1, 'an active attempt opens its audio');
+
+select tests.login('second');
+select is((select count(*)::int from public.questions where test_id = 1002), 0, 'an attempt opens the test only for its owner');
+
+select tests.login('student');
+select public.submit_quiz_attempt(tests.attempt(1002, 'student'), '{}');
+select is((select count(*)::int from storage.objects where name = 'parts/timed.mp3'), 0, 'a finished attempt closes the audio');
+select is((select count(*)::int from public.questions where test_id = 1002), 2, 'a finished attempt keeps the questions for the review');
+
+select public.start_quiz_attempt(1001);
+select is((select count(*)::int from storage.objects where name = 'parts/listening.mp3'), 1, 'audio opens for the test of the active attempt');
+select tests.logout();
+update public.quiz_attempts set deadline_at = now() - interval '1 minute' where test_id = 1001 and user_id = tests.uid('student');
+insert into public.quiz_attempts (test_id, user_id) values (1001, tests.uid('pending'));
+select tests.login('student');
+select is((select count(*)::int from storage.objects where name = 'parts/listening.mp3'), 0, 'an expired attempt closes the audio');
+
+select tests.login('pending');
+select is((select count(*)::int from public.questions where test_id = 1001), 0, 'an attempt does not open a test for an unapproved account');
+
+select tests.login('admin');
+select is((select count(*)::int from public.questions where test_id = 1002), 2, 'an admin reads questions without an attempt');
+select is((select count(*)::int from storage.objects where bucket_id = 'test-audio'), 2, 'an admin reads audio without an attempt');
+
+select tests.login_anon();
+select throws_ok('select public.question_count(t) from public.tests t where t.id = 1005', '42501', null, 'anon cannot read the question count');
 
 select * from finish();
 rollback;

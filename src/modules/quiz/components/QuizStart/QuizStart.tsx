@@ -1,14 +1,13 @@
 import styles from './QuizStart.module.scss';
 import { Link } from 'react-router-dom';
-import type { QuestionWithAnswers } from '../../../../types/database';
+import type { TestOverview } from '../../../../types/database';
 import { ROUTES } from '../../../../constants/routes';
 import { getDurationLabel } from '../../../../utils/getDurationLabel';
 import { QUESTION_FORMS, pluralize } from '../../../../utils/pluralize';
 import { Alert } from '../../../shared/components/Alert';
 
 type QuizStartProps = {
-  test: QuestionWithAnswers['tests'];
-  questionCount: number;
+  test: TestOverview;
   attemptsUsed: number;
   attemptsAllowed: number | null;
   isStarting: boolean;
@@ -18,7 +17,6 @@ type QuizStartProps = {
 
 export const QuizStart = ({
   test,
-  questionCount,
   attemptsUsed,
   attemptsAllowed,
   isStarting,
@@ -47,7 +45,7 @@ export const QuizStart = ({
         <div className={styles.fact}>
           <dt className={styles.factLabel}>Питання</dt>
           <dd className={styles.factValue}>
-            {questionCount} {pluralize(questionCount, QUESTION_FORMS)}
+            {test.question_count} {pluralize(test.question_count, QUESTION_FORMS)}
           </dd>
         </div>
 

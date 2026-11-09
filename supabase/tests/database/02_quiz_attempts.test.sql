@@ -1,6 +1,6 @@
 begin;
 \ir ../helpers/fixtures.psql
-select plan(45);
+select plan(51);
 
 select tests.login('student');
 
@@ -125,6 +125,11 @@ select throws_ok(format('select public.get_student_attempts(%L)', tests.uid('sec
 
 select tests.login('admin');
 select is(
+  (public.get_student_attempts(tests.uid('student')) -> 0 ->> 'key_open')::boolean,
+  true,
+  'an admin sees that the key is open'
+);
+select is(
   (public.grant_extra_attempt(tests.uid('student'), 1001) ->> 'attempts_allowed')::int,
   3,
   'an admin grant adds one attempt'
@@ -141,12 +146,27 @@ select is(
   2,
   'an admin sees used attempts of a student'
 );
+select is(
+  (public.get_student_attempts(tests.uid('student')) -> 0 ->> 'key_open')::boolean,
+  false,
+  'a grant closes the key for the admin view too'
+);
 
 select tests.login('student');
 select is((public.start_quiz_attempt(1001) ->> 'attempts_used')::int, 3, 'a granted attempt can be started');
 select throws_ok('select public.get_correct_answers(1001)', '42501', 'Access denied', 'key closes again during a granted attempt');
+select is((select count(*)::int from public.results where test_id = 1001 and after_key), 0, 'results before the key are not flagged');
+select public.submit_quiz_attempt(tests.attempt(1001, 'student'), '{}');
+select is((select count(*)::int from public.results where test_id = 1001 and after_key), 1, 'a result after the key is flagged');
 
 select tests.login('admin');
+select is(
+  (select count(*)::int
+   from jsonb_array_elements(public.get_admin_results('Plain test', 'date', 20, 0) -> 'items') item
+   where (item ->> 'after_key')::boolean),
+  1,
+  'the admin results page returns the flag'
+);
 select ok(public.get_quiz_attempt(1001) -> 'attempts_allowed' = 'null'::jsonb, 'admins have no attempt limit');
 select is(jsonb_array_length(public.get_correct_answers(1001)), 3, 'admins read the key without an attempt');
 
@@ -159,6 +179,21 @@ select tests.login('second');
 select throws_ok('select public.start_quiz_attempt(1005)', '22023', 'This test type cannot be submitted', 'a placement test has no attempts');
 select throws_ok('select public.start_quiz_attempt(999999)', 'P0002', 'Test not found', 'an unknown test is refused');
 select throws_ok('select public.start_quiz_attempt(1004)', 'P0002', 'Test has no questions', 'an empty test cannot be started');
+
+select public.start_quiz_attempt(1001);
+select public.submit_quiz_attempt(tests.attempt(1001, 'second'), '{}');
+select tests.login('admin');
+select public.grant_extra_attempt(tests.uid('second'), 1001);
+select tests.login('second');
+select public.start_quiz_attempt(1001);
+select public.submit_quiz_attempt(tests.attempt(1001, 'second'), '{}');
+select public.start_quiz_attempt(1001);
+select public.submit_quiz_attempt(tests.attempt(1001, 'second'), '{}');
+select is(
+  (select count(*)::int from public.results where test_id = 1001 and after_key),
+  0,
+  'a grant made before the key opened does not flag later results'
+);
 
 select * from finish();
 rollback;

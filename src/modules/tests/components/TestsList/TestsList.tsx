@@ -3,7 +3,6 @@ import styles from './TestsList.module.scss';
 import type { Test } from '../../../../types/database';
 import { ROUTES } from '../../../../constants/routes';
 import { getDurationLabel } from '../../../../utils/getDurationLabel';
-import { getQuestionCount } from '../../../../utils/getQuestionCount';
 import { padNumber } from '../../../../utils/padNumber';
 import { QUESTION_FORMS, pluralize } from '../../../../utils/pluralize';
 
@@ -25,7 +24,6 @@ export const TestsList = ({ tests, emptyMessage }: TestsListProps) => {
         <ul className={styles.testsList}>
           {tests.map((test, index) => {
             const titleId = `test-title-${test.id}`;
-            const questionCount = getQuestionCount(test);
 
             return (
               <li key={test.id}>
@@ -61,7 +59,8 @@ export const TestsList = ({ tests, emptyMessage }: TestsListProps) => {
                     </span>
 
                     <span className={styles.metaBadge}>
-                      {questionCount} {pluralize(questionCount, QUESTION_FORMS)}
+                      {test.question_count}{' '}
+                      {pluralize(test.question_count, QUESTION_FORMS)}
                     </span>
                   </div>
                 </Link>

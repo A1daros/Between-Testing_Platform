@@ -32,3 +32,26 @@
 
   white-space: nowrap;
 }
+
+.confirmBox {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.description {
+  margin: 0;
+  color: $text-secondary;
+
+  @include body-small;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.confirmButton {
+  @include button-primary;
+}

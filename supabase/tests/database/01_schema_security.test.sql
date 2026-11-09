@@ -24,7 +24,7 @@ select is(
 
 select is_empty(
   $$select p.proname from pg_proc p join pg_namespace n on n.oid = p.pronamespace
-    where n.nspname = 'private' and p.proname not in ('is_admin', 'is_approved')
+    where n.nspname = 'private' and p.proname not in ('is_admin', 'is_approved', 'readable_test_ids', 'playable_audio_paths')
       and has_function_privilege('authenticated', p.oid, 'execute')$$,
   'authenticated cannot execute private helpers directly'
 );

@@ -169,7 +169,7 @@ export const loadStudentDetails = async (
     await supabase
       .from('profiles')
       .select(
-        `*, results(id, score, total, created_at, tests(id, title, content_updated_at))`,
+        `*, results(id, score, total, created_at, after_key, tests(id, title, content_updated_at))`,
       )
       .eq('id', studentId)
       .order('created_at', { referencedTable: 'results', ascending: false })
