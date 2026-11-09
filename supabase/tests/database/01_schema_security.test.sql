@@ -1,6 +1,6 @@
 begin;
 \ir ../helpers/fixtures.psql
-select plan(22);
+select plan(24);
 
 select is_empty(
   $$select c.relname from pg_class c join pg_namespace n on n.oid = c.relnamespace
@@ -15,7 +15,6 @@ select is_empty(
   'every security definer function pins search_path'
 );
 
-select todo('default privileges leave anon with execute on delete_test and handle_new_user on a new database', 1);
 select is(
   (select array_agg(p.proname::text order by p.proname::text) from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('anon', p.oid, 'execute')),
@@ -58,9 +57,12 @@ select is((select public from storage.buckets where id = 'avatars'), true, 'avat
 select has_trigger('auth', 'users', 'on_auth_user_created', 'signup trigger exists');
 select has_trigger('auth', 'users', 'on_auth_user_email_confirmed', 'email confirmation trigger exists');
 
+select ok(not has_function_privilege('authenticated', 'public.handle_new_user()', 'execute'), 'authenticated cannot execute the signup trigger function');
+select ok(has_function_privilege('authenticated', 'public.delete_test(bigint)', 'execute'), 'authenticated keeps execute on delete_test for admins');
+
 select tests.login_anon();
-select throws_ok('select public.delete_test(1001)', '42501', 'Forbidden', 'anon cannot delete a test even with execute rights');
-select throws_ok('select public.handle_new_user()', '0A000', null, 'the signup trigger function cannot be called directly');
+select throws_ok('select public.delete_test(1001)', '42501', 'permission denied for function delete_test', 'anon has no execute on delete_test');
+select throws_ok('select public.handle_new_user()', '42501', 'permission denied for function handle_new_user', 'anon has no execute on the signup trigger function');
 
 select * from finish();
 rollback;
