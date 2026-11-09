@@ -1,6 +1,6 @@
 begin;
 \ir ../helpers/fixtures.psql
-select plan(27);
+select plan(32);
 
 create function tests.payload()
 returns jsonb
@@ -69,8 +69,11 @@ update public.tests set content_updated_at = null where id = 1001;
 select tests.login('admin');
 
 select public.save_test(tests.payload(), 1001);
-select todo('save_test renumbers parts, which fires the content trigger even without changes', 1);
 select is((select content_updated_at from public.tests where id = 1001), null::timestamptz, 'saving unchanged content does not mark results as outdated');
+
+select public.save_test(jsonb_set(jsonb_set(tests.payload(), '{title}', '"Renamed again"'), '{timerDuration}', '120'), 1001);
+select is((select content_updated_at from public.tests where id = 1001), null::timestamptz, 'changing only the title and timer does not mark results as outdated');
+select public.save_test(tests.payload(), 1001);
 
 select tests.logout();
 update public.tests set content_updated_at = null where id = 1002;
@@ -95,7 +98,18 @@ select lives_ok(
   )),
   'parts can swap positions despite the unique sort order'
 );
+select lives_ok('set constraints all immediate', 'swapped parts pass the uniqueness check at commit');
+set constraints all deferred;
+select isnt((select content_updated_at from public.tests where id = 1001), null::timestamptz, 'reordering parts marks results as outdated');
 select public.save_test(tests.payload(), 1001);
+
+select tests.logout();
+select throws_ok(
+  $$insert into public.test_parts (test_id, title, sort_order) values (1001, 'Duplicate', 1); set constraints all immediate$$,
+  '23505', null, 'two parts still cannot share a position'
+);
+set constraints all deferred;
+select tests.login('admin');
 
 select public.save_test(tests.payload() - 'parts' || '{"parts":[{"id": 2001, "uiId": "2001", "title": "Listening", "instruction": "Listen", "points": 2},{"id": 2002, "uiId": "2002", "title": "Reading", "instruction": "Read", "points": 1}]}'::jsonb, 1001);
 select is((select audio_path from public.test_parts where id = 2001), 'parts/listening.mp3', 'a payload without an audio key keeps the file');
@@ -117,6 +131,10 @@ select public.save_test(jsonb_set(tests.payload(), '{questions}', (tests.payload
 select is((select count(*)::int from public.questions where id = 3003), 0, 'a question missing from the payload is removed');
 select is((select count(*)::int from public.result_answers where result_id = 9001), 2, 'only student answers of the removed question are removed');
 select is((select score::int from public.results where id = 9001), 5, 'the score of a past result does not change');
+
+select public.save_test(jsonb_set(tests.payload(), '{parts}', (tests.payload() -> 'parts') - 0) - 'questions', 1001);
+select lives_ok('set constraints all immediate', 'a part can take the position of a removed part');
+set constraints all deferred;
 
 select public.delete_test(1001);
 select is(
