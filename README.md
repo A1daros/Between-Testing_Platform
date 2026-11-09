@@ -60,7 +60,7 @@ There is no custom server. All sensitive logic runs in Postgres RPC functions or
   the client with questions. Only `get_correct_answers` returns it, to an admin or to a student
   who has used all attempts.
 - **Access is enforced in the database.** RLS policies and grants apply regardless of the UI.
-  Test content is readable only by approved users.
+  Test content opens for an approved student with their first attempt, and test audio only during an active attempt.
 - **Safe retries.** Repeating `submit_quiz_attempt` after a lost response returns the same result
   instead of creating a second one.
 - **Editing does not rewrite history.** `save_test` updates a test in place and does not recalculate

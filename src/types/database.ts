@@ -36,10 +36,18 @@ export type Test = {
     code: string;
   } | null;
 
-  questions: {
-    count: number;
-  }[];
+  question_count: number;
 };
+
+export type TestOverview = Pick<
+  Test,
+  | 'title'
+  | 'description'
+  | 'timer_enabled'
+  | 'timer_type'
+  | 'timer_duration'
+  | 'question_count'
+>;
 
 export type PublicAnswer = {
   id: number;
@@ -93,6 +101,7 @@ export type Result = {
   score: number;
   total: number;
   created_at: string;
+  after_key: boolean;
 
   tests: ResultTest;
 
@@ -133,6 +142,7 @@ export type ResultAnswerDetails = {
 
   results: {
     created_at: string;
+    after_key: boolean;
   };
 
   correct_answer_id: number | null;
@@ -174,6 +184,7 @@ export type StudentAttempts = {
   title: string;
   attempts_used: number;
   attempts_allowed: number | null;
+  key_open: boolean;
 };
 
 export type PlacementAnswer = {
@@ -219,6 +230,7 @@ export type StudentResult = {
   score: number;
   total: number;
   created_at: string;
+  after_key: boolean;
   tests: {
     id: number;
     title: string;

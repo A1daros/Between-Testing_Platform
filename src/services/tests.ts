@@ -4,6 +4,7 @@ import type {
   PublicAnswer,
   Question,
   Test,
+  TestOverview,
 } from '../types/database';
 import type { NewTestPayload } from '../types/testForm';
 import { getCorrectAnswers } from './answers';
@@ -26,7 +27,7 @@ export const getTests = async ({
 }: GetTestsOptions = {}): Promise<Test[]> => {
   let query = supabase
     .from('tests')
-    .select(`*, levels(code), questions(count)`);
+    .select(`*, levels(code), question_count`);
 
   if (levelId !== undefined) {
     query = query.eq('level_id', levelId);
@@ -38,6 +39,19 @@ export const getTests = async ({
 
   return unwrap(await query);
 };
+
+export const getTestOverview = async (
+  testId: number,
+): Promise<TestOverview | null> =>
+  unwrap(
+    await supabase
+      .from('tests')
+      .select(
+        'title, description, timer_enabled, timer_type, timer_duration, question_count',
+      )
+      .eq('id', testId)
+      .maybeSingle(),
+  );
 
 export const getTestById = async (testId: number): Promise<EditableTest> => {
   const test = unwrap<TestRow>(

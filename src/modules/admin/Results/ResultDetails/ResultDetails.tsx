@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from '../../../shared/components/Loader';
 import { ErrorState } from '../../../shared/components/ErrorState';
 import { OutdatedBadge } from '../../../shared/components/OutdatedBadge';
+import { AfterKeyBadge } from '../../components/AfterKeyBadge';
 import { getResultDetails } from '../../../../services/resultAnswers';
 import { useAsyncData } from '../../../../hooks/useAsyncData';
 import { buildResultReview } from '../../../../utils/buildResultReview';
@@ -57,10 +58,13 @@ export const ResultDetails = () => {
           {test.description && (
             <p className={styles.pageDescription}>{test.description}</p>
           )}
-          {isResultOutdated(
-            rows[0].results.created_at,
-            test.content_updated_at,
-          ) && <OutdatedBadge />}
+          <div className={styles.badges}>
+            {isResultOutdated(
+              rows[0].results.created_at,
+              test.content_updated_at,
+            ) && <OutdatedBadge />}
+            {rows[0].results.after_key && <AfterKeyBadge />}
+          </div>
         </div>
         <button
           type='button'

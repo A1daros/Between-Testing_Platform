@@ -21,7 +21,7 @@ export const getResultDetails = async (
           tests(title, description, content_updated_at),
           test_parts(title, instruction)),
         answers(id, question_id, answer_text),
-        results(created_at)`,
+        results(created_at, after_key)`,
       )
       .eq('result_id', resultId),
   );

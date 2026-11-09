@@ -6,10 +6,12 @@ import {
   getQuizAttempt,
   startQuizAttempt,
 } from '../../services/quizAttempts';
+import { getTestOverview } from '../../services/tests';
 import type {
   QuestionWithAnswers,
   QuizAttempt,
   QuizAttemptState,
+  TestOverview,
 } from '../../types/database';
 import { QuizPage } from './QuizPage';
 
@@ -23,8 +25,18 @@ vi.mock('../../services/quizAttempts', () => ({
   submitQuizAttempt: vi.fn(),
   registerAudioPlay: vi.fn(),
 }));
+vi.mock('../../services/tests', () => ({ getTestOverview: vi.fn() }));
 vi.mock('../../services/audio', () => ({ getTestAudioUrl: vi.fn() }));
 vi.mock('../../utils/captureError', () => ({ captureError: vi.fn() }));
+
+const overview: TestOverview = {
+  title: 'Фінальний тест',
+  description: null,
+  timer_enabled: false,
+  timer_type: null,
+  timer_duration: null,
+  question_count: 1,
+};
 
 const questions = [
   {
@@ -72,19 +84,54 @@ const renderPage = (path = '/tests/1') =>
 
 describe('QuizPage', () => {
   beforeEach(() => {
+    vi.mocked(getQuestionsWithAnswersByTestId).mockReset();
+    vi.mocked(startQuizAttempt).mockReset();
     vi.mocked(getQuestionsWithAnswersByTestId).mockResolvedValue(questions);
+    vi.mocked(getTestOverview).mockResolvedValue(overview);
     vi.mocked(getQuizAttempt).mockResolvedValue(state());
   });
 
-  it('shows the start screen without starting an attempt', async () => {
+  it('shows the start screen without loading questions', async () => {
     renderPage();
 
     expect(
       await screen.findByRole('button', { name: 'Почати тест' }),
     ).toBeEnabled();
     expect(screen.getByText('0 з 2')).toBeInTheDocument();
+    expect(screen.getByText('1 питання')).toBeInTheDocument();
     expect(startQuizAttempt).not.toHaveBeenCalled();
+    expect(getQuestionsWithAnswersByTestId).not.toHaveBeenCalled();
     expect(screen.queryByText('Перше питання')).not.toBeInTheDocument();
+  });
+
+  it('retries loading questions after the attempt has started', async () => {
+    vi.mocked(startQuizAttempt).mockResolvedValue(
+      state({ attempt: activeAttempt, attempts_used: 1 }),
+    );
+    vi.mocked(getQuestionsWithAnswersByTestId).mockRejectedValueOnce(
+      new Error('offline'),
+    );
+    renderPage();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Почати тест' }));
+
+    expect(
+      await screen.findByText('Не вдалося почати тест. Спробуйте ще раз.'),
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Почати тест' }));
+
+    expect(await screen.findByText('Перше питання')).toBeInTheDocument();
+  });
+
+  it('reports a test without questions', async () => {
+    vi.mocked(getTestOverview).mockResolvedValue({
+      ...overview,
+      question_count: 0,
+    });
+    renderPage();
+
+    expect(await screen.findByText('Питання не знайдено.')).toBeInTheDocument();
   });
 
   it('opens the session after the server starts an attempt', async () => {

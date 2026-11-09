@@ -3,6 +3,7 @@ import { isResultOutdated } from '../../../../utils/isResultOutdated';
 import type { StudentResult } from '../../../../types/database';
 import type { ColumnConfig } from '../../types/table';
 import { OutdatedBadge } from '../../../shared/components/OutdatedBadge';
+import { AfterKeyBadge } from '../../components/AfterKeyBadge';
 
 export const getStudentDetailsColumns = (): ColumnConfig<StudentResult>[] => [
   {
@@ -13,6 +14,7 @@ export const getStudentDetailsColumns = (): ColumnConfig<StudentResult>[] => [
         {isResultOutdated(result.created_at, result.tests?.content_updated_at) && (
           <OutdatedBadge inline />
         )}
+        {result.after_key && <AfterKeyBadge inline />}
       </>
     ),
   },

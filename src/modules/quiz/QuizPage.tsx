@@ -7,6 +7,7 @@ import { Loader } from '../shared/components/Loader';
 import { ErrorState } from '../shared/components/ErrorState';
 import { getQuestionsWithAnswersByTestId } from '../../services/questions';
 import { getQuizAttempt, startQuizAttempt } from '../../services/quizAttempts';
+import { getTestOverview } from '../../services/tests';
 import { ROUTES } from '../../constants/routes';
 import { getQuizResultState } from '../../utils/getQuizResultState';
 import { QuizSession } from './components/QuizSession';
@@ -24,19 +25,23 @@ export const QuizPage = () => {
   const [startError, setStartError] = useState('');
 
   const loadQuiz = useCallback(async () => {
-    const [questions, attemptState] = await Promise.all([
-      getQuestionsWithAnswersByTestId(numericTestId),
+    const [test, attemptState] = await Promise.all([
+      getTestOverview(numericTestId),
       getQuizAttempt(numericTestId),
     ]);
 
-    return { questions, attemptState };
+    const questions = attemptState.attempt
+      ? await getQuestionsWithAnswersByTestId(numericTestId)
+      : [];
+
+    return { test, questions, attemptState };
   }, [numericTestId]);
 
   const { data, loading, error, reload, setData } = useAsyncData(
     isValidTestId ? loadQuiz : null,
   );
 
-  const test = data?.questions[0]?.tests;
+  const test = data?.test;
   const expiredResult = data?.attemptState.expired_result ?? null;
 
   usePageMeta({ title: test?.title ?? 'Тест', noindex: true });
@@ -58,8 +63,11 @@ export const QuizPage = () => {
 
     try {
       const attemptState = await startQuizAttempt(numericTestId);
+      const questions = attemptState.attempt
+        ? await getQuestionsWithAnswersByTestId(numericTestId)
+        : [];
 
-      setData((prev) => prev && { ...prev, attemptState });
+      setData((prev) => prev && { ...prev, attemptState, questions });
     } catch (startAttemptError) {
       captureError(startAttemptError);
       setStartError('Не вдалося почати тест. Спробуйте ще раз.');
@@ -79,7 +87,7 @@ export const QuizPage = () => {
       );
     }
 
-    if (!data || !test) {
+    if (!data || !test || test.question_count === 0) {
       return <ErrorState message='Питання не знайдено.' />;
     }
 
@@ -99,7 +107,6 @@ export const QuizPage = () => {
     return (
       <QuizStart
         test={test}
-        questionCount={data.questions.length}
         attemptsUsed={attempts_used}
         attemptsAllowed={attempts_allowed}
         isStarting={isStarting}
